@@ -23,11 +23,6 @@ export class LoginCallbackComponent implements OnInit {
                         this.authService.name = data['name'];
                         this.authService.mobile = data['sub'];
                         this.authService.roles = data['roles'];
-                        if (this.authService.untilOperator()) {
-                            this.router.navigate(['shop']).then();
-                        } else {
-                            this.router.navigate(['home']).then();
-                        }
                     },
                 );
             }

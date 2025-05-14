@@ -17,7 +17,7 @@ bootstrapApplication(AppComponent,  {
         importProvidersFrom(
             AuthModule.forRoot({
                 config: {
-                    authority: 'http://localhost:8080/tpv-user',
+                    authority: 'http://localhost:8080/goa-user',
                     redirectUrl: 'http://localhost:4200/callback',
                     postLogoutRedirectUri: 'http://localhost:4200',
                     clientId: 'spa-client-id',

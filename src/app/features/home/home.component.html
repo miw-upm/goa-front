@@ -1,0 +1,35 @@
+<mat-toolbar color="primary">
+    <img alt="miw" height="32" ngSrc="../../../assets/miw.png" width="69"/>
+    <button mat-button routerLink="/home">
+        <span>Gestión Ocaña Abogados</span>
+    </button>
+    <div>
+        <button (click)="login()" *ngIf="!isAuthenticated()" mat-button>
+            <mat-icon>person_outline</mat-icon>
+            <span>Login</span>
+        </button>
+        <button (click)="logout()" *ngIf="isAuthenticated()" mat-button>
+            <mat-icon>account_box</mat-icon>
+            <span>Logout - {{ name() }}</span>
+        </button>
+        <button *ngIf="isAuthenticated()" [matMenuTriggerFor]="profile" mat-button>
+            <mat-icon>more_vert</mat-icon>
+        </button>
+    </div>
+</mat-toolbar>
+<mat-menu #profile="matMenu" xPosition="before">
+    <button mat-menu-item>
+        <mat-icon>manage_accounts</mat-icon>
+        <span>Profile</span>
+    </button>
+    <button mat-menu-item>
+        <mat-icon>groups</mat-icon>
+        <span>Users</span>
+    </button>
+    <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+    </button>
+</mat-menu>
+<router-outlet></router-outlet>
+<app-footer></app-footer>
