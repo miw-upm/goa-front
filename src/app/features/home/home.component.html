@@ -1,10 +1,10 @@
 <mat-toolbar color="primary">
-    <img alt="miw" height="32" ngSrc="../../../assets/miw.png" width="69"/>
+    <img alt="miw" height="64" ngSrc="../../../assets/oa-s.png" width="64"/>
     <button mat-button routerLink="/home">
         <span>Gestión Ocaña Abogados</span>
     </button>
     <div>
-        <button (click)="login()" *ngIf="!isAuthenticated()" mat-button>
+        <button (click)="login()" *ngIf="!isAuthenticated()" mat-flat-button>
             <mat-icon>person_outline</mat-icon>
             <span>Login</span>
         </button>
