@@ -1,14 +1,16 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { AppComponent } from './app/app.component';
 import {importProvidersFrom, provideZoneChangeDetection} from "@angular/core";
 import {provideRouter} from "@angular/router";
-import {routes} from "./app/app.routes";
+import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
 import {provideHttpClient, withInterceptors} from "@angular/common/http";
 import {LogLevel, AuthModule, authInterceptor} from "angular-auth-oidc-client";
+import { AppComponent } from './app/app.component';
+import {routes} from "./app/app.routes";
 
 bootstrapApplication(AppComponent,  {
     providers: [
         provideZoneChangeDetection({ eventCoalescing: true }),
+        provideAnimationsAsync(),
         provideRouter(routes),
         provideHttpClient(),
         provideHttpClient(withInterceptors([authInterceptor()])),
