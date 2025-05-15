@@ -6,7 +6,7 @@ import {OidcSecurityService} from "angular-auth-oidc-client";
 export class AuthService {
     authenticated: boolean = false;
     name: string = null;
-    mobile: number = 0;
+    mobile: string = null;
     roles: string = null;
 
     constructor(private readonly oidcSecurityService: OidcSecurityService) {
@@ -19,7 +19,7 @@ export class AuthService {
     logout(): void {
         this.oidcSecurityService.logoff().subscribe(() => {
             this.name = null;
-            this.mobile = 0;
+            this.mobile = null;
             this.roles = null;
         });
     }
@@ -62,7 +62,7 @@ export class AuthService {
         return [];
     }
 
-    getMobile(): number {
+    getMobile(): string {
         return this.mobile;
     }
 

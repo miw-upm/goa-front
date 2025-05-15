@@ -33,12 +33,14 @@ export class UserCreationUpdatingDialogComponent {
     documentTypes: string[];
     roles: string[];
     oldMobile: string;
+    enablePasswordChange: boolean;
 
     constructor(@Inject(MAT_DIALOG_DATA) data: User, private readonly userService: UserService,
                 private readonly authService: AuthService, private readonly dialog: MatDialog) {
         this.title = data ? 'Update User' : 'Create User';
         this.user = data || {mobile: undefined, firstName: undefined, active: true};
         this.oldMobile = data ? data.mobile : undefined;
+        this.enablePasswordChange = false;
         this.userService.findDocumentTypes().subscribe(types => this.documentTypes = types);
         this.roles = this.authService.allowedRoles();
     }
@@ -54,6 +56,9 @@ export class UserCreationUpdatingDialogComponent {
     }
 
     update(): void {
+        if (!this.enablePasswordChange) {
+            this.user.password = null;
+        }
         this.userService
             .update(this.oldMobile, this.user)
             .subscribe(() => this.dialog.closeAll());

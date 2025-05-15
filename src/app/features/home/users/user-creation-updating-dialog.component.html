@@ -2,7 +2,7 @@
 <mat-dialog-content>
     <mat-form-field class="full-width">
         <mat-label>Mobile</mat-label>
-        <input [(ngModel)]="user.mobile" id="mobile" matInput required type="tel"  maxlength="9" pattern="^[0-9]{9}$"/>
+        <input [(ngModel)]="user.mobile" id="mobile" matInput maxlength="9" pattern="^[0-9]{9}$" required type="tel"/>
     </mat-form-field>
     <mat-form-field class="full-width">
         <mat-label>First Name</mat-label>
@@ -20,9 +20,10 @@
         <mat-label>Address</mat-label>
         <input [(ngModel)]="user.address" matInput type="text"/>
     </mat-form-field>
+    <mat-slide-toggle [(ngModel)]="enablePasswordChange">New Password</mat-slide-toggle>
     <mat-form-field class="full-width">
         <mat-label>Password</mat-label>
-        <input [(ngModel)]="user.password" matInput type="password"/>
+        <input [(ngModel)]="user.password" [disabled]="!enablePasswordChange" matInput type="password"/>
     </mat-form-field>
     <mat-form-field class="full-width">
         <mat-label>Document Type</mat-label>

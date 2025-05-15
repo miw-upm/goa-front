@@ -39,9 +39,7 @@ export class UsersComponent {
 
     create(): void {
         this.dialog
-            .open(UserCreationUpdatingDialogComponent)
-            .afterClosed()
-            .subscribe(() => this.search());
+            .open(UserCreationUpdatingDialogComponent);
     }
 
     read(user: User): void {
@@ -56,7 +54,7 @@ export class UsersComponent {
     update(user: User): void {
         this.userService
             .read(user.mobile)
-            .subscribe(fullProvider => this.dialog.open(UserCreationUpdatingDialogComponent, {data: fullProvider})
+            .subscribe(fullUser => this.dialog.open(UserCreationUpdatingDialogComponent, {data: fullUser})
                 .afterClosed()
                 .subscribe(() => this.search())
             );

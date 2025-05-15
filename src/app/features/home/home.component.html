@@ -18,7 +18,7 @@
     </div>
 </mat-toolbar>
 <mat-menu #profile="matMenu" xPosition="before">
-    <button mat-menu-item>
+    <button (click)="update()" mat-menu-item>
         <mat-icon>manage_accounts</mat-icon>
         <span>Profile</span>
     </button>
