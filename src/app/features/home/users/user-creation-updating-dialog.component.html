@@ -1,0 +1,59 @@
+<h4 mat-dialog-title>{{ title }}</h4>
+<mat-dialog-content>
+    <mat-form-field class="full-width">
+        <mat-label>Mobile</mat-label>
+        <input [(ngModel)]="user.mobile" id="mobile" matInput required type="tel"  maxlength="9" pattern="^[0-9]{9}$"/>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <mat-label>First Name</mat-label>
+        <input [(ngModel)]="user.firstName" matInput required type="text"/>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <mat-label>Family Name</mat-label>
+        <input [(ngModel)]="user.familyName" matInput type="text"/>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <mat-label>E-mail</mat-label>
+        <input [(ngModel)]="user.email" matInput type="email">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <mat-label>Address</mat-label>
+        <input [(ngModel)]="user.address" matInput type="text"/>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <mat-label>Password</mat-label>
+        <input [(ngModel)]="user.password" matInput type="password"/>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <mat-label>Document Type</mat-label>
+        <mat-select [(ngModel)]="user.documentType" name="documentType">
+            <mat-option *ngFor="let type of documentTypes" [value]="type">
+                {{ type }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <mat-label>Identity</mat-label>
+        <input [(ngModel)]="user.identity" matInput type="text"/>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <mat-label>Role</mat-label>
+        <mat-select [(ngModel)]="user.role" name="role">
+            <mat-option *ngFor="let role of roles" [value]="role">
+                {{ role }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="!isCreate()" class="full-width">
+        <mat-label>Registration Date</mat-label>
+        <input [value]="user.registrationDate | date:'dd-MM-yyyy'" matInput readonly type="text"/>
+    </mat-form-field>
+    <mat-slide-toggle [(ngModel)]="user.active">Active</mat-slide-toggle>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Close</button>
+    <button (click)="create()" *ngIf="isCreate()" [disabled]=invalid() color="primary" mat-raised-button>Create
+    </button>
+    <button (click)="update()" *ngIf="!isCreate()" [disabled]=invalid() color="primary" mat-raised-button>Update
+    </button>
+</mat-dialog-actions>

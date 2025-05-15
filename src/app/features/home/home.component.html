@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
     <img alt="miw" height="64" ngSrc="../../../assets/oa-s.png" width="64"/>
     <button mat-button routerLink="/home">
-        <span>Gestión Ocaña Abogados</span>
+        <h1>Administración Ocaña Abogados</h1>
     </button>
     <div>
         <button (click)="login()" *ngIf="!isAuthenticated()" mat-flat-button>
@@ -22,11 +22,11 @@
         <mat-icon>manage_accounts</mat-icon>
         <span>Profile</span>
     </button>
-    <button mat-menu-item>
+    <button mat-menu-item routerLink="/home/users">
         <mat-icon>groups</mat-icon>
         <span>Users</span>
     </button>
-    <button mat-menu-item (click)="logout()">
+    <button (click)="logout()" mat-menu-item>
         <mat-icon>logout</mat-icon>
         <span>Logout</span>
     </button>

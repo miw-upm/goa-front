@@ -1,11 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {EMPTY, Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
-
-import {AppError} from '@core/models/app-error.model';
 
 export interface HttpOptions {
     headers: HttpHeaders;
@@ -21,7 +19,7 @@ export class HttpService {
 
     private headers: HttpHeaders;
     private params: HttpParams;
-    private responseType:'json' | 'blob';
+    private responseType: 'json' | 'blob';
     private successfulNotification: string | undefined;
     private errorNotification: string | undefined;
 
@@ -133,7 +131,7 @@ export class HttpService {
     private extractData(response: any): any {
         if (this.successfulNotification) {
             this.snackBar.open(this.successfulNotification, '', {
-                duration: 2000
+                duration: 1000
             });
             this.successfulNotification = undefined;
         }
@@ -153,11 +151,11 @@ export class HttpService {
 
     private showError(notification: string): void {
         const message = this.errorNotification || notification;
-        this.snackBar.open(message, 'Error', { duration: 5000 });
+        this.snackBar.open(message, 'Error', {duration: 7000});
         this.errorNotification = undefined;
     }
 
-    private handleError(response):  Observable<never> {
+    private handleError(response): Observable<never> {
         if (response.status === HttpService.UNAUTHORIZED) {
             this.showError('Unauthorized');
             this.router.navigate(['']).then();

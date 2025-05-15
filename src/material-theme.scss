@@ -1,0 +1,166 @@
+/* Definir variables CSS personalizadas para los colores del tema */
+:root {
+  /* Colores primarios - Dorado */
+  --primary-color: #ba792e;
+  --primary-color-light: #d9a054;
+  --primary-color-dark: #8e5c22;
+  --primary-color-text: #ffffff;
+
+  /* Colores de acento - Azul grisáceo */
+  --accent-color: #2e6fba;
+  --accent-color-light: #5493d9;
+  --accent-color-dark: #224f8e;
+  --accent-color-text: #ffffff;
+
+  /* Colores de advertencia - Rojo cálido */
+  --warn-color: #c64b36;
+  --warn-color-light: #e57361;
+  --warn-color-dark: #9c3a2a;
+  --warn-color-text: #ffffff;
+
+  /* Color de fondo y texto */
+  --background-color: #f8f5ed;
+  --text-color: #333333;
+  --secondary-text-color: #5c5c5c;
+  --divider-color: #e0d6c0;
+}
+
+/* Aplicar colores a componentes específicos de Angular Material */
+.mat-toolbar.mat-primary {
+  background-color: var(--primary-color);
+  color: var(--primary-color-text);
+}
+
+.mat-toolbar.mat-accent {
+  background-color: var(--accent-color);
+  color: var(--accent-color-text);
+}
+
+.mat-toolbar.mat-warn {
+  background-color: var(--warn-color);
+  color: var(--warn-color-text);
+}
+
+.mat-button.mat-primary,
+.mat-raised-button.mat-primary,
+.mat-fab.mat-primary,
+.mat-mini-fab.mat-primary {
+  background-color: var(--primary-color);
+  color: var(--primary-color-text);
+}
+
+.mat-button.mat-accent,
+.mat-raised-button.mat-accent,
+.mat-fab.mat-accent,
+.mat-mini-fab.mat-accent {
+  background-color: var(--accent-color);
+  color: var(--accent-color-text);
+}
+
+.mat-button.mat-warn,
+.mat-raised-button.mat-warn,
+.mat-fab.mat-warn,
+.mat-mini-fab.mat-warn {
+  background-color: var(--warn-color);
+  color: var(--warn-color-text);
+}
+
+/* Para botones con contorno */
+.mat-stroked-button.mat-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.mat-stroked-button.mat-accent {
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.mat-stroked-button.mat-warn {
+  color: var(--warn-color);
+  border-color: var(--warn-color);
+}
+
+/* Selectores para otros componentes de Material */
+.mat-checkbox-checked.mat-primary .mat-checkbox-background {
+  background-color: var(--primary-color);
+}
+
+.mat-radio-button.mat-primary.mat-radio-checked .mat-radio-outer-circle {
+  border-color: var(--primary-color);
+}
+
+.mat-radio-button.mat-primary .mat-radio-inner-circle {
+  background-color: var(--primary-color);
+}
+
+.mat-progress-bar.mat-primary .mat-progress-bar-fill::after {
+  background-color: var(--primary-color);
+}
+
+.mat-progress-spinner.mat-primary circle {
+  stroke: var(--primary-color);
+}
+
+.mat-slider.mat-primary .mat-slider-thumb,
+.mat-slider.mat-primary .mat-slider-track-fill {
+  background-color: var(--primary-color);
+}
+
+/* Para Angular Material 13+ (MDC) */
+.mat-mdc-button.mat-primary,
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-fab.mat-primary,
+.mat-mdc-mini-fab.mat-primary {
+  --mdc-filled-button-container-color: var(--primary-color);
+  --mdc-filled-button-label-text-color: var(--primary-color-text);
+}
+
+.mat-mdc-button.mat-accent,
+.mat-mdc-raised-button.mat-accent,
+.mat-mdc-fab.mat-accent,
+.mat-mdc-mini-fab.mat-accent {
+  --mdc-filled-button-container-color: var(--accent-color);
+  --mdc-filled-button-label-text-color: var(--accent-color-text);
+}
+
+.mat-mdc-button.mat-warn,
+.mat-mdc-raised-button.mat-warn,
+.mat-mdc-fab.mat-warn,
+.mat-mdc-mini-fab.mat-warn {
+  --mdc-filled-button-container-color: var(--warn-color);
+  --mdc-filled-button-label-text-color: var(--warn-color-text);
+}
+
+/* Estilos específicos para Angular Material 19 */
+.mat-mdc-tab .mdc-tab__text-label {
+  color: var(--primary-color);
+}
+
+.mat-mdc-tab-indicator .mdc-tab-indicator__content {
+  border-color: var(--primary-color);
+}
+
+.mat-mdc-select-arrow {
+  color: var(--primary-color);
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-form-field-ripple {
+  background-color: var(--primary-color);
+}
+
+.mat-mdc-checkbox.mat-primary {
+  --mdc-checkbox-selected-checkmark-color: var(--primary-color-text);
+  --mdc-checkbox-selected-focus-icon-color: var(--primary-color);
+  --mdc-checkbox-selected-hover-icon-color: var(--primary-color);
+  --mdc-checkbox-selected-icon-color: var(--primary-color);
+  --mdc-checkbox-selected-pressed-icon-color: var(--primary-color);
+}
+
+/* Estilo para fondo general de la aplicación */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

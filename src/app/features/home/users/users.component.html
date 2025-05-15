@@ -1,0 +1,16 @@
+<mat-card>
+    <mat-card-title>
+    </mat-card-title>
+    <mat-card-content>
+        <app-filter-input [(value)]="userSearch.mobile" title="Mobile"></app-filter-input>
+        <app-filter-input [(value)]="userSearch.firstname" title="First Name"></app-filter-input>
+        <app-filter-input [(value)]="userSearch.familyName" title="Family Name"></app-filter-input>
+        <app-filter-input [(value)]="userSearch.email" title="Email"></app-filter-input>
+        <button (click)="search()" mat-stroked-button>
+            <mat-icon>search</mat-icon>
+            Find
+        </button>
+    </mat-card-content>
+</mat-card>
+<app-crud (create)="create()" (read)="read($event)" (update)="update($event)"
+          [data]="users" [title]="title"></app-crud>

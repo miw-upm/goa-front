@@ -2,14 +2,13 @@ import {Injectable} from '@angular/core';
 import {Role} from '@core/models/role.model';
 import {OidcSecurityService} from "angular-auth-oidc-client";
 
-
-
 @Injectable({providedIn: 'root'})
 export class AuthService {
     authenticated: boolean = false;
     name: string = null;
     mobile: number = 0;
     roles: string = null;
+
     constructor(private readonly oidcSecurityService: OidcSecurityService) {
     }
 
@@ -18,7 +17,7 @@ export class AuthService {
     }
 
     logout(): void {
-        this.oidcSecurityService.logoff().subscribe( () => {
+        this.oidcSecurityService.logoff().subscribe(() => {
             this.name = null;
             this.mobile = 0;
             this.roles = null;
@@ -30,7 +29,8 @@ export class AuthService {
     }
 
     hasRoles(roles: Role[]): boolean {
-       return this.isAuthenticated() && roles.includes(Role[this.roles.toUpperCase() as keyof typeof Role]);
+        if (!this.isAuthenticated() || !this.roles) return false;
+        return roles.includes(Role[this.roles.toUpperCase() as keyof typeof Role]);
     }
 
     isAdmin(): boolean {
@@ -47,6 +47,19 @@ export class AuthService {
 
     isCustomer(): boolean {
         return this.hasRoles([Role.CUSTOMER]);
+    }
+
+    allowedRoles(): Role[] {
+        if (this.isAdmin()) {
+            return [Role.ADMIN, Role.MANAGER, Role.OPERATOR, Role.CUSTOMER];
+        }
+        if (this.hasRoles([Role.MANAGER])) {
+            return [Role.MANAGER, Role.OPERATOR, Role.CUSTOMER];
+        }
+        if (this.hasRoles([Role.OPERATOR])) {
+            return [Role.CUSTOMER];
+        }
+        return [];
     }
 
     getMobile(): number {
