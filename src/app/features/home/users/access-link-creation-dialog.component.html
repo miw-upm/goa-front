@@ -1,0 +1,16 @@
+<h4 mat-dialog-title>Access Link Creation</h4>
+<mat-dialog-content>
+    <mat-form-field class="full-width">
+        <mat-label>Mobile</mat-label>
+        <input [(ngModel)]="accessLink.mobile" id="mobile" matInput maxlength="9" pattern="^[0-9]{9}$" required
+               type="tel"/>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <mat-label>Access Link</mat-label>
+        <input [(ngModel)]="accessLink.value" id="value" matInput readonly type="text"/>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Close</button>
+    <button (click)="create()" [disabled]=invalid() color="primary" mat-raised-button>Create</button>
+</mat-dialog-actions>

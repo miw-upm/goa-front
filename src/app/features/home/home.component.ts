@@ -12,6 +12,7 @@ import {AuthService} from "@core/services/auth.service";
 import {FooterComponent} from '@common/components/footer.component';
 import {UserService} from "./users/user.service";
 import {UserCreationUpdatingDialogComponent} from "./users/user-creation-updating-dialog.component";
+import {AccessLinkCreationDialogComponent} from "./users/access-link-creation-dialog.component";
 
 @Component({
     standalone: true,
@@ -48,5 +49,9 @@ export class HomeComponent {
 
     name() {
         return this.authService.name;
+    }
+
+    createAccessLink() {
+        this.dialog.open(AccessLinkCreationDialogComponent);
     }
 }
