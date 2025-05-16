@@ -1,5 +1,6 @@
 <h4 mat-dialog-title>Access Link Creation</h4>
 <mat-dialog-content>
+    <app-search-by-user [(user)]="accessLink.mobile" class="full-width"></app-search-by-user>
     <mat-form-field class="full-width">
         <mat-label>Mobile</mat-label>
         <input [(ngModel)]="accessLink.mobile" id="mobile" matInput maxlength="9" pattern="^[0-9]{9}$" required

@@ -7,11 +7,12 @@ import {MatButton} from '@angular/material/button';
 
 import {UserService} from './user.service';
 import {AccessLink} from "./acces-link.model";
+import {SearchByUserComponent} from "../../shared/search-by-user.component";
 
 @Component({
     standalone: true,
     imports: [MatDialogTitle, MatDialogContent, MatFormField, MatLabel, FormsModule, MatInput,
-        MatDialogActions, MatDialogClose, MatButton],
+        MatDialogActions, MatDialogClose, MatButton, SearchByUserComponent],
     templateUrl: 'access-link-creation-dialog.component.html',
     styleUrls: ['access-link-creation-dialog.component.css']
 })
@@ -37,5 +38,9 @@ export class AccessLinkCreationDialogComponent {
 
     check(attr: string): boolean {
         return attr === undefined || null || attr === '';
+    }
+
+    extractMobile(value: string): string {
+        return value?.split(':')[0] ?? '';
     }
 }
