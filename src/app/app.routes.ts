@@ -4,6 +4,7 @@ import {HomeComponent} from "./features/home/home.component";
 import {UsersComponent} from "./features/home/users/users.component";
 import {RoleGuardService} from "@core/services/role-guard.service";
 import {Role} from "@core/models/role.model";
+import {CustomerComponent} from "./features/customer/customer.component";
 
 export const routes: Routes = [
     {path: '', pathMatch: 'full', redirectTo: 'home'},
@@ -19,4 +20,7 @@ export const routes: Routes = [
             }
         ]
     },
+    {
+        path: 'customer/edit-profile/:mobile/:token', component: CustomerComponent
+    }
 ];

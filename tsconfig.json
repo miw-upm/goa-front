@@ -5,9 +5,15 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
-      "@env": ["environments/environment"],
-      "@common/*": ["app/common/*"],
-      "@core/*": ["app/core/*"]
+      "@env": [
+        "environments/environment"
+      ],
+      "@common/*": [
+        "app/common/*"
+      ],
+      "@core/*": [
+        "app/core/*"
+      ]
     },
     "resolveJsonModule": true,
     "outDir": "./dist/out-tsc",

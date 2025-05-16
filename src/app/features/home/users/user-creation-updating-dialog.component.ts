@@ -15,7 +15,7 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatButton} from '@angular/material/button';
 
 import {UserService} from './user.service';
-import {User} from './user.model';
+import {User} from '../../shared/user.model';
 import {MatOption, MatSelect} from "@angular/material/select";
 import {AuthService} from "@core/services/auth.service";
 

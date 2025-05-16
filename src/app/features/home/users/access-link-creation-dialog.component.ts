@@ -13,7 +13,7 @@ import {AccessLink} from "./acces-link.model";
     imports: [MatDialogTitle, MatDialogContent, MatFormField, MatLabel, FormsModule, MatInput,
         MatDialogActions, MatDialogClose, MatButton],
     templateUrl: 'access-link-creation-dialog.component.html',
-    styleUrls: ['user-dialog.component.css']
+    styleUrls: ['access-link-creation-dialog.component.css']
 })
 
 export class AccessLinkCreationDialogComponent {

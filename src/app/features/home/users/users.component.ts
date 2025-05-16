@@ -12,7 +12,7 @@ import {FilterInputComponent} from "@common/components/filter-input.component";
 import {UserCreationUpdatingDialogComponent} from './user-creation-updating-dialog.component';
 import {UserSearch} from './user-search.model';
 import {UserService} from "./user.service";
-import {User} from "./user.model";
+import {User} from "../../shared/user.model";
 
 @Component({
     standalone: true,
