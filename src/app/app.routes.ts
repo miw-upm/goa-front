@@ -5,6 +5,7 @@ import {UsersComponent} from "./features/home/users/users.component";
 import {RoleGuardService} from "@core/services/role-guard.service";
 import {Role} from "@core/models/role.model";
 import {CustomerComponent} from "./features/customer/customer.component";
+import {AccessLinkComponent} from "./features/home/access-links/access-link.component";
 
 export const routes: Routes = [
     {path: '', pathMatch: 'full', redirectTo: 'home'},
@@ -12,15 +13,11 @@ export const routes: Routes = [
     {
         path: 'home', component: HomeComponent,
         children: [
-            {
-                path: 'users',
-                component: UsersComponent,
-                canActivate: [RoleGuardService],
-                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]}
-            }
+            {path: 'users', component: UsersComponent, canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR] }   },
+            {path: 'access-links', component: AccessLinkComponent, canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]}    }
         ]
     },
-    {
-        path: 'customer/edit-profile/:mobile/:token', component: CustomerComponent
-    }
+    { path: 'customer/edit-profile/:mobile/:token', component: CustomerComponent }
 ];

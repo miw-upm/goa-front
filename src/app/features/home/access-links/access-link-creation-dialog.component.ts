@@ -5,9 +5,10 @@ import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 
-import {UserService} from './user.service';
+import {UserService} from '../users/user.service';
 import {AccessLink} from "./acces-link.model";
 import {SearchByUserComponent} from "../../shared/search-by-user.component";
+import {AccessLinkService} from "./access-link.service";
 
 @Component({
     standalone: true,
@@ -20,13 +21,13 @@ import {SearchByUserComponent} from "../../shared/search-by-user.component";
 export class AccessLinkCreationDialogComponent {
     accessLink: AccessLink;
 
-    constructor(private readonly userService: UserService,
+    constructor(private readonly accessLinkService: AccessLinkService,
                 private readonly dialog: MatDialog) {
         this.accessLink = {mobile: null, scope: "EDIT_PROFILE", value: null}
     }
 
     create(): void {
-        this.userService
+        this.accessLinkService
             .createAccessLink(this.accessLink)
             .subscribe(accessLink => this.accessLink.value = accessLink.value);
     }
@@ -40,7 +41,4 @@ export class AccessLinkCreationDialogComponent {
         return attr === undefined || null || attr === '';
     }
 
-    extractMobile(value: string): string {
-        return value?.split(':')[0] ?? '';
-    }
 }

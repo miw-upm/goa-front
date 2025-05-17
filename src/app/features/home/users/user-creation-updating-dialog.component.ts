@@ -18,6 +18,7 @@ import {UserService} from './user.service';
 import {User} from '../../shared/user.model';
 import {MatOption, MatSelect} from "@angular/material/select";
 import {AuthService} from "@core/services/auth.service";
+import {UserDocumentType} from "../../shared/UserDocumentType";
 
 @Component({
     standalone: true,
@@ -30,7 +31,7 @@ import {AuthService} from "@core/services/auth.service";
 export class UserCreationUpdatingDialogComponent {
     user: User;
     title: string;
-    documentTypes: string[];
+    documentTypes: string[] = Object.values(UserDocumentType);
     roles: string[];
     oldMobile: string;
     enablePasswordChange: boolean;
@@ -41,7 +42,6 @@ export class UserCreationUpdatingDialogComponent {
         this.user = data || {mobile: undefined, firstName: undefined, active: true};
         this.oldMobile = data ? data.mobile : undefined;
         this.enablePasswordChange = false;
-        this.userService.findDocumentTypes().subscribe(types => this.documentTypes = types);
         this.roles = this.authService.allowedRoles();
     }
 

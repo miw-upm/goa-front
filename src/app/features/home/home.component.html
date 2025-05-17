@@ -22,23 +22,27 @@
         <mat-icon>manage_accounts</mat-icon>
         <span>Profile</span>
     </button>
-    <button [matMenuTriggerFor]="users" mat-menu-item>
+    <button mat-menu-item routerLink="/home/users">
         <mat-icon>groups</mat-icon>
         <span>Users</span>
+    </button>
+    <button [matMenuTriggerFor]="accessLinks" mat-menu-item>
+        <mat-icon>language</mat-icon>
+        <span>Access Links</span>
     </button>
     <button (click)="logout()" mat-menu-item>
         <mat-icon>logout</mat-icon>
         <span>Logout</span>
     </button>
 </mat-menu>
-<mat-menu #users="matMenu">
-    <button mat-menu-item routerLink="/home/users">
-        <mat-icon>groups</mat-icon>
-        <span>Users</span>
+<mat-menu #accessLinks="matMenu">
+    <button mat-menu-item routerLink="/home/access-links">
+        <mat-icon>vpn_lock_2</mat-icon>
+        <span>Access Links</span>
     </button>
     <button (click)="createAccessLink()" mat-menu-item>
-        <mat-icon>vpn_lock_2</mat-icon>
-        <span>Access link</span>
+        <mat-icon>playlist_add</mat-icon>
+        <span>Create</span>
     </button>
 
 </mat-menu>

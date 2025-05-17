@@ -11,6 +11,7 @@ import {MatFormField} from "@angular/material/form-field";
 import {ActivatedRoute} from "@angular/router";
 import {MatButton} from "@angular/material/button";
 import {CustomerService} from "./customer.service";
+import {UserDocumentType} from "../shared/UserDocumentType";
 
 @Component({
     standalone: true,
@@ -36,7 +37,7 @@ import {CustomerService} from "./customer.service";
 })
 export class CustomerComponent {
     user: User;
-    documentTypes = ["DNI", "NIE", "CIF"];
+    documentTypes: string[] = Object.values(UserDocumentType);
     oldMobile: string;
     token: string;
 
