@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {NgForOf, NgIf} from '@angular/common';
+import {DatePipe, JsonPipe, NgForOf, NgIf} from '@angular/common';
 import {
     MatCell,
     MatCellDef,
@@ -26,7 +26,7 @@ import {UppercaseWordsPipe} from '../pipes/uppercase-words.pipe';
     standalone: true,
     imports: [MatCard, MatCardTitle, MatCardContent, MatTable, NgIf, MatHeaderRow, MatHeaderRowDef, MatRowDef,
         MatRow, MatColumnDef, MatHeaderCell, UppercaseWordsPipe, MatCell, MatCellDef, MatHeaderCellDef, NgForOf,
-        MatIconButton, MatSuffix, MatIcon, MatSort],
+        MatIconButton, MatSuffix, MatIcon, MatSort, JsonPipe, DatePipe],
     selector: 'app-crud',
     templateUrl: 'crud.component.html'
 })
@@ -94,4 +94,11 @@ export class CrudComponent {
         return Array.isArray(obj)
     }
 
+    isObject(value: any): boolean {
+        return typeof value === 'object' && value !== null && !Array.isArray(value);
+    }
+
+    isDate(value: any): boolean {
+        return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value);
+    }
 }

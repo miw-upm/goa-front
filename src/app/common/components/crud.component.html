@@ -10,7 +10,17 @@
                 <mat-cell *matCellDef="let row">
                     <div *ngIf="isArray(row[def]);then is_array else not_array"></div>
                     <ng-template #is_array> {{ row[def].length }}</ng-template>
-                    <ng-template #not_array> {{ row[def] }}</ng-template>
+                    <ng-template #not_array>
+                        <ng-container *ngIf="isObject(row[def]); else plainValue">
+                            {{ row[def] | json }}
+                        </ng-container>
+                        <ng-template #plainValue>
+                            <ng-container *ngIf="isDate(row[def]); else rawValue">
+                                {{ row[def] | date: 'short' }}
+                            </ng-container>
+                            <ng-template #rawValue>{{ row[def] }}</ng-template>
+                        </ng-template>
+                    </ng-template>
                 </mat-cell>
             </ng-container>
             <ng-container matColumnDef="actions">
