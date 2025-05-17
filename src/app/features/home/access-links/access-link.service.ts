@@ -8,6 +8,7 @@ import {environment} from "@env";
 @Injectable({providedIn: 'root'})
 export class AccessLinkService {
     private static readonly ACCESS_LINK = environment.REST_USER + '/access-link';
+
     constructor(private readonly httpService: HttpService) {
     }
 
@@ -25,7 +26,7 @@ export class AccessLinkService {
         return this.httpService.get(AccessLinkService.ACCESS_LINK);
     }
 
-    delete(id) {
+    delete(id:string) {
         return this.httpService.delete(AccessLinkService.ACCESS_LINK + '/' + id);
     }
 }

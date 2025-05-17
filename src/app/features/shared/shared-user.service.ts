@@ -13,13 +13,13 @@ export class SharedUserService {
     constructor(private readonly httpService: HttpService) {
     }
 
-    searchUsers(attribute: string):Observable<string[]> {
+    searchUsers(attribute: string): Observable<string[]> {
         return this.httpService
-            .param("attribute",attribute ?? '')
+            .param("attribute", attribute ?? '')
             .get(SharedUserService.USERS)
             .pipe(
                 map(users =>
-                    users.map((user=> `${user.mobile}: ${user.firstName} ${user.familyName}, ${user.email}`))
+                    users.map((user => `${user.mobile}: ${user.firstName} ${user.familyName}, ${user.email}`))
                 )
             )
     }

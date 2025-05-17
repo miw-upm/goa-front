@@ -1,12 +1,3 @@
-<mat-card>
-    <mat-card-title>
-    </mat-card-title>
-    <mat-card-content>
-        <button (click)="search()" mat-stroked-button>
-            <mat-icon>search</mat-icon>
-            Find
-        </button>
-    </mat-card-content>
-</mat-card>
-<app-crud [deleteAction] ="true" (delete)="delete($event)" [createAction]="false" [readAction]="false" [updateAction]="false"
-          [data]="accessLinks" [title]="title"></app-crud>
+<app-crud (delete)="delete($event)" (searchAll)="search()" [createAction]="false" [data]="accessLinks"
+          [deleteAction]="true" [readAction]="false"
+          [title]="title" [updateAction]="false"></app-crud>

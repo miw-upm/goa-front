@@ -1,5 +1,5 @@
 <mat-card>
-    <mat-card-title>{{ title }}<span *ngIf="columns.length===0"> - EMPTY!</span></mat-card-title>
+    <mat-card-header><h4>{{ title }}</h4></mat-card-header>
     <mat-card-content>
         <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
             <mat-header-row *matHeaderRowDef="columnsHeader"></mat-header-row>
@@ -27,6 +27,9 @@
                 <mat-header-cell *matHeaderCellDef>
                     <button (click)="onCreate()" *ngIf="createAction==true" mat-icon-button matSuffix>
                         <mat-icon color="warn">add_circle</mat-icon>
+                    </button>
+                    <button (click)="onSearch()" mat-icon-button matSuffix>
+                        <mat-icon color="warn">search</mat-icon>
                     </button>
                 </mat-header-cell>
                 <mat-cell *matCellDef="let item">

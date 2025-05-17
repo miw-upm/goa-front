@@ -13,7 +13,7 @@ import {
     MatTable,
     MatTableDataSource
 } from '@angular/material/table';
-import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
+import {MatCard, MatCardContent, MatCardHeader} from '@angular/material/card';
 import {MatIconButton} from '@angular/material/button';
 import {MatSuffix} from '@angular/material/form-field';
 import {MatIcon} from '@angular/material/icon';
@@ -24,9 +24,9 @@ import {UppercaseWordsPipe} from '../pipes/uppercase-words.pipe';
 
 @Component({
     standalone: true,
-    imports: [MatCard, MatCardTitle, MatCardContent, MatTable, NgIf, MatHeaderRow, MatHeaderRowDef, MatRowDef,
+    imports: [MatCard, MatCardContent, MatTable, NgIf, MatHeaderRow, MatHeaderRowDef, MatRowDef,
         MatRow, MatColumnDef, MatHeaderCell, UppercaseWordsPipe, MatCell, MatCellDef, MatHeaderCellDef, NgForOf,
-        MatIconButton, MatSuffix, MatIcon, MatSort, JsonPipe, DatePipe],
+        MatIconButton, MatSuffix, MatIcon, MatSort, JsonPipe, DatePipe, MatCardHeader],
     selector: 'app-crud',
     templateUrl: 'crud.component.html'
 })
@@ -44,6 +44,7 @@ export class CrudComponent {
     @Output() delete = new EventEmitter<any>();
     @Output() print = new EventEmitter<any>();
     @Output() run = new EventEmitter<any>();
+    @Output() searchAll = new EventEmitter<any>();
     dataSource: MatTableDataSource<any>;
     columns: Array<string>;
     columnsHeader: Array<string>;
@@ -90,6 +91,10 @@ export class CrudComponent {
         this.run.emit(item);
     }
 
+    onSearch() {
+        this.searchAll.emit();
+    }
+
     isArray(obj: any) {
         return Array.isArray(obj)
     }
@@ -101,4 +106,7 @@ export class CrudComponent {
     isDate(value: any): boolean {
         return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value);
     }
+
+
 }
+

@@ -22,7 +22,7 @@ export class CustomerService {
         console.log(oldMobile, user);
         return this.httpService
             .successful()
-            .put(CustomerService.USERS + CustomerService.MOBILE + '/' + oldMobile + "/" + token,user);
+            .put(CustomerService.USERS + CustomerService.MOBILE + '/' + oldMobile + "/" + token, user);
     }
 
 }

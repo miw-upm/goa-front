@@ -1,9 +1,6 @@
 import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
-import {MatButton} from '@angular/material/button';
-import {MatIcon} from '@angular/material/icon';
 import {of} from 'rxjs';
 
 import {ReadDetailDialogComponent} from '@common/dialogs/read-detail.dialog.component';
@@ -16,13 +13,12 @@ import {User} from "../../shared/user.model";
 
 @Component({
     standalone: true,
-    imports: [MatCard, MatCardContent, FormsModule, MatIcon, CrudComponent, MatCardTitle, FilterInputComponent,
-        MatButton],
+    imports: [FormsModule, CrudComponent, FilterInputComponent],
     templateUrl: 'users.component.html'
 })
 export class UsersComponent {
     userSearch: UserSearch;
-    title = 'Users management';
+    title = "Users";
     users = of([]);
 
     constructor(private readonly dialog: MatDialog, private readonly userService: UserService) {
@@ -59,4 +55,5 @@ export class UsersComponent {
                 .subscribe(() => this.search())
             );
     }
+
 }

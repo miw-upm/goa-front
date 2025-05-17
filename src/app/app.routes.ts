@@ -13,11 +13,15 @@ export const routes: Routes = [
     {
         path: 'home', component: HomeComponent,
         children: [
-            {path: 'users', component: UsersComponent, canActivate: [RoleGuardService],
-                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR] }   },
-            {path: 'access-links', component: AccessLinkComponent, canActivate: [RoleGuardService],
-                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]}    }
+            {
+                path: 'users', component: UsersComponent, canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]}
+            },
+            {
+                path: 'access-links', component: AccessLinkComponent, canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]}
+            }
         ]
     },
-    { path: 'customer/edit-profile/:mobile/:token', component: CustomerComponent }
+    {path: 'customer/edit-profile/:mobile/:token', component: CustomerComponent}
 ];
