@@ -12,11 +12,12 @@ import {MatButton} from '@angular/material/button';
 import {Observable} from 'rxjs';
 
 import {UppercaseWordsPipe} from '../pipes/uppercase-words.pipe';
+import {DataCellComponent} from "@common/components/data-cell.component";
 
 @Component({
     standalone: true,
     imports: [MatDialogContent, AsyncPipe, MatLabel, UppercaseWordsPipe, MatDialogActions, MatDialogClose, MatButton,
-        NgIf, MatDialogTitle],
+        NgIf, MatDialogTitle, DataCellComponent],
     templateUrl: 'read-detail.dialog.component.html',
     styleUrls: ['./dialog.component.css']
 })

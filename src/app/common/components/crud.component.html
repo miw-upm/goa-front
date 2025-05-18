@@ -8,20 +8,7 @@
             <ng-container *ngFor="let def of columns" [matColumnDef]="def">
                 <mat-header-cell *matHeaderCellDef>{{ def | uppercaseWords }}</mat-header-cell>
                 <mat-cell *matCellDef="let row" class="cell-small-text">
-                    <ng-container [ngSwitch]="true">
-                        <ng-container *ngSwitchCase="isArray(row[def])">
-                            {{ row[def][0] }}...({{ row[def].length }})
-                        </ng-container>
-                        <ng-container *ngSwitchCase="isObject(row[def])">
-                            {{ row[def] | json }}
-                        </ng-container>
-                        <ng-container *ngSwitchCase="isDate(row[def])">
-                            {{ row[def] | date: 'short' }}
-                        </ng-container>
-                        <ng-container *ngSwitchDefault>
-                            {{ row[def] }}
-                        </ng-container>
-                    </ng-container>
+                    <app-data-cell  [value]="row[def]"></app-data-cell>
                 </mat-cell>
             </ng-container>
             <ng-container matColumnDef="actions">

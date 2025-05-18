@@ -1,0 +1,17 @@
+<ng-container [ngSwitch]="true">
+    <ng-container *ngSwitchCase="isArray(value)">
+        {{ value[0] }}...({{ value.length }})
+    </ng-container>
+    <ng-container *ngSwitchCase="isObject(value)">
+        {{ value | json }}
+    </ng-container>
+    <ng-container *ngSwitchCase="isDate(value)">
+        {{ value | date: 'short' }}
+    </ng-container>
+    <ng-container *ngSwitchCase="value === null || value === undefined">
+        —
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+        {{ value }}
+    </ng-container>
+</ng-container>

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {DatePipe, JsonPipe, NgForOf, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault} from '@angular/common';
+import {NgForOf} from '@angular/common';
 import {
     MatCell,
     MatCellDef,
@@ -21,12 +21,13 @@ import {MatSort} from '@angular/material/sort';
 import {Observable} from 'rxjs';
 
 import {UppercaseWordsPipe} from '../pipes/uppercase-words.pipe';
+import {DataCellComponent} from "@common/components/data-cell.component";
 
 @Component({
     standalone: true,
     imports: [MatCard, MatCardContent, MatTable, MatHeaderRow, MatHeaderRowDef, MatRowDef,
         MatRow, MatColumnDef, MatHeaderCell, UppercaseWordsPipe, MatCell, MatCellDef, MatHeaderCellDef, NgForOf,
-        MatIconButton, MatSuffix, MatIcon, MatSort, JsonPipe, DatePipe, MatCardHeader, NgSwitch, NgSwitchCase, NgSwitchDefault],
+        MatIconButton, MatSuffix, MatIcon, MatSort, MatCardHeader, DataCellComponent],
     selector: 'app-crud',
     templateUrl: 'crud.component.html',
     styleUrls: ['crud.component.css']
@@ -95,18 +96,5 @@ export class CrudComponent {
     onSearch() {
         this.searchAll.emit();
     }
-
-    isArray(obj: any) {
-        return Array.isArray(obj)
-    }
-
-    isObject(value: any): boolean {
-        return typeof value === 'object' && value !== null && !Array.isArray(value);
-    }
-
-    isDate(value: any): boolean {
-        return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value);
-    }
-
 }
 
