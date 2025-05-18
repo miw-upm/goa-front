@@ -3,4 +3,9 @@
     justify-content: space-between;
 }
 
+.icon-small {
+    font-size: 16px;
+    vertical-align: bottom;
+}
+
 

@@ -28,7 +28,8 @@ import {UppercaseWordsPipe} from '../pipes/uppercase-words.pipe';
         MatRow, MatColumnDef, MatHeaderCell, UppercaseWordsPipe, MatCell, MatCellDef, MatHeaderCellDef, NgForOf,
         MatIconButton, MatSuffix, MatIcon, MatSort, JsonPipe, DatePipe, MatCardHeader],
     selector: 'app-crud',
-    templateUrl: 'crud.component.html'
+    templateUrl: 'crud.component.html',
+    styleUrls: ['crud.component.css']
 })
 export class CrudComponent {
     @Input() title = 'Management';

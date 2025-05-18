@@ -7,7 +7,7 @@
             <!-- Dynamic column -->
             <ng-container *ngFor="let def of columns" [matColumnDef]="def">
                 <mat-header-cell *matHeaderCellDef>{{ def | uppercaseWords }}</mat-header-cell>
-                <mat-cell *matCellDef="let row">
+                <mat-cell *matCellDef="let row" class="cell-small-text">
                     <div *ngIf="isArray(row[def]);then is_array else not_array"></div>
                     <ng-template #is_array> {{ row[def].length }}</ng-template>
                     <ng-template #not_array>
