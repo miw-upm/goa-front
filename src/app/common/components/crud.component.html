@@ -8,26 +8,29 @@
             <ng-container *ngFor="let def of columns" [matColumnDef]="def">
                 <mat-header-cell *matHeaderCellDef>{{ def | uppercaseWords }}</mat-header-cell>
                 <mat-cell *matCellDef="let row" class="cell-small-text">
-                    <div *ngIf="isArray(row[def]);then is_array else not_array"></div>
-                    <ng-template #is_array> {{ row[def].length }}</ng-template>
-                    <ng-template #not_array>
-                        <ng-container *ngIf="isObject(row[def]); else plainValue">
+                    <ng-container [ngSwitch]="true">
+                        <ng-container *ngSwitchCase="isArray(row[def])">
+                            {{ row[def][0] }}...({{ row[def].length }})
+                        </ng-container>
+                        <ng-container *ngSwitchCase="isObject(row[def])">
                             {{ row[def] | json }}
                         </ng-container>
-                        <ng-template #plainValue>
-                            <ng-container *ngIf="isDate(row[def]); else rawValue">
-                                {{ row[def] | date: 'short' }}
-                            </ng-container>
-                            <ng-template #rawValue>{{ row[def] }}</ng-template>
-                        </ng-template>
-                    </ng-template>
+                        <ng-container *ngSwitchCase="isDate(row[def])">
+                            {{ row[def] | date: 'short' }}
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+                            {{ row[def] }}
+                        </ng-container>
+                    </ng-container>
                 </mat-cell>
             </ng-container>
             <ng-container matColumnDef="actions">
                 <mat-header-cell *matHeaderCellDef>
-                    <button (click)="onCreate()" *ngIf="createAction==true" mat-icon-button matSuffix>
-                        <mat-icon color="warn">add_circle</mat-icon>
-                    </button>
+                    @if (createAction){
+                        <button (click)="onCreate()" mat-icon-button matSuffix>
+                            <mat-icon color="warn">add_circle</mat-icon>
+                        </button>
+                    }
                     <button (click)="onSearch()" mat-icon-button matSuffix>
                         <mat-icon color="warn">search</mat-icon>
                     </button>

@@ -36,7 +36,7 @@ export class SearchComponent {
         this.keyChange.emit(this.key);
     }
 
-    onClick(value): void {
+    onClick(value:string): void {
         this.selected.emit(value);
     }
 
@@ -44,7 +44,7 @@ export class SearchComponent {
         this.keyChange.emit(value);
     }
 
-    trackOption(index: number, option: any): any {
+    trackOption(option: any): any {
         return option;
     }
 }

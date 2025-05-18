@@ -38,8 +38,8 @@ export class AccessLinkCreationDialogComponent {
         return this.check(this.accessLink.mobile) || this.check(this.accessLink.scope);
     }
 
-    check(attr: string): boolean {
-        return attr === undefined || null || attr === '';
+    check(attr: string | null | undefined): boolean {
+        return !attr || attr.trim() === '';
     }
 
     copyToClipboard(text: string): void {

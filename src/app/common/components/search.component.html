@@ -15,7 +15,7 @@
     </button>
     <mat-autocomplete #auto="matAutocomplete">
         <mat-option (click)="onClick(option)" *ngFor="let option of (keys | async); trackBy: trackOption"
-                    [value]="option" onKeyDown=(option)>
+                    [value]="option"  (onSelectionChange)="onClick(option)">
             {{ option }}
         </mat-option>
     </mat-autocomplete>

@@ -5,4 +5,5 @@ export class UserSearch {
     email?: string;
     identity?: string;
     projection?: boolean
+    attribute?: string;
 }

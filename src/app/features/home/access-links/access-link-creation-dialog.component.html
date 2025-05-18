@@ -9,10 +9,10 @@
     <mat-form-field class="full-width">
         <mat-label>Access Link</mat-label>
         <input [(ngModel)]="accessLink.value" id="value" matInput readonly type="text"/>
-        <button (click)="copyToClipboard(accessLink.value)" mat-icon-button matSuffix matTooltip="Copiar">
+        <button  mat-icon-button matSuffix matTooltip="Copiar"
+                 (click)="copyToClipboard(accessLink.value)" [disabled]="!accessLink.value">
             <mat-icon>content_copy</mat-icon>
         </button>
-
     </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
