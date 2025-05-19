@@ -27,7 +27,7 @@ bootstrapApplication(AppComponent, {
                     responseType: 'code',
                     silentRenew: true,
                     useRefreshToken: true,
-                    secureRoutes: [environment.FRONT_END],
+                    secureRoutes: ['https://gestion.ocanabogados.es/api'],
                     logLevel: LogLevel.Debug,
                 }
             })
