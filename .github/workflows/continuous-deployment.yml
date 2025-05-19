@@ -54,5 +54,6 @@ jobs:
           script: |
             sudo mkdir -p /var/www/goa-front
             sudo rm -rf /var/www/goa-front/*
-            sudo cp -r ~/goa-front/* /var/www/goa-front/
+            sudo cp -r ~/goa-front-temp/* /var/www/goa-front/
+            sudo rm -rf ~/goa-front-temp
             sudo systemctl reload nginx
