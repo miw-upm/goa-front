@@ -57,6 +57,3 @@ jobs:
             sudo cp -r ~/goa-front-temp/dist/goa-front/browser/* /var/www/goa-front/
             sudo rm -rf ~/goa-front-temp
             sudo systemctl reload nginx
-
-
-#            sudo rm -rf ~/goa-front-temp
