@@ -42,7 +42,7 @@ jobs:
           port: 22 # SSH
           key: ${{ secrets.AWS_LIGHTSAIL_SSH_KEY }}
           source: "dist/goa-front/**"
-          target: "~/goa-front"
+          target: "~/goa-front-temp"
 
       - name: Deploy frontend on Nginx (AWS)
         uses: appleboy/ssh-action@v1.2.1
@@ -55,5 +55,5 @@ jobs:
             sudo mkdir -p /var/www/goa-front
             sudo rm -rf /var/www/goa-front/*
             sudo cp -r ~/goa-front-temp/* /var/www/goa-front/
-            sudo rm -rf ~/goa-front-temp
+#            sudo rm -rf ~/goa-front-temp
             sudo systemctl reload nginx
