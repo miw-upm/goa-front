@@ -5,4 +5,5 @@ export const environment = {
     NAME: pkg.name,
     VERSION: pkg.version,
     REST_USER: 'https://gestion.ocanabogados.es/api',
+    FRONT_END: 'httpS://gestion.ocanabogados.es'
 };

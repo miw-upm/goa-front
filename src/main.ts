@@ -6,6 +6,8 @@ import {provideHttpClient, withInterceptors} from "@angular/common/http";
 import {authInterceptor, AuthModule, LogLevel} from "angular-auth-oidc-client";
 import {AppComponent} from './app/app.component';
 import {routes} from "./app/app.routes";
+import { environment } from '@env';
+
 
 bootstrapApplication(AppComponent, {
     providers: [
@@ -17,15 +19,15 @@ bootstrapApplication(AppComponent, {
         importProvidersFrom(
             AuthModule.forRoot({
                 config: {
-                    authority: 'http://localhost:8080/goa-user',
-                    redirectUrl: 'http://localhost:4200/callback',
-                    postLogoutRedirectUri: 'http://localhost:4200',
-                    clientId: 'spa-client-id',
+                    authority: environment.REST_USER,
+                    redirectUrl: environment.FRONT_END + '/callback',
+                    postLogoutRedirectUri: environment.FRONT_END,
+                    clientId: 'spaClientId_YIIUZGjrEjUWa82rWiK',
                     scope: 'openid profile offline_access',
                     responseType: 'code',
                     silentRenew: true,
                     useRefreshToken: true,
-                    secureRoutes: ['http://localhost:8080'],
+                    secureRoutes: [environment.FRONT_END],
                     logLevel: LogLevel.Debug,
                 }
             })
