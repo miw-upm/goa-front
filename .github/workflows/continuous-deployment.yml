@@ -41,7 +41,7 @@ jobs:
           username: ${{ secrets.AWS_LIGHTSAIL_USER }}
           port: 22 # SSH
           key: ${{ secrets.AWS_LIGHTSAIL_SSH_KEY }}
-          source: "dist/goa-front/*"
+          source: "dist/goa-front/**"
           target: "~/goa-front"
 
       - name: Deploy frontend on Nginx (AWS)
