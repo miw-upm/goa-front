@@ -9,6 +9,7 @@ import {routes} from "./app/app.routes";
 import { environment } from '@env';
 
 
+
 bootstrapApplication(AppComponent, {
     providers: [
         provideZoneChangeDetection({eventCoalescing: true}),
@@ -27,7 +28,7 @@ bootstrapApplication(AppComponent, {
                     responseType: 'code',
                     silentRenew: true,
                     useRefreshToken: true,
-                    secureRoutes: ['https://gestion.ocanabogados.es/api'],
+                    secureRoutes: environment.SECURE_ROUTES,
                     logLevel: LogLevel.Debug,
                 }
             })
