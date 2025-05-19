@@ -22,7 +22,7 @@ bootstrapApplication(AppComponent, {
                     authority: environment.REST_USER,
                     redirectUrl: environment.FRONT_END + '/callback',
                     postLogoutRedirectUri: environment.FRONT_END,
-                    clientId: 'spaClientId_YIIUZGjrEjUWa82rWiK',
+                    clientId: 'spaClientId',
                     scope: 'openid profile offline_access',
                     responseType: 'code',
                     silentRenew: true,
