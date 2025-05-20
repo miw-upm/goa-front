@@ -6,8 +6,7 @@ import {provideHttpClient, withInterceptors} from "@angular/common/http";
 import {authInterceptor, AuthModule, LogLevel} from "angular-auth-oidc-client";
 import {AppComponent} from './app/app.component';
 import {routes} from "./app/app.routes";
-import { environment } from '@env';
-
+import {environment} from '@env';
 
 
 bootstrapApplication(AppComponent, {
