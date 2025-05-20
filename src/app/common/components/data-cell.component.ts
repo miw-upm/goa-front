@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {DatePipe, JsonPipe, NgSwitch, NgSwitchCase, NgSwitchDefault} from "@angular/common";
 
 @Component({

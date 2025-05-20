@@ -36,7 +36,7 @@ export class SearchComponent {
         this.keyChange.emit(this.key);
     }
 
-    onClick(value:string): void {
+    onClick(value: string): void {
         this.selected.emit(value);
     }
 
