@@ -24,13 +24,13 @@ export class AccessLinkCreationDialogComponent {
 
     constructor(private readonly accessLinkService: AccessLinkService,
                 private readonly dialog: MatDialog) {
-        this.accessLink = {mobile: null, scope: "EDIT_PROFILE", value: null}
+        this.accessLink = {mobile: null, scope: "EDIT_PROFILE", link: null}
     }
 
     create(): void {
         this.accessLinkService
             .createAccessLink(this.accessLink)
-            .subscribe(accessLink => this.accessLink.value = accessLink.value);
+            .subscribe(accessLink => this.accessLink.link = accessLink.link);
     }
 
 
