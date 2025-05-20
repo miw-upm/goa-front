@@ -6,5 +6,6 @@ export const environment = {
     VERSION: pkg.version,
     REST_USER: 'https://gestion.ocanabogados.es/api/goa-user',
     FRONT_END: 'https://gestion.ocanabogados.es',
-    SECURE_ROUTES: ['https://gestion.ocanabogados.es/api']
+    SECURE_ROUTES: ['https://gestion.ocanabogados.es/api'],
+    EDIT_PROFILE_LINK: 'https://gestion.ocanabogados.es/customer/edit-profile'
 };
