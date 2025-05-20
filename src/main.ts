@@ -26,7 +26,7 @@ bootstrapApplication(AppComponent, {
                     clientId: 'spaClientId',
                     scope: 'openid profile offline_access',
                     responseType: 'code',
-                    silentRenew: true,
+                    silentRenew: false,
                     useRefreshToken: true,
                     secureRoutes: environment.SECURE_ROUTES,
                     logLevel: LogLevel.Debug,
