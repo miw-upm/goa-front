@@ -16,7 +16,7 @@ export class AccessLinkService {
         return this.httpService.post(AccessLinkService.ACCESS_LINK, accessLink)
             .pipe(
                 map(accessLink => {
-                    accessLink.value = "http://localhost:4200/customer/edit-profile" + accessLink.value;
+                    accessLink.link = environment.FRONT_END + "/customer/edit-profile" + accessLink.link;
                     return accessLink;
                 }),
             );

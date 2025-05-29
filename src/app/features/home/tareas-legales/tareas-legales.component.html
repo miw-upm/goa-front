@@ -1,0 +1,5 @@
+<app-filter-input [(value)]="tareaLegalSearch.titulo" title="Titulo"></app-filter-input>
+
+<app-crud (create)="create()" (delete)="delete($event)" (searchAll)="search()" (update)="update($event)"
+          [data]="tareasLegales"
+          [deleteAction]="true" [readAction]="false" [title]="title"></app-crud>
