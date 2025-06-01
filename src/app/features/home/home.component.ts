@@ -8,11 +8,11 @@ import {MatButton} from '@angular/material/button';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 
 
-import {AuthService} from "@core/services/auth.service";
-import {FooterComponent} from '@common/components/footer.component';
+import {AuthService} from "@common/components/auth/auth.service";
+import {FooterComponent} from '@common/components/footer/footer.component';
 import {UserService} from "./users/user.service";
-import {UserCreationUpdatingDialogComponent} from "./users/user-creation-updating-dialog.component";
-import {AccessLinkCreationDialogComponent} from "./access-links/access-link-creation-dialog.component";
+import {UserCreationUpdatingDialogComponent} from "./users/components/user-creation-updating-dialog.component";
+import {AccessLinkCreationDialogComponent} from "./access-links/components/access-link-creation-dialog.component";
 
 @Component({
     standalone: true,

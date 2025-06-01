@@ -1,0 +1,49 @@
+<mat-card>
+    <mat-card-title class="title-container">
+        <div class="profile-header">
+            <img alt="logo" height="48" ngSrc="../../../../assets/oa-s.png" width="48"/>
+            <h4 class="mat-headline-5">Editar Perfil</h4>
+        </div>
+    </mat-card-title>
+    <mat-card-content>
+        <mat-dialog-content>
+            <mat-form-field class="full-width">
+                <mat-label>Mobile</mat-label>
+                <input [(ngModel)]="user.mobile" id="mobile" matInput maxlength="9" pattern="^[0-9]{9}$" required
+                       type="tel"/>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>First Name</mat-label>
+                <input [(ngModel)]="user.firstName" matInput required type="text"/>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Family Name</mat-label>
+                <input [(ngModel)]="user.familyName" matInput type="text"/>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>E-mail</mat-label>
+                <input [(ngModel)]="user.email" matInput type="email">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Address</mat-label>
+                <input [(ngModel)]="user.address" matInput type="text"/>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Document Type</mat-label>
+                <mat-select [(ngModel)]="user.documentType" name="documentType">
+                    <mat-option *ngFor="let type of documentTypes" [value]="type">
+                        {{ type }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Identity</mat-label>
+                <input [(ngModel)]="user.identity" matInput type="text"/>
+            </mat-form-field>
+        </mat-dialog-content>
+    </mat-card-content>
+    <mat-dialog-actions>
+        <button (click)="update()" [disabled]=invalid() color="primary" mat-raised-button>Update
+        </button>
+    </mat-dialog-actions>
+</mat-card>

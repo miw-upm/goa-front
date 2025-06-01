@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 
 import {Observable} from 'rxjs';
 import {ProcedimientoLegal} from './procedimiento-legal.model';
-import {HttpService} from "@core/services/http.service";
-import {ProcedimientoLegalSearch} from "./procedimiento-legal-search.model";
+import {HttpService} from "@common/services/http.service";
+import {ProcedimientoLegalSearch} from "./pages/procedimiento-legal-search.model";
 import {environment} from "@env";
 
 @Injectable({providedIn: 'root'})

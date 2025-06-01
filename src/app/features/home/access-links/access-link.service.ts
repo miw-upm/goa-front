@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {AccessLink} from "./acces-link.model";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
-import {HttpService} from "@core/services/http.service";
+import {HttpService} from "@common/services/http.service";
 import {environment} from "@env";
 
 @Injectable({providedIn: 'root'})

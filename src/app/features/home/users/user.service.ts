@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 
 import {environment} from "@env";
-import {HttpService} from '@core/services/http.service';
-import {UserSearch} from "./user-search.model";
-import {User} from "../../shared/user.model";
+import {HttpService} from '@common/services/http.service';
+import {UserSearch} from "./pages/user-search.model";
+import {User} from "@shared/models/user.model";
 
 @Injectable({providedIn: 'root'})
 export class UserService {

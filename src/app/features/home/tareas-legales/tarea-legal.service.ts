@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 
 import {environment} from "@env";
-import {HttpService} from '@core/services/http.service';
+import {HttpService} from '@common/services/http.service';
 import {TareaLegal} from "./tarea-legal.model";
-import {TareaLegalSearch} from "./tarea-legal-search.model";
+import {TareaLegalSearch} from "./pages/tarea-legal-search.model";
 
 @Injectable({providedIn: 'root'})
 export class TareaLegalService {
