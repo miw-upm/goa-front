@@ -4,7 +4,6 @@ import {Observable} from 'rxjs';
 import {environment} from "@env";
 import {HttpService} from '@core/services/http.service';
 import {TareaLegal} from "./tarea-legal.model";
-import {User} from "../../shared/user.model";
 import {TareaLegalSearch} from "./tarea-legal-search.model";
 
 @Injectable({providedIn: 'root'})
@@ -15,7 +14,6 @@ export class TareaLegalService {
     }
 
     create(tareaLegal: TareaLegal): Observable<TareaLegal> {
-        console.log('titulo:' + tareaLegal.titulo);
         return this.httpService
             .post(TareaLegalService.TAREAS_LEGALES, tareaLegal);
     }
@@ -26,7 +24,7 @@ export class TareaLegalService {
             .put(TareaLegalService.TAREAS_LEGALES + '/' + id, tareaLegal);
     }
 
-    search(tareaLegalSearch: TareaLegalSearch): Observable<User[]> {
+    search(tareaLegalSearch: TareaLegalSearch): Observable<TareaLegal[]> {
         return this.httpService
             .paramsFrom(tareaLegalSearch)
             .get(TareaLegalService.TAREAS_LEGALES)

@@ -1,9 +1,7 @@
 import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {of} from 'rxjs';
-
-import {ReadDetailDialogComponent} from '@common/dialogs/read-detail.dialog.component';
+import {Observable, of} from 'rxjs';
 import {CrudComponent} from '@common/components/crud.component';
 import {FilterInputComponent} from "@common/components/filter-input.component";
 import {UserCreationUpdatingDialogComponent} from './user-creation-updating-dialog.component';
@@ -20,6 +18,7 @@ export class UsersComponent {
     userSearch: UserSearch;
     title = "Users";
     users = of([]);
+    user: Observable<any>;
 
     constructor(private readonly dialog: MatDialog, private readonly userService: UserService) {
         this.resetSearch();
@@ -39,12 +38,7 @@ export class UsersComponent {
     }
 
     read(user: User): void {
-        this.dialog.open(ReadDetailDialogComponent, {
-            data: {
-                title: 'User Details',
-                object: this.userService.read(user.mobile)
-            }
-        });
+        this.user = this.userService.read(user.mobile)
     }
 
     update(user: User): void {

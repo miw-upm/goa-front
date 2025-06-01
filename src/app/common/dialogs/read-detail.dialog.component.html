@@ -1,9 +1,9 @@
 <h2 mat-dialog-title> {{ title }}</h2>
 <mat-dialog-content>
-    <ng-container *ngIf="(object | async) as data">
+    <ng-container *ngIf="(object) as data">
         @for (def of labels(data); track def) {
             <mat-label><strong>{{ def | uppercaseWords }}: </strong>
-                <app-data-cell [value]="data[def]"></app-data-cell>
+                <app-data-cell [value]="data[def]" [fullList]="true"></app-data-cell>
             </mat-label>
         }
     </ng-container>

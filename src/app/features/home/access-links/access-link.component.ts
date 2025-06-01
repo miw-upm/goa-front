@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {FormsModule} from "@angular/forms";
 import {CrudComponent} from "@common/components/crud.component";
-import {of} from "rxjs";
+import {Observable, of} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 import {AccessLinkService} from "./access-link.service";
 
@@ -13,6 +13,7 @@ import {AccessLinkService} from "./access-link.service";
 export class AccessLinkComponent {
     title = 'Access Links';
     accessLinks = of([]);
+    accessLink: Observable<any>;
 
     constructor(private readonly dialog: MatDialog, private readonly accessLinkService: AccessLinkService) {
     }
@@ -27,4 +28,9 @@ export class AccessLinkComponent {
         )
 
     }
+
+    read(accessLink: any): void {
+        this.accessLink = this.accessLinkService.read(accessLink.id);
+    }
+
 }

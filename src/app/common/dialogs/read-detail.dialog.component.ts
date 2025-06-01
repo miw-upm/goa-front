@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {AsyncPipe, NgIf} from '@angular/common';
+import {NgIf} from '@angular/common';
 import {
     MAT_DIALOG_DATA,
     MatDialogActions,
@@ -16,8 +16,8 @@ import {DataCellComponent} from "@common/components/data-cell.component";
 
 @Component({
     standalone: true,
-    imports: [MatDialogContent, AsyncPipe, MatLabel, UppercaseWordsPipe, MatDialogActions, MatDialogClose, MatButton,
-        NgIf, MatDialogTitle, DataCellComponent],
+    imports: [MatDialogContent, MatLabel, UppercaseWordsPipe, MatDialogActions, MatDialogClose, MatButton,
+        NgIf, MatDialogTitle, DataCellComponent, DataCellComponent, DataCellComponent],
     templateUrl: 'read-detail.dialog.component.html',
     styleUrls: ['./dialog.component.css']
 })

@@ -29,4 +29,8 @@ export class AccessLinkService {
     delete(id: string) {
         return this.httpService.delete(AccessLinkService.ACCESS_LINK + '/' + id);
     }
+
+    read(id) {
+        return this.httpService.get(AccessLinkService.ACCESS_LINK + '/' + id);
+    }
 }

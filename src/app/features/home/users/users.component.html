@@ -5,4 +5,4 @@
 <app-filter-input [(value)]="userSearch.email" title="Email"></app-filter-input>
 
 <app-crud (create)="create()" (read)="read($event)" (searchAll)="search()" (update)="update($event)"
-          [data]="users" [title]="title"></app-crud>
+          [data]="users" [item]="user" [title]="title"></app-crud>

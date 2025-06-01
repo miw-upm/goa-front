@@ -1,0 +1,54 @@
+<h4 mat-dialog-title>{{ title }}</h4>
+<mat-dialog-content>
+    <mat-form-field class="full-width">
+        <mat-label>Título</mat-label>
+        <input [(ngModel)]="procedimientoLegal.titulo" id="titulo" matInput required type="text"/>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Fecha de inicio</mat-label>
+        <input
+                [(ngModel)]="procedimientoLegal.fechaInicio"
+                [matDatepicker]="picker"
+                matInput
+                name="fechaInicio"
+        />
+        <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field *ngIf="!isCreate()" class="full-width">
+        <mat-label>Fecha de Cierre</mat-label>
+        <input [value]="procedimientoLegal.fechaCierre | date:'dd-MM-yyyy'" matInput readonly type="text"/>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Presupuesto</mat-label>
+        <input [(ngModel)]="procedimientoLegal.presupuesto" id="presupuesto" matInput min="0" required
+               step="10,00" type="number"/>
+        <mat-icon matSuffix>euro</mat-icon>
+    </mat-form-field>
+    <mat-checkbox [(ngModel)]="procedimientoLegal.ivaIncluido" id="ivaIncluido">¿IVA incluido?</mat-checkbox>
+    <app-search-by-tarea-legal (add)="addTarea($event)" class="full-width"></app-search-by-tarea-legal>
+    <mat-form-field class="full-width">
+        <mat-label>Nueva tarea legal</mat-label>
+        <input #tareaInput (keydown.enter)="addTarea(tareaInput.value); tareaInput.value=''" matInput
+               placeholder="Añadir..."
+        />
+    </mat-form-field>
+
+    <mat-list>
+        @for (tarea of procedimientoLegal.tareasLegales ?? []; track tarea) {
+            <mat-list-item>
+                <button mat-icon-button (click)="removeTareaLegal(tarea)" aria-label="Eliminar tarea legal">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                {{ tarea }}
+            </mat-list-item>
+        }
+    </mat-list>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Close</button>
+    <button (click)="create()" *ngIf="isCreate()" [disabled]=invalid() color="primary" mat-raised-button>Create
+    </button>
+    <button (click)="update()" *ngIf="!isCreate()" [disabled]=invalid() color="primary" mat-raised-button>Update
+    </button>
+</mat-dialog-actions>

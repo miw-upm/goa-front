@@ -7,6 +7,7 @@ import {Role} from "@core/models/role.model";
 import {CustomerComponent} from "./features/customer/customer.component";
 import {AccessLinkComponent} from "./features/home/access-links/access-link.component";
 import {TareasLegalesComponent} from "./features/home/tareas-legales/tareas-legales.component";
+import {ProcedimientosLegalesComponent} from "./features/home/procedimientos-legales/procedimientos-legales.component";
 
 export const routes: Routes = [
     {path: '', pathMatch: 'full', redirectTo: 'home'},
@@ -24,6 +25,12 @@ export const routes: Routes = [
             },
             {
                 path: 'tareas-legales', component: TareasLegalesComponent, canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]}
+            },
+            {
+                path: 'procedimientos-legales',
+                component: ProcedimientosLegalesComponent,
+                canActivate: [RoleGuardService],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]}
             },
         ]

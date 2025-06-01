@@ -1,18 +1,20 @@
 import {bootstrapApplication} from '@angular/platform-browser';
 import {importProvidersFrom, provideZoneChangeDetection} from "@angular/core";
 import {provideRouter} from "@angular/router";
-import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
 import {provideHttpClient, withInterceptors} from "@angular/common/http";
 import {authInterceptor, AuthModule, LogLevel} from "angular-auth-oidc-client";
 import {AppComponent} from './app/app.component';
 import {routes} from "./app/app.routes";
 import {environment} from '@env';
+import {provideAnimations} from "@angular/platform-browser/animations";
+import {MatNativeDateModule} from '@angular/material/core';
 
 
 bootstrapApplication(AppComponent, {
     providers: [
         provideZoneChangeDetection({eventCoalescing: true}),
-        provideAnimationsAsync(),
+        provideAnimations(),
+        importProvidersFrom(MatNativeDateModule),
         provideRouter(routes),
         provideHttpClient(),
         provideHttpClient(withInterceptors([authInterceptor()])),

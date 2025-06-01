@@ -22,6 +22,8 @@ import {Observable} from 'rxjs';
 
 import {UppercaseWordsPipe} from '../pipes/uppercase-words.pipe';
 import {DataCellComponent} from "@common/components/data-cell.component";
+import {ReadDetailDialogComponent} from "@common/dialogs/read-detail.dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
     standalone: true,
@@ -47,9 +49,13 @@ export class CrudComponent {
     @Output() print = new EventEmitter<any>();
     @Output() run = new EventEmitter<any>();
     @Output() searchAll = new EventEmitter<any>();
+    @Input() hiddenFields: string[] = [];
     dataSource: MatTableDataSource<any>;
     columns: Array<string>;
     columnsHeader: Array<string>;
+
+    constructor(private readonly dialog: MatDialog) {
+    }
 
     @Input()
     set data(data: Observable<any[]>) {
@@ -67,6 +73,23 @@ export class CrudComponent {
             columnsSet.add('actions');
             this.columnsHeader = Array.from(columnsSet);
         });
+    }
+
+    @Input()
+    set item(item: Observable<any>) {
+        item.subscribe(itemValue => {
+            this.dialog.open(ReadDetailDialogComponent, {
+                data: {
+                    title: 'Details of ' + this.title,
+                    object: itemValue
+                }
+            });
+        })
+    }
+
+
+    get visibleColumns(): string[] {
+        return this.columns.filter(col => !this.hiddenFields.includes(col));
     }
 
     onRead(item): void {

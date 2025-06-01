@@ -1,3 +1,3 @@
-<app-crud (delete)="delete($event)" (searchAll)="search()" [createAction]="false" [data]="accessLinks"
-          [deleteAction]="true" [readAction]="false"
-          [title]="title" [updateAction]="false"></app-crud>
+<app-crud (delete)="delete($event)" (read)=read($event) (searchAll)="search()"
+          [createAction]="false" [data]="accessLinks" [deleteAction]="true"
+          [item]="accessLink" [title]="title" [updateAction]="false"></app-crud>

@@ -1,20 +1,21 @@
 import {Component, Input} from '@angular/core';
-import {DatePipe, JsonPipe, NgSwitch, NgSwitchCase, NgSwitchDefault} from "@angular/common";
+import {DatePipe, JsonPipe} from "@angular/common";
+import {of} from "rxjs";
 
 @Component({
     selector: 'app-data-cell',
     templateUrl: './data-cell.component.html',
     imports: [
-        NgSwitch,
-        NgSwitchCase,
-        JsonPipe,
         DatePipe,
-        NgSwitchDefault
+        JsonPipe,
     ],
     styleUrls: ['./data-cell.component.css']
 })
 export class DataCellComponent {
     @Input() value: any;
+    @Input() fullList: boolean = false;
+    protected readonly of = of;
+    protected readonly Object = Object;
 
     isArray(val: any): boolean {
         return Array.isArray(val);

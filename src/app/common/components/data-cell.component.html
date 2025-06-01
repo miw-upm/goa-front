@@ -1,17 +1,30 @@
-<ng-container [ngSwitch]="true">
-    <ng-container *ngSwitchCase="isArray(value)">
+@if (isArray(value)) {
+    @if (!fullList) {
         {{ value[0] }}...({{ value.length }})
-    </ng-container>
-    <ng-container *ngSwitchCase="isObject(value)">
-        {{ value | json }}
-    </ng-container>
-    <ng-container *ngSwitchCase="isDate(value)">
-        {{ value | date: 'short' }}
-    </ng-container>
-    <ng-container *ngSwitchCase="value === null || value === undefined">
-        —
-    </ng-container>
-    <ng-container *ngSwitchDefault>
-        {{ value }}
-    </ng-container>
-</ng-container>
+    } @else {
+        <ul>
+            @for (item of value; track item) {
+                <li>{{ item }}.</li>
+            }
+        </ul>
+    }
+} @else if (isObject(value)) {
+    <ul>
+        @for (entry of Object.entries(value); track entry[0]) {
+            <li>
+                <strong>{{ entry[0] }}:</strong>
+                @if (isObject(entry[1])) {
+                    {{ entry[1] | json }}
+                } @else {
+                    {{ entry[1] }}
+                }
+            </li>
+        }
+    </ul>
+} @else if (isDate(value)) {
+    {{ value | date: 'short' }}
+} @else if (value === null || value === undefined) {
+    —
+} @else {
+    {{ value }}
+}
