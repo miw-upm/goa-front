@@ -41,7 +41,7 @@ export class ProcedimientoLegalCreationUpdatingDialogComponent {
         this.procedimientoLegal = {
             id: undefined,
             titulo: undefined,
-            fechaInicio: data?.fechaInicio ? new Date(data.fechaInicio) : new Date(),
+            fechaInicio: data?.fechaInicio ? new Date(data.fechaInicio) : undefined,
             tareasLegales: [],
             presupuesto: undefined,
             ivaIncluido: false,
@@ -66,8 +66,7 @@ export class ProcedimientoLegalCreationUpdatingDialogComponent {
     }
 
     invalid(): boolean {
-        return this.check(this.procedimientoLegal.titulo) &&
-            this.check(this.procedimientoLegal.presupuesto);
+        return this.check(this.procedimientoLegal.titulo);
     }
 
     check(attr: string | number | null | undefined): boolean {

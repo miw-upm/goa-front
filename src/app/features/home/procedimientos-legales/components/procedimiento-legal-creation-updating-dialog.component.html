@@ -21,8 +21,7 @@
     </mat-form-field>
     <mat-form-field appearance="outline" class="full-width">
         <mat-label>Presupuesto</mat-label>
-        <input [(ngModel)]="procedimientoLegal.presupuesto" id="presupuesto" matInput min="0" required
-               step="10,00" type="number"/>
+        <input [(ngModel)]="procedimientoLegal.presupuesto" id="presupuesto" matInput min="0" step="10,00" type="number"/>
         <mat-icon matSuffix>euro</mat-icon>
     </mat-form-field>
     <mat-checkbox [(ngModel)]="procedimientoLegal.ivaIncluido" id="ivaIncluido">¿IVA incluido?</mat-checkbox>
