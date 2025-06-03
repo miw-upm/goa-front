@@ -2,12 +2,12 @@
 <mat-dialog-content>
     <mat-form-field class="full-width">
         <mat-label>Título</mat-label>
-        <input [(ngModel)]="procedimientoLegal.titulo" id="titulo" matInput required type="text"/>
+        <input [(ngModel)]="legalProcedure.title" id="titulo" matInput required type="text"/>
     </mat-form-field>
     <mat-form-field appearance="outline" class="full-width">
         <mat-label>Fecha de inicio</mat-label>
         <input
-                [(ngModel)]="procedimientoLegal.fechaInicio"
+                [(ngModel)]="legalProcedure.startDate"
                 [matDatepicker]="picker"
                 matInput
                 name="fechaInicio"
@@ -17,14 +17,14 @@
     </mat-form-field>
     <mat-form-field *ngIf="!isCreate()" class="full-width">
         <mat-label>Fecha de Cierre</mat-label>
-        <input [value]="procedimientoLegal.fechaCierre | date:'dd-MM-yyyy'" matInput readonly type="text"/>
+        <input [value]="legalProcedure.closingDate | date:'dd-MM-yyyy'" matInput readonly type="text"/>
     </mat-form-field>
     <mat-form-field appearance="outline" class="full-width">
         <mat-label>Presupuesto</mat-label>
-        <input [(ngModel)]="procedimientoLegal.presupuesto" id="presupuesto" matInput min="0" step="10,00" type="number"/>
+        <input [(ngModel)]="legalProcedure.budget" id="presupuesto" matInput min="0" step="10,00" type="number"/>
         <mat-icon matSuffix>euro</mat-icon>
     </mat-form-field>
-    <mat-checkbox [(ngModel)]="procedimientoLegal.ivaIncluido" id="ivaIncluido">¿IVA incluido?</mat-checkbox>
+    <mat-checkbox [(ngModel)]="legalProcedure.vatIncluded" id="ivaIncluido">¿IVA incluido?</mat-checkbox>
     <app-search-by-tarea-legal (add)="addTarea($event)" class="full-width"></app-search-by-tarea-legal>
     <mat-form-field class="full-width">
         <mat-label>Nueva tarea legal</mat-label>
@@ -34,7 +34,7 @@
     </mat-form-field>
 
     <mat-list>
-        @for (tarea of procedimientoLegal.tareasLegales ?? []; track tarea) {
+        @for (tarea of legalProcedure.legalTasks ?? []; track tarea) {
             <mat-list-item>
                 <button mat-icon-button (click)="removeTareaLegal(tarea)" aria-label="Eliminar tarea legal">
                     <mat-icon>delete</mat-icon>

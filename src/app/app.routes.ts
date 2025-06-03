@@ -6,12 +6,12 @@ import {RoleGuardService} from "@common/components/auth/role-guard.service";
 import {Role} from "@common/components/auth/models/role.model";
 import {CustomerComponent} from "./features/customer/pages/customer.component";
 import {AccessLinkComponent} from "./features/home/access-links/pages/access-link.component";
-import {TareasLegalesComponent} from "./features/home/tareas-legales/pages/tareas-legales.component";
+import {LegalTasksComponent} from "./features/home/tareas-legales/pages/legal-tasks.component";
 import {
-    ProcedimientosLegalesComponent
-} from "./features/home/procedimientos-legales/pages/procedimientos-legales.component";
-import {TareaLegalService} from "./features/home/tareas-legales/tarea-legal.service";
-import {ProcedimientoLegalService} from "./features/home/procedimientos-legales/procedimiento-legal.service";
+    LegalProceduresComponent
+} from "./features/home/procedimientos-legales/pages/legal-procedures.component";
+import {LegalTaskService} from "./features/home/tareas-legales/legal-task.service";
+import {LegalProcedureTemplateService} from "./features/home/procedimientos-legales/legal-procedure-template.service";
 import {AccessLinkService} from "./features/home/access-links/access-link.service";
 import {UserService} from "./features/home/users/user.service";
 
@@ -32,16 +32,16 @@ export const routes: Routes = [
                 providers: [AccessLinkService]
             },
             {
-                path: 'tareas-legales', component: TareasLegalesComponent, canActivate: [RoleGuardService],
+                path: 'legal-tasks', component: LegalTasksComponent, canActivate: [RoleGuardService],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
-                providers: [TareaLegalService]
+                providers: [LegalTaskService]
             },
             {
-                path: 'procedimientos-legales',
-                component: ProcedimientosLegalesComponent,
+                path: 'legal-procedures',
+                component: LegalProceduresComponent,
                 canActivate: [RoleGuardService],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
-                providers: [ProcedimientoLegalService]
+                providers: [LegalProcedureTemplateService]
             },
         ]
     },

@@ -23,7 +23,7 @@ import {AccessLinkCreationDialogComponent} from "./access-links/components/acces
     styleUrl: './home.component.css'
 })
 export class HomeComponent {
-    title = 'TPV';
+    title = 'GOA';
 
     constructor(private readonly dialog: MatDialog, private readonly userService: UserService,
                 private readonly authService: AuthService) {

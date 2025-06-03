@@ -13,44 +13,44 @@ import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 
-import {TareaLegalService} from "../tarea-legal.service";
-import {TareaLegal} from "../tarea-legal.model";
+import {LegalTaskService} from "../legal-task.service";
+import {LegalTask} from "../legal-task.model";
 
 @Component({
     standalone: true,
     imports: [MatDialogTitle, MatDialogContent, MatFormField, MatLabel, FormsModule, MatInput, MatDialogActions, MatDialogClose, MatButton, NgIf],
-    templateUrl: 'tarea-legal-creation-updating-dialog.component.html',
-    styleUrls: ['tarea-legal-dialog.component.css']
+    templateUrl: 'legal-task-creation-updating-dialog.component.html',
+    styleUrls: ['legal-task-dialog.component.css']
 })
 
-export class TareaLegalCreationUpdatingDialogComponent {
-    tareaLegal: TareaLegal;
+export class LegalTaskCreationUpdatingDialogComponent {
+    legalTask: LegalTask;
     title: string;
 
-    constructor(@Inject(MAT_DIALOG_DATA) data: TareaLegal, private readonly tareaLegalService: TareaLegalService,
+    constructor(@Inject(MAT_DIALOG_DATA) data: LegalTask, private readonly legalTaskService: LegalTaskService,
                 private readonly dialog: MatDialog) {
-        this.title = data ? 'Update Tarea Legal' : 'Create Tarea Legal';
-        this.tareaLegal = data || {id: undefined, titulo: undefined};
+        this.title = data ? 'Actualización de Tarea Legal' : 'Creación de Tarea Legal';
+        this.legalTask = data || {id: undefined, title: undefined};
     }
 
     create(): void {
-        this.tareaLegalService
-            .create(this.tareaLegal)
+        this.legalTaskService
+            .create(this.legalTask)
             .subscribe(() => this.dialog.closeAll());
     }
 
     update(): void {
-        this.tareaLegalService
-            .update(this.tareaLegal.id, this.tareaLegal)
+        this.legalTaskService
+            .update(this.legalTask.id, this.legalTask)
             .subscribe(() => this.dialog.closeAll());
     }
 
     isCreate(): boolean {
-        return this.tareaLegal.id === undefined;
+        return this.legalTask.id === undefined;
     }
 
     invalid(): boolean {
-        return this.check(this.tareaLegal.titulo);
+        return this.check(this.legalTask.title);
     }
 
     check(attr: string): boolean {

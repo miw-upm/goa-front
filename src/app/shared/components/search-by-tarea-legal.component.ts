@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Observable, of} from 'rxjs';
 
 import {SearchComponent} from '@common/components/inputs/search.component';
-import {SharedTareaLegalService} from "../services/shared-tarea-legal.service";
+import {SharedLegalTaskService} from "../services/shared-legal-task.service";
 
 @Component({
     standalone: true,
@@ -11,19 +11,19 @@ import {SharedTareaLegalService} from "../services/shared-tarea-legal.service";
     templateUrl: './search-by-tarea-legal.component.html'
 })
 export class SearchByTareaLegalComponent {
-    tareas: Observable<string[]> = of([]);
+    tasks: Observable<string[]> = of([]);
 
-    @Input() tarea: string;
+    @Input() task: string;
     @Output() add = new EventEmitter<string>();
 
-    constructor(private readonly sharedTareaLegalService: SharedTareaLegalService) {
+    constructor(private readonly sharedLegalTaskService: SharedLegalTaskService) {
     }
 
     public onSelect(value): void {
         this.add.emit(value);
     }
 
-    searchByTareaLegal(): void {
-        this.tareas = this.sharedTareaLegalService.searchTareas(this.tarea);
+    searchByLegalTask(): void {
+        this.tasks = this.sharedLegalTaskService.searchTasks(this.task);
     }
 }

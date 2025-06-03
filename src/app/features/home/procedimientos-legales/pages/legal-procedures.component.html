@@ -1,0 +1,6 @@
+<app-filter-input [(value)]="legalProcedureSearch.title" title="Titulo"></app-filter-input>
+
+<app-crud (create)="create()" (delete)="delete($event)" (read)="read($event)" (searchAll)="search()"
+          (update)="update($event)"
+          [data]="legalProcedures" [deleteAction]="true"
+          [hiddenFields]="['id']" [item]="legalProcedure" [readAction]="true" [title]="title"></app-crud>

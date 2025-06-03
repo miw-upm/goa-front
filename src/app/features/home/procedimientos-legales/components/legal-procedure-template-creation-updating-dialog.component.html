@@ -1,0 +1,37 @@
+<h4 mat-dialog-title>{{ title }}</h4>
+<mat-dialog-content>
+    <mat-form-field class="full-width">
+        <mat-label>Título</mat-label>
+        <input [(ngModel)]="legalProcedure.title" id="titulo" matInput required type="text"/>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Presupuesto</mat-label>
+        <input [(ngModel)]="legalProcedure.budget" id="presupuesto" matInput min="0" step="10,00" type="number"/>
+        <mat-icon matSuffix>euro</mat-icon>
+    </mat-form-field>
+    <app-search-by-tarea-legal (add)="addTask($event)" class="full-width"></app-search-by-tarea-legal>
+    <mat-form-field class="full-width">
+        <mat-label>Nueva tarea legal</mat-label>
+        <input #tareaInput (keydown.enter)="addNewTask(tareaInput.value); tareaInput.value=''" matInput
+               placeholder="Añadir..."
+        />
+    </mat-form-field>
+
+    <mat-list>
+        @for (tarea of legalProcedure.legalTasks ?? []; track tarea) {
+            <mat-list-item>
+                <button mat-icon-button (click)="removeLegalTask(tarea)" aria-label="Eliminar tarea legal">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                {{ tarea }}
+            </mat-list-item>
+        }
+    </mat-list>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Close</button>
+    <button (click)="create()" *ngIf="isCreate()" [disabled]=invalid() color="primary" mat-raised-button>Create
+    </button>
+    <button (click)="update()" *ngIf="!isCreate()" [disabled]=invalid() color="primary" mat-raised-button>Update
+    </button>
+</mat-dialog-actions>

@@ -7,19 +7,19 @@ import {map} from "rxjs/operators";
 
 
 @Injectable({providedIn: 'root'})
-export class SharedTareaLegalService {
-    private static readonly TAREAS_LEGALES = environment.REST_ENCARGO + '/tareas-legales';
+export class SharedLegalTaskService {
+    private static readonly LEGAL_TASKS = environment.REST_ENCARGO + '/legal-tasks';
 
     constructor(private readonly httpService: HttpService) {
     }
 
-    searchTareas(titulo: string): Observable<string[]> {
+    searchTasks(title: string): Observable<string[]> {
         return this.httpService
-            .param("titulo", titulo ?? '')
-            .get(SharedTareaLegalService.TAREAS_LEGALES)
+            .param("title", title ?? '')
+            .get(SharedLegalTaskService.LEGAL_TASKS)
             .pipe(
-                map(tareas =>
-                    tareas.map((tarea => `${tarea.titulo}`))
+                map(tasks =>
+                    tasks.map((task => `${task.title}`))
                 )
             )
     }

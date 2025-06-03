@@ -12,61 +12,61 @@ import {
 import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatButton, MatIconButton} from '@angular/material/button';
-import {ProcedimientoLegal} from "../procedimiento-legal.model";
-import {ProcedimientoLegalService} from "../procedimiento-legal.service";
+import {LegalProcedureTemplate} from "../legal-procedure-template.model";
+import {LegalProcedureTemplateService} from "../legal-procedure-template.service";
 import {MatCheckbox} from "@angular/material/checkbox";
 import {MatIcon} from "@angular/material/icon";
 import {SearchByTareaLegalComponent} from "@shared/components/search-by-tarea-legal.component";
 import {MatList, MatListItem} from "@angular/material/list";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
-import {TareaLegalService} from "../../tareas-legales/tarea-legal.service";
+import {LegalTaskService} from "../../tareas-legales/legal-task.service";
 
 @Component({
     standalone: true,
     imports: [MatDialogTitle, MatDialogContent, MatFormField, MatLabel, FormsModule, MatInput, MatDialogActions,
         MatDialogClose, MatButton, NgIf, DatePipe, MatCheckbox, MatIcon, MatSuffix, SearchByTareaLegalComponent,
         MatList, MatListItem, MatIconButton, MatDatepickerToggle, MatDatepicker, MatDatepickerInput, MatNativeDateModule],
-    templateUrl: 'procedimiento-legal-creation-updating-dialog.component.html',
-    styleUrls: ['procedimiento-legal-dialog.component.css']
+    templateUrl: 'legal-procedure-creation-updating-dialog.component.html',
+    styleUrls: ['legal-procedure-dialog.component.css']
 })
 
-export class ProcedimientoLegalCreationUpdatingDialogComponent {
-    procedimientoLegal: ProcedimientoLegal;
+export class LegalProcedureCreationUpdatingDialogComponent {
+    legalProcedure: LegalProcedureTemplate;
     title: string;
 
-    constructor(@Inject(MAT_DIALOG_DATA) data: ProcedimientoLegal, private readonly procedimientoLegalService: ProcedimientoLegalService,
-                private readonly dialog: MatDialog, private readonly tareaLegalService: TareaLegalService) {
+    constructor(@Inject(MAT_DIALOG_DATA) data: LegalProcedureTemplate, private readonly procedimientoLegalService: LegalProcedureTemplateService,
+                private readonly dialog: MatDialog, private readonly tareaLegalService: LegalTaskService) {
         this.title = data ? 'Actualizar Procedimiento Legal' : 'Crear Procedimiento Legal';
-        this.procedimientoLegal = {
+        this.legalProcedure = {
             id: undefined,
-            titulo: undefined,
-            fechaInicio: data?.fechaInicio ? new Date(data.fechaInicio) : undefined,
-            tareasLegales: [],
-            presupuesto: undefined,
-            ivaIncluido: false,
+            title: undefined,
+            startDate: data?.startDate ? new Date(data.startDate) : undefined,
+            legalTasks: [],
+            budget: undefined,
+            vatIncluded: false,
             ...(data || {})
         };
     }
 
     create(): void {
         this.procedimientoLegalService
-            .create(this.procedimientoLegal)
+            .create(this.legalProcedure)
             .subscribe(() => this.dialog.closeAll());
     }
 
     update(): void {
         this.procedimientoLegalService
-            .update(this.procedimientoLegal.id, this.procedimientoLegal)
+            .update(this.legalProcedure.id, this.legalProcedure)
             .subscribe(() => this.dialog.closeAll());
     }
 
     isCreate(): boolean {
-        return this.procedimientoLegal.id === undefined;
+        return this.legalProcedure.id === undefined;
     }
 
     invalid(): boolean {
-        return this.check(this.procedimientoLegal.titulo);
+        return this.check(this.legalProcedure.title);
     }
 
     check(attr: string | number | null | undefined): boolean {
@@ -81,22 +81,22 @@ export class ProcedimientoLegalCreationUpdatingDialogComponent {
     addTarea(value: string): void {
         const tarea = (value || '').trim();
         if (tarea) {
-            this.procedimientoLegal.tareasLegales.push(tarea);
+            this.legalProcedure.legalTasks.push(tarea);
         }
     }
 
     addNewTarea(value: string): void {
         const tarea = (value || '').trim();
         if (tarea) {
-            this.procedimientoLegal.tareasLegales.push(tarea);
-            this.tareaLegalService.create({titulo: value}).subscribe();
+            this.legalProcedure.legalTasks.push(tarea);
+            this.tareaLegalService.create({title: value}).subscribe();
         }
     }
 
     removeTareaLegal(tarea: string): void {
-        const index = this.procedimientoLegal.tareasLegales?.indexOf(tarea);
+        const index = this.legalProcedure.legalTasks?.indexOf(tarea);
         if (index !== undefined && index >= 0) {
-            this.procedimientoLegal.tareasLegales.splice(index, 1);
+            this.legalProcedure.legalTasks.splice(index, 1);
         }
     }
 }
