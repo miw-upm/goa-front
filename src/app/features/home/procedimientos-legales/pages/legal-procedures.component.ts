@@ -10,6 +10,7 @@ import {LegalProcedureTemplate} from "../legal-procedure-template.model";
 import {
     LegalProcedureTemplateCreationUpdatingDialogComponent
 } from "../components/legal-procedure-template-creation-updating-dialog.component";
+import {map} from "rxjs/operators";
 
 @Component({
     standalone: true,
@@ -50,7 +51,13 @@ export class LegalProceduresComponent {
     }
 
     read(procedure: LegalProcedureTemplate): void {
-        this.legalProcedure = this.legalProcedureService.read(procedure.id);
+        this.legalProcedure = this.legalProcedureService.read(procedure.id)
+            .pipe(
+                map(template => ({
+                    ...template,
+                    legalTasks: template.legalTasks.map(task => task.title)
+                }))
+            );
     }
 
 }

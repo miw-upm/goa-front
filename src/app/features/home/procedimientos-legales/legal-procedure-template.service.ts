@@ -5,6 +5,7 @@ import {LegalProcedureTemplate} from './legal-procedure-template.model';
 import {HttpService} from "@common/services/http.service";
 import {LegalProcedureSearch} from "./pages/legal-procedure-search.model";
 import {environment} from "@env";
+import {map} from "rxjs/operators";
 
 @Injectable({providedIn: 'root'})
 export class LegalProcedureTemplateService {
@@ -27,12 +28,15 @@ export class LegalProcedureTemplateService {
     search(legalProcedureSearch: LegalProcedureSearch): Observable<LegalProcedureTemplate[]> {
         return this.httpService
             .paramsFrom(legalProcedureSearch)
-            .get(LegalProcedureTemplateService.API_URL);
-    }
-
-    getById(id: string): Observable<LegalProcedureTemplate> {
-        return this.httpService
-            .get(LegalProcedureTemplateService.API_URL + `/${id}`);
+            .get(LegalProcedureTemplateService.API_URL)
+            .pipe(
+                map((procedures) =>
+                    procedures.map(procedure => ({
+                        ...procedure,
+                        legalTasks: procedure.legalTasks.map(task => ({title: task.title}))
+                    }))
+                )
+            );
     }
 
     delete(id: string): Observable<void> {
@@ -43,6 +47,12 @@ export class LegalProcedureTemplateService {
 
     read(id: string) {
         return this.httpService
-            .get(LegalProcedureTemplateService.API_URL + '/' + `/${id}`);
+            .get(LegalProcedureTemplateService.API_URL + '/' + `/${id}`)
+            .pipe(
+                map(procedure => ({
+                    ...procedure,
+                    legalTasks: procedure.legalTasks.map(task => ({title: task.title}))
+                }))
+            );
     }
 }

@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {DatePipe, NgIf} from '@angular/common';
+import {NgIf} from '@angular/common';
 import {
     MAT_DIALOG_DATA,
     MatDialog,
@@ -19,6 +19,7 @@ import {SearchByTareaLegalComponent} from "@shared/components/search-by-tarea-le
 import {MatList, MatListItem} from "@angular/material/list";
 import {MatNativeDateModule} from "@angular/material/core";
 import {LegalTaskService} from "../../tareas-legales/legal-task.service";
+import {LegalTask} from "../../tareas-legales/legal-task.model";
 
 @Component({
     standalone: true,
@@ -76,20 +77,21 @@ export class LegalProcedureTemplateCreationUpdatingDialogComponent {
 
     addTask(value: string): void {
         const task = (value || '').trim();
-        if (task && !this.legalProcedure.legalTasks.includes(task)) {
-            this.legalProcedure.legalTasks.push(task);
+        if (task && !this.legalProcedure.legalTasks.some(t => t.title === task)) {
+            this.legalProcedure.legalTasks.push({title: task});
         }
     }
 
     addNewTask(value: string): void {
         const task = (value || '').trim();
-        if (task && !this.legalProcedure.legalTasks.includes(task)) {
-            this.legalProcedure.legalTasks.push(task);
-            this.tareaLegalService.create({title: value}).subscribe();
+        if (task && !this.legalProcedure.legalTasks.some(t => t.title === task)) {
+            this.tareaLegalService.create({title: value}).subscribe(
+                () => this.legalProcedure.legalTasks.push({title: task})
+            );
         }
     }
 
-    removeLegalTask(task: string): void {
+    removeLegalTask(task: LegalTask): void {
         const index = this.legalProcedure.legalTasks?.indexOf(task);
         if (index !== undefined && index >= 0) {
             this.legalProcedure.legalTasks.splice(index, 1);

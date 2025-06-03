@@ -7,9 +7,7 @@ import {Role} from "@common/components/auth/models/role.model";
 import {CustomerComponent} from "./features/customer/pages/customer.component";
 import {AccessLinkComponent} from "./features/home/access-links/pages/access-link.component";
 import {LegalTasksComponent} from "./features/home/tareas-legales/pages/legal-tasks.component";
-import {
-    LegalProceduresComponent
-} from "./features/home/procedimientos-legales/pages/legal-procedures.component";
+import {LegalProceduresComponent} from "./features/home/procedimientos-legales/pages/legal-procedures.component";
 import {LegalTaskService} from "./features/home/tareas-legales/legal-task.service";
 import {LegalProcedureTemplateService} from "./features/home/procedimientos-legales/legal-procedure-template.service";
 import {AccessLinkService} from "./features/home/access-links/access-link.service";

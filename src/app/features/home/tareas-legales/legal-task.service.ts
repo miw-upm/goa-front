@@ -39,6 +39,6 @@ export class LegalTaskService {
 
     read(id) {
         return this.httpService
-        .get(LegalTaskService.LEGAL_TASKS + '/' + id);
+            .get(LegalTaskService.LEGAL_TASKS + '/' + id);
     }
 }
