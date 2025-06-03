@@ -20,23 +20,19 @@
 <mat-menu #profile="matMenu" xPosition="before">
     <button (click)="update()" mat-menu-item>
         <mat-icon>manage_accounts</mat-icon>
-        <span>Profile</span>
+        <span>Perfil</span>
     </button>
     <button mat-menu-item routerLink="/home/users">
         <mat-icon>groups</mat-icon>
-        <span>Users</span>
+        <span>Usuarios</span>
     </button>
     <button [matMenuTriggerFor]="accessLinks" mat-menu-item>
         <mat-icon>language</mat-icon>
-        <span>Access Links</span>
+        <span>Links de Acceso</span>
     </button>
-    <button mat-menu-item routerLink="/home/legal-tasks">
-        <mat-icon>remove</mat-icon>
-        <span>Tareas Legales</span>
-    </button>
-    <button mat-menu-item routerLink="/home/legal-procedures">
-        <mat-icon>menu</mat-icon>
-        <span>Procedimientos Legales</span>
+    <button [matMenuTriggerFor]="engagementLetters" mat-menu-item>
+        <mat-icon>receipt</mat-icon>
+        <span>Hojas de Encargo</span>
     </button>
     <button (click)="logout()" mat-menu-item>
         <mat-icon>logout</mat-icon>
@@ -46,13 +42,26 @@
 <mat-menu #accessLinks="matMenu">
     <button mat-menu-item routerLink="/home/access-links">
         <mat-icon>vpn_lock_2</mat-icon>
-        <span>Access Links</span>
+        <span>Links de Acceso</span>
     </button>
     <button (click)="createAccessLink()" mat-menu-item>
         <mat-icon>playlist_add</mat-icon>
-        <span>Create</span>
+        <span>Crear Acceso</span>
     </button>
-
+</mat-menu>
+<mat-menu #engagementLetters="matMenu">
+    <button mat-menu-item routerLink="/home/engagement-letters">
+        <mat-icon>receipt</mat-icon>
+        <span>Hojas de Encargo</span>
+    </button>
+    <button mat-menu-item routerLink="/home/legal-procedures">
+        <mat-icon>menu</mat-icon>
+        <span>Procedimientos Legales</span>
+    </button>
+    <button mat-menu-item routerLink="/home/legal-tasks">
+        <mat-icon>remove</mat-icon>
+        <span>Tareas Legales</span>
+    </button>
 </mat-menu>
 <router-outlet></router-outlet>
 <app-footer></app-footer>

@@ -1,11 +1,9 @@
-import {LegalTask} from "../tareas-legales/legal-task.model";
-
-export interface LegalProcedureTemplate {
+export interface LegalProcedure {
     id?: string;
     title: string;
     startDate?: Date;
     closingDate?: Date;
     budget?: number;
     vatIncluded?: boolean;
-    legalTasks?: LegalTask[];
+    legalTasks?: string[];
 }

@@ -1,0 +1,29 @@
+<h4 mat-dialog-title>{{ title }}</h4>
+<mat-dialog-content>
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Descuento</mat-label>
+        <input [(ngModel)]="engagementLetter.discount" id="discount" matInput min="0" max="100" step="1" type="number"/>
+        <mat-icon matSuffix>euro</mat-icon>
+    </mat-form-field>
+    <mat-form-field *ngIf="!isCreate()" class="full-width">
+        <mat-label>Fecha de Creación</mat-label>
+        <input [value]="engagementLetter.creationDate | date:'dd-MM-yyyy'" matInput readonly type="text"/>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Fecha de cierre</mat-label>
+        <input [(ngModel)]="engagementLetter.closingDate" [matDatepicker]="picker" matInput name="fechaCierre"/>
+        <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <app-search-by-user [(user)]="engagementLetter.owner.mobile" class="full-width"></app-search-by-user>
+<!--    <app-search-by-tarea-legal (add)="addTarea($event)" class="full-width"></app-search-by-tarea-legal>-->
+
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Close</button>
+    <button (click)="create()" *ngIf="isCreate()" [disabled]=invalid() color="primary" mat-raised-button>Create
+    </button>
+    <button (click)="update()" *ngIf="!isCreate()" [disabled]=invalid() color="primary" mat-raised-button>Update
+    </button>
+</mat-dialog-actions>

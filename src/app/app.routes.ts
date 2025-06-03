@@ -12,6 +12,7 @@ import {LegalTaskService} from "./features/home/tareas-legales/legal-task.servic
 import {LegalProcedureTemplateService} from "./features/home/procedimientos-legales/legal-procedure-template.service";
 import {AccessLinkService} from "./features/home/access-links/access-link.service";
 import {UserService} from "./features/home/users/user.service";
+import {EngagementLetterService} from "./features/home/engagement-letter/engagement-letter.service";
 
 export const routes: Routes = [
     {path: '', pathMatch: 'full', redirectTo: 'home'},
@@ -40,6 +41,13 @@ export const routes: Routes = [
                 canActivate: [RoleGuardService],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [LegalProcedureTemplateService]
+            },
+            {
+                path: 'engagement-letters',
+                component: LegalProceduresComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [EngagementLetterService]
             },
         ]
     },
