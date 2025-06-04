@@ -1,8 +1,8 @@
-<app-filter-input [(value)]="userSearch.attribute" title="All fields - Customers"></app-filter-input>
-<app-filter-input [(value)]="userSearch.mobile" title="Mobile"></app-filter-input>
-<app-filter-input [(value)]="userSearch.firstName" title="First Name"></app-filter-input>
-<app-filter-input [(value)]="userSearch.familyName" title="Family Name"></app-filter-input>
-<app-filter-input [(value)]="userSearch.email" title="Email"></app-filter-input>
+<app-filter-input [(value)]="criteria.attribute" title="All fields - Customers"></app-filter-input>
+<app-filter-input [(value)]="criteria.mobile" title="Mobile"></app-filter-input>
+<app-filter-input [(value)]="criteria.firstName" title="First Name"></app-filter-input>
+<app-filter-input [(value)]="criteria.familyName" title="Family Name"></app-filter-input>
+<app-filter-input [(value)]="criteria.email" title="Email"></app-filter-input>
 
 <app-crud (create)="create()" (read)="read($event)" (searchAll)="search()" (update)="update($event)"
           [data]="users" [item]="user" [title]="title"></app-crud>

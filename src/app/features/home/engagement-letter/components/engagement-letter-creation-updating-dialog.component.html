@@ -9,13 +9,6 @@
         <mat-label>Fecha de Creación</mat-label>
         <input [value]="engagementLetter.creationDate | date:'dd-MM-yyyy'" matInput readonly type="text"/>
     </mat-form-field>
-    <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Fecha de cierre</mat-label>
-        <input [(ngModel)]="engagementLetter.closingDate" [matDatepicker]="picker" matInput name="fechaCierre"/>
-        <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-    <app-search-by-user [(user)]="engagementLetter.owner.mobile" class="full-width"></app-search-by-user>
 <!--    <app-search-by-tarea-legal (add)="addTarea($event)" class="full-width"></app-search-by-tarea-legal>-->
 
 

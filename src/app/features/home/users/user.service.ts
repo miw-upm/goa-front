@@ -8,7 +8,7 @@ import {User} from "@shared/models/user.model";
 
 @Injectable({providedIn: 'root'})
 export class UserService {
-    private static readonly USERS = environment.REST_USER + '/users';
+    private static readonly API_URL = environment.REST_USER + '/users';
     private static readonly MOBILE = '/mobile';
 
     constructor(private readonly httpService: HttpService) {
@@ -16,24 +16,24 @@ export class UserService {
 
     create(user: User): Observable<User> {
         return this.httpService
-            .post(UserService.USERS, user);
+            .post(UserService.API_URL, user);
     }
 
     read(mobile: string): Observable<User> {
         return this.httpService
-            .get(UserService.USERS + UserService.MOBILE + '/' + mobile);
+            .get(UserService.API_URL + UserService.MOBILE + '/' + mobile);
     }
 
     update(oldMobile: string, user: User): Observable<User> {
         return this.httpService
             .successful()
-            .put(UserService.USERS + UserService.MOBILE + '/' + oldMobile, user);
+            .put(UserService.API_URL + UserService.MOBILE + '/' + oldMobile, user);
     }
 
-    search(userSearch: UserSearch): Observable<User[]> {
+    search(criteria: UserSearch): Observable<User[]> {
         return this.httpService
-            .paramsFrom(userSearch)
-            .get(UserService.USERS)
+            .paramsFrom(criteria)
+            .get(UserService.API_URL)
     }
 
 }

@@ -36,8 +36,7 @@ export class LegalProceduresComponent {
     }
 
     create(): void {
-        this.dialog
-            .open(LegalProcedureTemplateCreationUpdatingDialogComponent);
+        this.dialog.open(LegalProcedureTemplateCreationUpdatingDialogComponent);
     }
 
     update(procedure: LegalProcedureTemplate): void {

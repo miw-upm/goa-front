@@ -1,5 +1,5 @@
-
+<app-filter-boolean [(value)]="criteria.opened" label="Abierta"></app-filter-boolean>
 <app-crud (create)="create()" (delete)="delete($event)" (read)="read($event)" (searchAll)="search()"
           (update)="update($event)"
-          [data]="engagementLetters" [deleteAction]="true"
-          [hiddenFields]="['id']" [item]="engagementLetter" [readAction]="true" [title]="title"></app-crud>
+          [deleteAction]="true"
+          [title]="title" [data]="engagementLetters" [item]="engagementLetter" [hiddenFields]="['id']" ></app-crud>

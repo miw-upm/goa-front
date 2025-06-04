@@ -1,0 +1,17 @@
+<mat-form-field appearance="outline">
+    <mat-label>{{ label }}</mat-label>
+
+    <mat-select [(ngModel)]="value" (ngModelChange)="valueChange.emit($event)">
+        <mat-option [value]="undefined">—</mat-option>
+        <mat-option [value]="true">Sí</mat-option>
+        <mat-option [value]="false">No</mat-option>
+    </mat-select>
+
+    <button
+            mat-icon-button
+            matSuffix
+            (click)="clear()"
+            [disabled]="value === undefined || value === null">
+        <mat-icon>delete</mat-icon>
+    </button>
+</mat-form-field>

@@ -1,27 +1,50 @@
-@if (isArray(value)) {
-    @if (!fullList) {
-        {{ isObject(value[0]) ? (value[0] | json) : value[0] }}...({{ value.length }})
+@if (!fullList) {
+    @if (isArray(value) && value.length > 0) {
+        @if (isObject(value[0])) {
+            {{ getFirstKey(value[0]) }}: {{ getFirstValue(value[0]) }}...({{ value.length }})
+        } @else {
+            {{ value[0] }}...({{ value.length }})
+        }
+    } @else if (isObject(value)) {
+        {{ getFirstKey(value) }}: {{ getFirstValue(value) }}...({{ Object.keys(value).length }})
+    } @else if (isDate(value)) {
+        {{ value | date: 'short' }}
+    } @else if (value === null || value === undefined) {
+        —
     } @else {
-        <ul>
-            @for (item of value; track item) {
-                <li>{{ isObject(item) ? (item | json) : item }}</li>
-            }
-        </ul>
+        {{ value }}
     }
-} @else if (isObject(value)) {
-    @if (!fullList) {
-        {{ value | json }}...({{ Object.keys(value).length }})
-    } @else {
+} @else {
+    @if (isArray(value)) {
+        <ol>
+            @for (item of value; track item) {
+                <li>
+                    @if (isObject(item) || isArray(item)) {
+                        <app-data-cell [value]="item" [fullList]="true" />
+                    } @else {
+                        {{ item }}.
+                    }
+                </li>
+            }
+        </ol>
+    } @else if (isObject(value)) {
         <ul>
             @for (entry of Object.entries(value); track entry[0]) {
-                <li><strong>{{ entry[0] }}:</strong> {{ isObject(entry[1]) ? (entry[1] | json) : entry[1] }}</li>
+                <li>
+                    <strong>{{ entry[0] | uppercaseWords }}:</strong>
+                    @if (isObject(entry[1]) || isArray(entry[1])) {
+                        <app-data-cell [value]="entry[1]" [fullList]="true" />
+                    } @else {
+                        {{ entry[1] }}
+                    }
+                </li>
             }
         </ul>
+    } @else if (isDate(value)) {
+        {{ value | date: 'short' }}
+    } @else if (value === null || value === undefined) {
+        —
+    } @else {
+        {{ value }}
     }
-} @else if (isDate(value)) {
-    {{ value | date: 'short' }}
-} @else if (value === null || value === undefined) {
-    —
-} @else {
-    {{ value }}
 }

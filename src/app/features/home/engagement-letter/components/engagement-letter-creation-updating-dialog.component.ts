@@ -1,43 +1,48 @@
-import {Component, Inject} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {DatePipe, NgIf} from '@angular/common';
-import {
-    MAT_DIALOG_DATA,
-    MatDialog,
-    MatDialogActions,
-    MatDialogClose,
-    MatDialogContent,
-    MatDialogTitle
-} from '@angular/material/dialog';
-import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
-import {MatInput} from '@angular/material/input';
-import {MatButton, MatIconButton} from '@angular/material/button';
-import {MatCheckbox} from "@angular/material/checkbox";
-import {MatIcon} from "@angular/material/icon";
-import {SearchByTareaLegalComponent} from "@shared/components/search-by-tarea-legal.component";
-import {MatList, MatListItem} from "@angular/material/list";
-import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
-import {MatNativeDateModule} from "@angular/material/core";
-import {EngagementLetter} from "../engagement-letter.model";
-import {EngagementLetterService} from "../engagement-letter.service";
-import {SearchByUserComponent} from "@shared/components/search-by-user.component";
+import { Component, Inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { DatePipe, NgIf } from '@angular/common';
 
+import {MAT_DIALOG_DATA, MatDialog, MatDialogModule} from '@angular/material/dialog';
+
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+
+import { EngagementLetter } from '../engagement-letter.model';
+import { EngagementLetterService } from '../engagement-letter.service';
+import { SearchByUserComponent } from '@shared/components/search-by-user.component';
 
 @Component({
     standalone: true,
-    imports: [MatDialogTitle, MatDialogContent, MatFormField, MatLabel, FormsModule, MatInput, MatDialogActions,
-        MatDialogClose, MatButton, NgIf, DatePipe, MatCheckbox, MatIcon, MatSuffix, SearchByTareaLegalComponent,
-        MatList, MatListItem, MatIconButton, MatDatepickerToggle, MatDatepicker, MatDatepickerInput, MatNativeDateModule, SearchByUserComponent],
+    selector: 'app-engagement-letter-creation-updating-dialog',
     templateUrl: 'engagement-letter-creation-updating-dialog.component.html',
-    styleUrls: ['engagement-letter-dialog.component.css']
+    styleUrls: ['engagement-letter-dialog.component.css'],
+    imports: [
+        FormsModule,
+        NgIf,
+        DatePipe,
+        MatDialogModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        SearchByUserComponent
+    ]
 })
-
 export class EngagementLetterCreationUpdatingDialogComponent {
     engagementLetter: EngagementLetter;
     title: string;
 
-    constructor(@Inject(MAT_DIALOG_DATA) data: EngagementLetter, private readonly engagementLetterService: EngagementLetterService,
-                private readonly dialog: MatDialog) {
+    constructor(
+        @Inject(MAT_DIALOG_DATA) data: EngagementLetter,
+        private readonly engagementLetterService: EngagementLetterService,
+        private readonly dialog: MatDialog
+    ) {
         this.title = data ? 'Actualizar Hoja de Encargo' : 'Crear Hoja de Encargo';
         this.engagementLetter = {
             id: undefined,
@@ -84,5 +89,4 @@ export class EngagementLetterCreationUpdatingDialogComponent {
             (typeof attr === 'number' && isNaN(attr))
         );
     }
-
 }

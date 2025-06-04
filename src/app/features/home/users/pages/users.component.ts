@@ -15,7 +15,7 @@ import {User} from "@shared/models/user.model";
     templateUrl: 'users.component.html'
 })
 export class UsersComponent {
-    userSearch: UserSearch;
+    criteria: UserSearch;
     title = "Users";
     users = of([]);
     user: Observable<any>;
@@ -25,11 +25,11 @@ export class UsersComponent {
     }
 
     search(): void {
-        this.users = this.userService.search(this.userSearch);
+        this.users = this.userService.search(this.criteria);
     }
 
     resetSearch(): void {
-        this.userSearch = {};
+        this.criteria = {};
     }
 
     create(): void {

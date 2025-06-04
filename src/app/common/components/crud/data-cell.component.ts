@@ -1,21 +1,17 @@
-import {Component, Input} from '@angular/core';
-import {DatePipe, JsonPipe} from "@angular/common";
-import {of} from "rxjs";
+import { Component, Input } from '@angular/core';
+import { DatePipe} from '@angular/common';
+import {UppercaseWordsPipe} from "@common/pipes/uppercase-words.pipe";
 
 @Component({
     selector: 'app-data-cell',
+    standalone: true,
+    imports: [DatePipe, UppercaseWordsPipe],
     templateUrl: './data-cell.component.html',
-    imports: [
-        DatePipe,
-        JsonPipe,
-    ],
     styleUrls: ['./data-cell.component.css']
 })
 export class DataCellComponent {
     @Input() value: any;
     @Input() fullList: boolean = false;
-    protected readonly of = of;
-    protected readonly Object = Object;
 
     isArray(val: any): boolean {
         return Array.isArray(val);
@@ -28,4 +24,14 @@ export class DataCellComponent {
     isDate(val: any): boolean {
         return typeof val === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(val);
     }
+
+    getFirstKey(obj: any): string {
+        return Object.entries(obj)[0]?.[0] ?? '';
+    }
+
+    getFirstValue(obj: any): any {
+        return Object.entries(obj)[0]?.[1];
+    }
+
+    protected readonly Object = Object;
 }
