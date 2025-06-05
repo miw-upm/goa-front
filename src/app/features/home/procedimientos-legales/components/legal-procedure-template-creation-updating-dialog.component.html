@@ -9,24 +9,27 @@
         <input [(ngModel)]="legalProcedure.budget" id="presupuesto" matInput min="0" step="10,00" type="number"/>
         <mat-icon matSuffix>euro</mat-icon>
     </mat-form-field>
-    <app-search-by-tarea-legal (add)="addTask($event)" class="full-width"></app-search-by-tarea-legal>
-    <mat-form-field class="full-width">
-        <mat-label>Nueva tarea legal</mat-label>
-        <input #tareaInput (keydown.enter)="addNewTask(tareaInput.value); tareaInput.value=''" matInput
-               placeholder="Añadir..."
-        />
-    </mat-form-field>
+    <fieldset class="owner-fieldset">
+        <legend>Tareas Legales</legend>
+        <app-search-by-legal-task (taskChange)="addTask($event)" class="full-width"></app-search-by-legal-task>
+        <mat-form-field class="full-width">
+            <mat-label>Nueva tarea legal</mat-label>
+            <input #tareaInput (keydown.enter)="addNewTask(tareaInput.value); tareaInput.value=''" matInput
+                   placeholder="Añadir..."
+            />
+        </mat-form-field>
 
-    <mat-list>
-        @for (tarea of legalProcedure.legalTasks ?? []; track tarea) {
-            <mat-list-item>
-                <button mat-icon-button (click)="removeLegalTask(tarea)" aria-label="Eliminar tarea legal">
-                    <mat-icon>delete</mat-icon>
-                </button>
-                {{ tarea.title }}
-            </mat-list-item>
-        }
-    </mat-list>
+        <mat-list>
+            @for (tarea of legalProcedure.legalTasks ?? []; track tarea) {
+                <mat-list-item>
+                    <button mat-icon-button (click)="removeLegalTask(tarea)" aria-label="Eliminar tarea legal">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    {{ tarea.title }}
+                </mat-list-item>
+            }
+        </mat-list>
+    </fieldset>
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Close</button>

@@ -1,4 +1,4 @@
-export interface PaymentMethod{
+export interface PaymentMethod {
     description: string;
     percentage: number;
 }

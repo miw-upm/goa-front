@@ -15,7 +15,7 @@ import {MatButton, MatIconButton} from '@angular/material/button';
 import {LegalProcedureTemplate} from "../legal-procedure-template.model";
 import {LegalProcedureTemplateService} from "../legal-procedure-template.service";
 import {MatIcon} from "@angular/material/icon";
-import {SearchByTareaLegalComponent} from "@shared/components/search-by-tarea-legal.component";
+import {SearchByLegalTaskComponent} from "@shared/components/search-by-legal-task.component";
 import {MatList, MatListItem} from "@angular/material/list";
 import {MatNativeDateModule} from "@angular/material/core";
 import {LegalTaskService} from "../../tareas-legales/legal-task.service";
@@ -24,7 +24,7 @@ import {LegalTask} from "../../tareas-legales/legal-task.model";
 @Component({
     standalone: true,
     imports: [MatDialogTitle, MatDialogContent, MatFormField, MatLabel, FormsModule, MatInput, MatDialogActions,
-        MatDialogClose, MatButton, NgIf, MatIcon, MatSuffix, SearchByTareaLegalComponent,
+        MatDialogClose, MatButton, NgIf, MatIcon, MatSuffix, SearchByLegalTaskComponent,
         MatList, MatListItem, MatIconButton, MatNativeDateModule],
     templateUrl: 'legal-procedure-template-creation-updating-dialog.component.html',
     styleUrls: ['legal-procedure-template-dialog.component.css']

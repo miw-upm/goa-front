@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { DatePipe} from '@angular/common';
+import {Component, Input} from '@angular/core';
+import {DatePipe} from '@angular/common';
 import {UppercaseWordsPipe} from "@common/pipes/uppercase-words.pipe";
 
 @Component({
@@ -12,6 +12,7 @@ import {UppercaseWordsPipe} from "@common/pipes/uppercase-words.pipe";
 export class DataCellComponent {
     @Input() value: any;
     @Input() fullList: boolean = false;
+    protected readonly Object = Object;
 
     isArray(val: any): boolean {
         return Array.isArray(val);
@@ -32,6 +33,4 @@ export class DataCellComponent {
     getFirstValue(obj: any): any {
         return Object.entries(obj)[0]?.[1];
     }
-
-    protected readonly Object = Object;
 }

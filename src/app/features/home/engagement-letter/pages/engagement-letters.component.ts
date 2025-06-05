@@ -50,7 +50,7 @@ export class EngagementLettersComponent {
 
     }
 
-    read(engagement:EngagementLetter) {
+    read(engagement: EngagementLetter) {
         this.engagementLetter = this.engagementLettersService.read(engagement.id)
     }
 

@@ -25,13 +25,13 @@ export class EngagementLetterService {
             .put(EngagementLetterService.API_URL + `/${id}`, engagement);
     }
 
-    search(criteria: EngagementLetterSearch):Observable<EngagementLetter[]> {
+    search(criteria: EngagementLetterSearch): Observable<EngagementLetter[]> {
         return this.httpService
             .paramsFrom(criteria)
             .get(EngagementLetterService.API_URL)
     }
 
-    read(id: string):Observable<EngagementLetter> {
+    read(id: string): Observable<EngagementLetter> {
         return this.httpService
             .get(EngagementLetterService.API_URL + `/${id}`);
     }
