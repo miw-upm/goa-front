@@ -1,2 +1,3 @@
-<app-search (renew)="searchByUser()" (selected)="onSelect()" [(key)]="user" [keys]="users" class="full-width"
+<app-search (renew)="searchByUser($event)" (selected)="onSelect($event)" [(key)]="user" [keys]="users"
+            [keyView]="['mobile','firstName','familyName']" class="full-width"
             obligatory=false title="Search by User"></app-search>

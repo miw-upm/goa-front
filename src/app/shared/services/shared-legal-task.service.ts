@@ -4,6 +4,7 @@ import {environment} from "@env";
 import {HttpService} from '@common/services/http.service';
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
+import {LegalTask} from "../../features/home/tareas-legales/legal-task.model";
 
 
 @Injectable({providedIn: 'root'})
@@ -13,14 +14,9 @@ export class SharedLegalTaskService {
     constructor(private readonly httpService: HttpService) {
     }
 
-    searchTasks(title: string): Observable<string[]> {
+    searchTasks(title: string): Observable<LegalTask[]> {
         return this.httpService
             .param("title", title ?? '')
             .get(SharedLegalTaskService.LEGAL_TASKS)
-            .pipe(
-                map(tasks =>
-                    tasks.map((task => `${task.title}`))
-                )
-            )
     }
 }

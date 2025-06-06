@@ -10,6 +10,7 @@ import {AccessLinkService} from "../access-link.service";
 import {MatCardHeader} from "@angular/material/card";
 import {MatIcon} from "@angular/material/icon";
 import {MatTooltip} from "@angular/material/tooltip";
+import {User} from "@shared/models/user.model";
 
 @Component({
     standalone: true,
@@ -44,5 +45,9 @@ export class AccessLinkCreationDialogComponent {
 
     copyToClipboard(text: string): void {
         navigator.clipboard.writeText(text).then();
+    }
+
+    updateUser(user: User) {
+        this.accessLink.mobile = user.mobile;
     }
 }

@@ -6,17 +6,20 @@ import {MatDialog} from "@angular/material/dialog";
 import {EngagementLetterService} from "../engagement-letter.service";
 import {EngagementLetterSearch} from "./engagement-letter.search";
 import {EngagementLetter} from "../engagement-letter.model";
-import {FilterBooleanComponent} from "@common/components/inputs/filter-boolean.component";
 import {
     EngagementLetterCreationUpdatingDialogComponent
 } from "../components/engagement-letter-creation-updating-dialog.component";
+
+import {MatSlideToggle} from "@angular/material/slide-toggle";
+import {FilterInputComponent} from "@common/components/inputs/filter-input.component";
 
 @Component({
     standalone: true,
     imports: [
         FormsModule,
         CrudComponent,
-        FilterBooleanComponent
+        MatSlideToggle,
+        FilterInputComponent
     ],
     templateUrl: 'engagement-letters.component.html'
 })
@@ -31,7 +34,7 @@ export class EngagementLettersComponent {
     }
 
     resetSearch(): void {
-        this.criteria = {};
+        this.criteria = {opened:true,legalProcedureTitle:undefined};
     }
 
     search(): void {
@@ -42,12 +45,17 @@ export class EngagementLettersComponent {
         this.dialog.open(EngagementLetterCreationUpdatingDialogComponent);
     }
 
-    update(procedure: EngagementLetter): void {
+    update(engagement: EngagementLetter): void {
+        this.engagementLettersService.read(engagement.id).subscribe(engagementDb =>
+            this.dialog.open(EngagementLetterCreationUpdatingDialogComponent, {data: engagementDb, width: '800px'})
+                .afterClosed()
+                .subscribe(() => this.search())
+        );
+
     }
 
-
-    delete($event: any) {
-
+    delete(engagement:EngagementLetter) {
+        this.engagementLettersService.delete(engagement.id).subscribe(()=>this.search())
     }
 
     read(engagement: EngagementLetter) {

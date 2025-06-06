@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {DatePipe, NgIf} from '@angular/common';
+import {CommonModule, DatePipe, NgIf} from '@angular/common';
 
 import {MAT_DIALOG_DATA, MatDialog, MatDialogModule} from '@angular/material/dialog';
 
@@ -15,12 +15,16 @@ import {EngagementLetter} from '../engagement-letter.model';
 import {EngagementLetterService} from '../engagement-letter.service';
 import {SearchByUserComponent} from '@shared/components/search-by-user.component';
 import {User} from "@shared/models/user.model";
-import {SearchByLegalProcedureComponent} from "@shared/components/search-by-legal-procedure.component";
+import {SearchByLegalProcedureTemplateComponent} from "@shared/components/search-by-legal-procedure-template.component";
 import {LegalProcedure} from "../legal-procedure.model";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatListModule} from "@angular/material/list";
 import {PaymentMethod} from "../payment-method.model";
 import {PaymentMethodDialogComponent} from "./payment-method-dialog.component";
+import {LegalProcedureEditDialogComponent} from "./legal-procedure-edit-dialog.component";
+import {LegalProcedureTemplateService} from "../../procedimientos-legales/legal-procedure-template.service";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {LegalProcedureTemplate} from "../../procedimientos-legales/legal-procedure-template.model";
 
 @Component({
     standalone: true,
@@ -28,6 +32,7 @@ import {PaymentMethodDialogComponent} from "./payment-method-dialog.component";
     templateUrl: 'engagement-letter-creation-updating-dialog.component.html',
     styleUrls: ['engagement-letter-dialog.component.css'],
     imports: [
+        CommonModule,
         FormsModule,
         NgIf,
         DatePipe,
@@ -41,8 +46,10 @@ import {PaymentMethodDialogComponent} from "./payment-method-dialog.component";
         MatChipsModule,
         MatListModule,
         SearchByUserComponent,
-        SearchByLegalProcedureComponent,
-    ]
+        SearchByLegalProcedureTemplateComponent,
+        MatTooltipModule
+    ],
+    providers: [DatePipe]
 })
 export class EngagementLetterCreationUpdatingDialogComponent {
     engagementLetter: EngagementLetter;
@@ -50,7 +57,9 @@ export class EngagementLetterCreationUpdatingDialogComponent {
 
     constructor(
         @Inject(MAT_DIALOG_DATA) data: EngagementLetter,
+        private readonly datePipe: DatePipe,
         private readonly engagementLetterService: EngagementLetterService,
+        private readonly legalProcedureTemplateService: LegalProcedureTemplateService,
         private readonly dialog: MatDialog
     ) {
         this.title = data ? 'Actualizar Hoja de Encargo' : 'Crear Hoja de Encargo';
@@ -59,10 +68,13 @@ export class EngagementLetterCreationUpdatingDialogComponent {
             discount: 0,
             creationDate: data?.creationDate ? new Date(data.creationDate) : undefined,
             closingDate: data?.closingDate ? new Date(data.closingDate) : undefined,
-            owner: {mobile: undefined, firstName: undefined},
+            owner: undefined,
             attachments: [],
             legalProcedures: [],
-            paymentMethods: [{ description: 'Provisión de Fondos', percentage: 40},{ description: 'Al finalizar el proceso', percentage: 60}],
+            paymentMethods: [{
+                description: 'Provisión de Fondos',
+                percentage: 40
+            }, {description: 'Al finalizar el proceso', percentage: 60}],
             acceptanceDocuments: undefined,
             ...(data || {})
         };
@@ -75,6 +87,11 @@ export class EngagementLetterCreationUpdatingDialogComponent {
     }
 
     update(): void {
+        const formattedDate = this.datePipe.transform(this.engagementLetter.closingDate, 'yyyy-MM-dd');
+        this.engagementLetter.closingDate = formattedDate as any;
+
+        console.log(JSON.parse(JSON.stringify(this.engagementLetter)));
+
         this.engagementLetterService
             .update(this.engagementLetter.id, this.engagementLetter)
             .subscribe(() => this.dialog.closeAll());
@@ -86,13 +103,10 @@ export class EngagementLetterCreationUpdatingDialogComponent {
 
     invalid(): boolean {
         const d = this.checkInvalid(this.engagementLetter.discount);
-        const o = this.checkInvalid(this.engagementLetter.owner.mobile);
+        const o = this.checkInvalid(this.engagementLetter.owner?.mobile);
         const l = this.checkInvalid(this.engagementLetter.legalProcedures);
         const p = this.checkInvalid(this.engagementLetter.paymentMethods);
         const validSum = this.isPaymentTotalValid();
-
-        console.log({ discount: d, owner: o, legalProcedures: l, paymentMethods: p, totalValid: validSum });
-
         return d || o || l || p || !validSum;
     }
 
@@ -120,17 +134,27 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         }
     }
 
-    addAttachment(value) {
-        const mobile = (value || '').trim();
-        if (mobile && !this.engagementLetter.attachments.some(t => t.mobile === mobile)) {
-            this.engagementLetter.attachments.push({mobile: mobile, firstName: undefined});
+    addAttachment(user:User) {
+        const alreadyInAttachments = this.engagementLetter.attachments.some(t => t.mobile === user.mobile);
+        const isOwner = this.engagementLetter.owner?.mobile === user.mobile;
+        if (!alreadyInAttachments && !isOwner) {
+            this.engagementLetter.attachments.push(user);
         }
     }
 
-    addProcedure(value) {
-        const title = (value || '').trim();
-        if (title && !this.engagementLetter.legalProcedures.some(t => t.title === title)) {
-            this.engagementLetter.legalProcedures.push({title: title});
+    addProcedure(template:LegalProcedureTemplate) {
+        const procedure: LegalProcedure = {
+            id: template.id,
+            title: template.title,
+            budget: template.budget,
+            vatIncluded: false,
+            legalTasks: template.legalTasks?.map(task => task.title) ?? [],
+            startDate: undefined,
+            closingDate: undefined
+        }
+        const title = (template?.title || '').trim();
+        if (title && !this.engagementLetter.legalProcedures.some(proc => proc.title === title)) {
+            this.engagementLetter.legalProcedures.push(procedure);
         }
     }
 
@@ -146,13 +170,27 @@ export class EngagementLetterCreationUpdatingDialogComponent {
             this.engagementLetter.paymentMethods?.filter(m => m !== method) ?? [];
     }
 
-    openDialog(): void {
+    addLegalProcedureDialog(): void {
         this.dialog.open(PaymentMethodDialogComponent).afterClosed().subscribe((result: PaymentMethod | undefined) => {
             if (result) {
                 if (!this.engagementLetter.paymentMethods) {
                     this.engagementLetter.paymentMethods = [];
                 }
                 this.engagementLetter.paymentMethods.push(result);
+            }
+        });
+    }
+
+    editLegalProcedureDialog(procedure: LegalProcedure): void {
+        this.dialog.open(LegalProcedureEditDialogComponent, {
+            data: procedure,
+            width: '900px',
+        }).afterClosed().subscribe((result: LegalProcedure | undefined) => {
+            if (result) {
+                const index = this.engagementLetter.legalProcedures.findIndex(p => p.id === procedure.id);
+                if (index !== -1) {
+                    this.engagementLetter.legalProcedures[index] = result;
+                }
             }
         });
     }

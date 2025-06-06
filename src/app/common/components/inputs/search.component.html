@@ -1,8 +1,7 @@
 <mat-form-field class="full-width">
     <mat-label>{{ title }}</mat-label>
-    <input (ngModelChange)="onChange($event)"
+    <input [(ngModel)]="inputValue"
            [matAutocomplete]="auto"
-           [ngModel]="key"
            [required]="obligatory"
            matInput
            type="text"
@@ -10,14 +9,29 @@
     <button (click)="onRenew()" mat-icon-button matSuffix matTooltip="Renew" matTooltipShowDelay="2000">
         <mat-icon>autorenew</mat-icon>
     </button>
-    <button (click)="resetKey()" *ngIf="key" aria-label="Clear" mat-icon-button matSuffix>
-        <mat-icon>close</mat-icon>
-    </button>
+    @if (inputValue) {
+        <button (click)="resetKey()" aria-label="Clear" mat-icon-button matSuffix>
+            <mat-icon>close</mat-icon>
+        </button>
+    }
     <mat-autocomplete #auto="matAutocomplete">
-        <mat-option (click)="onClick(option)"
-                    *ngFor="let option of (keys | async); trackBy: trackOption" [value]="option">
-            {{ option }}
-        </mat-option>
+        @if (keys | async; as options) {
+            @for (option of options; track trackOption) {
+                <mat-option [value]="option" (click)="onClick(option)">
+                    @if (!keyView?.length) {
+                        {{ option }}
+                    } @else {
+                        @for (key of keyView; let i = $index; track i) {
+                            {{ option[key] }}@if (i < keyView.length - 1) {
+                                ,
+                            }
+                        }
+                    }
+                </mat-option>
+            }
+        } @else {
+            <mat-option disabled>Cargando...</mat-option>
+        }
     </mat-autocomplete>
 
 </mat-form-field>

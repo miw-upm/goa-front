@@ -3,6 +3,7 @@ import {Observable, of} from 'rxjs';
 
 import {SearchComponent} from '@common/components/inputs/search.component';
 import {SharedUserService} from "../services/shared-user.service";
+import {User} from "@shared/models/user.model";
 
 @Component({
     standalone: true,
@@ -11,19 +12,19 @@ import {SharedUserService} from "../services/shared-user.service";
     templateUrl: './search-by-user.component.html'
 })
 export class SearchByUserComponent {
-    users: Observable<string[]> = of([]);
+    users: Observable<User[]> = of([]);
 
-    @Input() user: string;
-    @Output() userChange = new EventEmitter<string>();
+    @Input() user: User;
+    @Output() userChange = new EventEmitter<User>();
 
     constructor(private readonly sharedUserService: SharedUserService) {
     }
 
-    public onSelect(): void {
-        this.userChange.emit(this.user?.split(':')[0] ?? '');
+    public onSelect(user:User): void {
+        this.userChange.emit(user);
     }
 
-    searchByUser(): void {
-        this.users = this.sharedUserService.searchUsers(this.user);
+    searchByUser(filter:string): void {
+        this.users = this.sharedUserService.searchUsers(filter);
     }
 }

@@ -7,27 +7,42 @@
     </mat-form-field>
     <mat-form-field *ngIf="!isCreate()" class="full-width">
         <mat-label>Fecha de Creación</mat-label>
-        <input [value]="engagementLetter.creationDate | date:'dd-MM-yyyy'" matInput readonly type="text"/>
+        <input [value]="engagementLetter.creationDate | date:'dd/MM/yyyy'" matInput readonly type="text"/>
+    </mat-form-field>
+    <mat-form-field *ngIf="!isCreate()" class="full-width">
+        <mat-label>Fecha de Cierre</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="engagementLetter.closingDate" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
     <fieldset class="owner-fieldset">
         <legend>Responsable</legend>
-        <app-search-by-user [(user)]="engagementLetter.owner.mobile" class="full-width"></app-search-by-user>
-        <mat-form-field class="full-width">
-            <mat-label>Owner Mobile</mat-label>
-            <input [(ngModel)]="engagementLetter.owner.mobile" id="mobile" matInput maxlength="9" pattern="^[0-9]{9}$"
-                   required type="tel"/>
-        </mat-form-field>
+        <app-search-by-user [(user)]="engagementLetter.owner" class="full-width"></app-search-by-user>
+        @if (engagementLetter.owner) {
+            <mat-list>
+                <mat-list-item>
+                    <button mat-icon-button color="warn" aria-label="Eliminar usuario" matTooltip="Eliminar propietario"
+                            (click)="engagementLetter.owner = undefined">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    {{ engagementLetter.owner.mobile }}:{{ engagementLetter.owner.familyName ?? '' }}, {{ engagementLetter.owner.firstName ?? '' }}
+                </mat-list-item>
+            </mat-list>
+        }
     </fieldset>
     <fieldset class="owner-fieldset">
         <legend>Resto de clientes</legend>
         <app-search-by-user (userChange)="addAttachment($event)" class="full-width"></app-search-by-user>
         <mat-list>
-            @for (attachment of engagementLetter.attachments ?? []; track attachment) {
+            @for (user of engagementLetter.attachments ?? []; track user) {
                 <mat-list-item>
-                    <button mat-icon-button (click)="removeAtachment(attachment)" aria-label="Eliminar tarea legal">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                    {{ attachment.mobile }}
+                    <div class="list-item-content">
+                        <button mat-icon-button color="warn" aria-label="Eliminar usuario" matTooltip="Eliminar adjunto"
+                                (click)="removeAtachment(user)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        {{ user.mobile }}: {{ user.familyName ?? '' }}, {{ user.firstName ?? '' }}
+                    </div>
                 </mat-list-item>
             }
         </mat-list>
@@ -42,6 +57,9 @@
                     <button mat-icon-button (click)="removeProcedure(procedure)" aria-label="Eliminar tarea legal">
                         <mat-icon>delete</mat-icon>
                     </button>
+                    <button mat-icon-button (click)="editLegalProcedureDialog(procedure)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
                     {{ procedure.title }}
                 </mat-list-item>
             }
@@ -49,10 +67,11 @@
     </fieldset>
     <fieldset class="owner-fieldset">
         <legend>Métodos de pago</legend>
-        <button mat-mini-fab (click)="openDialog()" >
+        <button mat-mini-fab (click)="addLegalProcedureDialog()">
             <mat-icon>add</mat-icon>
         </button>
-        <span *ngIf="!isPaymentTotalValid()" style="color: red; margin-left: 8px;"> Error: total ≠ 100%</span>
+        <span *ngIf="!isPaymentTotalValid()"
+              style="color: #b00020; margin-left: 8px;"> Error: total debe ser 100%</span>
         <mat-list>
             @for (method of engagementLetter.paymentMethods ?? []; track method.description) {
                 <mat-list-item>

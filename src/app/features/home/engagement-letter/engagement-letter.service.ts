@@ -35,4 +35,10 @@ export class EngagementLetterService {
         return this.httpService
             .get(EngagementLetterService.API_URL + `/${id}`);
     }
+
+    delete(id: string) {
+        return this.httpService
+            .successful()
+            .delete(EngagementLetterService.API_URL + `/${id}`);
+    }
 }

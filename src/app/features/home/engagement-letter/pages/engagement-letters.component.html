@@ -1,4 +1,6 @@
-<app-filter-boolean [(value)]="criteria.opened" label="Abierta"></app-filter-boolean>
+<mat-slide-toggle [(ngModel)]="criteria.opened">Abierto</mat-slide-toggle>
+<app-filter-input [(value)]="criteria.legalProcedureTitle" title="Titulo del Procedimiento"></app-filter-input>
+<app-filter-input [(value)]="criteria.owner" title="Responsable"></app-filter-input>
 <app-crud (create)="create()" (delete)="delete($event)" (read)="read($event)" (searchAll)="search()"
           (update)="update($event)"
           [data]="engagementLetters"

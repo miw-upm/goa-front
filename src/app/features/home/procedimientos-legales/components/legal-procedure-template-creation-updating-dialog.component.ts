@@ -75,10 +75,10 @@ export class LegalProcedureTemplateCreationUpdatingDialogComponent {
         );
     }
 
-    addTask(value: string): void {
-        const task = (value || '').trim();
-        if (task && !this.legalProcedure.legalTasks.some(t => t.title === task)) {
-            this.legalProcedure.legalTasks.push({title: task});
+    addTask(value: LegalTask): void {
+        const taskTitle = value?.title?.trim();
+        if (taskTitle &&!this.legalProcedure.legalTasks.some(t => t.title === taskTitle) ) {
+            this.legalProcedure.legalTasks.push({ ...value, title: taskTitle });
         }
     }
 

@@ -3,8 +3,8 @@ import {Injectable} from '@angular/core';
 import {environment} from "@env";
 import {HttpService} from '@common/services/http.service';
 import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
-
+import {LegalProcedure} from "../../features/home/engagement-letter/legal-procedure.model";
+import {LegalProcedureTemplate} from "../../features/home/procedimientos-legales/legal-procedure-template.model";
 
 @Injectable({providedIn: 'root'})
 export class SharedLegalProcedureService {
@@ -13,14 +13,9 @@ export class SharedLegalProcedureService {
     constructor(private readonly httpService: HttpService) {
     }
 
-    searchProcedures(title: string): Observable<string[]> {
+    searchProcedures(title: string): Observable<LegalProcedureTemplate[]> {
         return this.httpService
             .param("title", title ?? '')
             .get(SharedLegalProcedureService.API_URL)
-            .pipe(
-                map(procedures =>
-                    procedures.map((procedure => `${procedure.title}`))
-                )
-            )
     }
 }
