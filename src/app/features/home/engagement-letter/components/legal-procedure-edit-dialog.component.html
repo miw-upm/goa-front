@@ -1,42 +1,44 @@
 <h2 mat-dialog-title>Editar Procedimiento Legal</h2>
 <mat-dialog-content>
-    <mat-form-field  class="full-width">
+    <mat-form-field class="full-width">
         <mat-label>Titulo</mat-label>
-        <input type="text" matInput [(ngModel)]="procedure.title" />
+        <input [(ngModel)]="procedure.title" matInput type="text"/>
     </mat-form-field>
     <mat-form-field class="full-width">
         <mat-label>Fecha de inicio</mat-label>
-        <input matInput [matDatepicker]="picker" [(ngModel)]="procedure.startDate" />
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <input [(ngModel)]="procedure.startDate" [matDatepicker]="picker" matInput/>
+        <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-    <mat-form-field  class="full-width">
+    <mat-form-field class="full-width">
         <mat-label>Presupuesto</mat-label>
-        <input type="number" matInput [(ngModel)]="procedure.budget" />
+        <input [(ngModel)]="procedure.budget" matInput type="number"/>
     </mat-form-field>
 
     <mat-checkbox [(ngModel)]="procedure.vatIncluded">¿Incluye IVA?</mat-checkbox>
     <mat-form-field class="full-width">
         <mat-label>Nueva tarea legal</mat-label>
-        <input matInput [(ngModel)]="newTask" (keydown.enter)="addTask()" />
-        <button mat-icon-button matSuffix (click)="addTask()">
+        <input (keydown.enter)="addTask()" [(ngModel)]="newTask" matInput/>
+        <button (click)="addTask()" mat-icon-button matSuffix>
             <mat-icon>add</mat-icon>
         </button>
     </mat-form-field>
     <mat-list>
-        <mat-list-item *ngFor="let task of procedure.legalTasks">
-            <div class="list-item-content">
-                <button mat-icon-button color="warn" (click)="removeTask(task)" matTooltip="Eliminar tarea">
-                    <mat-icon>delete</mat-icon>
-                </button>
-                {{ task }}
-            </div>
-        </mat-list-item>
+        @for (task of procedure.legalTasks; track task) {
+            <mat-list-item>
+                <div class="list-item-content">
+                    <button mat-icon-button color="warn" matTooltip="Eliminar tarea" (click)="removeTask(task)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    {{ task }}
+                </div>
+            </mat-list-item>
+        }
     </mat-list>
 
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-button (click)="cancel()">Cancelar</button>
-    <button mat-flat-button color="primary" (click)="save()">Guardar</button>
+    <button (click)="cancel()" mat-button>Cancelar</button>
+    <button (click)="save()" color="primary" mat-flat-button>Guardar</button>
 </mat-dialog-actions>

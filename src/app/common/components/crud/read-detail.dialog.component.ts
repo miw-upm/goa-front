@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {NgIf} from '@angular/common';
+import {Observable} from 'rxjs';
 import {
     MAT_DIALOG_DATA,
     MatDialogActions,
@@ -7,19 +7,18 @@ import {
     MatDialogContent,
     MatDialogTitle
 } from '@angular/material/dialog';
-import {MatLabel} from '@angular/material/form-field';
-import {MatButton} from '@angular/material/button';
-import {Observable} from 'rxjs';
+import {MatButtonModule} from '@angular/material/button';
 
-import {UppercaseWordsPipe} from '../../pipes/uppercase-words.pipe';
+import {UppercaseWordsPipe} from "@common/pipes/uppercase-words.pipe";
 import {DataCellComponent} from "@common/components/crud/data-cell.component";
 
 @Component({
     standalone: true,
-    imports: [MatDialogContent, MatLabel, UppercaseWordsPipe, MatDialogActions, MatDialogClose, MatButton,
-        NgIf, MatDialogTitle, DataCellComponent, DataCellComponent, DataCellComponent],
     templateUrl: 'read-detail.dialog.component.html',
-    styleUrls: ['read-detail-dialog.component.css']
+    styleUrls: ['read-detail-dialog.component.css'],
+    imports: [MatDialogContent, MatDialogActions, MatDialogTitle, MatDialogClose, MatButtonModule, UppercaseWordsPipe,
+        DataCellComponent
+    ]
 })
 
 export class ReadDetailDialogComponent {
@@ -31,7 +30,7 @@ export class ReadDetailDialogComponent {
         this.object = data.object;
     }
 
-    labels(object): string[] {
+    labels(object: any): string[] {
         return Object.getOwnPropertyNames(object);
     }
 }

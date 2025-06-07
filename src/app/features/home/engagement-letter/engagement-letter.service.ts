@@ -3,9 +3,9 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpService} from "@common/services/http.service";
 import {environment} from "@env";
-import {EngagementLetter} from "./engagement-letter.model";
-import {LegalProcedureTemplate} from "../procedimientos-legales/legal-procedure-template.model";
-import {EngagementLetterSearch} from "./pages/engagement-letter.search";
+import {EngagementLetter} from "./models/engagement-letter.model";
+import {LegalProcedureTemplate} from "../legal-procedure-templates/models/legal-procedure-template.model";
+import {EngagementLetterSearch} from "./models/engagement-letter-search.model";
 
 @Injectable({providedIn: 'root'})
 export class EngagementLetterService {

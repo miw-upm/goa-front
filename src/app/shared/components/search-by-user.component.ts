@@ -20,11 +20,11 @@ export class SearchByUserComponent {
     constructor(private readonly sharedUserService: SharedUserService) {
     }
 
-    public onSelect(user:User): void {
+    public onSelect(user: User): void {
         this.userChange.emit(user);
     }
 
-    searchByUser(filter:string): void {
+    searchByUser(filter: string): void {
         this.users = this.sharedUserService.searchUsers(filter);
     }
 }

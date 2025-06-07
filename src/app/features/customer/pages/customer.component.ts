@@ -1,37 +1,34 @@
 import {Component} from "@angular/core";
-import {MatCard, MatCardContent, MatCardTitle} from "@angular/material/card";
-import {NgForOf, NgOptimizedImage} from "@angular/common";
+import {NgOptimizedImage} from "@angular/common";
 import {FormsModule} from "@angular/forms";
-import {MatDialogActions, MatDialogContent} from "@angular/material/dialog";
-import {MatInput, MatLabel} from "@angular/material/input";
-import {MatSelect} from "@angular/material/select";
-import {MatOption} from "@angular/material/autocomplete";
-import {MatFormField} from "@angular/material/form-field";
+import {MatCardModule} from "@angular/material/card";
+import {MatOptionModule} from "@angular/material/core";
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatInputModule} from "@angular/material/input";
+import {MatSelectModule} from "@angular/material/select";
+import {MatFormFieldModule} from "@angular/material/form-field";
 import {ActivatedRoute} from "@angular/router";
-import {MatButton} from "@angular/material/button";
+import {MatButtonModule} from "@angular/material/button";
+
 import {CustomerService} from "../customer.service";
 import {UserDocumentType} from "@shared/models/UserDocumentType";
 import {User} from "@shared/models/user.model";
+
 
 @Component({
     standalone: true,
     selector: 'app-customer',
     templateUrl: './customer.component.html',
     imports: [
-        MatCard,
-        MatCardContent,
-        MatCardTitle,
-        NgOptimizedImage,
         FormsModule,
-        MatDialogContent,
-        MatFormField,
-        MatInput,
-        MatLabel,
-        MatOption,
-        MatSelect,
-        NgForOf,
-        MatButton,
-        MatDialogActions
+        NgOptimizedImage,
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatOptionModule,
+        MatButtonModule,
+        MatDialogModule
     ],
     styleUrl: './customer.component.css'
 })

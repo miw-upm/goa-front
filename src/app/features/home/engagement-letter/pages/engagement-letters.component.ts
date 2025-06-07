@@ -1,26 +1,21 @@
 import {Component} from "@angular/core";
 import {FormsModule} from "@angular/forms";
-import {CrudComponent} from "@common/components/crud/crud.component";
 import {Observable, of} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+
+import {CrudComponent} from "@common/components/crud/crud.component";
+import {FilterInputComponent} from "@common/components/inputs/filter-input.component";
 import {EngagementLetterService} from "../engagement-letter.service";
-import {EngagementLetterSearch} from "./engagement-letter.search";
-import {EngagementLetter} from "../engagement-letter.model";
+import {EngagementLetterSearch} from "../models/engagement-letter-search.model";
+import {EngagementLetter} from "../models/engagement-letter.model";
 import {
     EngagementLetterCreationUpdatingDialogComponent
 } from "../components/engagement-letter-creation-updating-dialog.component";
 
-import {MatSlideToggle} from "@angular/material/slide-toggle";
-import {FilterInputComponent} from "@common/components/inputs/filter-input.component";
-
 @Component({
     standalone: true,
-    imports: [
-        FormsModule,
-        CrudComponent,
-        MatSlideToggle,
-        FilterInputComponent
-    ],
+    imports: [FormsModule, CrudComponent, MatSlideToggleModule, FilterInputComponent],
     templateUrl: 'engagement-letters.component.html'
 })
 export class EngagementLettersComponent {
@@ -34,7 +29,7 @@ export class EngagementLettersComponent {
     }
 
     resetSearch(): void {
-        this.criteria = {opened:true,legalProcedureTitle:undefined};
+        this.criteria = {opened: true, legalProcedureTitle: undefined};
     }
 
     search(): void {
@@ -51,11 +46,10 @@ export class EngagementLettersComponent {
                 .afterClosed()
                 .subscribe(() => this.search())
         );
-
     }
 
-    delete(engagement:EngagementLetter) {
-        this.engagementLettersService.delete(engagement.id).subscribe(()=>this.search())
+    delete(engagement: EngagementLetter) {
+        this.engagementLettersService.delete(engagement.id).subscribe(() => this.search())
     }
 
     read(engagement: EngagementLetter) {

@@ -28,9 +28,11 @@
     <mat-form-field class="full-width">
         <mat-label>Document Type</mat-label>
         <mat-select [(ngModel)]="user.documentType" name="documentType">
-            <mat-option *ngFor="let type of documentTypes" [value]="type">
-                {{ type }}
-            </mat-option>
+            @for (type of documentTypes; track type) {
+                <mat-option [value]="type">
+                    {{ type }}
+                </mat-option>
+            }
         </mat-select>
     </mat-form-field>
     <mat-form-field class="full-width">
@@ -40,21 +42,26 @@
     <mat-form-field class="full-width">
         <mat-label>Role</mat-label>
         <mat-select [(ngModel)]="user.role" name="role">
-            <mat-option *ngFor="let role of roles" [value]="role">
-                {{ role }}
-            </mat-option>
+            @for (role of roles; track role) {
+                <mat-option [value]="role">
+                    {{ role }}
+                </mat-option>
+            }
         </mat-select>
     </mat-form-field>
-    <mat-form-field *ngIf="!isCreate()" class="full-width">
-        <mat-label>Registration Date</mat-label>
-        <input [value]="user.registrationDate | date:'dd-MM-yyyy'" matInput readonly type="text"/>
-    </mat-form-field>
+    @if (!isCreate()) {
+        <mat-form-field class="full-width">
+            <mat-label>Registration Date</mat-label>
+            <input [value]="user.registrationDate | date:'dd-MM-yyyy'" matInput readonly type="text"/>
+        </mat-form-field>
+    }
     <mat-slide-toggle [(ngModel)]="user.active">Active</mat-slide-toggle>
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Close</button>
-    <button (click)="create()" *ngIf="isCreate()" [disabled]=invalid() color="primary" mat-raised-button>Create
-    </button>
-    <button (click)="update()" *ngIf="!isCreate()" [disabled]=invalid() color="primary" mat-raised-button>Update
-    </button>
+    @if (isCreate()) {
+        <button (click)="create()" [disabled]=invalid() color="primary" mat-raised-button>Create</button>
+    } @else {
+        <button (click)="update()" [disabled]=invalid() color="primary" mat-raised-button>Update</button>
+    }
 </mat-dialog-actions>

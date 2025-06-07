@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {MatSnackBar} from '@angular/material/snack-bar';
 import {EMPTY, Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 export interface HttpOptions {
     headers: HttpHeaders;
@@ -16,7 +16,6 @@ export interface HttpOptions {
 export class HttpService {
     static readonly CONNECTION_REFUSE = 0;
     static readonly UNAUTHORIZED = 401;
-
     private headers: HttpHeaders;
     private params: HttpParams;
     private responseType: 'json' | 'blob';
@@ -155,7 +154,7 @@ export class HttpService {
         this.errorNotification = undefined;
     }
 
-    private handleError(response): Observable<never> {
+    private handleError(response: any): Observable<never> {
         if (response.status === HttpService.UNAUTHORIZED) {
             this.showError('Unauthorized');
             this.router.navigate(['']).then();

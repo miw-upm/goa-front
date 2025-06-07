@@ -3,8 +3,10 @@ import {Observable, of} from 'rxjs';
 
 import {SearchComponent} from '@common/components/inputs/search.component';
 import {SharedLegalProcedureService} from "@shared/services/shared-legal-procedure.service";
-import {LegalProcedure} from "../../features/home/engagement-letter/legal-procedure.model";
-import {LegalProcedureTemplate} from "../../features/home/procedimientos-legales/legal-procedure-template.model";
+import {LegalProcedure} from "../../features/home/engagement-letter/models/legal-procedure.model";
+import {
+    LegalProcedureTemplate
+} from "../../features/home/legal-procedure-templates/models/legal-procedure-template.model";
 
 @Component({
     standalone: true,
@@ -21,11 +23,11 @@ export class SearchByLegalProcedureTemplateComponent {
     constructor(private readonly sharedLegalProcedureService: SharedLegalProcedureService) {
     }
 
-    public onSelect(procedure:LegalProcedureTemplate): void {
+    public onSelect(procedure: LegalProcedureTemplate): void {
         this.procedureChange.emit(procedure);
     }
 
-    searchByLegalProcedure(filter:string): void {
+    searchByLegalProcedure(filter: string): void {
         this.procedures = this.sharedLegalProcedureService.searchProcedures(filter);
     }
 }

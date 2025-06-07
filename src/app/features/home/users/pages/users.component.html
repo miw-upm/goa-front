@@ -5,4 +5,5 @@
 <app-filter-input [(value)]="criteria.email" title="Email"></app-filter-input>
 
 <app-crud (create)="create()" (read)="read($event)" (searchAll)="search()" (update)="update($event)"
-          [data]="users" [item]="user" [title]="title"></app-crud>
+          [data]="users" [hiddenFields]="['id']" [item]="user" [title]="title">
+</app-crud>

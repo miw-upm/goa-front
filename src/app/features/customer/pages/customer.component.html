@@ -31,9 +31,11 @@
             <mat-form-field class="full-width">
                 <mat-label>Document Type</mat-label>
                 <mat-select [(ngModel)]="user.documentType" name="documentType">
-                    <mat-option *ngFor="let type of documentTypes" [value]="type">
-                        {{ type }}
-                    </mat-option>
+                    @for (type of documentTypes; track type) {
+                        <mat-option [value]="type">
+                            {{ type }}
+                        </mat-option>
+                    }
                 </mat-select>
             </mat-form-field>
             <mat-form-field class="full-width">

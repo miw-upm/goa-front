@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {CommonModule, DatePipe, NgIf} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 
 import {MAT_DIALOG_DATA, MatDialog, MatDialogModule} from '@angular/material/dialog';
 
@@ -11,20 +11,20 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 
-import {EngagementLetter} from '../engagement-letter.model';
+import {EngagementLetter} from '../models/engagement-letter.model';
 import {EngagementLetterService} from '../engagement-letter.service';
 import {SearchByUserComponent} from '@shared/components/search-by-user.component';
 import {User} from "@shared/models/user.model";
 import {SearchByLegalProcedureTemplateComponent} from "@shared/components/search-by-legal-procedure-template.component";
-import {LegalProcedure} from "../legal-procedure.model";
+import {LegalProcedure} from "../models/legal-procedure.model";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatListModule} from "@angular/material/list";
-import {PaymentMethod} from "../payment-method.model";
+import {PaymentMethod} from "../models/payment-method.model";
 import {PaymentMethodDialogComponent} from "./payment-method-dialog.component";
 import {LegalProcedureEditDialogComponent} from "./legal-procedure-edit-dialog.component";
-import {LegalProcedureTemplateService} from "../../procedimientos-legales/legal-procedure-template.service";
+import {LegalProcedureTemplateService} from "../../legal-procedure-templates/legal-procedure-template.service";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import {LegalProcedureTemplate} from "../../procedimientos-legales/legal-procedure-template.model";
+import {LegalProcedureTemplate} from "../../legal-procedure-templates/models/legal-procedure-template.model";
 
 @Component({
     standalone: true,
@@ -34,7 +34,6 @@ import {LegalProcedureTemplate} from "../../procedimientos-legales/legal-procedu
     imports: [
         CommonModule,
         FormsModule,
-        NgIf,
         DatePipe,
         MatDialogModule,
         MatFormFieldModule,
@@ -134,7 +133,7 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         }
     }
 
-    addAttachment(user:User) {
+    addAttachment(user: User) {
         const alreadyInAttachments = this.engagementLetter.attachments.some(t => t.mobile === user.mobile);
         const isOwner = this.engagementLetter.owner?.mobile === user.mobile;
         if (!alreadyInAttachments && !isOwner) {
@@ -142,7 +141,7 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         }
     }
 
-    addProcedure(template:LegalProcedureTemplate) {
+    addProcedure(template: LegalProcedureTemplate) {
         const procedure: LegalProcedure = {
             id: template.id,
             title: template.title,

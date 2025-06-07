@@ -1,13 +1,14 @@
 import {Component, Input} from '@angular/core';
 import {DatePipe} from '@angular/common';
+
 import {UppercaseWordsPipe} from "@common/pipes/uppercase-words.pipe";
 
 @Component({
-    selector: 'app-data-cell',
     standalone: true,
-    imports: [DatePipe, UppercaseWordsPipe],
+    selector: 'app-data-cell',
     templateUrl: './data-cell.component.html',
-    styleUrls: ['./data-cell.component.css']
+    styleUrls: ['./data-cell.component.css'],
+    imports: [DatePipe, UppercaseWordsPipe]
 })
 export class DataCellComponent {
     @Input() value: any;

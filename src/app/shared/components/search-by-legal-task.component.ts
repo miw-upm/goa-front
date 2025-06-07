@@ -3,7 +3,7 @@ import {Observable, of} from 'rxjs';
 
 import {SearchComponent} from '@common/components/inputs/search.component';
 import {SharedLegalTaskService} from "../services/shared-legal-task.service";
-import {LegalTask} from "../../features/home/tareas-legales/legal-task.model";
+import {LegalTask} from "../../features/home/legal-taks/models/legal-task.model";
 
 @Component({
     standalone: true,
@@ -20,11 +20,11 @@ export class SearchByLegalTaskComponent {
     constructor(private readonly sharedLegalTaskService: SharedLegalTaskService) {
     }
 
-    public onSelect(value:LegalTask): void {
+    public onSelect(value: LegalTask): void {
         this.taskChange.emit(value);
     }
 
-    searchByLegalTask(filter:string): void {
+    searchByLegalTask(filter: string): void {
         this.tasks = this.sharedLegalTaskService.searchTasks(filter);
     }
 }

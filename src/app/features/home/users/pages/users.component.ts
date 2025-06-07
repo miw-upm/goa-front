@@ -1,13 +1,15 @@
 import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
 import {Observable, of} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+
 import {CrudComponent} from '@common/components/crud/crud.component';
 import {FilterInputComponent} from "@common/components/inputs/filter-input.component";
-import {UserCreationUpdatingDialogComponent} from '../components/user-creation-updating-dialog.component';
-import {UserSearch} from './user-search.model';
-import {UserService} from "../user.service";
 import {User} from "@shared/models/user.model";
+import {UserCreationUpdatingDialogComponent} from '../components/user-creation-updating-dialog.component';
+import {UserSearch} from '../user-search.model';
+import {UserService} from "../user.service";
+
 
 @Component({
     standalone: true,

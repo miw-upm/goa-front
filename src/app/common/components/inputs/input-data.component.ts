@@ -1,15 +1,16 @@
 import {Component, EventEmitter, Input, Output} from "@angular/core";
-import {MatFormField, MatLabel, MatSuffix} from "@angular/material/form-field";
-import {MatIcon} from "@angular/material/icon";
-import {MatIconButton} from "@angular/material/button";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
 import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {MatInput} from "@angular/material/input";
+import {MatInputModule} from "@angular/material/input";
 
 @Component({
     standalone: true,
-    imports: [MatFormField, MatIcon, MatIconButton, MatLabel, FormsModule, MatInput, MatSuffix, ReactiveFormsModule],
     selector: 'app-input-data',
     templateUrl: 'input-data.component.html',
+    styleUrls: ['./filter.component.css'],
+    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule]
 })
 export class InputData {
     @Input() title: string = 'Input text';

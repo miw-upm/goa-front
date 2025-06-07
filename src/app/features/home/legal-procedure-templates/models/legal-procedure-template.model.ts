@@ -1,4 +1,4 @@
-import {LegalTask} from "../tareas-legales/legal-task.model";
+import {LegalTask} from "../../legal-taks/models/legal-task.model";
 
 export interface LegalProcedureTemplate {
     id?: string;

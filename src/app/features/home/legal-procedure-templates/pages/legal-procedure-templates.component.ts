@@ -1,25 +1,26 @@
 import {Component} from "@angular/core";
 import {FormsModule} from "@angular/forms";
-import {CrudComponent} from "@common/components/crud/crud.component";
-import {FilterInputComponent} from "@common/components/inputs/filter-input.component";
+import {map} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
-import {LegalProcedureSearch} from "./legal-procedure-search.model";
+
+import {CrudComponent} from "@common/components/crud/crud.component";
+import {FilterInputComponent} from "@common/components/inputs/filter-input.component";
+import {LegalProcedureSearch} from "../models/legal-procedure-search.model";
 import {LegalProcedureTemplateService} from "../legal-procedure-template.service";
-import {LegalProcedureTemplate} from "../legal-procedure-template.model";
+import {LegalProcedureTemplate} from "../models/legal-procedure-template.model";
 import {
     LegalProcedureTemplateCreationUpdatingDialogComponent
 } from "../components/legal-procedure-template-creation-updating-dialog.component";
-import {map} from "rxjs/operators";
 
 @Component({
     standalone: true,
     imports: [FormsModule, CrudComponent, FilterInputComponent],
-    templateUrl: 'legal-procedures.component.html'
+    templateUrl: 'legal-procedure-templates.component.html'
 })
-export class LegalProceduresComponent {
+export class LegalProcedureTemplatesComponent {
     legalProcedureSearch: LegalProcedureSearch;
-    title = "Procedimientos Legales";
+    title = "Plantillas de Procedimientos Legales";
     legalProcedures = of([]);
     legalProcedure: Observable<any>;
 

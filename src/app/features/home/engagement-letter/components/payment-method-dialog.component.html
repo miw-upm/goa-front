@@ -2,15 +2,15 @@
 <mat-dialog-content>
     <mat-form-field class="full-width">
         <mat-label>Porcentaje</mat-label>
-        <input type="number" matInput [(ngModel)]="percentage" />
+        <input [(ngModel)]="percentage" matInput type="number"/>
     </mat-form-field>
     <mat-form-field class="full-width">
         <mat-label>Descripción</mat-label>
-        <input matInput [(ngModel)]="description" />
+        <input [(ngModel)]="description" matInput/>
     </mat-form-field>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-button (click)="cancel()">Cancelar</button>
-    <button mat-flat-button color="primary" (click)="save()">Guardar</button>
+    <button (click)="cancel()" mat-button>Cancelar</button>
+    <button (click)="save()" color="primary" mat-flat-button>Guardar</button>
 </mat-dialog-actions>

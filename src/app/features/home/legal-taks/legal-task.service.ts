@@ -3,8 +3,8 @@ import {Observable} from 'rxjs';
 
 import {environment} from "@env";
 import {HttpService} from '@common/services/http.service';
-import {LegalTask} from "./legal-task.model";
-import {LegalTaskSearch} from "./pages/legal-task-search.model";
+import {LegalTask} from "./models/legal-task.model";
+import {LegalTaskSearch} from "./models/legal-task-search.model";
 
 @Injectable({providedIn: 'root'})
 export class LegalTaskService {

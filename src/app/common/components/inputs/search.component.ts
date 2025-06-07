@@ -1,27 +1,40 @@
 import {booleanAttribute, Component, EventEmitter, Input, Output} from '@angular/core';
 import {AsyncPipe} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
-import {MatIcon} from '@angular/material/icon';
-import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
-import {MatIconButton} from '@angular/material/button';
-import {MatTooltip} from '@angular/material/tooltip';
-import {MatInput} from '@angular/material/input';
 import {of} from 'rxjs';
+import {FormsModule} from '@angular/forms';
+import {MatFormFieldModule, MatLabel, MatSuffix} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+import {MatAutocompleteModule, MatAutocompleteTrigger,} from '@angular/material/autocomplete';
+import {MatIconButton} from '@angular/material/button';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatInputModule} from '@angular/material/input';
+import {MatOptionModule} from "@angular/material/core";
 
 @Component({
     standalone: true,
-    imports: [MatFormField, MatIcon, MatAutocomplete, MatOption, AsyncPipe, MatIconButton, MatLabel, MatTooltip,
-        FormsModule, MatAutocompleteTrigger, MatInput, MatSuffix],
     selector: 'app-search',
     templateUrl: 'search.component.html',
-    styleUrls: ['search.component.css']
+    styleUrls: ['search.component.css'],
+    imports: [
+        FormsModule,
+        AsyncPipe,
+        MatFormFieldModule,
+        MatLabel,
+        MatSuffix,
+        MatIconModule,
+        MatIconButton,
+        MatTooltipModule,
+        MatInputModule,
+        MatAutocompleteModule,
+        MatAutocompleteTrigger,
+        MatOptionModule
+    ]
 })
 export class SearchComponent {
-    inputValue: string ='';
+    inputValue: string = '';
     @Input() title = 'Search';
     @Input() key: any = null;
-    @Input() keyView:string[];
+    @Input() keyView: string[];
     @Input() keys = of<any[]>([]);
     @Input({transform: booleanAttribute}) obligatory = false;
 

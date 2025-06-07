@@ -1,6 +1,5 @@
 import {Component, Inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {NgIf} from '@angular/common';
 import {
     MAT_DIALOG_DATA,
     MatDialog,
@@ -9,16 +8,25 @@ import {
     MatDialogContent,
     MatDialogTitle
 } from '@angular/material/dialog';
-import {MatFormField, MatLabel} from '@angular/material/form-field';
-import {MatInput} from '@angular/material/input';
-import {MatButton} from '@angular/material/button';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
 
 import {LegalTaskService} from "../legal-task.service";
-import {LegalTask} from "../legal-task.model";
+import {LegalTask} from "../models/legal-task.model";
 
 @Component({
     standalone: true,
-    imports: [MatDialogTitle, MatDialogContent, MatFormField, MatLabel, FormsModule, MatInput, MatDialogActions, MatDialogClose, MatButton, NgIf],
+    imports: [
+        FormsModule,
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatDialogClose,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule
+    ],
     templateUrl: 'legal-task-creation-updating-dialog.component.html',
     styleUrls: ['legal-task-dialog.component.css']
 })

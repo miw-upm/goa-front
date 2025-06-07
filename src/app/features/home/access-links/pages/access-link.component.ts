@@ -1,8 +1,9 @@
 import {Component} from "@angular/core";
 import {FormsModule} from "@angular/forms";
-import {CrudComponent} from "@common/components/crud/crud.component";
 import {Observable, of} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
+
+import {CrudComponent} from "@common/components/crud/crud.component";
 import {AccessLinkService} from "../access-link.service";
 
 @Component({
@@ -22,7 +23,7 @@ export class AccessLinkComponent {
         this.accessLinks = this.accessLinkService.search();
     }
 
-    delete(accessLink) {
+    delete(accessLink: any) {
         this.accessLinkService.delete(accessLink.id).subscribe(
             () => this.search()
         )

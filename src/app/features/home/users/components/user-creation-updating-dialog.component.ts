@@ -1,6 +1,5 @@
 import {Component, Inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {
     MAT_DIALOG_DATA,
     MatDialog,
@@ -9,21 +8,33 @@ import {
     MatDialogContent,
     MatDialogTitle
 } from '@angular/material/dialog';
-import {MatFormField, MatLabel} from '@angular/material/form-field';
-import {MatInput} from '@angular/material/input';
-import {MatSlideToggle} from '@angular/material/slide-toggle';
-import {MatButton} from '@angular/material/button';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatButtonModule} from '@angular/material/button';
+import {MatSelectModule} from "@angular/material/select";
 
-import {UserService} from '../user.service';
-import {MatOption, MatSelect} from "@angular/material/select";
 import {AuthService} from "@common/components/auth/auth.service";
 import {UserDocumentType} from "@shared/models/UserDocumentType";
 import {User} from "@shared/models/user.model";
+import {UserService} from '../user.service';
+import {DatePipe} from "@angular/common";
 
 @Component({
     standalone: true,
-    imports: [MatDialogTitle, MatDialogContent, MatFormField, MatLabel, FormsModule, MatInput, MatSlideToggle,
-        MatDialogActions, MatDialogClose, MatButton, NgIf, MatSelect, MatSelect, MatOption, NgForOf, DatePipe],
+    imports: [
+        FormsModule,
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatDialogClose,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSlideToggleModule,
+        MatButtonModule,
+        MatSelectModule,
+        DatePipe
+    ],
     templateUrl: 'user-creation-updating-dialog.component.html',
     styleUrls: ['user-dialog.component.css']
 })

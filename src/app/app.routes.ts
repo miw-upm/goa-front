@@ -6,10 +6,14 @@ import {RoleGuardService} from "@common/components/auth/role-guard.service";
 import {Role} from "@common/components/auth/models/role.model";
 import {CustomerComponent} from "./features/customer/pages/customer.component";
 import {AccessLinkComponent} from "./features/home/access-links/pages/access-link.component";
-import {LegalTasksComponent} from "./features/home/tareas-legales/pages/legal-tasks.component";
-import {LegalProceduresComponent} from "./features/home/procedimientos-legales/pages/legal-procedures.component";
-import {LegalTaskService} from "./features/home/tareas-legales/legal-task.service";
-import {LegalProcedureTemplateService} from "./features/home/procedimientos-legales/legal-procedure-template.service";
+import {LegalTasksComponent} from "./features/home/legal-taks/pages/legal-tasks.component";
+import {
+    LegalProcedureTemplatesComponent
+} from "./features/home/legal-procedure-templates/pages/legal-procedure-templates.component";
+import {LegalTaskService} from "./features/home/legal-taks/legal-task.service";
+import {
+    LegalProcedureTemplateService
+} from "./features/home/legal-procedure-templates/legal-procedure-template.service";
 import {AccessLinkService} from "./features/home/access-links/access-link.service";
 import {UserService} from "./features/home/users/user.service";
 import {EngagementLetterService} from "./features/home/engagement-letter/engagement-letter.service";
@@ -38,7 +42,7 @@ export const routes: Routes = [
             },
             {
                 path: 'legal-procedures',
-                component: LegalProceduresComponent,
+                component: LegalProcedureTemplatesComponent,
                 canActivate: [RoleGuardService],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [LegalProcedureTemplateService]

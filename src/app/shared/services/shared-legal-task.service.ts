@@ -3,8 +3,7 @@ import {Injectable} from '@angular/core';
 import {environment} from "@env";
 import {HttpService} from '@common/services/http.service';
 import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
-import {LegalTask} from "../../features/home/tareas-legales/legal-task.model";
+import {LegalTask} from "../../features/home/legal-taks/models/legal-task.model";
 
 
 @Injectable({providedIn: 'root'})

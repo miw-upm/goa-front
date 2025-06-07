@@ -7,8 +7,9 @@
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Close</button>
-    <button (click)="create()" *ngIf="isCreate()" [disabled]=invalid() color="primary" mat-raised-button>Create
-    </button>
-    <button (click)="update()" *ngIf="!isCreate()" [disabled]=invalid() color="primary" mat-raised-button>Update
-    </button>
+    @if (isCreate()) {
+        <button (click)="create()" [disabled]=invalid() color="primary" mat-raised-button>Create</button>
+    } @else {
+        <button (click)="update()" [disabled]=invalid() color="primary" mat-raised-button>Update</button>
+    }
 </mat-dialog-actions>

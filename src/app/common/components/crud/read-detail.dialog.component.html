@@ -1,12 +1,13 @@
 <h2 mat-dialog-title> {{ title }}</h2>
 <mat-dialog-content>
-    <ng-container *ngIf="(object) as data">
-        @for (def of labels(data); track def) {
-            <mat-label><strong>{{ def | uppercaseWords }}: </strong>
-                <app-data-cell [value]="data[def]" [fullList]="true"></app-data-cell>
-            </mat-label>
+    @if (object) {
+        @for (key of labels(object); track key) {
+            <div class="field-row">
+                <strong>{{ key | uppercaseWords }}:</strong>
+                <app-data-cell [value]="object[key]" [fullList]="true"></app-data-cell>
+            </div>
         }
-    </ng-container>
+    }
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Close</button>

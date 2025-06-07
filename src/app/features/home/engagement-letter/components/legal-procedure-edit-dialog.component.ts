@@ -1,17 +1,19 @@
-import { Component, Inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import {Component, Inject} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { CommonModule } from '@angular/common';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatIconModule} from "@angular/material/icon";
-import {LegalProcedure} from "../legal-procedure.model";
 import {MatListModule} from "@angular/material/list";
-import {LegalTaskService} from "../../tareas-legales/legal-task.service";
+
+import {LegalTaskService} from "../../legal-taks/legal-task.service";
+import {LegalProcedure} from "../models/legal-procedure.model";
 
 @Component({
     standalone: true,
@@ -30,6 +32,7 @@ import {LegalTaskService} from "../../tareas-legales/legal-task.service";
         MatIconModule,
         MatDialogModule,
         MatListModule,
+        MatTooltipModule,
     ]
 })
 export class LegalProcedureEditDialogComponent {

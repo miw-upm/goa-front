@@ -1,6 +1,5 @@
 import {Component, Inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {NgIf} from '@angular/common';
 import {
     MAT_DIALOG_DATA,
     MatDialog,
@@ -9,23 +8,34 @@ import {
     MatDialogContent,
     MatDialogTitle
 } from '@angular/material/dialog';
-import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
-import {MatInput} from '@angular/material/input';
-import {MatButton, MatIconButton} from '@angular/material/button';
-import {LegalProcedureTemplate} from "../legal-procedure-template.model";
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
+import {LegalProcedureTemplate} from "../models/legal-procedure-template.model";
 import {LegalProcedureTemplateService} from "../legal-procedure-template.service";
-import {MatIcon} from "@angular/material/icon";
+import {MatIconModule} from "@angular/material/icon";
 import {SearchByLegalTaskComponent} from "@shared/components/search-by-legal-task.component";
-import {MatList, MatListItem} from "@angular/material/list";
+import {MatListModule} from "@angular/material/list";
 import {MatNativeDateModule} from "@angular/material/core";
-import {LegalTaskService} from "../../tareas-legales/legal-task.service";
-import {LegalTask} from "../../tareas-legales/legal-task.model";
+import {LegalTaskService} from "../../legal-taks/legal-task.service";
+import {LegalTask} from "../../legal-taks/models/legal-task.model";
 
 @Component({
     standalone: true,
-    imports: [MatDialogTitle, MatDialogContent, MatFormField, MatLabel, FormsModule, MatInput, MatDialogActions,
-        MatDialogClose, MatButton, NgIf, MatIcon, MatSuffix, SearchByLegalTaskComponent,
-        MatList, MatListItem, MatIconButton, MatNativeDateModule],
+    imports: [
+        FormsModule,
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatDialogClose,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatListModule,
+        MatNativeDateModule,
+        SearchByLegalTaskComponent
+    ],
     templateUrl: 'legal-procedure-template-creation-updating-dialog.component.html',
     styleUrls: ['legal-procedure-template-dialog.component.css']
 })
@@ -77,8 +87,8 @@ export class LegalProcedureTemplateCreationUpdatingDialogComponent {
 
     addTask(value: LegalTask): void {
         const taskTitle = value?.title?.trim();
-        if (taskTitle &&!this.legalProcedure.legalTasks.some(t => t.title === taskTitle) ) {
-            this.legalProcedure.legalTasks.push({ ...value, title: taskTitle });
+        if (taskTitle && !this.legalProcedure.legalTasks.some(t => t.title === taskTitle)) {
+            this.legalProcedure.legalTasks.push({...value, title: taskTitle});
         }
     }
 

@@ -7,18 +7,11 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 
 @Component({
-    selector: 'app-filter-boolean',
     standalone: true,
+    selector: 'app-filter-boolean',
     templateUrl: './filter-boolean.component.html',
     styleUrls: ['./filter.component.css'],
-    imports: [
-        FormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatOptionModule,
-        MatIconModule,
-        MatButtonModule
-    ]
+    imports: [FormsModule, MatFormFieldModule, MatSelectModule, MatOptionModule, MatIconModule, MatButtonModule]
 })
 export class FilterBooleanComponent {
     @Input() value?: boolean;

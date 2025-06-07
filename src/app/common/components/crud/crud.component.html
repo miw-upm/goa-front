@@ -5,12 +5,14 @@
             <mat-header-row *matHeaderRowDef="visibleColumns.concat('actions')"></mat-header-row>
             <mat-row *matRowDef="let item; columns: visibleColumns.concat('actions')"></mat-row>
             <!-- Columnas dinámicas visibles -->
-            <ng-container *ngFor="let def of visibleColumns" [matColumnDef]="def">
-                <mat-header-cell *matHeaderCellDef>{{ def | uppercaseWords }}</mat-header-cell>
-                <mat-cell *matCellDef="let row" class="cell-small-text">
-                    <app-data-cell [value]="row[def]"></app-data-cell>
-                </mat-cell>
-            </ng-container>
+            @for (def of visibleColumns; track def) {
+                <ng-container [matColumnDef]="def">
+                    <mat-header-cell *matHeaderCellDef>{{ def | uppercaseWords }}</mat-header-cell>
+                    <mat-cell *matCellDef="let row" class="cell-small-text">
+                        <app-data-cell [value]="row[def]"></app-data-cell>
+                    </mat-cell>
+                </ng-container>
+            }
             <!-- Columna de acciones -->
             <ng-container matColumnDef="actions">
                 <mat-header-cell *matHeaderCellDef>
@@ -25,27 +27,27 @@
                 </mat-header-cell>
                 <mat-cell *matCellDef="let item">
                     @if (readAction) {
-                        <button (click)="onRead(item)" mat-icon-button matSuffix>
+                        <button mat-icon-button matSuffix (click)="onRead(item)" aria-label="Ver detalles">
                             <mat-icon>view_headline</mat-icon>
                         </button>
                     }
                     @if (updateAction) {
-                        <button (click)="onUpdate(item)" mat-icon-button matSuffix>
+                        <button mat-icon-button matSuffix (click)="onUpdate(item)" aria-label="Editar">
                             <mat-icon color="warn">edit_note</mat-icon>
                         </button>
                     }
                     @if (deleteAction) {
-                        <button (click)="onDelete(item)" mat-icon-button matSuffix>
+                        <button mat-icon-button matSuffix (click)="onDelete(item)" aria-label="Eliminar">
                             <mat-icon color="warn">delete</mat-icon>
                         </button>
                     }
                     @if (printAction) {
-                        <button (click)="onPrint(item)" mat-icon-button matSuffix>
+                        <button mat-icon-button matSuffix (click)="onPrint(item)" aria-label="Imprimir">
                             <mat-icon color="warn">print</mat-icon>
                         </button>
                     }
                     @if (runAction) {
-                        <button (click)="onRun(item)" mat-icon-button matSuffix>
+                        <button mat-icon-button matSuffix (click)="onRun(item)" aria-label="Ejecutar">
                             <mat-icon color="warn">settings</mat-icon>
                         </button>
                     }
