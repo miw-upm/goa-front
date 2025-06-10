@@ -1,12 +1,12 @@
 @if (!fullList) {
     @if (isArray(value) && value.length > 0) {
         @if (isObject(value[0])) {
-            {{ getFirstKey(value[0]) }}: {{ getFirstValue(value[0]) }}...({{ value.length }})
+            {{ getFirstKey(value[0]) }}: {{ getFirstValue(value[0]) }}...({{ Object.entries(value[0]).length }})
         } @else {
-            {{ value[0] }}...({{ value.length }})
+            {{ value[0] }}...({{ value[0].length }})
         }
     } @else if (isObject(value)) {
-        {{ getFirstKey(value) }}: {{ getFirstValue(value) }}...({{ Object.keys(value).length }})
+        {{ getFirstKey(value) }}: {{ getFirstValue(value) }}...({{ Object.entries(value).length }})
     } @else if (isDate(value)) {
         {{ value | date: 'short' }}
     } @else if (value === null || value === undefined) {

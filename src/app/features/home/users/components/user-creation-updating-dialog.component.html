@@ -1,67 +1,48 @@
 <h4 mat-dialog-title>{{ title }}</h4>
 <mat-dialog-content>
-    <mat-form-field class="full-width">
-        <mat-label>Mobile</mat-label>
-        <input [(ngModel)]="user.mobile" id="mobile" matInput maxlength="9" pattern="^[0-9]{9}$" required type="tel"/>
-    </mat-form-field>
-    <mat-form-field class="full-width">
-        <mat-label>First Name</mat-label>
-        <input [(ngModel)]="user.firstName" matInput required type="text"/>
-    </mat-form-field>
-    <mat-form-field class="full-width">
-        <mat-label>Family Name</mat-label>
-        <input [(ngModel)]="user.familyName" matInput type="text"/>
-    </mat-form-field>
-    <mat-form-field class="full-width">
-        <mat-label>E-mail</mat-label>
-        <input [(ngModel)]="user.email" matInput type="email">
-    </mat-form-field>
-    <mat-form-field class="full-width">
-        <mat-label>Address</mat-label>
-        <input [(ngModel)]="user.address" matInput type="text"/>
-    </mat-form-field>
+    <app-form-field
+        #mobile
+        [(value)]="user.mobile"
+        label="Móvil"
+        type="tel"
+        [required]="true"
+        [maxlength]="9"
+        pattern="^[67][0-9]{8}$"
+        errorMessage="Obligatorio, 9 dígitos y empieza por 6 o 7"
+    />
+    <app-form-field #name [(value)]="user.firstName" label="Nombre" [required]="true" errorMessage="Obligatorio"/>
+    <app-form-field [(value)]="user.familyName" label="Email"/>
+    <app-form-field [(value)]="user.address" label="Dirección"/>
+    <app-form-select [(selected)]="user.province" [values]="provinces" label="Province"/>
+    <app-form-field [(value)]="user.city" label="Dirección"/>
+    <app-form-field
+        #code
+        [(value)]="user.postalCode"
+        label="Código postal"
+        [maxlength]="5"
+        pattern="^[0-9]{5}$"
+        errorMessage="5 dígitos"
+    />
+    <app-form-select [(selected)]="user.documentType" [values]="userDocumentTypes" label="Document Type"/>
+    <app-form-field [(value)]="user.identity" label="Identidad"/>
+    <app-form-field [(value)]="user.email" label="Apellidos"/>
     <mat-slide-toggle [(ngModel)]="enablePasswordChange">New Password</mat-slide-toggle>
-    <mat-form-field class="full-width">
-        <mat-label>Password</mat-label>
-        <input [(ngModel)]="user.password" [disabled]="!enablePasswordChange" matInput type="password"/>
-    </mat-form-field>
-    <mat-form-field class="full-width">
-        <mat-label>Document Type</mat-label>
-        <mat-select [(ngModel)]="user.documentType" name="documentType">
-            @for (type of documentTypes; track type) {
-                <mat-option [value]="type">
-                    {{ type }}
-                </mat-option>
-            }
-        </mat-select>
-    </mat-form-field>
-    <mat-form-field class="full-width">
-        <mat-label>Identity</mat-label>
-        <input [(ngModel)]="user.identity" matInput type="text"/>
-    </mat-form-field>
-    <mat-form-field class="full-width">
-        <mat-label>Role</mat-label>
-        <mat-select [(ngModel)]="user.role" name="role">
-            @for (role of roles; track role) {
-                <mat-option [value]="role">
-                    {{ role }}
-                </mat-option>
-            }
-        </mat-select>
-    </mat-form-field>
+    <app-form-field [(value)]="user.password" label="Contraseña" type="password" [disabled]="!enablePasswordChange"/>
     @if (!isCreate()) {
-        <mat-form-field class="full-width">
-            <mat-label>Registration Date</mat-label>
-            <input [value]="user.registrationDate | date:'dd-MM-yyyy'" matInput readonly type="text"/>
-        </mat-form-field>
+        <app-form-date [(value)]="user.registrationDate" label="Fecha de Registro" [disabled]="true"/>
     }
+    <app-form-select [(selected)]="user.role" [values]="roles" label="Role"/>
     <mat-slide-toggle [(ngModel)]="user.active">Active</mat-slide-toggle>
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Close</button>
     @if (isCreate()) {
-        <button (click)="create()" [disabled]=invalid() color="primary" mat-raised-button>Create</button>
+        <button (click)="create()" [disabled]="formInvalid(mobile.ngModel, name.ngModel, code.ngModel)" color="primary"
+                mat-raised-button>Create
+        </button>
     } @else {
-        <button (click)="update()" [disabled]=invalid() color="primary" mat-raised-button>Update</button>
+        <button (click)="update()" [disabled]="formInvalid(mobile.ngModel, name.ngModel, code.ngModel)" color="primary"
+                mat-raised-button>Update
+        </button>
     }
 </mat-dialog-actions>

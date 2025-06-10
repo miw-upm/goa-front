@@ -8,10 +8,12 @@ import {routes} from "./app/app.routes";
 import {environment} from '@env';
 import {provideAnimations} from "@angular/platform-browser/animations";
 import {MatNativeDateModule} from '@angular/material/core';
+import {FormsModule} from "@angular/forms";
 
 
 bootstrapApplication(AppComponent, {
     providers: [
+        importProvidersFrom(FormsModule),
         provideZoneChangeDetection({eventCoalescing: true}),
         provideAnimations(),
         importProvidersFrom(MatNativeDateModule),

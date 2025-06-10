@@ -41,7 +41,7 @@ export class LegalProcedureTemplatesComponent {
     }
 
     update(procedure: LegalProcedureTemplate): void {
-        this.dialog.open(LegalProcedureTemplateCreationUpdatingDialogComponent, {data: procedure, width: '800px'})
+        this.dialog.open(LegalProcedureTemplateCreationUpdatingDialogComponent, {data: procedure})
             .afterClosed()
             .subscribe(() => this.search());
     }

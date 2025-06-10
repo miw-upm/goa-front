@@ -9,7 +9,7 @@
         <input [(ngModel)]="legalProcedure.budget" id="presupuesto" matInput min="0" step="10,00" type="number"/>
         <mat-icon matSuffix>euro</mat-icon>
     </mat-form-field>
-    <fieldset class="owner-fieldset">
+    <fieldset class="full-width">
         <legend>Tareas Legales</legend>
         <app-search-by-legal-task (taskChange)="addTask($event)" class="full-width"></app-search-by-legal-task>
         <mat-form-field class="full-width">
@@ -18,14 +18,13 @@
                    placeholder="Añadir..."
             />
         </mat-form-field>
-
         <mat-list>
-            @for (tarea of legalProcedure.legalTasks ?? []; track tarea) {
+            @for (task of legalProcedure.legalTasks ?? []; track task) {
                 <mat-list-item>
-                    <button mat-icon-button (click)="removeLegalTask(tarea)" aria-label="Eliminar tarea legal">
+                    <button mat-icon-button (click)="removeLegalTask(task)" aria-label="Eliminar tarea legal">
                         <mat-icon>delete</mat-icon>
                     </button>
-                    {{ tarea.title }}
+                    {{ task.title }}
                 </mat-list-item>
             }
         </mat-list>

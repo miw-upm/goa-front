@@ -8,6 +8,9 @@ export interface User {
     documentType?: string;
     identity?: string;
     address?: string;
+    city?: string;
+    province?: string;
+    postalCode?: string;
     password?: string;
     role?: Role;
     registrationDate?: Date;
