@@ -19,9 +19,10 @@ import {UserDocumentType} from "@shared/models/UserDocumentType";
 import {User} from "@shared/models/user.model";
 import {UserService} from '../user.service';
 import {Observable, of} from "rxjs";
-import {DocumentTypeSelectComponent} from "@common/components/inputs/forms/select.component";
+import {FormSelectComponent} from "@common/components/inputs/forms/select.component";
 import {FormFieldComponent} from "@common/components/inputs/forms/field.component";
 import {AppDateFieldComponent} from "@common/components/inputs/forms/data.component";
+import {SharedUserService} from "@shared/services/shared-user.service";
 
 @Component({
     standalone: true,
@@ -36,7 +37,7 @@ import {AppDateFieldComponent} from "@common/components/inputs/forms/data.compon
         MatSlideToggleModule,
         MatButtonModule,
         MatSelectModule,
-        DocumentTypeSelectComponent,
+        FormSelectComponent,
         FormFieldComponent,
         AppDateFieldComponent,
     ],
@@ -47,20 +48,21 @@ import {AppDateFieldComponent} from "@common/components/inputs/forms/data.compon
 export class UserCreationUpdatingDialogComponent {
     user: User;
     title: string;
-    userDocumentTypes= of(Object.values(UserDocumentType));
+    userDocumentTypes = of(Object.values(UserDocumentType));
     roles: Observable<string[]>;
     oldMobile: string;
     enablePasswordChange: boolean;
     provinces: Observable<string[]>;
 
     constructor(@Inject(MAT_DIALOG_DATA) data: User, private readonly userService: UserService,
+                private readonly sharedUserService: SharedUserService,
                 private readonly authService: AuthService, private readonly dialog: MatDialog) {
         this.title = data ? 'Update User' : 'Create User';
         this.user = data || {mobile: undefined, firstName: undefined, active: true};
         this.oldMobile = data ? data.mobile : undefined;
         this.enablePasswordChange = false;
         this.roles = of(this.authService.allowedRoles());
-        this.provinces = this.userService.findProvinces();
+        this.provinces = this.sharedUserService.findProvinces();
     }
 
     isCreate(): boolean {

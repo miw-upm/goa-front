@@ -1,11 +1,7 @@
 import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {FormsModule, NgModel} from '@angular/forms';
-import {
-    MatFormField,
-    MatLabel,
-    MatError
-} from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
+import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
+import {MatInput} from '@angular/material/input';
 
 @Component({
     standalone: true,
@@ -34,10 +30,10 @@ import { MatInput } from '@angular/material/input';
     `,
     styles: [
         `
-      .full-width {
-        width: 100%;
-      }
-    `
+            .full-width {
+                width: 100%;
+            }
+        `
     ]
 
 })
@@ -52,5 +48,5 @@ export class FormFieldComponent {
     @Input() minlength?: number;
     @Input() disabled!: boolean;
     @Output() valueChange = new EventEmitter<string>();
-    @ViewChild('ctrl', { static: true }) ngModel!: NgModel;
+    @ViewChild('ctrl', {static: true}) ngModel!: NgModel;
 }

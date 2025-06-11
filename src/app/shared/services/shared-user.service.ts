@@ -4,11 +4,13 @@ import {environment} from "@env";
 import {HttpService} from '@common/services/http.service';
 import {Observable} from "rxjs";
 import {User} from "@shared/models/user.model";
+import {map} from "rxjs/operators";
 
 
 @Injectable({providedIn: 'root'})
 export class SharedUserService {
-    private static readonly USERS = environment.REST_USER + '/users';
+    private static readonly API_URL = environment.REST_USER + '/users';
+    private static readonly PROVINCES = '/provinces';
 
     constructor(private readonly httpService: HttpService) {
     }
@@ -16,6 +18,14 @@ export class SharedUserService {
     searchUsers(attribute: string): Observable<User[]> {
         return this.httpService
             .param("attribute", attribute ?? '')
-            .get(SharedUserService.USERS)
+            .get(SharedUserService.API_URL)
+    }
+
+    findProvinces(): Observable<string[]> {
+        return this.httpService
+            .get(SharedUserService.API_URL + SharedUserService.PROVINCES)
+            .pipe(
+                map(response => response.provinces)
+            );
     }
 }

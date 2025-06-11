@@ -3,31 +3,31 @@
     <app-form-field
         #mobile
         [(value)]="user.mobile"
-        label="Móvil"
-        type="tel"
-        [required]="true"
         [maxlength]="9"
-        pattern="^[67][0-9]{8}$"
+        [required]="true"
         errorMessage="Obligatorio, 9 dígitos y empieza por 6 o 7"
+        label="Móvil"
+        pattern="^[0-9]{9}$"
+        type="tel"
     />
-    <app-form-field #name [(value)]="user.firstName" label="Nombre" [required]="true" errorMessage="Obligatorio"/>
+    <app-form-field #name [(value)]="user.firstName" [required]="true" errorMessage="Obligatorio" label="Nombre"/>
     <app-form-field [(value)]="user.familyName" label="Email"/>
     <app-form-field [(value)]="user.address" label="Dirección"/>
-    <app-form-select [(selected)]="user.province" [values]="provinces" label="Province"/>
-    <app-form-field [(value)]="user.city" label="Dirección"/>
+    <app-form-select [(selected)]="user.province" [capitalize]="true" [values]="provinces" label="Province"/>
+    <app-form-field [(value)]="user.city" label="Población"/>
     <app-form-field
         #code
         [(value)]="user.postalCode"
-        label="Código postal"
         [maxlength]="5"
-        pattern="^[0-9]{5}$"
         errorMessage="5 dígitos"
+        label="Código postal"
+        pattern="^[0-9]{5}$"
     />
     <app-form-select [(selected)]="user.documentType" [values]="userDocumentTypes" label="Document Type"/>
     <app-form-field [(value)]="user.identity" label="Identidad"/>
-    <app-form-field [(value)]="user.email" label="Apellidos"/>
+    <app-form-field [(value)]="user.email" label="Email"/>
     <mat-slide-toggle [(ngModel)]="enablePasswordChange">New Password</mat-slide-toggle>
-    <app-form-field [(value)]="user.password" label="Contraseña" type="password" [disabled]="!enablePasswordChange"/>
+    <app-form-field [(value)]="user.password" [disabled]="!enablePasswordChange" label="Contraseña" type="password"/>
     @if (!isCreate()) {
         <app-form-date [(value)]="user.registrationDate" label="Fecha de Registro" [disabled]="true"/>
     }

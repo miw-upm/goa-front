@@ -7,45 +7,39 @@
     </mat-card-title>
     <mat-card-content>
         <mat-dialog-content>
-            <mat-form-field class="full-width">
-                <mat-label>Mobile</mat-label>
-                <input [(ngModel)]="user.mobile" id="mobile" matInput maxlength="9" pattern="^[0-9]{9}$" required
-                       type="tel"/>
-            </mat-form-field>
-            <mat-form-field class="full-width">
-                <mat-label>First Name</mat-label>
-                <input [(ngModel)]="user.firstName" matInput required type="text"/>
-            </mat-form-field>
-            <mat-form-field class="full-width">
-                <mat-label>Family Name</mat-label>
-                <input [(ngModel)]="user.familyName" matInput type="text"/>
-            </mat-form-field>
-            <mat-form-field class="full-width">
-                <mat-label>E-mail</mat-label>
-                <input [(ngModel)]="user.email" matInput type="email">
-            </mat-form-field>
-            <mat-form-field class="full-width">
-                <mat-label>Address</mat-label>
-                <input [(ngModel)]="user.address" matInput type="text"/>
-            </mat-form-field>
-            <mat-form-field class="full-width">
-                <mat-label>Document Type</mat-label>
-                <mat-select [(ngModel)]="user.documentType" name="documentType">
-                    @for (type of documentTypes; track type) {
-                        <mat-option [value]="type">
-                            {{ type }}
-                        </mat-option>
-                    }
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field class="full-width">
-                <mat-label>Identity</mat-label>
-                <input [(ngModel)]="user.identity" matInput type="text"/>
-            </mat-form-field>
+            <app-form-field
+                #mobile
+                [(value)]="user.mobile"
+                [maxlength]="9"
+                [required]="true"
+                errorMessage="Obligatorio, 9 dígitos y empieza por 6 o 7"
+                label="Móvil"
+                pattern="^[0-9]{9}$"
+                type="tel"
+            />
+            <app-form-field #name [(value)]="user.firstName" [required]="true" errorMessage="Obligatorio"
+                            label="Nombre"/>
+            <app-form-field [(value)]="user.familyName" label="Email"/>
+            <app-form-field [(value)]="user.address" label="Dirección"/>
+            <app-form-select [(selected)]="user.province" [capitalize]="true" [values]="provinces" label="Province"/>
+            <app-form-field [(value)]="user.city" label="Población"/>
+            <app-form-field
+                #postalCode
+                [(value)]="user.postalCode"
+                [maxlength]="5"
+                errorMessage="5 dígitos"
+                label="Código postal"
+                pattern="^[0-9]{5}$"
+            />
+            <app-form-select [(selected)]="user.documentType" [values]="userDocumentTypes" label="Document Type"/>
+            <app-form-field [(value)]="user.identity" label="Identidad"/>
+            <app-form-field [(value)]="user.email" label="Email"/>
         </mat-dialog-content>
     </mat-card-content>
     <mat-dialog-actions>
-        <button (click)="update()" [disabled]=invalid() color="primary" mat-raised-button>Update
+        <button mat-dialog-close mat-raised-button>Close</button>
+        <button (click)="update()" [disabled]="formInvalid(mobile.ngModel, postalCode.ngModel)" color="primary"
+                mat-raised-button>Update
         </button>
     </mat-dialog-actions>
 </mat-card>

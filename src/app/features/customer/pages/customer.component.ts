@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
 import {NgOptimizedImage} from "@angular/common";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, NgModel} from "@angular/forms";
 import {MatCardModule} from "@angular/material/card";
 import {MatOptionModule} from "@angular/material/core";
 import {MatDialogModule} from "@angular/material/dialog";
@@ -13,6 +13,10 @@ import {MatButtonModule} from "@angular/material/button";
 import {CustomerService} from "../customer.service";
 import {UserDocumentType} from "@shared/models/UserDocumentType";
 import {User} from "@shared/models/user.model";
+import {FormFieldComponent} from "@common/components/inputs/forms/field.component";
+import {FormSelectComponent} from "@common/components/inputs/forms/select.component";
+import {Observable, of} from "rxjs";
+import {SharedUserService} from "@shared/services/shared-user.service";
 
 
 @Component({
@@ -28,22 +32,27 @@ import {User} from "@shared/models/user.model";
         MatSelectModule,
         MatOptionModule,
         MatButtonModule,
-        MatDialogModule
+        MatDialogModule,
+        FormFieldComponent,
+        FormSelectComponent
     ],
     styleUrl: './customer.component.css'
 })
 export class CustomerComponent {
     user: User;
-    documentTypes: string[] = Object.values(UserDocumentType);
     oldMobile: string;
     token: string;
+    provinces: Observable<string[]>;
+    userDocumentTypes: Observable<string[]> = of(Object.values(UserDocumentType));
 
-    constructor(private readonly customerService: CustomerService, private readonly route: ActivatedRoute) {
+    constructor(private readonly customerService: CustomerService, private readonly sharedUserService: SharedUserService,
+                private readonly route: ActivatedRoute) {
         this.token = this.route.snapshot.paramMap.get("token");
         this.user = {mobile: this.route.snapshot.paramMap.get('mobile'), firstName: null}
         this.oldMobile = this.user.mobile;
         this.customerService.readWithToken(this.user.mobile, this.token)
             .subscribe(user => this.user = user);
+        this.provinces = this.sharedUserService.findProvinces();
     }
 
     update(): void {
@@ -51,12 +60,7 @@ export class CustomerComponent {
             .updateWithToken(this.oldMobile, this.user, this.token).subscribe(user => this.user = user);
     }
 
-
-    invalid(): boolean {
-        return this.check(this.user.mobile) || this.check(this.user.firstName);
-    }
-
-    check(attr: string): boolean {
-        return attr === undefined || null || attr === '';
+    formInvalid(...controls: NgModel[]): boolean {
+        return controls.some(ctrl => ctrl.invalid && (ctrl.dirty || ctrl.touched));
     }
 }

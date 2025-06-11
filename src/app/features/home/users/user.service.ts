@@ -5,13 +5,11 @@ import {environment} from "@env";
 import {HttpService} from '@common/services/http.service';
 import {UserSearch} from "./user-search.model";
 import {User} from "@shared/models/user.model";
-import {map} from "rxjs/operators";
 
 @Injectable({providedIn: 'root'})
 export class UserService {
     private static readonly API_URL = environment.REST_USER + '/users';
     private static readonly MOBILE = '/mobile';
-    private static readonly PROVINCES = '/provinces';
 
     constructor(private readonly httpService: HttpService) {
     }
@@ -36,14 +34,6 @@ export class UserService {
         return this.httpService
             .paramsFrom(criteria)
             .get(UserService.API_URL)
-    }
-
-    findProvinces():Observable<string[]>  {
-        return this.httpService
-            .get(UserService.API_URL + UserService.PROVINCES)
-            .pipe(
-                map(response => response.provinces)
-            );
     }
 
 }
