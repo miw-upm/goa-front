@@ -7,7 +7,7 @@ import {LegalTask} from "../models/legal-task.model";
 
 @Injectable({providedIn: 'root'})
 export class SharedLegalTaskService {
-    private static readonly LEGAL_TASKS = environment.REST_ENCARGO + '/legal-tasks';
+    private static readonly LEGAL_TASKS = environment.REST_ENGAGEMENT + '/legal-tasks';
 
     constructor(private readonly httpService: HttpService) {
     }

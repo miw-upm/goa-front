@@ -9,7 +9,7 @@ import {EngagementLetterSearch} from "./models/engagement-letter-search.model";
 
 @Injectable()
 export class EngagementLetterService {
-    private static readonly API_URL = environment.REST_ENCARGO + '/engagement-letters';
+    private static readonly API_URL = environment.REST_ENGAGEMENT + '/engagement-letters';
 
     constructor(private readonly httpService: HttpService) {
     }

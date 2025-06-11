@@ -8,7 +8,7 @@ import {LegalProcedureTemplate} from "../models/legal-procedure-template.model";
 
 @Injectable({providedIn: 'root'})
 export class SharedLegalProcedureService {
-    private static readonly API_URL = environment.REST_ENCARGO + '/legal-procedure-templates';
+    private static readonly API_URL = environment.REST_ENGAGEMENT + '/legal-procedure-templates';
 
     constructor(private readonly httpService: HttpService) {
     }

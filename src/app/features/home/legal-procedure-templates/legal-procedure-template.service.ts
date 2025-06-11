@@ -9,7 +9,7 @@ import {LegalProcedureSearch} from "./models/legal-procedure-search.model";
 
 @Injectable({providedIn: 'root'})
 export class LegalProcedureTemplateService {
-    private static readonly API_URL = environment.REST_ENCARGO + '/legal-procedure-templates';
+    private static readonly API_URL = environment.REST_ENGAGEMENT + '/legal-procedure-templates';
 
     constructor(private readonly httpService: HttpService) {
     }

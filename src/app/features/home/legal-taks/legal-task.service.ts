@@ -8,7 +8,7 @@ import {LegalTaskSearch} from "./legal-task-search.model";
 
 @Injectable({providedIn: 'root'})
 export class LegalTaskService {
-    private static readonly LEGAL_TASKS = environment.REST_ENCARGO + '/legal-tasks';
+    private static readonly LEGAL_TASKS = environment.REST_ENGAGEMENT + '/legal-tasks';
 
     constructor(private readonly httpService: HttpService) {
     }

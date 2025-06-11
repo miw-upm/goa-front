@@ -17,10 +17,12 @@ import {environment} from '@env';
 export class FooterComponent {
     version: string;
     backEndUser: string;
+    backEndEngagement: string;
 
     constructor() {
         this.version = environment.NAME + ':' + environment.VERSION;
         this.backEndUser = environment.REST_USER;
+        this.backEndEngagement = environment.REST_ENGAGEMENT;
     }
 
 }
