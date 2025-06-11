@@ -5,7 +5,7 @@ import {environment} from "@env";
 import {HttpService} from '@common/services/http.service';
 import {User} from "@shared/models/user.model";
 
-@Injectable({providedIn: 'root'})
+@Injectable()
 export class CustomerService {
     private static readonly USERS = environment.REST_USER + '/users';
     private static readonly MOBILE = '/mobile';

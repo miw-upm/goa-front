@@ -1,5 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {FormsModule, NgModel} from '@angular/forms';
+import {Observable, of} from "rxjs";
 import {
     MAT_DIALOG_DATA,
     MatDialog,
@@ -15,14 +16,13 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSelectModule} from "@angular/material/select";
 
 import {AuthService} from "@common/components/auth/auth.service";
-import {UserDocumentType} from "@shared/models/UserDocumentType";
-import {User} from "@shared/models/user.model";
-import {UserService} from '../user.service';
-import {Observable, of} from "rxjs";
 import {FormSelectComponent} from "@common/components/inputs/forms/select.component";
 import {FormFieldComponent} from "@common/components/inputs/forms/field.component";
 import {AppDateFieldComponent} from "@common/components/inputs/forms/data.component";
 import {SharedUserService} from "@shared/services/shared-user.service";
+import {UserDocumentType} from "@shared/models/UserDocumentType";
+import {User} from "@shared/models/user.model";
+import {UserService} from '../user.service';
 
 @Component({
     standalone: true,

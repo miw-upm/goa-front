@@ -1,11 +1,12 @@
 import {Injectable} from "@angular/core";
-import {AccessLink} from "./acces-link.model";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
-import {HttpService} from "@common/services/http.service";
-import {environment} from "@env";
 
-@Injectable({providedIn: 'root'})
+import {environment} from "@env";
+import {HttpService} from "@common/services/http.service";
+import {AccessLink} from "./acces-link.model";
+
+@Injectable()
 export class AccessLinkService {
     private static readonly ACCESS_LINK = environment.REST_USER + '/access-link';
 

@@ -12,8 +12,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 
+import {SharedLegalTaskService} from "@shared/services/shared-legal-task.service";
+import {LegalTask} from "@shared/models/legal-task.model";
 import {LegalTaskService} from "../legal-task.service";
-import {LegalTask} from "../models/legal-task.model";
 
 @Component({
     standalone: true,
@@ -36,13 +37,13 @@ export class LegalTaskCreationUpdatingDialogComponent {
     title: string;
 
     constructor(@Inject(MAT_DIALOG_DATA) data: LegalTask, private readonly legalTaskService: LegalTaskService,
-                private readonly dialog: MatDialog) {
+                private readonly sharedLegalTaskService: SharedLegalTaskService, private readonly dialog: MatDialog) {
         this.title = data ? 'Actualización de Tarea Legal' : 'Creación de Tarea Legal';
         this.legalTask = data || {id: undefined, title: undefined};
     }
 
     create(): void {
-        this.legalTaskService
+        this.sharedLegalTaskService
             .create(this.legalTask)
             .subscribe(() => this.dialog.closeAll());
     }

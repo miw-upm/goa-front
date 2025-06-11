@@ -4,7 +4,7 @@ import {map} from "rxjs/operators";
 
 import {environment} from "@env";
 import {HttpService} from "@common/services/http.service";
-import {LegalProcedureTemplate} from './models/legal-procedure-template.model';
+import {LegalProcedureTemplate} from '@shared/models/legal-procedure-template.model';
 import {LegalProcedureSearch} from "./models/legal-procedure-search.model";
 
 @Injectable({providedIn: 'root'})

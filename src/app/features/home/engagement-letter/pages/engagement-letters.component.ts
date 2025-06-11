@@ -15,6 +15,7 @@ import {
 
 @Component({
     standalone: true,
+    providers: [EngagementLetterService],
     imports: [FormsModule, CrudComponent, MatSlideToggleModule, FilterInputComponent],
     templateUrl: 'engagement-letters.component.html'
 })

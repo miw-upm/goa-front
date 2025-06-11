@@ -3,19 +3,14 @@ import {Observable} from 'rxjs';
 
 import {environment} from "@env";
 import {HttpService} from '@common/services/http.service';
-import {LegalTask} from "./models/legal-task.model";
-import {LegalTaskSearch} from "./models/legal-task-search.model";
+import {LegalTask} from "@shared/models/legal-task.model";
+import {LegalTaskSearch} from "./legal-task-search.model";
 
 @Injectable({providedIn: 'root'})
 export class LegalTaskService {
     private static readonly LEGAL_TASKS = environment.REST_ENCARGO + '/legal-tasks';
 
     constructor(private readonly httpService: HttpService) {
-    }
-
-    create(task: LegalTask): Observable<LegalTask> {
-        return this.httpService
-            .post(LegalTaskService.LEGAL_TASKS, task);
     }
 
     update(id: string, task: LegalTask): Observable<LegalTask> {

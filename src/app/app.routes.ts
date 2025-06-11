@@ -1,9 +1,12 @@
 import {Routes} from '@angular/router';
+
+
 import {LoginCallbackComponent} from "@common/components/auth/LoginCallbackComponent";
-import {HomeComponent} from "./features/home/home.component";
-import {UsersComponent} from "./features/home/users/pages/users.component";
 import {RoleGuardService} from "@common/components/auth/role-guard.service";
 import {Role} from "@common/components/auth/models/role.model";
+
+import {HomeComponent} from "./features/home/home.component";
+import {UsersComponent} from "./features/home/users/pages/users.component";
 import {CustomerComponent} from "./features/customer/pages/customer.component";
 import {AccessLinkComponent} from "./features/home/access-links/pages/access-link.component";
 import {LegalTasksComponent} from "./features/home/legal-taks/pages/legal-tasks.component";

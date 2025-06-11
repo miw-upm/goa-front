@@ -7,8 +7,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {CommonModule} from '@angular/common';
 
 @Component({
-    selector: 'app-payment-method-dialog',
     standalone: true,
+    selector: 'app-payment-method-dialog',
     templateUrl: './payment-method-dialog.component.html',
     imports: [CommonModule, FormsModule, MatFormFieldModule, MatDialogModule, MatInputModule, MatButtonModule]
 })

@@ -3,10 +3,7 @@ import {Observable, of} from 'rxjs';
 
 import {SearchComponent} from '@common/components/inputs/search.component';
 import {SharedLegalProcedureService} from "@shared/services/shared-legal-procedure.service";
-import {LegalProcedure} from "../../features/home/engagement-letter/models/legal-procedure.model";
-import {
-    LegalProcedureTemplate
-} from "../../features/home/legal-procedure-templates/models/legal-procedure-template.model";
+import {LegalProcedureTemplate} from "../models/legal-procedure-template.model";
 
 @Component({
     standalone: true,
@@ -17,7 +14,7 @@ import {
 export class SearchByLegalProcedureTemplateComponent {
     procedures: Observable<LegalProcedureTemplate[]> = of([]);
 
-    @Input() procedure: LegalProcedure;
+    @Input() procedure: LegalProcedureTemplate;
     @Output() procedureChange = new EventEmitter<LegalProcedureTemplate>();
 
     constructor(private readonly sharedLegalProcedureService: SharedLegalProcedureService) {

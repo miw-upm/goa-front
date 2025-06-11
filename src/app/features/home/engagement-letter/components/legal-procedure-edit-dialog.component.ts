@@ -12,12 +12,13 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatIconModule} from "@angular/material/icon";
 import {MatListModule} from "@angular/material/list";
 
-import {LegalTaskService} from "../../legal-taks/legal-task.service";
+import {SharedLegalTaskService} from "@shared/services/shared-legal-task.service";
 import {LegalProcedure} from "../models/legal-procedure.model";
 
 @Component({
     standalone: true,
     selector: 'app-legal-procedure-edit-dialog',
+    providers: [SharedLegalTaskService],
     templateUrl: './legal-procedure-edit-dialog.component.html',
     styleUrls: ['./legal-procedure-edit-dialog.component.css'],
     imports: [
@@ -42,7 +43,7 @@ export class LegalProcedureEditDialogComponent {
 
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public data: any, private readonly legalTaskService: LegalTaskService,
+        @Inject(MAT_DIALOG_DATA) public data: any, private readonly sharedLegalTaskService: SharedLegalTaskService,
         private readonly dialogRef: MatDialogRef<LegalProcedureEditDialogComponent>
     ) {
         this.procedure = {
@@ -62,7 +63,7 @@ export class LegalProcedureEditDialogComponent {
     addTask(): void {
         const task = (this.newTask || '').trim();
         if (task && !this.procedure.legalTasks.some(t => t === task)) {
-            this.legalTaskService.create({title: task}).subscribe(
+            this.sharedLegalTaskService.create({title: task}).subscribe(
                 () => this.procedure.legalTasks.push(task)
             );
         }

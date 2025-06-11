@@ -3,32 +3,31 @@ import {FormsModule} from '@angular/forms';
 import {CommonModule, DatePipe} from '@angular/common';
 
 import {MAT_DIALOG_DATA, MatDialog, MatDialogModule} from '@angular/material/dialog';
-
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
-
-import {EngagementLetter} from '../models/engagement-letter.model';
-import {EngagementLetterService} from '../engagement-letter.service';
-import {SearchByUserComponent} from '@shared/components/search-by-user.component';
-import {User} from "@shared/models/user.model";
-import {SearchByLegalProcedureTemplateComponent} from "@shared/components/search-by-legal-procedure-template.component";
-import {LegalProcedure} from "../models/legal-procedure.model";
+import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatListModule} from "@angular/material/list";
-import {PaymentMethod} from "../models/payment-method.model";
-import {PaymentMethodDialogComponent} from "./payment-method-dialog.component";
+
+import {SearchByUserComponent} from '@shared/components/search-by-user.component';
+import {SearchByLegalProcedureTemplateComponent} from "@shared/components/search-by-legal-procedure-template.component";
+import {User} from "@shared/models/user.model";
+import {LegalProcedureTemplate} from "@shared/models/legal-procedure-template.model";
 import {LegalProcedureEditDialogComponent} from "./legal-procedure-edit-dialog.component";
-import {LegalProcedureTemplateService} from "../../legal-procedure-templates/legal-procedure-template.service";
-import {MatTooltipModule} from "@angular/material/tooltip";
-import {LegalProcedureTemplate} from "../../legal-procedure-templates/models/legal-procedure-template.model";
+import {EngagementLetterService} from '../engagement-letter.service';
+import {PaymentMethodDialogComponent} from "./payment-method-dialog.component";
+import {EngagementLetter} from '../models/engagement-letter.model';
+import {LegalProcedure} from "../models/legal-procedure.model";
+import {PaymentMethod} from "../models/payment-method.model";
 
 @Component({
     standalone: true,
     selector: 'app-engagement-letter-creation-updating-dialog',
+    providers: [DatePipe, EngagementLetterService],
     templateUrl: 'engagement-letter-creation-updating-dialog.component.html',
     styleUrls: ['engagement-letter-dialog.component.css'],
     imports: [
@@ -48,7 +47,7 @@ import {LegalProcedureTemplate} from "../../legal-procedure-templates/models/leg
         SearchByLegalProcedureTemplateComponent,
         MatTooltipModule
     ],
-    providers: [DatePipe]
+
 })
 export class EngagementLetterCreationUpdatingDialogComponent {
     engagementLetter: EngagementLetter;
@@ -58,7 +57,6 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         @Inject(MAT_DIALOG_DATA) data: EngagementLetter,
         private readonly datePipe: DatePipe,
         private readonly engagementLetterService: EngagementLetterService,
-        private readonly legalProcedureTemplateService: LegalProcedureTemplateService,
         private readonly dialog: MatDialog
     ) {
         this.title = data ? 'Actualizar Hoja de Encargo' : 'Crear Hoja de Encargo';

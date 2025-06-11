@@ -4,10 +4,10 @@ import {Observable} from 'rxjs';
 import {HttpService} from "@common/services/http.service";
 import {environment} from "@env";
 import {EngagementLetter} from "./models/engagement-letter.model";
-import {LegalProcedureTemplate} from "../legal-procedure-templates/models/legal-procedure-template.model";
+import {LegalProcedureTemplate} from "@shared/models/legal-procedure-template.model";
 import {EngagementLetterSearch} from "./models/engagement-letter-search.model";
 
-@Injectable({providedIn: 'root'})
+@Injectable()
 export class EngagementLetterService {
     private static readonly API_URL = environment.REST_ENCARGO + '/engagement-letters';
 

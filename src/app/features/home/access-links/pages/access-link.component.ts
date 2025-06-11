@@ -8,6 +8,7 @@ import {AccessLinkService} from "../access-link.service";
 
 @Component({
     standalone: true,
+    providers: [AccessLinkService],
     imports: [FormsModule, CrudComponent],
     templateUrl: 'access-link.component.html'
 })

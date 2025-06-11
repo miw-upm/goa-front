@@ -11,14 +11,15 @@ import {
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
-import {LegalProcedureTemplate} from "../models/legal-procedure-template.model";
-import {LegalProcedureTemplateService} from "../legal-procedure-template.service";
 import {MatIconModule} from "@angular/material/icon";
-import {SearchByLegalTaskComponent} from "@shared/components/search-by-legal-task.component";
 import {MatListModule} from "@angular/material/list";
 import {MatNativeDateModule} from "@angular/material/core";
-import {LegalTaskService} from "../../legal-taks/legal-task.service";
-import {LegalTask} from "../../legal-taks/models/legal-task.model";
+
+import {SharedLegalTaskService} from "@shared/services/shared-legal-task.service";
+import {SearchByLegalTaskComponent} from "@shared/components/search-by-legal-task.component";
+import {LegalProcedureTemplate} from "@shared/models/legal-procedure-template.model";
+import {LegalTask} from "@shared/models/legal-task.model";
+import {LegalProcedureTemplateService} from "../legal-procedure-template.service";
 
 @Component({
     standalone: true,
@@ -45,7 +46,7 @@ export class LegalProcedureTemplateCreationUpdatingDialogComponent {
     title: string;
 
     constructor(@Inject(MAT_DIALOG_DATA) data: LegalProcedureTemplate, private readonly procedimientoLegalService: LegalProcedureTemplateService,
-                private readonly dialog: MatDialog, private readonly tareaLegalService: LegalTaskService) {
+                private readonly dialog: MatDialog, private readonly sharedLegalTaskService: SharedLegalTaskService) {
         this.title = data ? 'Actualizar Plantilla De Procedimiento Legal' : 'Crear Plantilla De Procedimiento Legal';
         this.legalProcedure = {
             id: undefined,
@@ -95,7 +96,7 @@ export class LegalProcedureTemplateCreationUpdatingDialogComponent {
     addNewTask(value: string): void {
         const task = (value || '').trim();
         if (task && !this.legalProcedure.legalTasks.some(t => t.title === task)) {
-            this.tareaLegalService.create({title: value}).subscribe(
+            this.sharedLegalTaskService.create({title: value}).subscribe(
                 () => this.legalProcedure.legalTasks.push({title: task})
             );
         }

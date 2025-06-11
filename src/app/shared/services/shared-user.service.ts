@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
+import {Observable} from "rxjs";
+import {map} from "rxjs/operators";
 
 import {environment} from "@env";
 import {HttpService} from '@common/services/http.service';
-import {Observable} from "rxjs";
 import {User} from "@shared/models/user.model";
-import {map} from "rxjs/operators";
-
 
 @Injectable({providedIn: 'root'})
 export class SharedUserService {

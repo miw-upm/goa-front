@@ -15,6 +15,7 @@ import {AccessLinkService} from "../access-link.service";
 
 @Component({
     standalone: true,
+    providers: [AccessLinkService],
     imports: [
         FormsModule,
         MatDialogTitle,

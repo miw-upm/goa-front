@@ -5,10 +5,10 @@ import {Observable, of} from 'rxjs';
 
 import {CrudComponent} from '@common/components/crud/crud.component';
 import {FilterInputComponent} from "@common/components/inputs/filter-input.component";
+import {LegalTask} from "@shared/models/legal-task.model";
 import {LegalTaskCreationUpdatingDialogComponent} from '../components/legal-task-creation-updating-dialog.component';
-import {LegalTaskSearch} from "../models/legal-task-search.model";
+import {LegalTaskSearch} from "../legal-task-search.model";
 import {LegalTaskService} from "../legal-task.service";
-import {LegalTask} from "../models/legal-task.model";
 
 @Component({
     standalone: true,

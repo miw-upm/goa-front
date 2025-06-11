@@ -1,6 +1,7 @@
 import {Component} from "@angular/core";
 import {NgOptimizedImage} from "@angular/common";
 import {FormsModule, NgModel} from "@angular/forms";
+import {Observable, of} from "rxjs";
 import {MatCardModule} from "@angular/material/card";
 import {MatOptionModule} from "@angular/material/core";
 import {MatDialogModule} from "@angular/material/dialog";
@@ -10,18 +11,17 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {ActivatedRoute} from "@angular/router";
 import {MatButtonModule} from "@angular/material/button";
 
-import {CustomerService} from "../customer.service";
-import {UserDocumentType} from "@shared/models/UserDocumentType";
-import {User} from "@shared/models/user.model";
 import {FormFieldComponent} from "@common/components/inputs/forms/field.component";
 import {FormSelectComponent} from "@common/components/inputs/forms/select.component";
-import {Observable, of} from "rxjs";
+import {User} from "@shared/models/user.model";
+import {UserDocumentType} from "@shared/models/UserDocumentType";
 import {SharedUserService} from "@shared/services/shared-user.service";
-
+import {CustomerService} from "../customer.service";
 
 @Component({
     standalone: true,
     selector: 'app-customer',
+    providers: [CustomerService],
     templateUrl: './customer.component.html',
     imports: [
         FormsModule,

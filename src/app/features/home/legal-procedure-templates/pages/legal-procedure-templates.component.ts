@@ -8,7 +8,7 @@ import {CrudComponent} from "@common/components/crud/crud.component";
 import {FilterInputComponent} from "@common/components/inputs/filter-input.component";
 import {LegalProcedureSearch} from "../models/legal-procedure-search.model";
 import {LegalProcedureTemplateService} from "../legal-procedure-template.service";
-import {LegalProcedureTemplate} from "../models/legal-procedure-template.model";
+import {LegalProcedureTemplate} from "@shared/models/legal-procedure-template.model";
 import {
     LegalProcedureTemplateCreationUpdatingDialogComponent
 } from "../components/legal-procedure-template-creation-updating-dialog.component";

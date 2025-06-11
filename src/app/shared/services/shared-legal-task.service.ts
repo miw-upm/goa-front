@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
+import {Observable} from "rxjs";
 
 import {environment} from "@env";
 import {HttpService} from '@common/services/http.service';
-import {Observable} from "rxjs";
-import {LegalTask} from "../../features/home/legal-taks/models/legal-task.model";
-
+import {LegalTask} from "../models/legal-task.model";
 
 @Injectable({providedIn: 'root'})
 export class SharedLegalTaskService {
@@ -17,5 +16,10 @@ export class SharedLegalTaskService {
         return this.httpService
             .param("title", title ?? '')
             .get(SharedLegalTaskService.LEGAL_TASKS)
+    }
+
+    create(task: LegalTask): Observable<LegalTask> {
+        return this.httpService
+            .post(SharedLegalTaskService.LEGAL_TASKS, task);
     }
 }

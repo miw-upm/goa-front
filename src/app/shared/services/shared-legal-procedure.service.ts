@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
+import {Observable} from "rxjs";
 
 import {environment} from "@env";
 import {HttpService} from '@common/services/http.service';
-import {Observable} from "rxjs";
-import {
-    LegalProcedureTemplate
-} from "../../features/home/legal-procedure-templates/models/legal-procedure-template.model";
+
+import {LegalProcedureTemplate} from "../models/legal-procedure-template.model";
 
 @Injectable({providedIn: 'root'})
 export class SharedLegalProcedureService {
