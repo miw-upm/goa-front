@@ -1,44 +1,26 @@
 <h2 mat-dialog-title>Editar Procedimiento Legal</h2>
 <mat-dialog-content>
-    <mat-form-field class="full-width">
-        <mat-label>Titulo</mat-label>
-        <input [(ngModel)]="procedure.title" matInput type="text"/>
-    </mat-form-field>
-    <mat-form-field class="full-width">
-        <mat-label>Fecha de inicio</mat-label>
-        <input [(ngModel)]="procedure.startDate" [matDatepicker]="picker" matInput/>
-        <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field class="full-width">
-        <mat-label>Presupuesto</mat-label>
-        <input [(ngModel)]="procedure.budget" matInput type="number"/>
-    </mat-form-field>
-
+    <app-form-field #titleNg [(value)]="procedure.title" [required]="true" errorMessage="Obligatorio" label="Título"/>
+    <app-form-date [(ngModel)]="procedure.startDate" label="Fecha de inicio"></app-form-date>
+    <app-form-field
+        #budget
+        [(value)]="procedure.budget"
+        [min]="0"
+        [step]="10"
+        errorMessage="0..x"
+        icon="euro"
+        label="Presupuesto"
+        type="number"
+    />
     <mat-checkbox [(ngModel)]="procedure.vatIncluded">¿Incluye IVA?</mat-checkbox>
-    <mat-form-field class="full-width">
-        <mat-label>Nueva tarea legal</mat-label>
-        <input (keydown.enter)="addTask()" [(ngModel)]="newTask" matInput/>
-        <button (click)="addTask()" mat-icon-button matSuffix>
-            <mat-icon>add</mat-icon>
-        </button>
-    </mat-form-field>
-    <mat-list>
-        @for (task of procedure.legalTasks; track task) {
-            <mat-list-item>
-                <div class="list-item-content">
-                    <button mat-icon-button color="warn" matTooltip="Eliminar tarea" (click)="removeTask(task)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                    {{ task }}
-                </div>
-            </mat-list-item>
-        }
-    </mat-list>
-
+    <app-search-by-legal-task (taskChange)="addTask($event)" class="full-width"></app-search-by-legal-task>
+    <app-input-data (action)="addNewTask($event)" title="Nueva tarea legal"></app-input-data>
+    <app-form-list [(items)]="procedure.legalTasks"></app-form-list>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
     <button (click)="cancel()" mat-button>Cancelar</button>
-    <button (click)="save()" color="primary" mat-flat-button>Guardar</button>
+    <button (click)="save()" [disabled]="formInvalid(titleNg.ngModel, budget.ngModel)" color="primary" mat-flat-button>
+        Guardar
+    </button>
 </mat-dialog-actions>

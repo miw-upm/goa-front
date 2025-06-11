@@ -13,7 +13,7 @@
     <app-form-field #name [(value)]="user.firstName" [required]="true" errorMessage="Obligatorio" label="Nombre"/>
     <app-form-field [(value)]="user.familyName" label="Email"/>
     <app-form-field [(value)]="user.address" label="Dirección"/>
-    <app-form-select [(selected)]="user.province" [capitalize]="true" [values]="provinces" label="Province"/>
+    <app-form-select [(selected)]="user.province" [capitalize]="true" [values]="provinces" label="Provincia"/>
     <app-form-field [(value)]="user.city" label="Población"/>
     <app-form-field
         #code
@@ -23,15 +23,15 @@
         label="Código postal"
         pattern="^[0-9]{5}$"
     />
-    <app-form-select [(selected)]="user.documentType" [values]="userDocumentTypes" label="Document Type"/>
+    <app-form-select [(selected)]="user.documentType" [values]="userDocumentTypes" label="Tipo de Documento"/>
     <app-form-field [(value)]="user.identity" label="Identidad"/>
     <app-form-field [(value)]="user.email" label="Email"/>
-    <mat-slide-toggle [(ngModel)]="enablePasswordChange">New Password</mat-slide-toggle>
+    <mat-slide-toggle [(ngModel)]="enablePasswordChange">Nueva Contraseña</mat-slide-toggle>
     <app-form-field [(value)]="user.password" [disabled]="!enablePasswordChange" label="Contraseña" type="password"/>
     @if (!isCreate()) {
         <app-form-date [(value)]="user.registrationDate" label="Fecha de Registro" [disabled]="true"/>
     }
-    <app-form-select [(selected)]="user.role" [values]="roles" label="Role"/>
+    <app-form-select [(selected)]="user.role" [values]="roles" label="Rol"/>
     <mat-slide-toggle [(ngModel)]="user.active">Active</mat-slide-toggle>
 </mat-dialog-content>
 <mat-dialog-actions>

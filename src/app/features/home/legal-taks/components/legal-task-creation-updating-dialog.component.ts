@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, NgModel} from '@angular/forms';
 import {
     MAT_DIALOG_DATA,
     MatDialog,
@@ -12,6 +12,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 
+import {FormFieldComponent} from "@common/components/inputs/forms/field.component";
 import {SharedLegalTaskService} from "@shared/services/shared-legal-task.service";
 import {LegalTask} from "@shared/models/legal-task.model";
 import {LegalTaskService} from "../legal-task.service";
@@ -21,12 +22,13 @@ import {LegalTaskService} from "../legal-task.service";
     imports: [
         FormsModule,
         MatDialogTitle,
-        MatDialogContent,
         MatDialogActions,
         MatDialogClose,
         MatFormFieldModule,
         MatInputModule,
-        MatButtonModule
+        MatButtonModule,
+        FormFieldComponent,
+        MatDialogContent
     ],
     templateUrl: 'legal-task-creation-updating-dialog.component.html',
     styleUrls: ['legal-task-dialog.component.css']
@@ -58,11 +60,8 @@ export class LegalTaskCreationUpdatingDialogComponent {
         return this.legalTask.id === undefined;
     }
 
-    invalid(): boolean {
-        return this.check(this.legalTask.title);
+    formInvalid(...controls: NgModel[]): boolean {
+        return controls.some(ctrl => ctrl.invalid && (ctrl.dirty || ctrl.touched));
     }
 
-    check(attr: string): boolean {
-        return attr === undefined || null || attr === '';
-    }
 }

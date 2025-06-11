@@ -1,3 +1,4 @@
-<app-search (renew)="searchByLegalTask($event)" (selected)="onSelect($event)" [(key)]="task" [keys]="tasks"
+<app-search (renew)="searchByLegalTask($event)" (selected)="onSelect($event)"
+            [(key)]="task" [keyView]="['title']" [keys]="tasks"
             class="full-width" obligatory=false title="Tarea Legal">
 </app-search>

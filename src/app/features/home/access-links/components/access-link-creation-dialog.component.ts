@@ -1,13 +1,12 @@
 import {Component} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {MatDialog, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
+import {FormsModule, NgModel} from '@angular/forms';
+import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from "@angular/material/card";
-import {MatIconModule} from "@angular/material/icon";
-import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatButton} from "@angular/material/button";
 
+import {FormFieldComponent} from "@common/components/inputs/forms/field.component";
+import {ClipboardComponent} from "@common/components/inputs/forms/clipboard.component";
 import {SearchByUserComponent} from "@shared/components/search-by-user.component";
 import {User} from "@shared/models/user.model";
 import {AccessLink} from "../acces-link.model";
@@ -23,12 +22,11 @@ import {AccessLinkService} from "../access-link.service";
         MatDialogActions,
         MatDialogClose,
         MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
         MatCardModule,
-        MatIconModule,
-        MatTooltipModule,
-        SearchByUserComponent
+        SearchByUserComponent,
+        FormFieldComponent,
+        ClipboardComponent,
+        MatButton
     ],
     templateUrl: 'access-link-creation-dialog.component.html',
     styleUrls: ['access-link-creation-dialog.component.css']
@@ -37,8 +35,7 @@ import {AccessLinkService} from "../access-link.service";
 export class AccessLinkCreationDialogComponent {
     accessLink: AccessLink;
 
-    constructor(private readonly accessLinkService: AccessLinkService,
-                private readonly dialog: MatDialog) {
+    constructor(private readonly accessLinkService: AccessLinkService) {
         this.accessLink = {mobile: null, scope: "EDIT_PROFILE", link: null}
     }
 
@@ -48,17 +45,8 @@ export class AccessLinkCreationDialogComponent {
             .subscribe(accessLink => this.accessLink.link = accessLink.link);
     }
 
-
-    invalid(): boolean {
-        return this.check(this.accessLink.mobile) || this.check(this.accessLink.scope);
-    }
-
-    check(attr: string | null | undefined): boolean {
-        return !attr || attr.trim() === '';
-    }
-
-    copyToClipboard(text: string): void {
-        navigator.clipboard.writeText(text).then();
+    formInvalid(...controls: NgModel[]): boolean {
+        return controls.some(ctrl => ctrl.invalid && (ctrl.dirty || ctrl.touched));
     }
 
     updateUser(user: User) {

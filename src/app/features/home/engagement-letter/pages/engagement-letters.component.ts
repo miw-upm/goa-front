@@ -38,7 +38,7 @@ export class EngagementLettersComponent {
     }
 
     create(): void {
-        this.dialog.open(EngagementLetterCreationUpdatingDialogComponent);
+        this.dialog.open(EngagementLetterCreationUpdatingDialogComponent, {width: '800px'});
     }
 
     update(engagement: EngagementLetter): void {

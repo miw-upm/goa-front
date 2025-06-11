@@ -1,40 +1,33 @@
 <h4 mat-dialog-title>{{ title }}</h4>
 <mat-dialog-content>
-    <mat-form-field class="full-width">
-        <mat-label>Título</mat-label>
-        <input [(ngModel)]="legalProcedure.title" id="titulo" matInput required type="text"/>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Presupuesto</mat-label>
-        <input [(ngModel)]="legalProcedure.budget" id="presupuesto" matInput min="0" step="10,00" type="number"/>
-        <mat-icon matSuffix>euro</mat-icon>
-    </mat-form-field>
+    <app-form-field #titleNg [(value)]="legalProcedure.title" [required]="true" errorMessage="Obligatorio"
+                    label="Título"/>
+    <app-form-field
+        #budget
+        [(value)]="legalProcedure.budget"
+        [min]="0"
+        [step]="10"
+        errorMessage="0..x"
+        icon="euro"
+        label="Presupuesto"
+        type="number"
+    />
     <fieldset class="full-width">
         <legend>Tareas Legales</legend>
         <app-search-by-legal-task (taskChange)="addTask($event)" class="full-width"></app-search-by-legal-task>
-        <mat-form-field class="full-width">
-            <mat-label>Nueva tarea legal</mat-label>
-            <input #tareaInput (keydown.enter)="addNewTask(tareaInput.value); tareaInput.value=''" matInput
-                   placeholder="Añadir..."
-            />
-        </mat-form-field>
-        <mat-list>
-            @for (task of legalProcedure.legalTasks ?? []; track task) {
-                <mat-list-item>
-                    <button mat-icon-button (click)="removeLegalTask(task)" aria-label="Eliminar tarea legal">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                    {{ task.title }}
-                </mat-list-item>
-            }
-        </mat-list>
+        <app-input-data (action)="addNewTask($event)" title="Nueva tarea legal"></app-input-data>
+        <app-form-list [(items)]="legalProcedure.legalTasks" [keyView]="['title']"></app-form-list>
     </fieldset>
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Close</button>
     @if (isCreate()) {
-        <button (click)="create()" [disabled]=invalid() color="primary" mat-raised-button>Create</button>
+        <button (click)="create()" [disabled]="formInvalid(titleNg.ngModel,budget.ngModel)" color="primary"
+                mat-raised-button>Create
+        </button>
     } @else {
-        <button (click)="update()" [disabled]=invalid() color="primary" mat-raised-button>Update</button>
+        <button (click)="update()" [disabled]="formInvalid(titleNg.ngModel,budget.ngModel)" color="primary"
+                mat-raised-button>Update
+        </button>
     }
 </mat-dialog-actions>

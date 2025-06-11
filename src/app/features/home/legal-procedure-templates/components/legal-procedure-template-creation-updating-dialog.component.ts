@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, NgModel} from '@angular/forms';
 import {
     MAT_DIALOG_DATA,
     MatDialog,
@@ -20,6 +20,10 @@ import {SearchByLegalTaskComponent} from "@shared/components/search-by-legal-tas
 import {LegalProcedureTemplate} from "@shared/models/legal-procedure-template.model";
 import {LegalTask} from "@shared/models/legal-task.model";
 import {LegalProcedureTemplateService} from "../legal-procedure-template.service";
+import {FormFieldComponent} from "@common/components/inputs/forms/field.component";
+import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
+import {InputData} from "@common/components/inputs/input-data.component";
+import {FormListComponent} from "@common/components/inputs/forms/list.component";
 
 @Component({
     standalone: true,
@@ -35,7 +39,10 @@ import {LegalProcedureTemplateService} from "../legal-procedure-template.service
         MatIconModule,
         MatListModule,
         MatNativeDateModule,
-        SearchByLegalTaskComponent
+        SearchByLegalTaskComponent,
+        FormFieldComponent,
+        InputData,
+        FormListComponent
     ],
     templateUrl: 'legal-procedure-template-creation-updating-dialog.component.html',
     styleUrls: ['legal-procedure-template-dialog.component.css']
@@ -73,6 +80,7 @@ export class LegalProcedureTemplateCreationUpdatingDialogComponent {
         return this.legalProcedure.id === undefined;
     }
 
+
     invalid(): boolean {
         return this.check(this.legalProcedure.title);
     }
@@ -84,6 +92,10 @@ export class LegalProcedureTemplateCreationUpdatingDialogComponent {
             (typeof attr === 'string' && attr.trim() === '') ||
             (typeof attr === 'number' && isNaN(attr))
         );
+    }
+
+    formInvalid(...controls: NgModel[]): boolean {
+        return controls.some(ctrl => ctrl.invalid && (ctrl.dirty || ctrl.touched));
     }
 
     addTask(value: LegalTask): void {
@@ -108,4 +120,9 @@ export class LegalProcedureTemplateCreationUpdatingDialogComponent {
             this.legalProcedure.legalTasks.splice(index, 1);
         }
     }
+
+    drop(event: CdkDragDrop<string[]>) {
+        moveItemInArray(this.legalProcedure.legalTasks, event.previousIndex, event.currentIndex);
+    }
+
 }

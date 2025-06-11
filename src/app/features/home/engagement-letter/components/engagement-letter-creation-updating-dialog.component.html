@@ -1,72 +1,39 @@
 <h4 mat-dialog-title>{{ title }}</h4>
 <mat-dialog-content>
-    <mat-form-field class="full-width">
-        <mat-label>Descuento</mat-label>
-        <input [(ngModel)]="engagementLetter.discount" id="discount" matInput max="100" min="0" step="1" type="number"/>
-        <mat-icon matSuffix>euro</mat-icon>
-    </mat-form-field>
+    <app-form-field
+        #discount
+        [(value)]="engagementLetter.discount"
+        [max]="100"
+        [min]="0"
+        [step]="1"
+        errorMessage="Porcentaje, 0..100"
+        icon="euro"
+        label="Descuento"
+        type="number"
+    />
     @if (!isCreate()) {
-        <mat-form-field class="full-width">
-            <mat-label>Fecha de Creación</mat-label>
-            <input [value]="engagementLetter.creationDate | date:'dd/MM/yyyy'" matInput readonly type="text"/>
-        </mat-form-field>
-        <mat-form-field class="full-width">
-            <mat-label>Fecha de Cierre</mat-label>
-            <input [(ngModel)]="engagementLetter.closingDate" [matDatepicker]="picker" matInput/>
-            <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+        <app-form-date [(value)]="engagementLetter.creationDate" label="Fecha de Creación" [disabled]="true"/>
+        <app-form-date [(value)]="engagementLetter.closingDate" label="Fecha de Cierre"/>
     }
     <fieldset class="owner-fieldset">
         <legend>Responsable</legend>
         <app-search-by-user [(user)]="engagementLetter.owner" class="full-width"></app-search-by-user>
-        @if (engagementLetter.owner) {
-            <mat-list>
-                <mat-list-item>
-                    <button mat-icon-button color="warn" aria-label="Eliminar usuario" matTooltip="Eliminar propietario"
-                            (click)="engagementLetter.owner = undefined">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                    {{ engagementLetter.owner?.mobile }}:{{ engagementLetter.owner?.familyName ?? '' }}
-                    , {{ engagementLetter.owner?.firstName ?? '' }}
-                </mat-list-item>
-            </mat-list>
-        }
+        <app-form-list [(items)]="ownerAsArray"
+                       [keyView]="['mobile','familyName','firstName']"></app-form-list>
     </fieldset>
     <fieldset class="owner-fieldset">
         <legend>Resto de clientes</legend>
         <app-search-by-user (userChange)="addAttachment($event)" class="full-width"></app-search-by-user>
-        <mat-list>
-            @for (user of engagementLetter.attachments ?? []; track user) {
-                <mat-list-item>
-                    <div class="list-item-content">
-                        <button mat-icon-button color="warn" aria-label="Eliminar usuario" matTooltip="Eliminar adjunto"
-                                (click)="removeAtachment(user)">
-                            <mat-icon>delete</mat-icon>
-                        </button>
-                        {{ user.mobile }}: {{ user.familyName ?? '' }}, {{ user.firstName ?? '' }}
-                    </div>
-                </mat-list-item>
-            }
-        </mat-list>
+        <app-form-list [(items)]="engagementLetter.attachments"
+                       [keyView]="['mobile','familyName','firstName']"></app-form-list>
     </fieldset>
     <fieldset class="owner-fieldset">
         <legend>Procedimientos Legales</legend>
-        <app-search-by-legal-procedure (procedureChange)="addProcedure($event)"
-                                       class="full-width"></app-search-by-legal-procedure>
-        <mat-list>
-            @for (procedure of engagementLetter.legalProcedures ?? []; track procedure) {
-                <mat-list-item>
-                    <button mat-icon-button (click)="removeProcedure(procedure)" aria-label="Eliminar tarea legal">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                    <button mat-icon-button (click)="editLegalProcedureDialog(procedure)">
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                    {{ procedure.title }}
-                </mat-list-item>
-            }
-        </mat-list>
+        <app-search-by-legal-procedure (procedureChange)="addProcedure($event)">
+        </app-search-by-legal-procedure>
+        <app-form-list (action)="editLegalProcedureDialog($event)"
+                       [(items)]="engagementLetter.legalProcedures" [keyView]="['title']" actionIcon="edit">
+        </app-form-list>
     </fieldset>
     <fieldset class="owner-fieldset">
         <legend>Métodos de pago</legend>
@@ -74,27 +41,22 @@
             <mat-icon>add</mat-icon>
         </button>
         @if (!isPaymentTotalValid()) {
-            <span class="payment-error">Error: total debe ser 100%</span>
+            <span class="payment-error"> Error: total debe ser 100%</span>
         }
-        <mat-list>
-            @for (method of engagementLetter.paymentMethods ?? []; track method.description) {
-                <mat-list-item>
-                    <button mat-icon-button color="warn" aria-label="Eliminar forma de pago"
-                            (click)="removePaymentMethod(method)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                    {{ method.percentage }}%: {{ method.description }}
-                </mat-list-item>
-            }
-        </mat-list>
+        <app-form-list [(items)]="engagementLetter.paymentMethods"
+                       [keyView]="['percentage','description']"></app-form-list>
     </fieldset>
 
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Close</button>
     @if (isCreate()) {
-        <button (click)="create()" [disabled]="invalid()" color="primary" mat-raised-button>Create</button>
+        <button (click)="create()" [disabled]="formInvalid(discount.ngModel) || invalid()" color="primary"
+                mat-raised-button>Create
+        </button>
     } @else {
-        <button (click)="update()" [disabled]="invalid()" color="primary" mat-raised-button>Update</button>
+        <button (click)="update()" [disabled]="formInvalid(discount.ngModel) || invalid()" color="primary"
+                mat-raised-button>Update
+        </button>
     }
 </mat-dialog-actions>

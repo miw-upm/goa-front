@@ -21,7 +21,7 @@
                             label="Nombre"/>
             <app-form-field [(value)]="user.familyName" label="Email"/>
             <app-form-field [(value)]="user.address" label="Dirección"/>
-            <app-form-select [(selected)]="user.province" [capitalize]="true" [values]="provinces" label="Province"/>
+            <app-form-select [(selected)]="user.province" [capitalize]="true" [values]="provinces" label="Provincia"/>
             <app-form-field [(value)]="user.city" label="Población"/>
             <app-form-field
                 #postalCode
@@ -31,7 +31,7 @@
                 label="Código postal"
                 pattern="^[0-9]{5}$"
             />
-            <app-form-select [(selected)]="user.documentType" [values]="userDocumentTypes" label="Document Type"/>
+            <app-form-select [(selected)]="user.documentType" [values]="userDocumentTypes" label="Tipo de Documento"/>
             <app-form-field [(value)]="user.identity" label="Identidad"/>
             <app-form-field [(value)]="user.email" label="Email"/>
         </mat-dialog-content>

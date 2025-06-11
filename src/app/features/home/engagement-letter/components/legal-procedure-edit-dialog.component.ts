@@ -1,19 +1,20 @@
 import {Component, Inject} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, NgModel} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
+import {MatButton} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatTooltipModule} from "@angular/material/tooltip";
-import {MatIconModule} from "@angular/material/icon";
 import {MatListModule} from "@angular/material/list";
 
 import {SharedLegalTaskService} from "@shared/services/shared-legal-task.service";
 import {LegalProcedure} from "../models/legal-procedure.model";
+import {FormListComponent} from "@common/components/inputs/forms/list.component";
+import {InputData} from "@common/components/inputs/input-data.component";
+import {FormFieldComponent} from "@common/components/inputs/forms/field.component";
+import {AppDateFieldComponent} from "@common/components/inputs/forms/data.component";
+import {SearchByLegalTaskComponent} from "@shared/components/search-by-legal-task.component";
+import {LegalTask} from "@shared/models/legal-task.model";
 
 @Component({
     standalone: true,
@@ -25,22 +26,19 @@ import {LegalProcedure} from "../models/legal-procedure.model";
         CommonModule,
         FormsModule,
         MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
         MatCheckboxModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatIconModule,
         MatDialogModule,
         MatListModule,
-        MatTooltipModule,
+        FormListComponent,
+        FormFieldComponent,
+        AppDateFieldComponent,
+        SearchByLegalTaskComponent,
+        MatButton,
+        InputData,
     ]
 })
 export class LegalProcedureEditDialogComponent {
     procedure: LegalProcedure;
-
-    newTask: string = '';
-
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any, private readonly sharedLegalTaskService: SharedLegalTaskService,
@@ -60,17 +58,23 @@ export class LegalProcedureEditDialogComponent {
         this.dialogRef.close();
     }
 
-    addTask(): void {
-        const task = (this.newTask || '').trim();
+    addTask(task: LegalTask): void {
+        const taskTitle = task?.title?.trim();
+        if (taskTitle && !this.procedure.legalTasks.some(t => t === taskTitle)) {
+            this.procedure.legalTasks.push(task.title);
+        }
+    }
+
+    addNewTask(newTask: string): void {
+        const task = (newTask || '').trim();
         if (task && !this.procedure.legalTasks.some(t => t === task)) {
             this.sharedLegalTaskService.create({title: task}).subscribe(
                 () => this.procedure.legalTasks.push(task)
             );
         }
-        this.newTask = '';
     }
 
-    removeTask(task: string): void {
-        this.procedure.legalTasks = this.procedure.legalTasks.filter(t => t !== task);
+    formInvalid(...controls: NgModel[]): boolean {
+        return controls.some(ctrl => ctrl.invalid && (ctrl.dirty || ctrl.touched));
     }
 }

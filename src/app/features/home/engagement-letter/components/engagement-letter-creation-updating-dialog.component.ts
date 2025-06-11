@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, NgModel} from '@angular/forms';
 import {CommonModule, DatePipe} from '@angular/common';
 
 import {MAT_DIALOG_DATA, MatDialog, MatDialogModule} from '@angular/material/dialog';
@@ -23,6 +23,9 @@ import {PaymentMethodDialogComponent} from "./payment-method-dialog.component";
 import {EngagementLetter} from '../models/engagement-letter.model';
 import {LegalProcedure} from "../models/legal-procedure.model";
 import {PaymentMethod} from "../models/payment-method.model";
+import {FormFieldComponent} from "@common/components/inputs/forms/field.component";
+import {AppDateFieldComponent} from "@common/components/inputs/forms/data.component";
+import {FormListComponent} from "@common/components/inputs/forms/list.component";
 
 @Component({
     standalone: true,
@@ -33,7 +36,6 @@ import {PaymentMethod} from "../models/payment-method.model";
     imports: [
         CommonModule,
         FormsModule,
-        DatePipe,
         MatDialogModule,
         MatFormFieldModule,
         MatInputModule,
@@ -45,7 +47,10 @@ import {PaymentMethod} from "../models/payment-method.model";
         MatListModule,
         SearchByUserComponent,
         SearchByLegalProcedureTemplateComponent,
-        MatTooltipModule
+        MatTooltipModule,
+        FormFieldComponent,
+        AppDateFieldComponent,
+        FormListComponent
     ],
 
 })
@@ -77,6 +82,14 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         };
     }
 
+    get ownerAsArray(): any[] {
+        return this.engagementLetter.owner ? [this.engagementLetter.owner] : [];
+    }
+
+    set ownerAsArray(list: any[]) {
+        this.engagementLetter.owner = list[0]; // solo tomas el primero
+    }
+
     create(): void {
         this.engagementLetterService
             .create(this.engagementLetter)
@@ -98,13 +111,16 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         return this.engagementLetter.id === undefined;
     }
 
+    formInvalid(...controls: NgModel[]): boolean {
+        return controls.some(ctrl => ctrl.invalid && (ctrl.dirty || ctrl.touched));
+    }
+
     invalid(): boolean {
-        const d = this.checkInvalid(this.engagementLetter.discount);
-        const o = this.checkInvalid(this.engagementLetter.owner?.mobile);
-        const l = this.checkInvalid(this.engagementLetter.legalProcedures);
-        const p = this.checkInvalid(this.engagementLetter.paymentMethods);
+        const owner = this.checkInvalid(this.engagementLetter.owner?.mobile);
+        const procedures = this.checkInvalid(this.engagementLetter.legalProcedures);
+        const payments = this.checkInvalid(this.engagementLetter.paymentMethods);
         const validSum = this.isPaymentTotalValid();
-        return d || o || l || p || !validSum;
+        return owner || procedures || payments || !validSum;
     }
 
 
@@ -122,13 +138,6 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         const payments = this.engagementLetter.paymentMethods ?? [];
         const total = payments.reduce((sum, p) => sum + (p.percentage || 0), 0);
         return total === 100;
-    }
-
-    removeAtachment(attachment: User) {
-        const index = this.engagementLetter.attachments?.indexOf(attachment);
-        if (index !== undefined && index >= 0) {
-            this.engagementLetter.attachments.splice(index, 1);
-        }
     }
 
     addAttachment(user: User) {
@@ -153,18 +162,6 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         if (title && !this.engagementLetter.legalProcedures.some(proc => proc.title === title)) {
             this.engagementLetter.legalProcedures.push(procedure);
         }
-    }
-
-    removeProcedure(procedure: LegalProcedure) {
-        const index = this.engagementLetter.legalProcedures?.indexOf(procedure);
-        if (index !== undefined && index >= 0) {
-            this.engagementLetter.legalProcedures.splice(index, 1);
-        }
-    }
-
-    removePaymentMethod(method: PaymentMethod): void {
-        this.engagementLetter.paymentMethods =
-            this.engagementLetter.paymentMethods?.filter(m => m !== method) ?? [];
     }
 
     addLegalProcedureDialog(): void {
