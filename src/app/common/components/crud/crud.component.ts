@@ -11,6 +11,8 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {DataCellComponent} from "@common/components/crud/data-cell.component";
 import {ReadDetailDialogComponent} from "@common/components/crud/read-detail.dialog.component";
 import {UppercaseWordsPipe} from '../../pipes/uppercase-words.pipe';
+import {CancelYesDialogComponent} from "@common/components/dialogs/cancel-yes-dialog.component";
+import {TypeToConfirmDialogComponent} from "@common/components/dialogs/type-to-confirm-dialog.component";
 
 @Component({
     standalone: true,
@@ -36,6 +38,7 @@ export class CrudComponent {
     @Input() readAction = true;
     @Input() updateAction = true;
     @Input() deleteAction = false;
+    @Input() secureDelete = false;
     @Input() printAction = false;
     @Input() runAction = false;
 
@@ -101,7 +104,33 @@ export class CrudComponent {
     }
 
     onDelete(item: any): void {
-        this.delete.emit(item);
+        if (!this.secureDelete) {
+            const ref = this.dialog.open(CancelYesDialogComponent, {
+                disableClose: true,
+                data: {
+                    title: `Delete ${this.title}`,
+                    message: 'Are you sure you want to delete this item?'
+                }
+            });
+
+            ref.afterClosed().subscribe((confirmed: boolean) => {
+                if (confirmed === true) {
+                    this.delete.emit(item);
+                }
+            });
+        } else {
+            this.dialog.open(TypeToConfirmDialogComponent, {
+                disableClose: true,
+                data: {
+                    title: `Delete ${this.title}`,
+                    message: 'Type the confirmation text to proceed.',
+                    token: 'Delete'
+                }
+            }).afterClosed()
+                .subscribe((ok: boolean) => {
+                    if (ok === true) this.delete.emit(item);
+                });
+        }
     }
 
     onPrint(item: any): void {

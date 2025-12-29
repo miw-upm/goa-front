@@ -17,6 +17,7 @@ import {User} from "@shared/models/user.model";
 import {UserDocumentType} from "@shared/models/UserDocumentType";
 import {SharedUserService} from "@shared/services/shared-user.service";
 import {CustomerService} from "../customer.service";
+import {MatCheckbox} from "@angular/material/checkbox";
 
 @Component({
     standalone: true,
@@ -34,7 +35,8 @@ import {CustomerService} from "../customer.service";
         MatButtonModule,
         MatDialogModule,
         FormFieldComponent,
-        FormSelectComponent
+        FormSelectComponent,
+        MatCheckbox
     ],
     styleUrl: './customer.component.css'
 })
@@ -44,6 +46,7 @@ export class CustomerComponent {
     token: string;
     provinces: Observable<string[]>;
     userDocumentTypes: Observable<string[]> = of(Object.values(UserDocumentType));
+    acceptsPromotions: boolean
 
     constructor(private readonly customerService: CustomerService, private readonly sharedUserService: SharedUserService,
                 private readonly route: ActivatedRoute) {
