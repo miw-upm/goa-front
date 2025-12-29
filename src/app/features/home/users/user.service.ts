@@ -9,7 +9,6 @@ import {UserSearch} from "./user-search.model";
 @Injectable({providedIn: 'root'})
 export class UserService {
     private static readonly API_URL = environment.REST_USER + '/users';
-    private static readonly MOBILE = '/mobile';
 
     constructor(private readonly httpService: HttpService) {
     }
@@ -21,13 +20,13 @@ export class UserService {
 
     read(mobile: string): Observable<User> {
         return this.httpService
-            .get(UserService.API_URL + UserService.MOBILE + '/' + mobile);
+            .get(UserService.API_URL + '/' + mobile);
     }
 
     update(oldMobile: string, user: User): Observable<User> {
         return this.httpService
             .successful()
-            .put(UserService.API_URL + UserService.MOBILE + '/' + oldMobile, user);
+            .put(UserService.API_URL + '/' + oldMobile, user);
     }
 
     search(criteria: UserSearch): Observable<User[]> {

@@ -12,18 +12,18 @@
 
     <mat-form-field appearance="outline" style="width: 100%; margin-top: 12px;">
         <input
-                matInput
+                (keyup.enter)="confirm()"
                 [formControl]="input"
                 [placeholder]="'Type: ' + data.token"
-                (keyup.enter)="confirm()"
                 autocomplete="off"
+                matInput
         />
     </mat-form-field>
 </div>
 
 <mat-dialog-actions align="end">
-    <button mat-raised-button mat-dialog-close color="primary">Cancel</button>
-    <button mat-raised-button color="warn" [disabled]="!canConfirm" (click)="confirm()">
+    <button color="primary" mat-dialog-close mat-raised-button>Cancel</button>
+    <button (click)="confirm()" [disabled]="!canConfirm" color="warn" mat-raised-button>
         Delete
     </button>
 </mat-dialog-actions>

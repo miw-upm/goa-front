@@ -21,5 +21,6 @@ export type CancelYesDialogData = {
     ]
 })
 export class CancelYesDialogComponent {
-    constructor(@Inject(MAT_DIALOG_DATA) public data: CancelYesDialogData) {}
+    constructor(@Inject(MAT_DIALOG_DATA) public data: CancelYesDialogData) {
+    }
 }

@@ -8,21 +8,20 @@ import {User} from "@shared/models/user.model";
 @Injectable()
 export class CustomerService {
     private static readonly USERS = environment.REST_USER + '/users';
-    private static readonly MOBILE = '/mobile';
 
     constructor(private readonly httpService: HttpService) {
     }
 
     readWithToken(mobile: string, token: string): Observable<User> {
         return this.httpService
-            .get(CustomerService.USERS + CustomerService.MOBILE + '/' + mobile + '/' + token);
+            .get(CustomerService.USERS + '/' + mobile + '/' + token);
     }
 
     updateWithToken(oldMobile: string, user: User, token: string): Observable<User> {
         console.log(oldMobile, user);
         return this.httpService
             .successful()
-            .put(CustomerService.USERS + CustomerService.MOBILE + '/' + oldMobile + "/" + token, user);
+            .put(CustomerService.USERS + '/' + oldMobile + "/" + token, user);
     }
 
 }

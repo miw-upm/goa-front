@@ -1,5 +1,11 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
+import {
+    MAT_DIALOG_DATA,
+    MatDialogActions,
+    MatDialogClose,
+    MatDialogRef,
+    MatDialogTitle
+} from '@angular/material/dialog';
 import {FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -28,12 +34,13 @@ export type TypeToConfirmDialogData = {
     ]
 })
 export class TypeToConfirmDialogComponent {
-    input = new FormControl('', { nonNullable: true, validators: [Validators.required] });
+    input = new FormControl('', {nonNullable: true, validators: [Validators.required]});
 
     constructor(
         private readonly ref: MatDialogRef<TypeToConfirmDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: TypeToConfirmDialogData
-    ) {}
+    ) {
+    }
 
     get canConfirm(): boolean {
         return this.input.value === this.data.token;
