@@ -5,6 +5,7 @@ import {MatDialog} from "@angular/material/dialog";
 
 import {CrudComponent} from "@common/components/crud/crud.component";
 import {AccessLinkService} from "../access-link.service";
+import {InfoDialogComponent} from "@common/components/dialogs/info-dialog.component";
 
 @Component({
     standalone: true,
@@ -33,6 +34,17 @@ export class AccessLinkComponent {
 
     read(accessLink: any): void {
         this.accessLink = this.accessLinkService.read(accessLink.id);
+    }
+
+    run(accessLink: any): void {
+        const link = this.accessLinkService.createLink(accessLink);
+        this.dialog.open(InfoDialogComponent, {
+            width: '1200px',
+            data: {
+                title: 'Access link',
+                message: link
+            }
+        });
     }
 
 }

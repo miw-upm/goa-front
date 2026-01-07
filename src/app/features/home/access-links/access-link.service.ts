@@ -13,14 +13,20 @@ export class AccessLinkService {
     constructor(private readonly httpService: HttpService) {
     }
 
-    createAccessLink(accessLink: AccessLink): Observable<AccessLink> {
-        return this.httpService.post(AccessLinkService.ACCESS_LINK, accessLink)
+    createAccessLink(accessLink: AccessLink): Observable<string> {
+        return this.httpService
+            .post(AccessLinkService.ACCESS_LINK, accessLink)
             .pipe(
-                map(accessLink => {
-                    accessLink.link = environment.FRONT_END + "/customer/edit-profile" + accessLink.link;
-                    return accessLink;
-                }),
+                map(response => this.createLink(response))
             );
+    }
+
+    createLink(accessLink: AccessLink): string {
+        let link = `${environment.FRONT_END}/customer/${accessLink.scope}/${accessLink.mobile}/${accessLink.id}`;
+        if (accessLink.document) {
+            link += `/${accessLink.document}`;
+        }
+        return link;
     }
 
     search() {

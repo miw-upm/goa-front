@@ -1,5 +1,6 @@
 export interface AccessLink {
-    mobile: string;
+    id?: string;
     scope: string;
-    link: string;
+    mobile: string;
+    document?: string;
 }

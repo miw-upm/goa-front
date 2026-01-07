@@ -34,15 +34,16 @@ import {AccessLinkService} from "../access-link.service";
 
 export class AccessLinkCreationDialogComponent {
     accessLink: AccessLink;
+    link: string
 
     constructor(private readonly accessLinkService: AccessLinkService) {
-        this.accessLink = {mobile: null, scope: "EDIT_PROFILE", link: null}
+        this.accessLink = {mobile: null, scope: "edit-profile"}
     }
 
     create(): void {
         this.accessLinkService
             .createAccessLink(this.accessLink)
-            .subscribe(accessLink => this.accessLink.link = accessLink.link);
+            .subscribe(link => this.link = link);
     }
 
     formInvalid(...controls: NgModel[]): boolean {

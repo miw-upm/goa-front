@@ -1,0 +1,14 @@
+<h3 mat-dialog-title>
+    <mat-icon color="primary">info</mat-icon>
+    {{ data?.title ?? 'Information' }}.
+</h3>
+
+<div class="mat-body-1" style="padding: 0 24px 12px;">
+    <app-form-clipboard
+            [value]="data?.message ?? ''"
+            label="Copiar">
+    </app-form-clipboard>
+</div>
+<mat-dialog-actions align="end">
+    <button color="primary" mat-dialog-close mat-raised-button>Cerrar</button>
+</mat-dialog-actions>
