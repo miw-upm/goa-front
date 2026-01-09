@@ -4,7 +4,7 @@ import {provideRouter} from "@angular/router";
 import {provideHttpClient, withInterceptors} from "@angular/common/http";
 import {authInterceptor, AuthModule, LogLevel} from "angular-auth-oidc-client";
 import {AppComponent} from './app/app.component';
-import {routes} from "./app/app.routes";
+import {routes} from "./app/features/app-shell/app-shell.routes";
 import {environment} from '@env';
 import {provideAnimations} from "@angular/platform-browser/animations";
 import {MatNativeDateModule} from '@angular/material/core';
