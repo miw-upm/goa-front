@@ -7,7 +7,7 @@ import {MatButton} from "@angular/material/button";
 
 import {FormFieldComponent} from "@shared/ui/inputs/forms/field.component";
 import {ClipboardComponent} from "@shared/ui/inputs/forms/clipboard.component";
-import {SearchByUserComponent} from "../../../common/components/search-by-user.component";
+import {SearchByUserComponent} from "../../../common/ui/search-by-user.component";
 import {User} from "../../../common/models/user.model";
 import {AccessLink} from "../acces-link.model";
 import {AccessLinkService} from "../access-link.service";

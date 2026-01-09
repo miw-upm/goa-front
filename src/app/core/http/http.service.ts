@@ -132,7 +132,7 @@ export class HttpService {
         }
         const contentType = response.headers.get('content-type');
         if (contentType.includes('application/pdf')) {
-            const blob = new Blob([response.body], { type: 'application/pdf' });
+            const blob = new Blob([response.body], {type: 'application/pdf'});
             window.open(window.URL.createObjectURL(blob));
             return null;
         }
@@ -141,7 +141,7 @@ export class HttpService {
 
     private showError(notification: string): void {
         const message = this.errorNotification || notification;
-        this.snackBar.open(message, 'Error', {duration: HttpService.SNACK_ERROR_DURATION });
+        this.snackBar.open(message, 'Error', {duration: HttpService.SNACK_ERROR_DURATION});
         this.errorNotification = undefined;
     }
 

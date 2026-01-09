@@ -13,8 +13,10 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatListModule} from "@angular/material/list";
 
-import {SearchByUserComponent} from '../../../common/components/search-by-user.component';
-import {SearchByLegalProcedureTemplateComponent} from "../../../common/components/search-by-legal-procedure-template.component";
+import {SearchByUserComponent} from '../../../common/ui/search-by-user.component';
+import {
+    SearchByLegalProcedureTemplateComponent
+} from "../../../common/ui/search-by-legal-procedure-template.component";
 import {User} from "../../../common/models/user.model";
 import {LegalProcedureTemplate} from "../../../common/models/legal-procedure-template.model";
 import {LegalProcedureEditDialogComponent} from "./legal-procedure-edit-dialog.component";

@@ -16,7 +16,7 @@ import {MatListModule} from "@angular/material/list";
 import {MatNativeDateModule} from "@angular/material/core";
 
 import {SharedLegalTaskService} from "../../../common/services/shared-legal-task.service";
-import {SearchByLegalTaskComponent} from "../../../common/components/search-by-legal-task.component";
+import {SearchByLegalTaskComponent} from "../../../common/ui/search-by-legal-task.component";
 import {LegalProcedureTemplate} from "../../../common/models/legal-procedure-template.model";
 import {LegalTask} from "../../../common/models/legal-task.model";
 import {LegalProcedureTemplateService} from "../legal-procedure-template.service";

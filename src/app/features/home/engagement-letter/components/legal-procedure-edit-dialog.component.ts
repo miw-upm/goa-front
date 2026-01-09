@@ -13,7 +13,7 @@ import {FormListComponent} from "@shared/ui/inputs/forms/list.component";
 import {InputData} from "@shared/ui/inputs/input-data.component";
 import {FormFieldComponent} from "@shared/ui/inputs/forms/field.component";
 import {AppDateFieldComponent} from "@shared/ui/inputs/forms/data.component";
-import {SearchByLegalTaskComponent} from "../../../common/components/search-by-legal-task.component";
+import {SearchByLegalTaskComponent} from "../../../common/ui/search-by-legal-task.component";
 import {LegalTask} from "../../../common/models/legal-task.model";
 
 @Component({
