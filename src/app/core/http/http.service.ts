@@ -1,29 +1,25 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import {EMPTY, Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {MatSnackBar} from '@angular/material/snack-bar';
-
-export interface HttpOptions {
-    headers: HttpHeaders;
-    params: HttpParams;
-    responseType: 'json' | 'blob';
-    observe: 'response';
-}
 
 @Injectable({providedIn: 'root'})
 export class HttpService {
     static readonly CONNECTION_REFUSE = 0;
     static readonly UNAUTHORIZED = 401;
-    private headers: HttpHeaders;
-    private params: HttpParams;
-    private responseType: 'json' | 'blob';
+    private static readonly SNACK_SUCCESS_DURATION = 1000;
+    private static readonly SNACK_ERROR_DURATION = 7000;
+
     private successfulNotification: string | undefined;
     private errorNotification: string | undefined;
 
+    private headers: HttpHeaders = new HttpHeaders();
+    private params: HttpParams = new HttpParams();
+    private responseType: 'json' | 'blob' = 'json';
+
     constructor(private readonly http: HttpClient, private readonly snackBar: MatSnackBar, private readonly router: Router) {
-        this.resetOptions();
     }
 
     param(key: string, value: string): this {
@@ -59,7 +55,7 @@ export class HttpService {
         return this.http
             .post(endpoint, body, this.createOptions())
             .pipe(
-                map(response => this.extractData(response)),
+                map((response: any) => this.extractData(response)),
                 catchError(error => this.handleError(error))
             );
     }
@@ -68,7 +64,7 @@ export class HttpService {
         return this.http
             .get(endpoint, this.createOptions())
             .pipe(
-                map(response => this.extractData(response)),
+                map((response: any) => this.extractData(response)),
                 catchError(error => this.handleError(error))
             );
     }
@@ -77,7 +73,7 @@ export class HttpService {
         return this.http
             .put(endpoint, body, this.createOptions())
             .pipe(
-                map(response => this.extractData(response)),
+                map((response: any) => this.extractData(response)),
                 catchError(error => this.handleError(error))
             );
     }
@@ -86,7 +82,7 @@ export class HttpService {
         return this.http
             .patch(endpoint, body, this.createOptions())
             .pipe(
-                map(response => this.extractData(response)),
+                map((response: any) => this.extractData(response)),
                 catchError(error => this.handleError(error))
             );
     }
@@ -95,7 +91,7 @@ export class HttpService {
         return this.http
             .delete(endpoint, this.createOptions())
             .pipe(
-                map(response => this.extractData(response)),
+                map((response: any) => this.extractData(response)),
                 catchError(error => this.handleError(error)));
     }
 
@@ -114,6 +110,8 @@ export class HttpService {
         this.headers = new HttpHeaders();
         this.params = new HttpParams();
         this.responseType = 'json';
+        this.successfulNotification = undefined;
+        this.errorNotification = undefined;
     }
 
     private createOptions(): any {
@@ -127,50 +125,43 @@ export class HttpService {
         return options;
     }
 
-    private extractData(response: any): any {
+    private extractData(response: HttpResponse<any>): any {
         if (this.successfulNotification) {
-            this.snackBar.open(this.successfulNotification, '', {
-                duration: 1000
-            });
+            this.snackBar.open(this.successfulNotification, '', {duration: HttpService.SNACK_SUCCESS_DURATION});
             this.successfulNotification = undefined;
         }
         const contentType = response.headers.get('content-type');
-        if (contentType) {
-            if (contentType.indexOf('application/pdf') !== -1) {
-                const blob = new Blob([response.body], {type: 'application/pdf'});
-                window.open(window.URL.createObjectURL(blob));
-                return null;
-            } else if (contentType.indexOf('application/json') !== -1) {
-                return response.body; // with 'text': JSON.parse(response.body);
-            }
-        } else {
-            return response;
+        if (contentType.includes('application/pdf')) {
+            const blob = new Blob([response.body], { type: 'application/pdf' });
+            window.open(window.URL.createObjectURL(blob));
+            return null;
         }
+        return response.body;
     }
 
     private showError(notification: string): void {
         const message = this.errorNotification || notification;
-        this.snackBar.open(message, 'Error', {duration: 7000});
+        this.snackBar.open(message, 'Error', {duration: HttpService.SNACK_ERROR_DURATION });
         this.errorNotification = undefined;
     }
 
-    private handleError(response: any): Observable<never> {
+    private handleError(response: HttpErrorResponse): Observable<never> {
         if (response.status === HttpService.UNAUTHORIZED) {
             this.showError('Unauthorized');
-            this.router.navigate(['']).then();
+            void this.router.navigate(['']);
             return EMPTY;
         } else if (response.status === HttpService.CONNECTION_REFUSE) {
             this.showError('Connection Refuse');
             return EMPTY;
         } else {
-            try {
-                const error = response.error; // with 'text': JSON.parse(response.error);
-                this.showError(error.error + ' (' + response.status + '): ' + error.message);
+            const error = response.error;
+            if (error?.error && error?.message) {
+                this.showError(`${error.error} (${response.status}): ${error.message}`);
                 return throwError(() => error);
-            } catch (e) {
-                this.showError('Not response');
-                return throwError(() => response.error);
             }
+
+            this.showError('Not response');
+            return throwError(() => response.error);
         }
     }
 
