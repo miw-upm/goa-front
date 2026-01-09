@@ -100,7 +100,7 @@ export class HttpService {
     }
 
     authBasic(mobile: number, password: string): this {
-        return this.header('Authorization', 'Basic ' + btoa('${mobile}:${password}'));
+        return this.header('Authorization', 'Basic ' + btoa(`${mobile}:${password}`));
     }
 
     header(key: string, value: string): this {

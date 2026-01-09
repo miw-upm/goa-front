@@ -10,15 +10,15 @@ export class AuthService {
     mobile: string = null;
     roles: string = null;
 
-    constructor(private readonly oidcSecurityService: OidcSecurityService) {
+    constructor(private readonly oidc: OidcSecurityService) {
     }
 
     login(): void {
-        this.oidcSecurityService.authorize();
+        this.oidc.authorize();
     }
 
     logout(): void {
-        this.oidcSecurityService.logoff().subscribe(() => {
+        this.oidc.logoff().subscribe(() => {
             this.name = null;
             this.mobile = null;
             this.roles = null;
