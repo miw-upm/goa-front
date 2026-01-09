@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {OidcSecurityService} from "angular-auth-oidc-client";
 
-import {AuthService} from "@common/components/auth/auth.service";
+import {AuthService} from "@core/auth/auth.service";
 
 @Component({
     selector: 'app-login-callback',

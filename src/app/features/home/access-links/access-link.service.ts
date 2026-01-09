@@ -3,7 +3,7 @@ import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 
 import {environment} from "@env";
-import {HttpService} from "@common/services/http.service";
+import {HttpService} from "@core/http/http.service";
 import {AccessLink} from "./acces-link.model";
 
 @Injectable()

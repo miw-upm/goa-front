@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 import {map} from "rxjs/operators";
 
 import {environment} from "@env";
-import {HttpService} from "@common/services/http.service";
+import {HttpService} from "@core/http/http.service";
 import {LegalProcedureTemplate} from '@shared/models/legal-procedure-template.model';
 import {LegalProcedureSearch} from "./models/legal-procedure-search.model";
 

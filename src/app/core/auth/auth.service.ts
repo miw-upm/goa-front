@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {OidcSecurityService} from "angular-auth-oidc-client";
 
-import {Role} from '@common/components/auth/models/role.model';
+import {Role} from '@core/auth/models/role.model';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {

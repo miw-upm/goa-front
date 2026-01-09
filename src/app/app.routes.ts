@@ -2,8 +2,8 @@ import {Routes} from '@angular/router';
 
 
 import {LoginCallbackComponent} from "@common/components/auth/LoginCallbackComponent";
-import {RoleGuardService} from "@common/components/auth/role-guard.service";
-import {Role} from "@common/components/auth/models/role.model";
+import {RoleGuardService} from "@core/auth/role-guard.service";
+import {Role} from "@core/auth/models/role.model";
 
 import {HomeComponent} from "./features/home/home.component";
 import {UsersComponent} from "./features/home/users/pages/users.component";

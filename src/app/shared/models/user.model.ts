@@ -1,4 +1,4 @@
-import {Role} from "@common/components/auth/models/role.model";
+import {Role} from "@core/auth/models/role.model";
 
 export interface User {
     mobile: string;

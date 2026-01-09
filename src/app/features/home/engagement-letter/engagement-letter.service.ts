@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import {Observable} from 'rxjs';
-import {HttpService} from "@common/services/http.service";
+import {HttpService} from "@core/http/http.service";
 import {environment} from "@env";
 import {EngagementLetter} from "./models/engagement-letter.model";
 import {LegalProcedureTemplate} from "@shared/models/legal-procedure-template.model";

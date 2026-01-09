@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 
 import {environment} from "@env";
-import {HttpService} from '@common/services/http.service';
+import {HttpService} from '@core/http/http.service';
 import {LegalTask} from "../models/legal-task.model";
 
 @Injectable({providedIn: 'root'})
