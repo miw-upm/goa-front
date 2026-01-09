@@ -4,7 +4,7 @@ import {AsyncPipe} from '@angular/common';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {Observable} from 'rxjs';
-import {CapitalizeEnumNamePipe} from "@shared/ui/pipes/capitalize-enum-name.pipe";
+import {CapitalizeEnumNamePipe} from "@shared/pipes/capitalize-enum-name.pipe";
 
 @Component({
     selector: 'app-form-select',

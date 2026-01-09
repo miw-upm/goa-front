@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {DatePipe} from '@angular/common';
 
-import {UppercaseWordsPipe} from "@shared/ui/pipes/uppercase-words.pipe";
+import {UppercaseWordsPipe} from "@shared/pipes/uppercase-words.pipe";
 
 @Component({
     standalone: true,

@@ -9,7 +9,7 @@ import {
 } from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 
-import {UppercaseWordsPipe} from "@shared/ui/pipes/uppercase-words.pipe";
+import {UppercaseWordsPipe} from "@shared/pipes/uppercase-words.pipe";
 import {DataCellComponent} from "@shared/ui/crud/data-cell.component";
 
 @Component({
