@@ -5,10 +5,10 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatCardModule} from "@angular/material/card";
 import {MatButton} from "@angular/material/button";
 
-import {FormFieldComponent} from "@common/components/inputs/forms/field.component";
-import {ClipboardComponent} from "@common/components/inputs/forms/clipboard.component";
-import {SearchByUserComponent} from "@shared/components/search-by-user.component";
-import {User} from "@shared/models/user.model";
+import {FormFieldComponent} from "@shared/ui/inputs/forms/field.component";
+import {ClipboardComponent} from "@shared/ui/inputs/forms/clipboard.component";
+import {SearchByUserComponent} from "../../../common/components/search-by-user.component";
+import {User} from "../../../common/models/user.model";
 import {AccessLink} from "../acces-link.model";
 import {AccessLinkService} from "../access-link.service";
 

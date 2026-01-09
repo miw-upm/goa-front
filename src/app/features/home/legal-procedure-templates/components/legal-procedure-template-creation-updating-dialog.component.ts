@@ -15,15 +15,15 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatListModule} from "@angular/material/list";
 import {MatNativeDateModule} from "@angular/material/core";
 
-import {SharedLegalTaskService} from "@shared/services/shared-legal-task.service";
-import {SearchByLegalTaskComponent} from "@shared/components/search-by-legal-task.component";
-import {LegalProcedureTemplate} from "@shared/models/legal-procedure-template.model";
-import {LegalTask} from "@shared/models/legal-task.model";
+import {SharedLegalTaskService} from "../../../common/services/shared-legal-task.service";
+import {SearchByLegalTaskComponent} from "../../../common/components/search-by-legal-task.component";
+import {LegalProcedureTemplate} from "../../../common/models/legal-procedure-template.model";
+import {LegalTask} from "../../../common/models/legal-task.model";
 import {LegalProcedureTemplateService} from "../legal-procedure-template.service";
-import {FormFieldComponent} from "@common/components/inputs/forms/field.component";
+import {FormFieldComponent} from "@shared/ui/inputs/forms/field.component";
 import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
-import {InputData} from "@common/components/inputs/input-data.component";
-import {FormListComponent} from "@common/components/inputs/forms/list.component";
+import {InputData} from "@shared/ui/inputs/input-data.component";
+import {FormListComponent} from "@shared/ui/inputs/forms/list.component";
 
 @Component({
     standalone: true,

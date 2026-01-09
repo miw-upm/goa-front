@@ -11,11 +11,11 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {ActivatedRoute} from "@angular/router";
 import {MatButtonModule} from "@angular/material/button";
 
-import {FormFieldComponent} from "@common/components/inputs/forms/field.component";
-import {FormSelectComponent} from "@common/components/inputs/forms/select.component";
-import {User} from "@shared/models/user.model";
-import {UserDocumentType} from "@shared/models/UserDocumentType";
-import {SharedUserService} from "@shared/services/shared-user.service";
+import {FormFieldComponent} from "@shared/ui/inputs/forms/field.component";
+import {FormSelectComponent} from "@shared/ui/inputs/forms/select.component";
+import {User} from "../../common/models/user.model";
+import {UserDocumentType} from "../../common/models/UserDocumentType";
+import {SharedUserService} from "../../common/services/shared-user.service";
 import {CustomerService} from "../customer.service";
 import {MatCheckbox} from "@angular/material/checkbox";
 

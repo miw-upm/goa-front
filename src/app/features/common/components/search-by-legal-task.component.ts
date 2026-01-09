@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Observable, of} from 'rxjs';
 
-import {SearchComponent} from '@common/components/inputs/search.component';
+import {SearchComponent} from '@shared/ui/inputs/search.component';
 import {SharedLegalTaskService} from "../services/shared-legal-task.service";
 import {LegalTask} from "../models/legal-task.model";
 

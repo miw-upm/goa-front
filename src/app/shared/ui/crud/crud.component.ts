@@ -8,11 +8,11 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatDialog} from "@angular/material/dialog";
 import {MatFormFieldModule} from "@angular/material/form-field";
 
-import {DataCellComponent} from "@common/components/crud/data-cell.component";
-import {ReadDetailDialogComponent} from "@common/components/crud/read-detail.dialog.component";
-import {UppercaseWordsPipe} from '../../pipes/uppercase-words.pipe';
-import {CancelYesDialogComponent} from "@common/components/dialogs/cancel-yes-dialog.component";
-import {TypeToConfirmDialogComponent} from "@common/components/dialogs/type-to-confirm-dialog.component";
+import {DataCellComponent} from "@shared/ui/crud/data-cell.component";
+import {ReadDetailDialogComponent} from "@shared/ui/crud/read-detail.dialog.component";
+import {UppercaseWordsPipe} from '@shared/ui/pipes/uppercase-words.pipe';
+import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
+import {TypeToConfirmDialogComponent} from "@shared/ui/dialogs/type-to-confirm-dialog.component";
 
 @Component({
     standalone: true,

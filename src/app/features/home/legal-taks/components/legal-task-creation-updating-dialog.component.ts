@@ -12,9 +12,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 
-import {FormFieldComponent} from "@common/components/inputs/forms/field.component";
-import {SharedLegalTaskService} from "@shared/services/shared-legal-task.service";
-import {LegalTask} from "@shared/models/legal-task.model";
+import {FormFieldComponent} from "@shared/ui/inputs/forms/field.component";
+import {SharedLegalTaskService} from "../../../common/services/shared-legal-task.service";
+import {LegalTask} from "../../../common/models/legal-task.model";
 import {LegalTaskService} from "../legal-task.service";
 
 @Component({

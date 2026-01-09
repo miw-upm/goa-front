@@ -4,7 +4,7 @@ import {map} from "rxjs/operators";
 
 import {environment} from "@env";
 import {HttpService} from '@core/http/http.service';
-import {User} from "@shared/models/user.model";
+import {User} from "../models/user.model";
 
 @Injectable({providedIn: 'root'})
 export class SharedUserService {

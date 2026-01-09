@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 
 import {environment} from "@env";
 import {HttpService} from '@core/http/http.service';
-import {LegalTask} from "@shared/models/legal-task.model";
+import {LegalTask} from "../../common/models/legal-task.model";
 import {LegalTaskSearch} from "./legal-task-search.model";
 
 @Injectable({providedIn: 'root'})

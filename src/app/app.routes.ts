@@ -1,7 +1,7 @@
 import {Routes} from '@angular/router';
 
 
-import {LoginCallbackComponent} from "@common/components/auth/LoginCallbackComponent";
+import {LoginCallbackComponent} from "./features/auth/pages/LoginCallbackComponent";
 import {RoleGuardService} from "@core/auth/role-guard.service";
 import {Role} from "@core/auth/models/role.model";
 

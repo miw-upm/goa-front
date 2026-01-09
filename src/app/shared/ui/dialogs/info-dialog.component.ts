@@ -2,7 +2,7 @@ import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogTitle} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
-import {ClipboardComponent} from "@common/components/inputs/forms/clipboard.component";
+import {ClipboardComponent} from "@shared/ui/inputs/forms/clipboard.component";
 
 export type InfoDialogData = {
     title?: string;

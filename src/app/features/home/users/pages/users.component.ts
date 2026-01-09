@@ -3,9 +3,9 @@ import {FormsModule} from '@angular/forms';
 import {Observable, of} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 
-import {CrudComponent} from '@common/components/crud/crud.component';
-import {FilterInputComponent} from "@common/components/inputs/filter-input.component";
-import {User} from "@shared/models/user.model";
+import {CrudComponent} from '@shared/ui/crud/crud.component';
+import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
+import {User} from "../../../common/models/user.model";
 import {UserCreationUpdatingDialogComponent} from '../components/user-creation-updating-dialog.component';
 import {UserSearch} from '../user-search.model';
 import {UserService} from "../user.service";

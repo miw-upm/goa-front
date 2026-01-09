@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {HttpService} from "@core/http/http.service";
 import {environment} from "@env";
 import {EngagementLetter} from "./models/engagement-letter.model";
-import {LegalProcedureTemplate} from "@shared/models/legal-procedure-template.model";
+import {LegalProcedureTemplate} from "../../common/models/legal-procedure-template.model";
 import {EngagementLetterSearch} from "./models/engagement-letter-search.model";
 
 @Injectable()

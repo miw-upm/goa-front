@@ -16,12 +16,12 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSelectModule} from "@angular/material/select";
 
 import {AuthService} from "@core/auth/auth.service";
-import {FormSelectComponent} from "@common/components/inputs/forms/select.component";
-import {FormFieldComponent} from "@common/components/inputs/forms/field.component";
-import {AppDateFieldComponent} from "@common/components/inputs/forms/data.component";
-import {SharedUserService} from "@shared/services/shared-user.service";
-import {UserDocumentType} from "@shared/models/UserDocumentType";
-import {User} from "@shared/models/user.model";
+import {FormSelectComponent} from "@shared/ui/inputs/forms/select.component";
+import {FormFieldComponent} from "@shared/ui/inputs/forms/field.component";
+import {AppDateFieldComponent} from "@shared/ui/inputs/forms/data.component";
+import {SharedUserService} from "../../../common/services/shared-user.service";
+import {UserDocumentType} from "../../../common/models/UserDocumentType";
+import {User} from "../../../common/models/user.model";
 import {UserService} from '../user.service';
 
 @Component({

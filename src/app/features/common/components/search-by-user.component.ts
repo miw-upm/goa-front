@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Observable, of} from 'rxjs';
 
-import {SearchComponent} from '@common/components/inputs/search.component';
+import {SearchComponent} from '@shared/ui/inputs/search.component';
 import {SharedUserService} from "../services/shared-user.service";
-import {User} from "@shared/models/user.model";
+import {User} from "../models/user.model";
 
 @Component({
     standalone: true,

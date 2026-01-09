@@ -3,9 +3,9 @@ import {FormsModule} from "@angular/forms";
 import {Observable, of} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 
-import {CrudComponent} from "@common/components/crud/crud.component";
+import {CrudComponent} from "@shared/ui/crud/crud.component";
 import {AccessLinkService} from "../access-link.service";
-import {InfoDialogComponent} from "@common/components/dialogs/info-dialog.component";
+import {InfoDialogComponent} from "@shared/ui/dialogs/info-dialog.component";
 
 @Component({
     standalone: true,

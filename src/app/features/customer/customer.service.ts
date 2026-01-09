@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 
 import {environment} from "@env";
 import {HttpService} from '@core/http/http.service';
-import {User} from "@shared/models/user.model";
+import {User} from "../common/models/user.model";
 
 @Injectable()
 export class CustomerService {
