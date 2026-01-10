@@ -11,7 +11,7 @@
         type="tel"
     />
     <app-form-field #name [(value)]="user.firstName" [required]="true" errorMessage="Obligatorio" label="Nombre"/>
-    <app-form-field [(value)]="user.familyName" label="Email"/>
+    <app-form-field [(value)]="user.familyName" label="Apellidos"/>
     <app-form-field [(value)]="user.address" label="Dirección"/>
     <app-form-select [(selected)]="user.province" [capitalize]="true" [values]="provinces" label="Provincia"/>
     <app-form-field [(value)]="user.city" label="Población"/>
