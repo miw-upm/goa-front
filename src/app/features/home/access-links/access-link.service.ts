@@ -13,7 +13,7 @@ export class AccessLinkService {
     }
 
     createAccessLink(accessLink: AccessLink): Observable<string> {
-        return this.httpService
+        return this.httpService.request()
             .post(ENDPOINTS.accessLink.root, accessLink)
             .pipe(
                 map(response => this.createLink(response))
@@ -29,14 +29,14 @@ export class AccessLinkService {
     }
 
     search() {
-        return this.httpService.get(ENDPOINTS.accessLink.root);
+        return this.httpService.request().get(ENDPOINTS.accessLink.root);
     }
 
     delete(id: string) {
-        return this.httpService.delete(ENDPOINTS.accessLink.byId(id));
+        return this.httpService.request().delete(ENDPOINTS.accessLink.byId(id));
     }
 
     read(id) {
-        return this.httpService.get(ENDPOINTS.accessLink.byId(id));
+        return this.httpService.request().get(ENDPOINTS.accessLink.byId(id));
     }
 }

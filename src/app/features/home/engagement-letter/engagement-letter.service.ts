@@ -13,29 +13,29 @@ export class EngagementLetterService {
     }
 
     create(engagement: EngagementLetter): Observable<LegalProcedureTemplate> {
-        return this.httpService
+        return this.httpService.request()
             .post(ENDPOINTS.engagementLetters.root, engagement);
     }
 
     update(id: string, engagement: EngagementLetter): Observable<LegalProcedureTemplate> {
-        return this.httpService
+        return this.httpService.request()
             .successful()
             .put(ENDPOINTS.engagementLetters.byId(id), engagement);
     }
 
     search(criteria: EngagementLetterSearch): Observable<EngagementLetter[]> {
-        return this.httpService
+        return this.httpService.request()
             .paramsFrom(criteria)
             .get(ENDPOINTS.engagementLetters.root);
     }
 
     read(id: string): Observable<EngagementLetter> {
-        return this.httpService
+        return this.httpService.request()
             .get(ENDPOINTS.engagementLetters.byId(id));
     }
 
     delete(id: string) {
-        return this.httpService
+        return this.httpService.request()
             .successful()
             .delete(ENDPOINTS.engagementLetters.byId(id));
     }

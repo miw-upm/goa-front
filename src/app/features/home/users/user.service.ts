@@ -11,23 +11,23 @@ export class UserService {
     }
 
     create(user: User): Observable<User> {
-        return this.httpService
+        return this.httpService.request()
             .post(ENDPOINTS.users.root, user);
     }
 
     read(mobile: string): Observable<User> {
-        return this.httpService
+        return this.httpService.request()
             .get(ENDPOINTS.users.byMobile(mobile));
     }
 
     update(oldMobile: string, user: User): Observable<User> {
-        return this.httpService
+        return this.httpService.request()
             .successful()
             .put(ENDPOINTS.users.byMobile(oldMobile), user);
     }
 
     search(criteria: UserSearch): Observable<User[]> {
-        return this.httpService
+        return this.httpService.request()
             .paramsFrom(criteria)
             .get(ENDPOINTS.users.root);
     }

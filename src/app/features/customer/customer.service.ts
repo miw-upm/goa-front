@@ -11,11 +11,11 @@ export class CustomerService {
     }
 
     readWithToken(mobile: string, token: string): Observable<User> {
-        return this.httpService.get(ENDPOINTS.users.byMobileAndToken(mobile, token));
+        return this.httpService.request().get(ENDPOINTS.users.byMobileAndToken(mobile, token));
     }
 
     updateWithToken(oldMobile: string, user: User, token: string): Observable<User> {
-        return this.httpService.successful().put(ENDPOINTS.users.byMobileAndToken(oldMobile, token), user);
+        return this.httpService.request().successful().put(ENDPOINTS.users.byMobileAndToken(oldMobile, token), user);
     }
 
 }

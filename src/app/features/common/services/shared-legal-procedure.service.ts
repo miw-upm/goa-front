@@ -11,7 +11,7 @@ export class SharedLegalProcedureService {
     }
 
     searchProcedures(title: string): Observable<LegalProcedureTemplate[]> {
-        return this.httpService
+        return this.httpService.request()
             .param('title', title ?? '')
             .get(ENDPOINTS.legalProcedureTemplates.root);
     }

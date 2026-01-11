@@ -11,24 +11,24 @@ export class LegalTaskService {
     }
 
     update(id: string, task: LegalTask): Observable<LegalTask> {
-        return this.httpService
+        return this.httpService.request()
             .successful()
             .put(ENDPOINTS.legalTasks.byId(id), task);
     }
 
     search(legalTaskSearch: LegalTaskSearch): Observable<LegalTask[]> {
-        return this.httpService
+        return this.httpService.request()
             .paramsFrom(legalTaskSearch)
             .get(ENDPOINTS.legalTasks.root);
     }
 
     read(id: string): Observable<LegalTask> {
-        return this.httpService
+        return this.httpService.request()
             .get(ENDPOINTS.legalTasks.byId(id));
     }
 
     delete(id: string): Observable<void> {
-        return this.httpService
+        return this.httpService.request()
             .successful()
             .delete(ENDPOINTS.legalTasks.byId(id));
     }

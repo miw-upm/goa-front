@@ -10,13 +10,13 @@ export class SharedLegalTaskService {
     }
 
     searchTasks(title: string): Observable<LegalTask[]> {
-        return this.httpService
+        return this.httpService.request()
             .param('title', title ?? '')
             .get(ENDPOINTS.legalTasks.root);
     }
 
     create(task: LegalTask): Observable<LegalTask> {
-        return this.httpService
+        return this.httpService.request()
             .post(ENDPOINTS.legalTasks.root, task);
     }
 }

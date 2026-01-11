@@ -11,13 +11,13 @@ export class SharedUserService {
     }
 
     searchUsers(attribute: string): Observable<User[]> {
-        return this.httpService
+        return this.httpService.request()
             .param('attribute', attribute ?? '')
             .get(ENDPOINTS.users.root);
     }
 
     findProvinces(): Observable<string[]> {
-        return this.httpService
+        return this.httpService.request()
             .get(ENDPOINTS.users.provinces())
             .pipe(
                 map((response: { provinces: string[] }) => response.provinces)

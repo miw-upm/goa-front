@@ -12,18 +12,18 @@ export class LegalProcedureTemplateService {
     }
 
     create(procedure: LegalProcedureTemplate): Observable<LegalProcedureTemplate> {
-        return this.httpService
+        return this.httpService.request()
             .post(ENDPOINTS.legalProcedureTemplates.root, procedure);
     }
 
     update(id: string, procedure: LegalProcedureTemplate): Observable<LegalProcedureTemplate> {
-        return this.httpService
+        return this.httpService.request()
             .successful()
             .put(ENDPOINTS.legalProcedureTemplates.byId(id), procedure);
     }
 
     search(legalProcedureSearch: LegalProcedureSearch): Observable<LegalProcedureTemplate[]> {
-        return this.httpService
+        return this.httpService.request()
             .paramsFrom(legalProcedureSearch)
             .get(ENDPOINTS.legalProcedureTemplates.root)
             .pipe(
@@ -37,7 +37,7 @@ export class LegalProcedureTemplateService {
     }
 
     read(id: string): Observable<LegalProcedureTemplate> {
-        return this.httpService
+        return this.httpService.request()
             .get(ENDPOINTS.legalProcedureTemplates.byId(id))
             .pipe(
                 map(procedure => ({
@@ -48,7 +48,7 @@ export class LegalProcedureTemplateService {
     }
 
     delete(id: string): Observable<void> {
-        return this.httpService
+        return this.httpService.request()
             .successful()
             .delete(ENDPOINTS.legalProcedureTemplates.byId(id));
     }
