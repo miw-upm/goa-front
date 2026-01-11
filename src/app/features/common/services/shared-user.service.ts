@@ -1,30 +1,26 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
-
-import {environment} from "@env";
 import {HttpService} from '@core/http/http.service';
 import {User} from "../models/user.model";
+import {ENDPOINTS} from "@core/api/endpoints";
 
 @Injectable({providedIn: 'root'})
 export class SharedUserService {
-    private static readonly API_URL = environment.REST_USER + '/users';
-    private static readonly PROVINCES = '/provinces';
-
     constructor(private readonly httpService: HttpService) {
     }
 
     searchUsers(attribute: string): Observable<User[]> {
         return this.httpService
-            .param("attribute", attribute ?? '')
-            .get(SharedUserService.API_URL)
+            .param('attribute', attribute ?? '')
+            .get(ENDPOINTS.users.root);
     }
 
     findProvinces(): Observable<string[]> {
         return this.httpService
-            .get(SharedUserService.API_URL + SharedUserService.PROVINCES)
+            .get(ENDPOINTS.users.provinces())
             .pipe(
-                map(response => response.provinces)
+                map((response: { provinces: string[] }) => response.provinces)
             );
     }
 }

@@ -1,27 +1,21 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 
-import {environment} from "@env";
 import {HttpService} from '@core/http/http.service';
 import {User} from "../common/models/user.model";
+import {ENDPOINTS} from "@core/api/endpoints";
 
 @Injectable()
 export class CustomerService {
-    private static readonly USERS = environment.REST_USER + '/users';
-
     constructor(private readonly httpService: HttpService) {
     }
 
     readWithToken(mobile: string, token: string): Observable<User> {
-        return this.httpService
-            .get(CustomerService.USERS + '/' + mobile + '/' + token);
+        return this.httpService.get(ENDPOINTS.users.byMobileAndToken(mobile, token));
     }
 
     updateWithToken(oldMobile: string, user: User, token: string): Observable<User> {
-        console.log(oldMobile, user);
-        return this.httpService
-            .successful()
-            .put(CustomerService.USERS + '/' + oldMobile + "/" + token, user);
+        return this.httpService.successful().put(ENDPOINTS.users.byMobileAndToken(oldMobile, token), user);
     }
 
 }

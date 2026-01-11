@@ -5,17 +5,16 @@ import {map} from "rxjs/operators";
 import {environment} from "@env";
 import {HttpService} from "@core/http/http.service";
 import {AccessLink} from "./acces-link.model";
+import {ENDPOINTS} from "@core/api/endpoints";
 
 @Injectable()
 export class AccessLinkService {
-    private static readonly ACCESS_LINK = environment.REST_USER + '/access-link';
-
     constructor(private readonly httpService: HttpService) {
     }
 
     createAccessLink(accessLink: AccessLink): Observable<string> {
         return this.httpService
-            .post(AccessLinkService.ACCESS_LINK, accessLink)
+            .post(ENDPOINTS.accessLink.root, accessLink)
             .pipe(
                 map(response => this.createLink(response))
             );
@@ -30,14 +29,14 @@ export class AccessLinkService {
     }
 
     search() {
-        return this.httpService.get(AccessLinkService.ACCESS_LINK);
+        return this.httpService.get(ENDPOINTS.accessLink.root);
     }
 
     delete(id: string) {
-        return this.httpService.delete(AccessLinkService.ACCESS_LINK + '/' + id);
+        return this.httpService.delete(ENDPOINTS.accessLink.byId(id));
     }
 
     read(id) {
-        return this.httpService.get(AccessLinkService.ACCESS_LINK + '/' + id);
+        return this.httpService.get(ENDPOINTS.accessLink.byId(id));
     }
 }
