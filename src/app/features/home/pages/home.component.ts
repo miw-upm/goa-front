@@ -9,9 +9,9 @@ import {MatMenuModule} from '@angular/material/menu';
 
 import {AuthService} from "@core/auth/auth.service";
 import {FooterComponent} from '@core/layout/footer/footer.component';
-import {UserService} from "./users/user.service";
-import {UserCreationUpdatingDialogComponent} from "./users/components/user-creation-updating-dialog.component";
-import {AccessLinkCreationDialogComponent} from "./access-links/components/access-link-creation-dialog.component";
+import {UserService} from "../users/user.service";
+import {UserCreationUpdatingDialogComponent} from "../users/dialogs/user-creation-updating-dialog.component";
+import {AccessLinkCreationDialogComponent} from "../access-links/dialogs/access-link-creation-dialog.component";
 
 @Component({
     standalone: true,

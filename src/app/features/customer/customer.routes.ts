@@ -1,6 +1,6 @@
 import {Routes} from '@angular/router';
-import {CustomerComponent} from "./pages/customer.component";
+import {CustomerEditProfileComponent} from "./pages/customer-edit-profile.component";
 
 export const routes: Routes = [
-    {path: 'customer/edit-profile/:mobile/:token', component: CustomerComponent},
+    {path: 'customer/edit-profile/:mobile/:token', component: CustomerEditProfileComponent},
 ];

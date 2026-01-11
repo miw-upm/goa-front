@@ -6,7 +6,7 @@ import {Observable, of} from 'rxjs';
 import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
 import {LegalTask} from "../../../common/models/legal-task.model";
-import {LegalTaskCreationUpdatingDialogComponent} from '../components/legal-task-creation-updating-dialog.component';
+import {LegalTaskCreationUpdatingDialogComponent} from '../dialogs/legal-task-creation-updating-dialog.component';
 import {LegalTaskSearch} from "../legal-task-search.model";
 import {LegalTaskService} from "../legal-task.service";
 

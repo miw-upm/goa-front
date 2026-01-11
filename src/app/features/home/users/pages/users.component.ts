@@ -6,7 +6,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
 import {User} from "../../../common/models/user.model";
-import {UserCreationUpdatingDialogComponent} from '../components/user-creation-updating-dialog.component';
+import {UserCreationUpdatingDialogComponent} from '../dialogs/user-creation-updating-dialog.component';
 import {UserSearch} from '../user-search.model';
 import {UserService} from "../user.service";
 

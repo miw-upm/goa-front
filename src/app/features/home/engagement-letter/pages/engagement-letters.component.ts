@@ -11,7 +11,7 @@ import {EngagementLetterSearch} from "../models/engagement-letter-search.model";
 import {EngagementLetter} from "../models/engagement-letter.model";
 import {
     EngagementLetterCreationUpdatingDialogComponent
-} from "../components/engagement-letter-creation-updating-dialog.component";
+} from "../dialogs/engagement-letter-creation-updating-dialog.component";
 
 @Component({
     standalone: true,

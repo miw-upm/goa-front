@@ -23,7 +23,7 @@ import {MatCheckbox} from "@angular/material/checkbox";
     standalone: true,
     selector: 'app-customer',
     providers: [CustomerService],
-    templateUrl: './customer.component.html',
+    templateUrl: './customer-edit-profile.component.html',
     imports: [
         FormsModule,
         NgOptimizedImage,
@@ -38,9 +38,9 @@ import {MatCheckbox} from "@angular/material/checkbox";
         FormSelectComponent,
         MatCheckbox
     ],
-    styleUrl: './customer.component.css'
+    styleUrl: './customer-edit-profile.component.css'
 })
-export class CustomerComponent {
+export class CustomerEditProfileComponent {
     user: User;
     oldMobile: string;
     token: string;
