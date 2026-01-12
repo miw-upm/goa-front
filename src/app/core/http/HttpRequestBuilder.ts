@@ -1,7 +1,7 @@
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
-import {EMPTY, Observable, throwError} from 'rxjs';
+import {Observable, tap, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 
 export class HttpRequestBuilder {
@@ -29,9 +29,12 @@ export class HttpRequestBuilder {
         return this;
     }
 
-    paramsFrom(dto: any): this {
-        Object.getOwnPropertyNames(dto)
-            .forEach(item => this.param(item, dto[item]));
+    paramsFrom(dto: object): this {
+        Object.entries(dto).forEach(([key, value]) => {
+            if (value !== null && value !== undefined) {
+                this.param(key, String(value));
+            }
+        });
         return this;
     }
 
@@ -49,7 +52,7 @@ export class HttpRequestBuilder {
         return this.http
             .post<T>(endpoint, body, this.jsonOptions())
             .pipe(
-                map((response: HttpResponse<T>) => this.extractData<T>(response)),
+                tap(() => this.notifySuccess()),
                 catchError(error => this.handleError(error))
             );
     }
@@ -58,7 +61,7 @@ export class HttpRequestBuilder {
         return this.http
             .get<T>(endpoint, this.jsonOptions())
             .pipe(
-                map((response: HttpResponse<T>) => this.extractData<T>(response)),
+                tap(() => this.notifySuccess()),
                 catchError(error => this.handleError(error))
             );
     }
@@ -67,7 +70,7 @@ export class HttpRequestBuilder {
         return this.http
             .put<T>(endpoint, body, this.jsonOptions())
             .pipe(
-                map((response: HttpResponse<T>) => this.extractData<T>(response)),
+                tap(() => this.notifySuccess()),
                 catchError(error => this.handleError(error))
             );
     }
@@ -76,7 +79,7 @@ export class HttpRequestBuilder {
         return this.http
             .patch<T>(endpoint, body, this.jsonOptions())
             .pipe(
-                map((response: HttpResponse<T>) => this.extractData<T>(response)),
+                tap(() => this.notifySuccess()),
                 catchError(error => this.handleError(error))
             );
     }
@@ -85,10 +88,8 @@ export class HttpRequestBuilder {
         return this.http
             .delete<void>(endpoint, this.jsonOptions())
             .pipe(
-                map(() => {
-                    this.notifySuccess();
-                    return void 0;
-                }),
+                tap(() => this.notifySuccess()),
+                map(() => void 0),
                 catchError(error => this.handleError(error))
             );
     }
@@ -97,19 +98,14 @@ export class HttpRequestBuilder {
         return this.http
             .get(endpoint, this.blobOptions())
             .pipe(
-                map((res: HttpResponse<Blob>) => {
-                    this.notifySuccess();
-                    const blob = res.body ?? new Blob([], {type: 'application/pdf'});
-                    window.open(window.URL.createObjectURL(blob));
+                tap(() => this.notifySuccess()),
+                map((blob: Blob) => {
+                    const safeBlob = blob ?? new Blob([], {type: 'application/pdf'});
+                    window.open(window.URL.createObjectURL(safeBlob));
                     return void 0;
                 }),
                 catchError(err => this.handleError(err))
             );
-    }
-
-    private extractData<T>(response: HttpResponse<T>): T {
-        this.notifySuccess();
-        return response.body;
     }
 
     private jsonOptions() {
@@ -118,7 +114,6 @@ export class HttpRequestBuilder {
             headers,
             params: this.params,
             responseType: 'json' as const,
-            observe: 'response' as const,
         };
         this.params = new HttpParams();
         return options;
@@ -130,7 +125,6 @@ export class HttpRequestBuilder {
             headers,
             params: this.params,
             responseType: 'blob' as const,
-            observe: 'response' as const,
         };
         this.params = new HttpParams();
         return options;
@@ -156,18 +150,17 @@ export class HttpRequestBuilder {
         if (response.status === HttpRequestBuilder.UNAUTHORIZED) {
             this.showError('Unauthorized');
             void this.router.navigate(['']);
-            return EMPTY;
+            return throwError(() => response);
         } else if (response.status === HttpRequestBuilder.CONNECTION_REFUSE) {
             this.showError('Network error');
-            return EMPTY;
+            return throwError(() => response);
         } else {
             const error = response.error;
             if (error?.error && error?.message) {
                 this.showError(`${error.error} (${response.status}): ${error.message}`);
                 return throwError(() => error);
             }
-
-            this.showError('Not response from server');
+            this.showError('No response from server');
             return throwError(() => response.error);
         }
     }
