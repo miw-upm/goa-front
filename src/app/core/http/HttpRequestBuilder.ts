@@ -94,12 +94,7 @@ export class HttpRequestBuilder {
             .get(endpoint, this.blobOptions())
             .pipe(
                 map((res: HttpResponse<Blob>) => {
-                    if (this.successfulNotification) {
-                        this.snackBar.open(this.successfulNotification, '', {
-                            duration: HttpRequestBuilder.SNACK_SUCCESS_DURATION
-                        });
-                    }
-
+                    this.notifySuccess();
                     const blob = res.body ?? new Blob();
                     window.open(window.URL.createObjectURL(blob));
                     return void 0;
@@ -109,35 +104,41 @@ export class HttpRequestBuilder {
     }
 
     private extractData(response: HttpResponse<any>): any {
-        if (this.successfulNotification) {
-            this.snackBar.open(this.successfulNotification, '', {
-                duration: HttpRequestBuilder.SNACK_SUCCESS_DURATION
-            });
-            this.successfulNotification = undefined;
-        }
+        this.notifySuccess();
         return response.body;
     }
 
     private jsonOptions() {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.set('Accept', 'application/json');
-        return {
-            headers: headers,
+        const headers = new HttpHeaders().set('Accept', 'application/json');
+        const options = {
+            headers,
             params: this.params,
             responseType: 'json' as const,
             observe: 'response' as const,
         };
+        this.params = new HttpParams();
+        return options;
     }
 
     private blobOptions() {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.set('Accept', 'application/pdf , application/json');
-        return {
-            headers: headers,
+        const headers = new HttpHeaders().set('Accept', 'application/pdf, application/json');
+        const options = {
+            headers,
             params: this.params,
             responseType: 'blob' as const,
             observe: 'response' as const,
         };
+        this.params = new HttpParams();
+        return options;
+    }
+
+    private notifySuccess(): void {
+        if (!this.successfulNotification) return;
+
+        this.snackBar.open(this.successfulNotification, '', {
+            duration: HttpRequestBuilder.SNACK_SUCCESS_DURATION
+        });
+        this.successfulNotification = undefined;
     }
 
     private showError(notification: string): void {
@@ -145,6 +146,7 @@ export class HttpRequestBuilder {
         this.snackBar.open(message, 'Error', {
             duration: HttpRequestBuilder.SNACK_ERROR_DURATION
         });
+        this.errorNotification = undefined;
     }
 
     private handleError(response: HttpErrorResponse): Observable<never> {
