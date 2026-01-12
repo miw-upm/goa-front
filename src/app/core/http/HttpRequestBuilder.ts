@@ -13,9 +13,7 @@ export class HttpRequestBuilder {
     private successfulNotification: string | undefined;
     private errorNotification: string | undefined;
 
-    private headers: HttpHeaders = new HttpHeaders();
     private params: HttpParams = new HttpParams();
-    private responseType: 'json' | 'blob' = 'json';
 
     constructor(
         private readonly http: HttpClient,
@@ -46,26 +44,9 @@ export class HttpRequestBuilder {
         return this;
     }
 
-    pdf(): this {
-        this.responseType = 'blob';
-        this.header('Accept', 'application/pdf , application/json');
-        return this;
-    }
-
-    authBasic(mobile: number, password: string): this {
-        return this.header('Authorization', 'Basic ' + btoa(`${mobile}:${password}`));
-    }
-
-    header(key: string, value: string): this {
-        if (value != null) {
-            this.headers = this.headers.append(key, value);
-        }
-        return this;
-    }
-
     post(endpoint: string, body?: object): Observable<any> {
         return this.http
-            .post(endpoint, body, this.createOptions())
+            .post(endpoint, body, this.jsonOptions())
             .pipe(
                 map((response: any) => this.extractData(response)),
                 catchError(error => this.handleError(error))
@@ -74,7 +55,7 @@ export class HttpRequestBuilder {
 
     get(endpoint: string): Observable<any> {
         return this.http
-            .get(endpoint, this.createOptions())
+            .get(endpoint, this.jsonOptions())
             .pipe(
                 map((response: any) => this.extractData(response)),
                 catchError(error => this.handleError(error))
@@ -83,7 +64,7 @@ export class HttpRequestBuilder {
 
     put(endpoint: string, body?: object): Observable<any> {
         return this.http
-            .put(endpoint, body, this.createOptions())
+            .put(endpoint, body, this.jsonOptions())
             .pipe(
                 map((response: any) => this.extractData(response)),
                 catchError(error => this.handleError(error))
@@ -92,7 +73,7 @@ export class HttpRequestBuilder {
 
     patch(endpoint: string, body?: object): Observable<any> {
         return this.http
-            .patch(endpoint, body, this.createOptions())
+            .patch(endpoint, body, this.jsonOptions())
             .pipe(
                 map((response: any) => this.extractData(response)),
                 catchError(error => this.handleError(error))
@@ -101,20 +82,30 @@ export class HttpRequestBuilder {
 
     delete(endpoint: string): Observable<any> {
         return this.http
-            .delete(endpoint, this.createOptions())
+            .delete(endpoint, this.jsonOptions())
             .pipe(
                 map((response: any) => this.extractData(response)),
                 catchError(error => this.handleError(error))
             );
     }
 
-    private createOptions(): any {
-        return {
-            headers: this.headers,
-            params: this.params,
-            responseType: this.responseType,
-            observe: 'response'
-        };
+    openPdf(endpoint: string): Observable<void> {
+        return this.http
+            .get(endpoint, this.blobOptions())
+            .pipe(
+                map((res: HttpResponse<Blob>) => {
+                    if (this.successfulNotification) {
+                        this.snackBar.open(this.successfulNotification, '', {
+                            duration: HttpRequestBuilder.SNACK_SUCCESS_DURATION
+                        });
+                    }
+
+                    const blob = res.body ?? new Blob();
+                    window.open(window.URL.createObjectURL(blob));
+                    return void 0;
+                }),
+                catchError(err => this.handleError(err))
+            );
     }
 
     private extractData(response: HttpResponse<any>): any {
@@ -122,16 +113,31 @@ export class HttpRequestBuilder {
             this.snackBar.open(this.successfulNotification, '', {
                 duration: HttpRequestBuilder.SNACK_SUCCESS_DURATION
             });
+            this.successfulNotification = undefined;
         }
-
-        const contentType = response.headers.get('content-type') ?? '';
-        if (contentType.includes('application/pdf')) {
-            const blob = new Blob([response.body], { type: 'application/pdf' });
-            window.open(window.URL.createObjectURL(blob));
-            return null;
-        }
-
         return response.body;
+    }
+
+    private jsonOptions() {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.set('Accept', 'application/json');
+        return {
+            headers: headers,
+            params: this.params,
+            responseType: 'json' as const,
+            observe: 'response' as const,
+        };
+    }
+
+    private blobOptions() {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.set('Accept', 'application/pdf , application/json');
+        return {
+            headers: headers,
+            params: this.params,
+            responseType: 'blob' as const,
+            observe: 'response' as const,
+        };
     }
 
     private showError(notification: string): void {
