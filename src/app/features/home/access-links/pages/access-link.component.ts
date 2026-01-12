@@ -6,6 +6,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {CrudComponent} from "@shared/ui/crud/crud.component";
 import {AccessLinkService} from "../access-link.service";
 import {InfoDialogComponent} from "@shared/ui/dialogs/info-dialog.component";
+import {AccessLink} from "../acces-link.model";
 
 @Component({
     standalone: true,
@@ -15,7 +16,7 @@ import {InfoDialogComponent} from "@shared/ui/dialogs/info-dialog.component";
 })
 export class AccessLinkComponent {
     title = 'Access Links';
-    accessLinks = of([]);
+    accessLinks: Observable<AccessLink[]> = of([]);
     accessLink: Observable<any>;
 
     constructor(private readonly dialog: MatDialog, private readonly accessLinkService: AccessLinkService) {

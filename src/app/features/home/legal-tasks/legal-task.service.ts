@@ -12,7 +12,7 @@ export class LegalTaskService {
 
     update(id: string, task: LegalTask): Observable<LegalTask> {
         return this.httpService.request()
-            .successful()
+            .success()
             .put(ENDPOINTS.legalTasks.byId(id), task);
     }
 
@@ -29,7 +29,7 @@ export class LegalTaskService {
 
     delete(id: string): Observable<void> {
         return this.httpService.request()
-            .successful()
+            .success()
             .delete(ENDPOINTS.legalTasks.byId(id));
     }
 }

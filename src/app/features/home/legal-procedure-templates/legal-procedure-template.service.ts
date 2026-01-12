@@ -18,14 +18,14 @@ export class LegalProcedureTemplateService {
 
     update(id: string, procedure: LegalProcedureTemplate): Observable<LegalProcedureTemplate> {
         return this.httpService.request()
-            .successful()
+            .success()
             .put(ENDPOINTS.legalProcedureTemplates.byId(id), procedure);
     }
 
     search(legalProcedureSearch: LegalProcedureSearch): Observable<LegalProcedureTemplate[]> {
         return this.httpService.request()
             .paramsFrom(legalProcedureSearch)
-            .get(ENDPOINTS.legalProcedureTemplates.root)
+            .get<LegalProcedureTemplate[]>(ENDPOINTS.legalProcedureTemplates.root)
             .pipe(
                 map((procedures) =>
                     procedures.map(procedure => ({
@@ -38,7 +38,7 @@ export class LegalProcedureTemplateService {
 
     read(id: string): Observable<LegalProcedureTemplate> {
         return this.httpService.request()
-            .get(ENDPOINTS.legalProcedureTemplates.byId(id))
+            .get<LegalProcedureTemplate>(ENDPOINTS.legalProcedureTemplates.byId(id))
             .pipe(
                 map(procedure => ({
                     ...procedure,
@@ -49,7 +49,7 @@ export class LegalProcedureTemplateService {
 
     delete(id: string): Observable<void> {
         return this.httpService.request()
-            .successful()
+            .success()
             .delete(ENDPOINTS.legalProcedureTemplates.byId(id));
     }
 }

@@ -15,7 +15,7 @@ export class CustomerService {
     }
 
     updateWithToken(oldMobile: string, user: User, token: string): Observable<User> {
-        return this.httpService.request().successful().put(ENDPOINTS.users.byMobileAndToken(oldMobile, token), user);
+        return this.httpService.request().success().put(ENDPOINTS.users.byMobileAndToken(oldMobile, token), user);
     }
 
 }

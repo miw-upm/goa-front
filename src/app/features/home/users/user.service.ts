@@ -22,7 +22,7 @@ export class UserService {
 
     update(oldMobile: string, user: User): Observable<User> {
         return this.httpService.request()
-            .successful()
+            .success()
             .put(ENDPOINTS.users.byMobile(oldMobile), user);
     }
 

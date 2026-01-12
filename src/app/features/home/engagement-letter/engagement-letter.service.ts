@@ -19,7 +19,7 @@ export class EngagementLetterService {
 
     update(id: string, engagement: EngagementLetter): Observable<LegalProcedureTemplate> {
         return this.httpService.request()
-            .successful()
+            .success()
             .put(ENDPOINTS.engagementLetters.byId(id), engagement);
     }
 
@@ -36,7 +36,7 @@ export class EngagementLetterService {
 
     delete(id: string) {
         return this.httpService.request()
-            .successful()
+            .success()
             .delete(ENDPOINTS.engagementLetters.byId(id));
     }
 }
