@@ -4,8 +4,8 @@ import {Observable, of} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 
 import {CrudComponent} from "@shared/ui/crud/crud.component";
-import {AccessLinkService} from "../access-link.service";
 import {InfoDialogComponent} from "@shared/ui/dialogs/info-dialog.component";
+import {AccessLinkService} from "../access-link.service";
 import {AccessLink} from "../acces-link.model";
 
 @Component({

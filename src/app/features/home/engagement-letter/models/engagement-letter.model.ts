@@ -1,4 +1,4 @@
-import {User} from "../../../common/models/user.model";
+import {User} from "../../../shared/models/user.model";
 import {LegalProcedure} from "./legal-procedure.model";
 import {PaymentMethod} from "./payment-method.model";
 import {AcceptanceDocument} from "./acceptance-document.model";

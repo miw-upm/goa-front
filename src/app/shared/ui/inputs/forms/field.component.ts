@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {FormsModule, NgModel, Validators} from '@angular/forms';
 import {MatError, MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
-import {MatIcon} from "@angular/material/icon";
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
     standalone: true,

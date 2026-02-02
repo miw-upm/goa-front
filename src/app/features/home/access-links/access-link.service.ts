@@ -4,8 +4,8 @@ import {map} from "rxjs/operators";
 
 import {environment} from "@env";
 import {HttpService} from "@core/http/http.service";
-import {AccessLink} from "./acces-link.model";
 import {ENDPOINTS} from "@core/api/endpoints";
+import {AccessLink} from "./acces-link.model";
 
 @Injectable()
 export class AccessLinkService {

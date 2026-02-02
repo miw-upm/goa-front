@@ -11,19 +11,20 @@ import {
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from "@angular/material/icon";
-import {MatListModule} from "@angular/material/list";
-import {MatNativeDateModule} from "@angular/material/core";
+import {MatIconModule} from '@angular/material/icon';
+import {MatListModule} from '@angular/material/list';
+import {MatNativeDateModule} from '@angular/material/core';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
-import {SharedLegalTaskService} from "../../../common/services/shared-legal-task.service";
-import {SearchByLegalTaskComponent} from "../../../common/ui/search-by-legal-task.component";
-import {LegalProcedureTemplate} from "../../../common/models/legal-procedure-template.model";
-import {LegalTask} from "../../../common/models/legal-task.model";
-import {LegalProcedureTemplateService} from "../legal-procedure-template.service";
-import {FormFieldComponent} from "@shared/ui/inputs/forms/field.component";
-import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
-import {InputData} from "@shared/ui/inputs/input-data.component";
-import {FormListComponent} from "@shared/ui/inputs/forms/list.component";
+import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
+import {InputData} from '@shared/ui/inputs/input-data.component';
+import {FormListComponent} from '@shared/ui/inputs/forms/list.component';
+import {SharedLegalTaskService} from '@features/shared/services/shared-legal-task.service';
+import {SearchByLegalTaskComponent} from '@features/shared/ui/search-by-legal-task.component';
+import {LegalProcedureTemplate} from '@features/shared/models/legal-procedure-template.model';
+import {LegalTask} from '@features/shared/models/legal-task.model';
+import {LegalProcedureTemplateService} from '../legal-procedure-template.service';
+
 
 @Component({
     standalone: true,

@@ -4,11 +4,11 @@ import {MatDialog} from '@angular/material/dialog';
 import {Observable, of} from 'rxjs';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
-import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
-import {LegalTask} from "../../../common/models/legal-task.model";
+import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
+import {LegalTask} from '@features/shared/models/legal-task.model';
 import {LegalTaskCreationUpdatingDialogComponent} from '../dialogs/legal-task-creation-updating-dialog.component';
-import {LegalTaskSearch} from "../legal-task-search.model";
-import {LegalTaskService} from "../legal-task.service";
+import {LegalTaskSearch} from '../legal-task-search.model';
+import {LegalTaskService} from '../legal-task.service';
 
 @Component({
     standalone: true,
@@ -48,7 +48,7 @@ export class LegalTasksComponent {
         this.legalTaskService.delete(task.id).subscribe(() => this.search());
     }
 
-    read($event: any) {
-        this.task = this.legalTaskService.read($event.id);
+    read(task: LegalTask) {
+        this.task = this.legalTaskService.read(task.id);
     }
 }

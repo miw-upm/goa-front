@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
-
 import {Observable} from 'rxjs';
-import {HttpService} from "@core/http/http.service";
-import {EngagementLetter} from "./models/engagement-letter.model";
-import {LegalProcedureTemplate} from "../../common/models/legal-procedure-template.model";
-import {EngagementLetterSearch} from "./models/engagement-letter-search.model";
-import {ENDPOINTS} from "@core/api/endpoints";
+
+import {HttpService} from '@core/http/http.service';
+import {ENDPOINTS} from '@core/api/endpoints';
+import {LegalProcedureTemplate} from '@features/shared/models/legal-procedure-template.model';
+import {EngagementLetter} from './models/engagement-letter.model';
+import {EngagementLetterSearch} from './models/engagement-letter-search.model';
 
 @Injectable()
 export class EngagementLetterService {

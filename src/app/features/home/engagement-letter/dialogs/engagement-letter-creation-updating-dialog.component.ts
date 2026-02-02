@@ -9,23 +9,27 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
-import {MatTooltipModule} from "@angular/material/tooltip";
-import {MatChipsModule} from "@angular/material/chips";
-import {MatListModule} from "@angular/material/list";
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatListModule} from '@angular/material/list';
 
-import {SearchByUserComponent} from '../../../common/ui/search-by-user.component';
-import {SearchByLegalProcedureTemplateComponent} from "../../../common/ui/search-by-legal-procedure-template.component";
-import {User} from "../../../common/models/user.model";
-import {LegalProcedureTemplate} from "../../../common/models/legal-procedure-template.model";
-import {LegalProcedureEditDialogComponent} from "./legal-procedure-edit-dialog.component";
+import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
+import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
+import {FormListComponent} from '@shared/ui/inputs/forms/list.component';
+import {SearchByUserComponent} from '@features/shared/ui/search-by-user.component';
+import {
+    SearchByLegalProcedureTemplateComponent
+} from '@features/shared/ui/search-by-legal-procedure-template.component';
+import {User} from '@features/shared/models/user.model';
+import {LegalProcedureTemplate} from '@features/shared/models/legal-procedure-template.model';
+
+import {LegalProcedureEditDialogComponent} from './legal-procedure-edit-dialog.component';
 import {EngagementLetterService} from '../engagement-letter.service';
-import {PaymentMethodDialogComponent} from "./payment-method-dialog.component";
+import {PaymentMethodDialogComponent} from './payment-method-dialog.component';
 import {EngagementLetter} from '../models/engagement-letter.model';
-import {LegalProcedure} from "../models/legal-procedure.model";
-import {PaymentMethod} from "../models/payment-method.model";
-import {FormFieldComponent} from "@shared/ui/inputs/forms/field.component";
-import {AppDateFieldComponent} from "@shared/ui/inputs/forms/data.component";
-import {FormListComponent} from "@shared/ui/inputs/forms/list.component";
+import {LegalProcedure} from '../models/legal-procedure.model';
+import {PaymentMethod} from '../models/payment-method.model';
+
 
 @Component({
     standalone: true,

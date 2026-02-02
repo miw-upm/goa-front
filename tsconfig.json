@@ -8,14 +8,14 @@
       "@env": [
         "environments/environment"
       ],
-      "@common/*": [
-        "app/common/*"
-      ],
       "@core/*": [
         "app/core/*"
       ],
       "@shared/*": [
         "app/shared/*"
+      ],
+      "@features/shared/*": [
+        "app/features/shared/*"
       ]
     },
     "resolveJsonModule": true,

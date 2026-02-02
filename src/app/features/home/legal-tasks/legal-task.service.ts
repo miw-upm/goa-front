@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
+
 import {HttpService} from '@core/http/http.service';
-import {LegalTask} from "../../common/models/legal-task.model";
-import {LegalTaskSearch} from "./legal-task-search.model";
 import {ENDPOINTS} from "@core/api/endpoints";
+import {LegalTask} from "@features/shared/models/legal-task.model";
+import {LegalTaskSearch} from "./legal-task-search.model";
 
 @Injectable({providedIn: 'root'})
 export class LegalTaskService {

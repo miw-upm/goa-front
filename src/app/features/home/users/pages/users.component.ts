@@ -4,12 +4,11 @@ import {Observable, of} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
-import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
-import {User} from "../../../common/models/user.model";
+import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
+import {User} from '@features/shared/models/user.model';
 import {UserCreationUpdatingDialogComponent} from '../dialogs/user-creation-updating-dialog.component';
 import {UserSearch} from '../user-search.model';
-import {UserService} from "../user.service";
-
+import {UserService} from '../user.service';
 
 @Component({
     standalone: true,

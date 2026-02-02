@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
+
 import {HttpService} from '@core/http/http.service';
-import {User} from "../../common/models/user.model";
-import {UserSearch} from "./user-search.model";
-import {ENDPOINTS} from "@core/api/endpoints";
+import {ENDPOINTS} from '@core/api/endpoints';
+import {User} from '@features/shared/models/user.model';
+import {UserSearch} from './user-search.model';
 
 @Injectable({providedIn: 'root'})
 export class UserService {

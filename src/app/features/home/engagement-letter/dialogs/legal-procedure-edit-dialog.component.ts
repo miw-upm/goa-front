@@ -7,14 +7,15 @@ import {MatButton} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatListModule} from "@angular/material/list";
 
-import {SharedLegalTaskService} from "../../../common/services/shared-legal-task.service";
-import {LegalProcedure} from "../models/legal-procedure.model";
-import {FormListComponent} from "@shared/ui/inputs/forms/list.component";
-import {InputData} from "@shared/ui/inputs/input-data.component";
-import {FormFieldComponent} from "@shared/ui/inputs/forms/field.component";
-import {AppDateFieldComponent} from "@shared/ui/inputs/forms/data.component";
-import {SearchByLegalTaskComponent} from "../../../common/ui/search-by-legal-task.component";
-import {LegalTask} from "../../../common/models/legal-task.model";
+import {FormListComponent} from '@shared/ui/inputs/forms/list.component';
+import {InputData} from '@shared/ui/inputs/input-data.component';
+import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
+import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
+
+import {SharedLegalTaskService} from '@features/shared/services/shared-legal-task.service';
+import {SearchByLegalTaskComponent} from '@features/shared/ui/search-by-legal-task.component';
+import {LegalTask} from '@features/shared/models/legal-task.model';
+import {LegalProcedure} from '../models/legal-procedure.model';
 
 @Component({
     standalone: true,

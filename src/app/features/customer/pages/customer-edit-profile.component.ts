@@ -10,14 +10,14 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {ActivatedRoute} from "@angular/router";
 import {MatButtonModule} from "@angular/material/button";
+import {MatCheckbox} from "@angular/material/checkbox";
 
 import {FormFieldComponent} from "@shared/ui/inputs/forms/field.component";
 import {FormSelectComponent} from "@shared/ui/inputs/forms/select.component";
-import {User} from "../../common/models/user.model";
-import {UserDocumentType} from "../../common/models/UserDocumentType";
-import {SharedUserService} from "../../common/services/shared-user.service";
+import {User} from "@features/shared/models/user.model";
+import {UserDocumentType} from "@features/shared/models/UserDocumentType";
+import {SharedUserService} from "@features/shared/services/shared-user.service";
 import {CustomerService} from "../customer.service";
-import {MatCheckbox} from "@angular/material/checkbox";
 
 @Component({
     standalone: true,

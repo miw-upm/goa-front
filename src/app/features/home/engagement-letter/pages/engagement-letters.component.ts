@@ -1,17 +1,17 @@
-import {Component} from "@angular/core";
-import {FormsModule} from "@angular/forms";
-import {Observable, of} from "rxjs";
-import {MatDialog} from "@angular/material/dialog";
-import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {Component} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {Observable, of} from 'rxjs';
+import {MatDialog} from '@angular/material/dialog';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
-import {CrudComponent} from "@shared/ui/crud/crud.component";
-import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
-import {EngagementLetterService} from "../engagement-letter.service";
-import {EngagementLetterSearch} from "../models/engagement-letter-search.model";
-import {EngagementLetter} from "../models/engagement-letter.model";
+import {CrudComponent} from '@shared/ui/crud/crud.component';
+import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
+import {EngagementLetterService} from '../engagement-letter.service';
+import {EngagementLetterSearch} from '../models/engagement-letter-search.model';
+import {EngagementLetter} from '../models/engagement-letter.model';
 import {
     EngagementLetterCreationUpdatingDialogComponent
-} from "../dialogs/engagement-letter-creation-updating-dialog.component";
+} from '../dialogs/engagement-letter-creation-updating-dialog.component';
 
 @Component({
     standalone: true,

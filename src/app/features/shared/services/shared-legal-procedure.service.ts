@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
-import {HttpService} from '@core/http/http.service';
 
-import {LegalProcedureTemplate} from "../models/legal-procedure-template.model";
+import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from "@core/api/endpoints";
+import {LegalProcedureTemplate} from "../models/legal-procedure-template.model";
 
 @Injectable({providedIn: 'root'})
 export class SharedLegalProcedureService {

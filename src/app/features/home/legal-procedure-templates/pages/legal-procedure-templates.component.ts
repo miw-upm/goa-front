@@ -6,9 +6,9 @@ import {MatDialog} from "@angular/material/dialog";
 
 import {CrudComponent} from "@shared/ui/crud/crud.component";
 import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
+import {LegalProcedureTemplate} from '@features/shared/models/legal-procedure-template.model';
 import {LegalProcedureSearch} from "../legal-procedure-search.model";
 import {LegalProcedureTemplateService} from "../legal-procedure-template.service";
-import {LegalProcedureTemplate} from "../../../common/models/legal-procedure-template.model";
 import {
     LegalProcedureTemplateCreationUpdatingDialogComponent
 } from "../dialogs/legal-procedure-template-creation-updating-dialog.component";
