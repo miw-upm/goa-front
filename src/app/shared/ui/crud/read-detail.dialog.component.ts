@@ -23,7 +23,7 @@ import {DataCellComponent} from '@shared/ui/crud/data-cell.component';
 
 export class ReadDetailDialogComponent {
     title: string;
-    object: Observable<any>;
+    object!: any;
 
     constructor(@Inject(MAT_DIALOG_DATA) data: any) {
         this.title = data.title;
