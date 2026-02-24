@@ -2,6 +2,10 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.6.
 
+### Estado del código
+[![CI goa-front](https://github.com/miw-upm/goa-front/actions/workflows/ci.yml/badge.svg)](https://github.com/miw-upm/goa-front/actions/workflows/ci.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=miw-upm-github_goa-front&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=miw-upm-github_goa-front)
+
 ## Development server
 
 To start a local development server, run:
