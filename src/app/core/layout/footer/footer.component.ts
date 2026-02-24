@@ -15,14 +15,10 @@ import {environment} from '@env';
     imports: [NgOptimizedImage, MatDividerModule, MatGridListModule, MatListModule, MatIconModule]
 })
 export class FooterComponent {
-    version: string;
-    backEndUser: string;
-    backEndEngagement: string;
-
-    constructor() {
-        this.version = environment.NAME + ':' + environment.VERSION;
-        this.backEndUser = environment.REST_USER;
-        this.backEndEngagement = environment.REST_ENGAGEMENT;
-    }
-
+    readonly version = `${environment.NAME}:${environment.VERSION}`;
+    readonly backEndUser = environment.REST_USER;
+    readonly backEndEngagement = environment.REST_ENGAGEMENT;
+    readonly backEndBilling = environment.REST_BILLING;
+    readonly backEndSupport = environment.REST_SUPPORT;
+    readonly backEndDocument = environment.REST_DOCUMENT;
 }
