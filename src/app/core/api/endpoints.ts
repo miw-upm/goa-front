@@ -5,6 +5,7 @@ const ACCESS_LINK_ROOT = `${environment.REST_USER}/access-link`;
 const ENGAGEMENT_LETTER_ROOT = `${environment.REST_ENGAGEMENT}/engagement-letters`;
 const LEGAL_PROCEDURE_TEMPLATE_ROOT = `${environment.REST_ENGAGEMENT}/legal-procedure-templates`;
 const LEGAL_TASK_ROOT = `${environment.REST_ENGAGEMENT}/legal-tasks`;
+const ISSUE_ROOT = `${environment.REST_SUPPORT}/issues`;
 
 const enc = encodeURIComponent;
 
@@ -41,6 +42,10 @@ export const ENDPOINTS = {
         root: LEGAL_TASK_ROOT,
         byId: (id: string) =>
             `${LEGAL_TASK_ROOT}/${enc(id)}`,
+    },
+
+    issues: {
+        root: ISSUE_ROOT,
     },
 
 } as const;
