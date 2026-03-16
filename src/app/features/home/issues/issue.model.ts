@@ -1,3 +1,6 @@
+import {Role} from '@core/auth/models/role.model';
+import {UserDocumentType} from '@features/shared/models/UserDocumentType';
+
 export enum IssueType {
     BUG = 'BUG',
     IMPROVEMENT = 'IMPROVEMENT'
@@ -16,6 +19,21 @@ export interface IssueCreationRequest {
     type: IssueType | undefined;
 }
 
+export interface IssueCreatedByUser {
+    id?: string;
+    mobile?: string;
+    firstName?: string;
+    familyName?: string;
+    email?: string;
+    address?: string;
+    city?: string;
+    postalCode?: string;
+    province?: string;
+    documentType?: UserDocumentType;
+    identity?: string;
+    role?: Role;
+}
+
 export interface IssueResponse {
     id?: string;
     title?: string;
@@ -26,6 +44,7 @@ export interface IssueResponse {
     createdAt?: string;
     lastUpdatedAt?: string;
     createdByUserId?: string;
+    createdByUser?: IssueCreatedByUser;
     githubIssueId?: string;
     githubIssueUrl?: string;
     message?: string;
