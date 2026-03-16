@@ -82,7 +82,7 @@ export class IssueDetailComponent {
         if (!value) {
             return `${prefix}-unknown`;
         }
-        return `${prefix}-${value.toLowerCase().replace(/_/g, '-')}`;
+        return `${prefix}-${value.toLowerCase().replaceAll('_', '-')}`;
     }
 
     private extractErrorMessage(errorResponse: any, fallback: string): string {
