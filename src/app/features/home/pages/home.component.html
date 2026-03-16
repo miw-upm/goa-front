@@ -34,9 +34,9 @@
         <mat-icon>receipt</mat-icon>
         <span>Hojas de Encargo</span>
     </button>
-    <button (click)="createIssue()" mat-menu-item>
+    <button [matMenuTriggerFor]="issuesMenu" mat-menu-item>
         <mat-icon>support_agent</mat-icon>
-        <span>Crear incidencia</span>
+        <span>Incidencias</span>
     </button>
     <button (click)="logout()" mat-menu-item>
         <mat-icon>logout</mat-icon>
@@ -65,6 +65,16 @@
     <button mat-menu-item routerLink="/home/legal-tasks">
         <mat-icon>remove</mat-icon>
         <span>Plantillas de Tareas</span>
+    </button>
+</mat-menu>
+<mat-menu #issuesMenu="matMenu">
+    <button (click)="createIssue()" mat-menu-item>
+        <mat-icon>add_circle</mat-icon>
+        <span>Crear incidencia</span>
+    </button>
+    <button mat-menu-item routerLink="/home/issues">
+        <mat-icon>list_alt</mat-icon>
+        <span>Listado de incidencias</span>
     </button>
 </mat-menu>
 <router-outlet></router-outlet>
