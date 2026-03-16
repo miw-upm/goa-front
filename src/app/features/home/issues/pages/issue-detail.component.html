@@ -1,0 +1,7 @@
+<section class="issue-detail-page">
+    <h2>Detalle de incidencia (pendiente)</h2>
+
+    <button (click)="refresh()" [disabled]="!issueId || syncing" color="primary" mat-raised-button>
+        {{ syncing ? 'Sincronizando...' : 'Sincronizar' }}
+    </button>
+</section>

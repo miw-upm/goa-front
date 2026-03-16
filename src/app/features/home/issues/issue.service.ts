@@ -16,4 +16,11 @@ export class IssueService {
             .error('No se pudo crear la incidencia')
             .post(ENDPOINTS.issues.root, issue);
     }
+
+    sync(issueId: string): Observable<IssueResponse> {
+        return this.httpService.request()
+            .success('Incidencia sincronizada correctamente')
+            .error('No se pudo sincronizar la incidencia')
+            .put(ENDPOINTS.issues.syncById(issueId));
+    }
 }
