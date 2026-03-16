@@ -1,0 +1,66 @@
+<h4 mat-dialog-title>{{ title }}</h4>
+<mat-dialog-content>
+    <app-form-field
+        #titleNg
+        [(value)]="issue.title"
+        [required]="true"
+        [maxlength]="120"
+        [minlength]="3"
+        errorMessage="Obligatorio, mínimo 3 caracteres"
+        label="Título"
+    />
+
+    <mat-form-field class="full-width">
+        <mat-label>Descripción</mat-label>
+        <textarea
+            #descriptionNg="ngModel"
+            [(ngModel)]="issue.description"
+            matInput
+            required
+            minlength="5"
+            maxlength="2000"
+            rows="5"
+        ></textarea>
+        @if (descriptionNg.invalid && (descriptionNg.dirty || descriptionNg.touched)) {
+            <mat-error>Obligatorio, mínimo 5 caracteres</mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+        <mat-label>Contexto técnico</mat-label>
+        <textarea
+            #technicalContextNg="ngModel"
+            [(ngModel)]="issue.technicalContext"
+            matInput
+            required
+            minlength="5"
+            maxlength="2000"
+            rows="5"
+        ></textarea>
+        @if (technicalContextNg.invalid && (technicalContextNg.dirty || technicalContextNg.touched)) {
+            <mat-error>Obligatorio, mínimo 5 caracteres</mat-error>
+        }
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+        <mat-label>Tipo</mat-label>
+        <mat-select #typeNg="ngModel" [(ngModel)]="issue.type" required>
+            @for (type of (issueTypes | async); track type) {
+                <mat-option [value]="type">{{ type }}</mat-option>
+            }
+        </mat-select>
+        @if (typeNg.invalid && (typeNg.dirty || typeNg.touched)) {
+            <mat-error>Obligatorio</mat-error>
+        }
+    </mat-form-field>
+
+    @if (apiErrorMessage) {
+        <div class="api-error">{{ apiErrorMessage }}</div>
+    }
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button [disabled]="isSubmitting" mat-dialog-close mat-raised-button>Cerrar</button>
+    <button (click)="create()" [disabled]="isSubmitDisabled()" color="primary" mat-raised-button>
+        Crear incidencia
+    </button>
+</mat-dialog-actions>

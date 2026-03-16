@@ -1,0 +1,19 @@
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+
+import {HttpService} from '@core/http/http.service';
+import {ENDPOINTS} from '@core/api/endpoints';
+import {IssueCreationRequest, IssueResponse} from './issue.model';
+
+@Injectable({providedIn: 'root'})
+export class IssueService {
+    constructor(private readonly httpService: HttpService) {
+    }
+
+    create(issue: IssueCreationRequest): Observable<IssueResponse> {
+        return this.httpService.request()
+            .success('Incidencia creada correctamente')
+            .error('No se pudo crear la incidencia')
+            .post(ENDPOINTS.issues.root, issue);
+    }
+}
