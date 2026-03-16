@@ -1,0 +1,12 @@
+<section class="issues-page">
+    <h2>Incidencias</h2>
+
+    <mat-form-field class="full-width">
+        <mat-label>ID de incidencia</mat-label>
+        <input [(ngModel)]="issueId" matInput placeholder="Ej: b7944662-6c8e-4532-9503-9d2f5cb89659"/>
+    </mat-form-field>
+
+    <button (click)="goToDetail()" [disabled]="!issueId?.trim()" color="primary" mat-raised-button>
+        Ir al detalle (temporal)
+    </button>
+</section>
