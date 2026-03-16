@@ -46,6 +46,10 @@ export const ENDPOINTS = {
 
     issues: {
         root: ISSUE_ROOT,
+        byId: (id: string) =>
+            `${ISSUE_ROOT}/${enc(id)}`,
+        syncById: (id: string) =>
+            `${ISSUE_ROOT}/${enc(id)}/sync`,
     },
 
 } as const;
