@@ -12,6 +12,7 @@ import {FooterComponent} from '@core/layout/footer/footer.component';
 import {UserService} from "../users/user.service";
 import {UserCreationUpdatingDialogComponent} from "../users/dialogs/user-creation-updating-dialog.component";
 import {AccessLinkCreationDialogComponent} from "../access-links/dialogs/access-link-creation-dialog.component";
+import {IssueCreationDialogComponent} from "app/features/home/issues/dialogs/issue-creation-dialog.component";
 
 @Component({
     standalone: true,
@@ -62,5 +63,9 @@ export class HomeComponent {
 
     createAccessLink() {
         this.dialog.open(AccessLinkCreationDialogComponent);
+    }
+
+    createIssue(): void {
+        this.dialog.open(IssueCreationDialogComponent);
     }
 }
