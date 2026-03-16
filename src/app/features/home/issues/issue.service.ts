@@ -10,6 +10,12 @@ export class IssueService {
     constructor(private readonly httpService: HttpService) {
     }
 
+    read(issueId: string): Observable<IssueResponse> {
+        return this.httpService.request()
+            .error('No se pudo cargar la incidencia')
+            .get(ENDPOINTS.issues.byId(issueId));
+    }
+
     create(issue: IssueCreationRequest): Observable<IssueResponse> {
         return this.httpService.request()
             .success('Incidencia creada correctamente')

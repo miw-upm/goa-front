@@ -68,13 +68,13 @@
     </button>
 </mat-menu>
 <mat-menu #issuesMenu="matMenu">
-    <button (click)="createIssue()" mat-menu-item>
-        <mat-icon>add_circle</mat-icon>
-        <span>Crear incidencia</span>
-    </button>
     <button mat-menu-item routerLink="/home/issues">
         <mat-icon>list_alt</mat-icon>
         <span>Listado de incidencias</span>
+    </button>
+    <button (click)="createIssue()" mat-menu-item>
+        <mat-icon>add_circle</mat-icon>
+        <span>Crear incidencia</span>
     </button>
 </mat-menu>
 <router-outlet></router-outlet>
