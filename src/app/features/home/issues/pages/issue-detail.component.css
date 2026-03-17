@@ -1,0 +1,254 @@
+.issue-detail-page {
+    --surface: #ffffff;
+    --ink: #172033;
+    --muted: #637087;
+    --line: #dbe3f3;
+    --accent: #0d9488;
+    --accent-soft: #ccfbf1;
+    --warn: #f59e0b;
+    --warn-soft: #fef3c7;
+    --ok: #16a34a;
+    --ok-soft: #dcfce7;
+
+    min-height: 100%;
+    padding: 24px;
+    background: #f6f8fc;
+}
+
+.issue-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.eyebrow {
+    margin: 0;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+h1 {
+    margin: 4px 0 4px;
+    color: var(--ink);
+    font-size: 28px;
+    line-height: 1.2;
+}
+
+.issue-id {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+    word-break: break-all;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 8px 24px rgba(23, 32, 51, 0.06);
+}
+
+.main-card h2 {
+    margin: 0;
+    color: var(--ink);
+    font-size: 22px;
+}
+
+.card-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.status-pill {
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status-pending {
+    background: var(--warn-soft);
+    color: #92400e;
+}
+
+.status-progress {
+    background: var(--accent-soft);
+    color: #0f766e;
+}
+
+.status-finished {
+    background: var(--ok-soft);
+    color: #166534;
+}
+
+.meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.meta-label {
+    margin: 0 0 2px;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.meta-value {
+    margin: 0;
+    font-size: 14px;
+    color: var(--ink);
+    word-break: break-word;
+}
+
+.enum-tag {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid transparent;
+}
+
+.type-tag.type-bug {
+    background: #fee2e2;
+    color: #991b1b;
+    border-color: #fecaca;
+}
+
+.type-tag.type-improvement {
+    background: #dbeafe;
+    color: #1d4ed8;
+    border-color: #bfdbfe;
+}
+
+.role-tag.role-admin {
+    background: #efe2ff;
+    color: #6d28d9;
+    border-color: #ddd6fe;
+}
+
+.role-tag.role-manager {
+    background: #e0f2fe;
+    color: #0369a1;
+    border-color: #bae6fd;
+}
+
+.role-tag.role-operator {
+    background: #fef3c7;
+    color: #92400e;
+    border-color: #fde68a;
+}
+
+.role-tag.role-customer {
+    background: #dcfce7;
+    color: #166534;
+    border-color: #bbf7d0;
+}
+
+.document-tag.document-dni {
+    background: #ffe4e6;
+    color: #9f1239;
+    border-color: #fecdd3;
+}
+
+.document-tag.document-nie {
+    background: #e0e7ff;
+    color: #3730a3;
+    border-color: #c7d2fe;
+}
+
+.document-tag.document-cif {
+    background: #cffafe;
+    color: #155e75;
+    border-color: #a5f3fc;
+}
+
+.role-tag.role-unknown,
+.document-tag.document-unknown,
+.type-tag.type-unknown {
+    background: #f3f4f6;
+    color: #374151;
+    border-color: #e5e7eb;
+}
+
+.body-block {
+    margin: 14px 0;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #fbfdff;
+}
+
+.body-block h3 {
+    margin: 0 0 6px;
+    color: var(--ink);
+    font-size: 14px;
+}
+
+.body-block p {
+    margin: 0;
+    color: #2d3b53;
+    line-height: 1.5;
+}
+
+.github-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.github-link:hover {
+    text-decoration: underline;
+}
+
+.side-card h3 {
+    margin: 0 0 12px;
+    color: var(--ink);
+}
+
+.creator-grid {
+    display: grid;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.muted {
+    margin: 0;
+    color: var(--muted);
+}
+
+@media (max-width: 960px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .meta-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .issue-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}

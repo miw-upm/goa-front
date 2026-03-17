@@ -1,0 +1,133 @@
+<section class="issue-detail-page">
+    <header class="issue-header">
+        <div>
+            <p class="eyebrow">GOA Support</p>
+            <h1>Detalle de incidencia</h1>
+            <p class="issue-id">{{ issueId }}</p>
+        </div>
+        <button (click)="refresh()" [disabled]="!issueId || syncing" color="primary" mat-raised-button>
+            {{ syncing ? 'Sincronizando...' : 'Sincronizar' }}
+        </button>
+    </header>
+
+    @if (loading) {
+        <section class="card muted">Cargando incidencia...</section>
+    } @else if (issue) {
+        <div class="content-grid">
+            <section class="card main-card">
+                <div class="card-title-row">
+                    <h2>{{ issue.title || 'Sin título' }}</h2>
+                    <span class="status-pill" [class]="'status-pill ' + statusClass()">{{ (issue.status || 'PENDING') | capitalizeEnumName }}</span>
+                </div>
+
+                <div class="meta-grid">
+                    <div>
+                        <p class="meta-label">Tipo</p>
+                        <p class="meta-value">
+                            <span class="enum-tag" [class]="'enum-tag type-tag ' + enumTagClass(issue.type, 'type')">
+                                {{ (issue.type || '-') | capitalizeEnumName }}
+                            </span>
+                        </p>
+                    </div>
+                    <div>
+                        <p class="meta-label">GitHub</p>
+                        <p class="meta-value">{{ issue.githubIssueId || '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="meta-label">Fecha de creación</p>
+                        <p class="meta-value">{{ issue.createdAt ? (issue.createdAt | date:'dd/MM/yyyy HH:mm') : '-' }}</p>
+                    </div>
+                    <div>
+                        <p class="meta-label">Última actualización</p>
+                        <p class="meta-value">{{ issue.lastUpdatedAt ? (issue.lastUpdatedAt | date:'dd/MM/yyyy HH:mm') : '-' }}</p>
+                    </div>
+                </div>
+
+                <div class="body-block">
+                    <h3>Descripción</h3>
+                    <p>{{ issue.description || '-' }}</p>
+                </div>
+
+                <div class="body-block">
+                    <h3>Contexto técnico</h3>
+                    <p>{{ issue.technicalContext || '-' }}</p>
+                </div>
+
+                @if (issue.githubIssueUrl) {
+                    <a [href]="issue.githubIssueUrl" rel="noopener noreferrer" target="_blank" class="github-link">
+                        Abrir en GitHub
+                    </a>
+                }
+            </section>
+
+            <section class="card side-card">
+                <h3>Usuario creador</h3>
+
+                @if (issue.createdByUser) {
+                    <div class="creator-grid">
+                        <div>
+                            <p class="meta-label">Id</p>
+                            <p class="meta-value">{{ issue.createdByUser.id || '-' }}</p>
+                        </div>
+                        <div>
+                            <p class="meta-label">Nombre</p>
+                            <p class="meta-value">{{ issue.createdByUser.firstName || '-' }}</p>
+                        </div>
+                        <div>
+                            <p class="meta-label">Apellidos</p>
+                            <p class="meta-value">{{ issue.createdByUser.familyName || '-' }}</p>
+                        </div>
+                        <div>
+                            <p class="meta-label">Móvil</p>
+                            <p class="meta-value">{{ issue.createdByUser.mobile || '-' }}</p>
+                        </div>
+                        <div>
+                            <p class="meta-label">Email</p>
+                            <p class="meta-value">{{ issue.createdByUser.email || '-' }}</p>
+                        </div>
+                        <div>
+                            <p class="meta-label">Dirección</p>
+                            <p class="meta-value">{{ issue.createdByUser.address || '-' }}</p>
+                        </div>
+                        <div>
+                            <p class="meta-label">Ciudad</p>
+                            <p class="meta-value">{{ issue.createdByUser.city || '-' }}</p>
+                        </div>
+                        <div>
+                            <p class="meta-label">Código postal</p>
+                            <p class="meta-value">{{ issue.createdByUser.postalCode || '-' }}</p>
+                        </div>
+                        <div>
+                            <p class="meta-label">Provincia</p>
+                            <p class="meta-value">{{ issue.createdByUser.province || '-' }}</p>
+                        </div>
+                        <div>
+                            <p class="meta-label">Documento</p>
+                            <p class="meta-value">
+                                <span class="enum-tag" [class]="'enum-tag document-tag ' + enumTagClass(issue.createdByUser.documentType, 'document')">
+                                    {{ (issue.createdByUser.documentType || '-') | capitalizeEnumName }}
+                                </span>
+                            </p>
+                        </div>
+                        <div>
+                            <p class="meta-label">Identidad</p>
+                            <p class="meta-value">{{ issue.createdByUser.identity || '-' }}</p>
+                        </div>
+                        <div>
+                            <p class="meta-label">Rol</p>
+                            <p class="meta-value">
+                                <span class="enum-tag" [class]="'enum-tag role-tag ' + enumTagClass(issue.createdByUser.role, 'role')">
+                                    {{ (issue.createdByUser.role || '-') | capitalizeEnumName }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                } @else {
+                    <p class="muted">Sin datos del creador.</p>
+                }
+            </section>
+        </div>
+    } @else {
+        <section class="card muted">No hay datos de la incidencia.</section>
+    }
+</section>

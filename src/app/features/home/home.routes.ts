@@ -12,6 +12,9 @@ import {LegalProcedureTemplatesComponent} from "./legal-procedure-templates/page
 import {LegalProcedureTemplateService} from "./legal-procedure-templates/legal-procedure-template.service";
 import {EngagementLettersComponent} from "./engagement-letter/pages/engagement-letters.component";
 import {EngagementLetterService} from "./engagement-letter/engagement-letter.service";
+import {IssueDetailComponent} from "./issues/pages/issue-detail.component";
+import {IssuesComponent} from "./issues/pages/issues.component";
+import {IssueService} from "./issues/issue.service";
 
 export const routes: Routes = [
     {
@@ -52,6 +55,20 @@ export const routes: Routes = [
                 canActivate: [RoleGuardService],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [EngagementLetterService],
+            },
+            {
+                path: 'issues',
+                component: IssuesComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [IssueService],
+            },
+            {
+                path: 'issues/:id',
+                component: IssueDetailComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [IssueService],
             },
         ],
     },
