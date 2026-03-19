@@ -15,6 +15,10 @@ import {EngagementLetterService} from "./engagement-letter/engagement-letter.ser
 import {IssueDetailComponent} from "./issues/pages/issue-detail.component";
 import {IssuesComponent} from "./issues/pages/issues.component";
 import {IssueService} from "./issues/issue.service";
+import {IncomesComponent} from "./billing/pages/incomes.component";
+import {ExpensesComponent} from "./billing/pages/expenses.component";
+import {IncomeService} from "./billing/income.service";
+import {ExpenseService} from "./billing/expense.service";
 
 export const routes: Routes = [
     {
@@ -69,6 +73,20 @@ export const routes: Routes = [
                 canActivate: [RoleGuardService],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [IssueService],
+            },
+            {
+                path: 'incomes',
+                component: IncomesComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [IncomeService],
+            },
+            {
+                path: 'expenses',
+                component: ExpensesComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [ExpenseService],
             },
         ],
     },

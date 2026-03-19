@@ -38,6 +38,10 @@
         <mat-icon>support_agent</mat-icon>
         <span>Incidencias</span>
     </button>
+    <button [matMenuTriggerFor]="billingMenu" mat-menu-item>
+        <mat-icon>request_quote</mat-icon>
+        <span>Facturación</span>
+    </button>
     <button (click)="logout()" mat-menu-item>
         <mat-icon>logout</mat-icon>
         <span>Logout</span>
@@ -75,6 +79,16 @@
     <button (click)="createIssue()" mat-menu-item>
         <mat-icon>add_circle</mat-icon>
         <span>Crear incidencia</span>
+    </button>
+</mat-menu>
+<mat-menu #billingMenu="matMenu">
+    <button mat-menu-item routerLink="/home/incomes">
+        <mat-icon>trending_up</mat-icon>
+        <span>Ingresos</span>
+    </button>
+    <button mat-menu-item routerLink="/home/expenses">
+        <mat-icon>trending_down</mat-icon>
+        <span>Gastos</span>
     </button>
 </mat-menu>
 <router-outlet></router-outlet>
