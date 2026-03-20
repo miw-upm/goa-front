@@ -1,4 +1,18 @@
 import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
 
-@Injectable()
-export class ExpenseService {}
+import {HttpService} from '@core/http/http.service';
+import {ENDPOINTS} from '@core/api/endpoints';
+import {Expense} from './models/expense.model';
+
+@Injectable({providedIn: 'root'})
+export class ExpenseService {
+	constructor(private readonly httpService: HttpService) {
+	}
+
+	create(expense: Expense): Observable<Expense> {
+		return this.httpService.request()
+			.success()
+			.post(ENDPOINTS.expenses.root, expense);
+	}
+}
