@@ -6,6 +6,7 @@ const ENGAGEMENT_LETTER_ROOT = `${environment.REST_ENGAGEMENT}/engagement-letter
 const LEGAL_PROCEDURE_TEMPLATE_ROOT = `${environment.REST_ENGAGEMENT}/legal-procedure-templates`;
 const LEGAL_TASK_ROOT = `${environment.REST_ENGAGEMENT}/legal-tasks`;
 const ISSUE_ROOT = `${environment.REST_SUPPORT}/issues`;
+const EXPENSE_ROOT = `${environment.REST_BILLING}/expenses`;
 
 const enc = encodeURIComponent;
 
@@ -50,6 +51,12 @@ export const ENDPOINTS = {
             `${ISSUE_ROOT}/${enc(id)}`,
         syncById: (id: string) =>
             `${ISSUE_ROOT}/${enc(id)}/sync`,
+    },
+
+    expenses: {
+        root: EXPENSE_ROOT,
+        byId: (id: string) =>
+            `${EXPENSE_ROOT}/${enc(id)}`,
     },
 
 } as const;
