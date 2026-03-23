@@ -15,4 +15,9 @@ export class ExpenseService {
 			.success()
 			.post(ENDPOINTS.expenses.root, expense);
 	}
+
+    search(): Observable<Expense[]> {
+        return this.httpService.request()
+            .get(ENDPOINTS.expenses.root);
+    }
 }

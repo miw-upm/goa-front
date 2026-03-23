@@ -20,6 +20,11 @@ export class ExpensesComponent {
     constructor(private readonly dialog: MatDialog, private readonly expenseService: ExpenseService) {
     }
 
+    search(): void {
+        // TODO: Add search criteria
+        this.expenses = this.expenseService.search();
+    }
+
     create(): void {
         this.dialog.open(ExpenseCreationDialogComponent, {width: '600px'})
             .afterClosed();
