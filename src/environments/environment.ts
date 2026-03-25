@@ -10,6 +10,7 @@ export const environment = {
     REST_BILLING: 'http://localhost:8080/api/goa-billing',
     REST_SUPPORT: 'http://localhost:8080/api/goa-support',
     REST_DOCUMENT: 'http://localhost:8080/api/goa-document',
+    REST_CHATBOT: 'http://localhost:8080/api/goa-chatbot',
     SECURE_ROUTES: ['http://localhost:8080'],
 };
 
