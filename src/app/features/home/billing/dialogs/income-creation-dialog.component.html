@@ -1,0 +1,45 @@
+<h4 mat-dialog-title>Creacion de Ingreso</h4>
+<mat-dialog-content>
+    <mat-form-field class="full-width">
+        <mat-label>Id de Hoja de Encargo</mat-label>
+        <mat-select [(ngModel)]="income.engagementId">
+            @for (engagementId of (engagementIds | async); track engagementId) {
+                <mat-option [value]="engagementId">{{ engagementId }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
+    <app-form-select
+        [(selected)]="income.userId"
+        [values]="userIds"
+        label="Id de Usuario"/>
+
+    <app-form-field
+        #amountNg
+        [(value)]="income.amount"
+        [min]="0.01"
+        [required]="true"
+        [step]="0.01"
+        errorMessage="Obligatorio y mayor que 0"
+        label="Importe"
+        type="number"/>
+
+    <app-form-field
+        #dateNg
+        [(value)]="income.date"
+        [required]="true"
+        errorMessage="Obligatorio"
+        label="Fecha"
+        type="date"/>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Close</button>
+    <button
+        (click)="create()"
+        [disabled]="!canCreate() || formInvalid(amountNg.ngModel, dateNg.ngModel)"
+        color="primary"
+        mat-raised-button>
+        Create
+    </button>
+</mat-dialog-actions>
+

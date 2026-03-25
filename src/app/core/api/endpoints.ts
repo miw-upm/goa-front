@@ -7,6 +7,7 @@ const LEGAL_PROCEDURE_TEMPLATE_ROOT = `${environment.REST_ENGAGEMENT}/legal-proc
 const LEGAL_TASK_ROOT = `${environment.REST_ENGAGEMENT}/legal-tasks`;
 const ISSUE_ROOT = `${environment.REST_SUPPORT}/issues`;
 const EXPENSE_ROOT = `${environment.REST_BILLING}/expenses`;
+const INCOME_ROOT = `${environment.REST_BILLING}/incomes`;
 
 const enc = encodeURIComponent;
 
@@ -57,6 +58,12 @@ export const ENDPOINTS = {
         root: EXPENSE_ROOT,
         byId: (id: string) =>
             `${EXPENSE_ROOT}/${enc(id)}`,
+    },
+
+    incomes: {
+        root: INCOME_ROOT,
+        byId: (id: string) =>
+            `${INCOME_ROOT}/${enc(id)}`,
     },
 
 } as const;

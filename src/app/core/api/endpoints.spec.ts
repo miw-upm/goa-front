@@ -75,4 +75,13 @@ describe('ENDPOINTS', () => {
             `${environment.REST_BILLING}/expenses/${encodeURIComponent(id)}`
         );
     });
+
+    it('should build incomes root and byId endpoint', () => {
+        const id = 'income id/with special?chars';
+
+        expect(ENDPOINTS.incomes.root).toBe(`${environment.REST_BILLING}/incomes`);
+        expect(ENDPOINTS.incomes.byId(id)).toBe(
+            `${environment.REST_BILLING}/incomes/${encodeURIComponent(id)}`
+        );
+    });
 });
