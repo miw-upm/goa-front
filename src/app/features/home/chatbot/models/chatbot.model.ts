@@ -1,16 +1,16 @@
-export interface ChatMessageRequest {
+export interface ChatbotMessageRequest {
     conversationId?: string;
     message: string | undefined ;
 }
 
-export interface ChatMessageResponse {
+export interface ChatbotMessageResponse {
     conversationId?: string;
     message?: string;
     error?: string;
     createdAt?: string;
 }
 
-export interface ChatMessageView{
+export interface ChatbotMessageView{
     sender: 'USER' | 'ASSISTANT';
     content: string;
     createdAt?: string;
