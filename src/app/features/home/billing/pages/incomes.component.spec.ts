@@ -79,5 +79,103 @@ describe('IncomesComponent', () => {
             done();
         });
     });
+
+    it('should order incomes by date descending on search', (done) => {
+        const unorderedIncomes: Income[] = [{
+            id: '1',
+            engagementId: 'eng-1',
+            userId: 'user-1',
+            amount: 30,
+            date: '2026-03-20'
+        }, {
+            id: '2',
+            engagementId: 'eng-2',
+            userId: 'user-2',
+            amount: 50,
+            date: '2026-03-25'
+        }, {
+            id: '3',
+            engagementId: 'eng-3',
+            userId: 'user-3',
+            amount: 40,
+            date: '2026-03-24'
+        }];
+
+        incomeServiceSpy.search.and.returnValue(of(unorderedIncomes));
+        const component = new IncomesComponent(dialogSpy as any, incomeServiceSpy as any);
+
+        component.search();
+
+        component.incomes.subscribe(items => {
+            expect(items.map(item => item.date)).toEqual(['2026-03-25', '2026-03-24', '2026-03-20']);
+            done();
+        });
+    });
+
+    it('should keep duplicated dates and place the most recent date first', (done) => {
+        const duplicatedDatesIncomes: Income[] = [{
+            id: '1',
+            engagementId: 'eng-1',
+            userId: 'user-1',
+            amount: 10,
+            date: '2026-03-24'
+        }, {
+            id: '2',
+            engagementId: 'eng-2',
+            userId: 'user-2',
+            amount: 20,
+            date: '2026-03-25'
+        }, {
+            id: '3',
+            engagementId: 'eng-3',
+            userId: 'user-3',
+            amount: 30,
+            date: '2026-03-24'
+        }];
+
+        incomeServiceSpy.search.and.returnValue(of(duplicatedDatesIncomes));
+        const component = new IncomesComponent(dialogSpy as any, incomeServiceSpy as any);
+
+        component.search();
+
+        component.incomes.subscribe(items => {
+            expect(items.length).toBe(3);
+            expect(items[0].date).toBe('2026-03-25');
+            expect(items.map(item => item.date)).toEqual(['2026-03-25', '2026-03-24', '2026-03-24']);
+            done();
+        });
+    });
+
+    it('should order incomes correctly across year boundaries', (done) => {
+        const crossYearIncomes: Income[] = [{
+            id: '1',
+            engagementId: 'eng-1',
+            userId: 'user-1',
+            amount: 10,
+            date: '2026-01-01'
+        }, {
+            id: '2',
+            engagementId: 'eng-2',
+            userId: 'user-2',
+            amount: 20,
+            date: '2025-12-31'
+        }, {
+            id: '3',
+            engagementId: 'eng-3',
+            userId: 'user-3',
+            amount: 30,
+            date: '2026-01-02'
+        }];
+
+        incomeServiceSpy.search.and.returnValue(of(crossYearIncomes));
+        const component = new IncomesComponent(dialogSpy as any, incomeServiceSpy as any);
+
+        component.search();
+
+        component.incomes.subscribe(items => {
+            expect(items.map(item => item.date)).toEqual(['2026-01-02', '2026-01-01', '2025-12-31']);
+            done();
+        });
+    });
 });
 

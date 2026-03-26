@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {of} from 'rxjs';
+import {map, of} from 'rxjs';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {IncomeCreationDialogComponent} from '../dialogs/income-creation-dialog.component';
@@ -21,8 +21,8 @@ export class IncomesComponent {
     }
 
     search(): void {
-        // TODO: Add search criteria
-        this.incomes = this.incomeService.search();
+        this.incomes = this.incomeService.search()
+            .pipe(map(incomes => [...incomes].sort((a, b) => b.date.localeCompare(a.date))));
     }
 
     create(): void {
