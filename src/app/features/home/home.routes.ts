@@ -21,6 +21,7 @@ import {ExpensesComponent} from "./billing/pages/expenses.component";
 import {InvoiceService} from "./billing/invoice.service";
 import {IncomeService} from "./billing/income.service";
 import {ExpenseService} from "./billing/expense.service";
+import {ChatbotComponent} from "./chatbot/pages/chatbot.component";
 
 export const routes: Routes = [
     {
@@ -96,6 +97,12 @@ export const routes: Routes = [
                 canActivate: [RoleGuardService],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [ExpenseService],
+            },
+            {
+                path: 'chatbot',
+                component: ChatbotComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR, Role.CUSTOMER]},
             },
         ],
     },

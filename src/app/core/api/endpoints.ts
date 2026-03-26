@@ -8,6 +8,7 @@ const LEGAL_TASK_ROOT = `${environment.REST_ENGAGEMENT}/legal-tasks`;
 const ISSUE_ROOT = `${environment.REST_SUPPORT}/issues`;
 const EXPENSE_ROOT = `${environment.REST_BILLING}/expenses`;
 const INCOME_ROOT = `${environment.REST_BILLING}/incomes`;
+const CHATBOT_ROOT = `${environment.REST_CHATBOT}/chatbot`;
 
 const enc = encodeURIComponent;
 
@@ -64,6 +65,12 @@ export const ENDPOINTS = {
         root: INCOME_ROOT,
         byId: (id: string) =>
             `${INCOME_ROOT}/${enc(id)}`,
+    },
+
+    chatbot: {
+        root: CHATBOT_ROOT,
+        messages: () =>
+            `${CHATBOT_ROOT}/messages`,
     },
 
 } as const;
