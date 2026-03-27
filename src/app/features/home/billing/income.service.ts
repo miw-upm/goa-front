@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
 import {Income} from './models/income.model';
+import {IncomeSearch} from './models/income-search.model';
 
 @Injectable({providedIn: 'root'})
 export class IncomeService {
@@ -16,8 +17,11 @@ export class IncomeService {
 			.post(ENDPOINTS.incomes.root, income);
 	}
 
-	search(): Observable<Income[]> {
-		return this.httpService.request()
-			.get(ENDPOINTS.incomes.root);
+	search(criteria?: IncomeSearch): Observable<Income[]> {
+		const request = this.httpService.request();
+		if (criteria) {
+			request.paramsFrom(criteria);
+		}
+		return request.get(ENDPOINTS.incomes.root);
 	}
 }
