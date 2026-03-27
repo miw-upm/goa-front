@@ -1,4 +1,4 @@
-import {of} from 'rxjs';
+import {of, throwError} from 'rxjs';
 
 import {IncomeCreationDialogComponent} from '../dialogs/income-creation-dialog.component';
 import {Income} from '../models/income.model';
@@ -177,5 +177,62 @@ describe('IncomesComponent', () => {
             done();
         });
     });
-});
 
+    it('should initialize criteria with empty object on construction', () => {
+        const component = new IncomesComponent(dialogSpy as any, incomeServiceSpy as any);
+
+        expect(component.criteria).toEqual({});
+    });
+
+    it('should reset criteria to empty object', () => {
+        const component = new IncomesComponent(dialogSpy as any, incomeServiceSpy as any);
+        component.criteria = {engagementId: 'some-id'};
+
+        component.resetSearch();
+
+        expect(component.criteria).toEqual({});
+    });
+
+    it('should pass criteria to income service search', () => {
+        const component = new IncomesComponent(dialogSpy as any, incomeServiceSpy as any);
+        component.criteria = {engagementId: 'test-engagement-id'};
+
+        component.search();
+
+        expect(incomeServiceSpy.search).toHaveBeenCalledWith({engagementId: 'test-engagement-id'});
+    });
+
+    it('should filter incomes by engagementId', (done) => {
+        const incomesWithFilter: Income[] = [{
+            id: '1',
+            engagementId: 'target-engagement',
+            userId: 'user-1',
+            amount: 100,
+            date: '2026-03-24'
+        }];
+        incomeServiceSpy.search.and.returnValue(of(incomesWithFilter));
+        const component = new IncomesComponent(dialogSpy as any, incomeServiceSpy as any);
+        component.criteria = {engagementId: 'target-engagement'};
+
+        component.search();
+
+        component.incomes.subscribe(items => {
+            expect(items.length).toBe(1);
+            expect(items[0].engagementId).toBe('target-engagement');
+            done();
+        });
+    });
+
+    it('should return empty list when engagementId is invalid', (done) => {
+        incomeServiceSpy.search.and.returnValue(throwError(() => new Error('Invalid engagement ID')));
+        const component = new IncomesComponent(dialogSpy as any, incomeServiceSpy as any);
+        component.criteria = {engagementId: 'invalid-id'};
+
+        component.search();
+
+        component.incomes.subscribe(items => {
+            expect(items).toEqual([]);
+            done();
+        });
+    });
+});
