@@ -6,7 +6,7 @@ import {authInterceptor, AuthModule, LogLevel} from "angular-auth-oidc-client";
 import {AppComponent} from './app/app.component';
 import {environment} from '@env';
 import {provideAnimations} from "@angular/platform-browser/animations";
-import {MatNativeDateModule} from '@angular/material/core';
+import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
 import {FormsModule} from "@angular/forms";
 import {routes} from "./app/app.routes";
 
@@ -17,6 +17,7 @@ bootstrapApplication(AppComponent, {
         provideZoneChangeDetection({eventCoalescing: true}),
         provideAnimations(),
         importProvidersFrom(MatNativeDateModule),
+        {provide: MAT_DATE_LOCALE, useValue: 'es'},
         provideRouter(routes),
         provideHttpClient(),
         provideHttpClient(withInterceptors([authInterceptor()])),
