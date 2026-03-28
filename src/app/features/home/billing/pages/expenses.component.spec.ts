@@ -63,7 +63,8 @@ describe('ExpensesComponent', () => {
 
     it('should format date correctly before searching', () => {
         const component = new ExpensesComponent(dialogSpy as any, expenseServiceSpy as any);
-        component.criteria = { date: 'Sun Mar 15 2026 00:00:00 GMT+0100' };
+        const testDate = new Date(Date.UTC(2026, 2, 15)); // Month is 0-indexed, so 2 is March
+        component.criteria = { date: testDate.toString() };
         const expectedFormattedDate = '2026-03-15';
 
         component.search();
