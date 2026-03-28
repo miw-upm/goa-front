@@ -61,6 +61,25 @@ describe('ExpensesComponent', () => {
         expect((expenseServiceSpy as any).search).toHaveBeenCalled();
     });
 
+    it('should format date correctly before searching', () => {
+        const component = new ExpensesComponent(dialogSpy as any, expenseServiceSpy as any);
+        component.criteria = { date: 'Sun Mar 15 2026 00:00:00 GMT+0100' };
+        const expectedFormattedDate = '2026-03-15';
+
+        component.search();
+
+        expect((expenseServiceSpy as any).search).toHaveBeenCalledWith({ date: expectedFormattedDate });
+    });
+
+    it('should not format date if it is not present', () => {
+        const component = new ExpensesComponent(dialogSpy as any, expenseServiceSpy as any);
+        component.criteria = {};
+
+        component.search();
+
+        expect((expenseServiceSpy as any).search).toHaveBeenCalledWith({});
+    });
+
     it('should update expenses on search', (done) => {
                 const expectedExpenses: Expense[] = [{
             id: '11111111-1111-1111-1111-111111111111',
