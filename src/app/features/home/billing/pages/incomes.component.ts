@@ -39,6 +39,19 @@ export class IncomesComponent {
 
     create(): void {
         this.dialog.open(IncomeCreationDialogComponent, {width: '600px'})
-            .afterClosed();
+            .afterClosed()
+            .subscribe(() => this.search());
+    }
+
+    update(income: Income): void {
+        if (!income.id) {
+            return;
+        }
+
+        this.dialog.open(IncomeCreationDialogComponent, {
+            width: '600px',
+            data: income
+        }).afterClosed()
+            .subscribe(() => this.search());
     }
 }

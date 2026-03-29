@@ -53,6 +53,38 @@ describe('IncomesComponent', () => {
         expect(dialogRef.afterClosed).toHaveBeenCalled();
     });
 
+    it('should open income update dialog with selected income', () => {
+        const component = new IncomesComponent(dialogSpy as any, incomeServiceSpy as any);
+        const income: Income = {
+            id: '11111111-1111-1111-1111-111111111111',
+            engagementId: '22222222-2222-2222-2222-222222222222',
+            userId: '33333333-3333-3333-3333-333333333333',
+            amount: 100,
+            date: '2026-03-24'
+        };
+
+        component.update(income);
+
+        expect(dialogSpy.open).toHaveBeenCalledWith(IncomeCreationDialogComponent, {
+            width: '600px',
+            data: income
+        });
+    });
+
+    it('should not open income update dialog when income has no id', () => {
+        const component = new IncomesComponent(dialogSpy as any, incomeServiceSpy as any);
+        const income = {
+            engagementId: '22222222-2222-2222-2222-222222222222',
+            userId: '33333333-3333-3333-3333-333333333333',
+            amount: 100,
+            date: '2026-03-24'
+        } as Income;
+
+        component.update(income);
+
+        expect(dialogSpy.open).not.toHaveBeenCalled();
+    });
+
     it('should call search on income service', () => {
         const component = new IncomesComponent(dialogSpy as any, incomeServiceSpy as any);
 
