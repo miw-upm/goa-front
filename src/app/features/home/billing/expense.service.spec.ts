@@ -58,6 +58,25 @@ describe('ExpenseService', () => {
         expect(requestBuilderSpy.post).toHaveBeenCalledWith(ENDPOINTS.expenses.root, payload);
     });
 
+    it('should read expense with GET to expense by id endpoint', () => {
+        const response: Expense = {
+            id: 'expense-1',
+            engagementId: 'eng-1',
+            amount: 150.5,
+            date: '2026-03-20',
+            description: 'Taxi'
+        };
+
+        requestBuilderSpy.get.and.returnValue(of(response));
+
+        service.read('expense-1').subscribe(expense => {
+            expect(expense).toEqual(response);
+        });
+
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.get).toHaveBeenCalledWith(ENDPOINTS.expenses.byId('expense-1'));
+    });
+
     it('should search expenses with GET from expenses endpoint', () => {
         const search: ExpenseSearch = {date: '2026-01-01'};
         const expectedExpenses: Expense[] = [

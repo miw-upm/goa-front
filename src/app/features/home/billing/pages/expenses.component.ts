@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {Expense} from '../models/expense.model';
@@ -18,6 +18,7 @@ import {FilterDateComponent} from "../../../../shared/ui/inputs/filter-date.comp
 export class ExpensesComponent {
     title = 'Gastos';
     expenses = of([] as Expense[]);
+    expense: Observable<Expense>;
     criteria: ExpenseSearch = {};
 
     constructor(private readonly dialog: MatDialog, private readonly expenseService: ExpenseService) {
@@ -40,6 +41,10 @@ export class ExpensesComponent {
             .subscribe(() => this.search());
     }
 
+    read(expense: Expense): void {
+        this.expense = this.expenseService.read(expense.id);
+    }
+    
     update(expense: Expense): void {
         if (!expense.id) {
             return;
