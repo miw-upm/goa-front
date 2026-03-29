@@ -1,10 +1,12 @@
 import {of} from 'rxjs';
 
 import {IncomeCreationDialogComponent} from './income-creation-dialog.component';
+import {Income} from '../models/income.model';
 
 describe('IncomeCreationDialogComponent', () => {
     let incomeServiceSpy: {
         create: jasmine.Spy;
+        update: jasmine.Spy;
     };
 
     let engagementLetterServiceSpy: {
@@ -21,7 +23,8 @@ describe('IncomeCreationDialogComponent', () => {
 
     beforeEach(() => {
         incomeServiceSpy = {
-            create: jasmine.createSpy('create').and.returnValue(of({}))
+            create: jasmine.createSpy('create').and.returnValue(of({})),
+            update: jasmine.createSpy('update').and.returnValue(of({}))
         };
 
         engagementLetterServiceSpy = {
@@ -79,7 +82,32 @@ describe('IncomeCreationDialogComponent', () => {
         });
     });
 
-    it('should return false in canCreate when engagementId is empty', () => {
+    it('should keep current userId in options when opening update dialog', (done) => {
+        sharedUserServiceSpy.searchUsers.and.returnValue(of([
+            {id: 'user-id-1', mobile: '600000001'}
+        ]));
+
+        const component = new IncomeCreationDialogComponent(
+            incomeServiceSpy as any,
+            engagementLetterServiceSpy as any,
+            sharedUserServiceSpy as any,
+            dialogSpy as any,
+            {
+                id: 'income-1',
+                engagementId: 'eng-1',
+                userId: 'legacy-user-id',
+                amount: 9.99,
+                date: '2026-03-24'
+            }
+        );
+
+        component.userIds.subscribe(ids => {
+            expect(ids).toEqual(['legacy-user-id', 'user-id-1']);
+            done();
+        });
+    });
+
+    it('should return false in canSubmit when engagementId is empty', () => {
         const component = new IncomeCreationDialogComponent(
             incomeServiceSpy as any,
             engagementLetterServiceSpy as any,
@@ -93,10 +121,10 @@ describe('IncomeCreationDialogComponent', () => {
             date: '2026-03-24'
         } as any;
 
-        expect(component.canCreate()).toBeFalse();
+        expect(component.canSubmit()).toBeFalse();
     });
 
-    it('should return false in canCreate when amount is zero', () => {
+    it('should return false in canSubmit when amount is zero', () => {
         const component = new IncomeCreationDialogComponent(
             incomeServiceSpy as any,
             engagementLetterServiceSpy as any,
@@ -110,10 +138,10 @@ describe('IncomeCreationDialogComponent', () => {
             date: '2026-03-24'
         };
 
-        expect(component.canCreate()).toBeFalse();
+        expect(component.canSubmit()).toBeFalse();
     });
 
-    it('should return false in canCreate when userId is empty', () => {
+    it('should return false in canSubmit when userId is empty', () => {
         const component = new IncomeCreationDialogComponent(
             incomeServiceSpy as any,
             engagementLetterServiceSpy as any,
@@ -127,10 +155,10 @@ describe('IncomeCreationDialogComponent', () => {
             date: '2026-03-24'
         };
 
-        expect(component.canCreate()).toBeFalse();
+        expect(component.canSubmit()).toBeFalse();
     });
 
-    it('should return false in canCreate when date is missing', () => {
+    it('should return false in canSubmit when date is missing', () => {
         const component = new IncomeCreationDialogComponent(
             incomeServiceSpy as any,
             engagementLetterServiceSpy as any,
@@ -144,10 +172,10 @@ describe('IncomeCreationDialogComponent', () => {
             date: undefined
         } as any;
 
-        expect(component.canCreate()).toBeFalse();
+        expect(component.canSubmit()).toBeFalse();
     });
 
-    it('should return false in canCreate when date is invalid', () => {
+    it('should return false in canSubmit when date is invalid', () => {
         const component = new IncomeCreationDialogComponent(
             incomeServiceSpy as any,
             engagementLetterServiceSpy as any,
@@ -161,10 +189,10 @@ describe('IncomeCreationDialogComponent', () => {
             date: 'not-a-date'
         };
 
-        expect(component.canCreate()).toBeFalse();
+        expect(component.canSubmit()).toBeFalse();
     });
 
-    it('should return true in canCreate when all fields are valid', () => {
+    it('should return true in canSubmit when all fields are valid', () => {
         const component = new IncomeCreationDialogComponent(
             incomeServiceSpy as any,
             engagementLetterServiceSpy as any,
@@ -178,7 +206,7 @@ describe('IncomeCreationDialogComponent', () => {
             date: '2026-03-24'
         };
 
-        expect(component.canCreate()).toBeTrue();
+        expect(component.canSubmit()).toBeTrue();
     });
 
     it('should not call create service when form data is invalid', () => {
@@ -219,6 +247,97 @@ describe('IncomeCreationDialogComponent', () => {
 
         expect(incomeServiceSpy.create).toHaveBeenCalledWith(component.income);
         expect(dialogSpy.closeAll).toHaveBeenCalled();
+    });
+
+    it('should format selected income date from datepicker before submit', () => {
+        const component = new IncomeCreationDialogComponent(
+            incomeServiceSpy as any,
+            engagementLetterServiceSpy as any,
+            sharedUserServiceSpy as any,
+            dialogSpy as any
+        );
+
+        component.incomeDate = new Date(2026, 2, 21);
+
+        expect(component.income.date).toBe('2026-03-21');
+    });
+
+    it('should initialize in update mode when income data is provided', () => {
+        const existingIncome: Income = {
+            id: 'income-1',
+            engagementId: 'eng-1',
+            userId: 'user-1',
+            amount: 9.99,
+            date: '2026-03-24'
+        };
+
+        const component = new IncomeCreationDialogComponent(
+            incomeServiceSpy as any,
+            engagementLetterServiceSpy as any,
+            sharedUserServiceSpy as any,
+            dialogSpy as any,
+            existingIncome
+        );
+
+        expect(component.isCreate()).toBeFalse();
+        expect(component.title).toBe('Actualizacion de Ingreso');
+        expect(component.income).toEqual(existingIncome);
+    });
+
+    it('should call update service without editable id and close dialog when update data is valid', () => {
+        const existingIncome: Income = {
+            id: 'income-1',
+            engagementId: 'eng-1',
+            userId: 'user-1',
+            amount: 9.99,
+            date: '2026-03-24'
+        };
+
+        const component = new IncomeCreationDialogComponent(
+            incomeServiceSpy as any,
+            engagementLetterServiceSpy as any,
+            sharedUserServiceSpy as any,
+            dialogSpy as any,
+            existingIncome
+        );
+
+        component.income.amount = 15;
+        component.income.userId = 'user-2';
+
+        component.update();
+
+        expect(incomeServiceSpy.update).toHaveBeenCalledWith('income-1', {
+            engagementId: 'eng-1',
+            userId: 'user-2',
+            amount: 15,
+            date: '2026-03-24'
+        });
+        expect(dialogSpy.closeAll).toHaveBeenCalled();
+    });
+
+    it('should not call update service when update data is invalid', () => {
+        const existingIncome: Income = {
+            id: 'income-1',
+            engagementId: 'eng-1',
+            userId: 'user-1',
+            amount: 9.99,
+            date: '2026-03-24'
+        };
+
+        const component = new IncomeCreationDialogComponent(
+            incomeServiceSpy as any,
+            engagementLetterServiceSpy as any,
+            sharedUserServiceSpy as any,
+            dialogSpy as any,
+            existingIncome
+        );
+
+        component.income.userId = '   ';
+
+        component.update();
+
+        expect(incomeServiceSpy.update).not.toHaveBeenCalled();
+        expect(dialogSpy.closeAll).not.toHaveBeenCalled();
     });
 
     it('should return false when all controls are valid in formInvalid', () => {
