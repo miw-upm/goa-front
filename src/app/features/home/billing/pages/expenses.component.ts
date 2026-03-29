@@ -36,6 +36,19 @@ export class ExpensesComponent {
 
     create(): void {
         this.dialog.open(ExpenseCreationDialogComponent, {width: '600px'})
-            .afterClosed();
+            .afterClosed()
+            .subscribe(() => this.search());
+    }
+
+    update(expense: Expense): void {
+        if (!expense.id) {
+            return;
+        }
+
+        this.dialog.open(ExpenseCreationDialogComponent, {
+            width: '600px',
+            data: expense
+        }).afterClosed()
+            .subscribe(() => this.search());
     }
 }
