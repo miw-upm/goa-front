@@ -1,9 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, Inject, Optional} from '@angular/core';
 import {AsyncPipe} from '@angular/common';
 import {FormsModule, NgModel} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {
+    MAT_DIALOG_DATA,
     MatDialog,
     MatDialogActions,
     MatDialogClose,
@@ -14,6 +15,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 
+import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
 import {EngagementLetterService} from '../../engagement-letter/engagement-letter.service';
 import {EngagementLetterSearch} from '../../engagement-letter/models/engagement-letter-search.model';
@@ -32,6 +34,7 @@ import {Expense} from '../models/expense.model';
         MatButtonModule,
         MatFormFieldModule,
         MatSelectModule,
+        AppDateFieldComponent,
         FormFieldComponent,
     ],
     providers: [EngagementLetterService],
@@ -39,19 +42,43 @@ import {Expense} from '../models/expense.model';
     styleUrls: ['expense-creation-dialog.component.css']
 })
 export class ExpenseCreationDialogComponent {
+    title: string;
     engagementIds: Observable<string[]>;
+    private expenseDateValue: Date | null = null;
     expense: Expense = {
+        id: undefined,
         engagementId: undefined,
         amount: undefined,
         date: undefined,
         description: undefined,
     };
 
+    get expenseDate(): Date | null {
+        return this.expenseDateValue;
+    }
+
+    set expenseDate(value: Date | string | null | undefined) {
+        const parsedDate = value instanceof Date ? value : this.parseDate(value);
+        this.expenseDateValue = parsedDate;
+        this.expense.date = parsedDate ? this.formatDate(parsedDate) : undefined;
+    }
+
     constructor(
         private readonly expenseService: ExpenseService,
         private readonly engagementLetterService: EngagementLetterService,
-        private readonly dialog: MatDialog
+        private readonly dialog: MatDialog,
+        @Optional() @Inject(MAT_DIALOG_DATA) data?: Expense
     ) {
+        this.title = data?.id ? 'Actualizacion de Gasto' : 'Creacion de Gasto';
+        this.expense = {
+            id: data?.id,
+            engagementId: data?.engagementId,
+            amount: data?.amount,
+            date: data?.date,
+            description: data?.description,
+        };
+        this.expenseDate = data?.date;
+
         const criteria: EngagementLetterSearch = {
             opened: true,
             owner: '',
@@ -64,7 +91,7 @@ export class ExpenseCreationDialogComponent {
     }
 
     create(): void {
-        if (!this.canCreate()) {
+        if (!this.isCreate() || !this.canSubmit()) {
             return;
         }
         this.expenseService
@@ -72,7 +99,22 @@ export class ExpenseCreationDialogComponent {
             .subscribe(() => this.dialog.closeAll());
     }
 
-    canCreate(): boolean {
+    update(): void {
+        if (this.isCreate() || !this.expense.id || !this.canSubmit()) {
+            return;
+        }
+
+        const {id, ...expense} = this.expense;
+        this.expenseService
+            .update(id, expense)
+            .subscribe(() => this.dialog.closeAll());
+    }
+
+    isCreate(): boolean {
+        return !this.expense.id;
+    }
+
+    canSubmit(): boolean {
         return this.hasEngagementId()
             && this.hasValidAmount()
             && this.hasValidDate()
@@ -89,10 +131,7 @@ export class ExpenseCreationDialogComponent {
     }
 
     private hasValidDate(): boolean {
-        if (!this.expense.date) {
-            return false;
-        }
-        return !Number.isNaN(Date.parse(this.expense.date));
+        return this.expenseDateValue !== null || this.parseDate(this.expense.date) !== null;
     }
 
     private hasDescription(): boolean {
@@ -101,5 +140,34 @@ export class ExpenseCreationDialogComponent {
 
     formInvalid(...controls: NgModel[]): boolean {
         return controls.some(ctrl => ctrl.invalid && (ctrl.dirty || ctrl.touched));
+    }
+
+    private parseDate(value: Date | string | null | undefined): Date | null {
+        if (!value) {
+            return null;
+        }
+
+        if (value instanceof Date) {
+            return Number.isNaN(value.getTime()) ? null : value;
+        }
+
+        const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+        if (match) {
+            const year = Number(match[1]);
+            const month = Number(match[2]) - 1;
+            const day = Number(match[3]);
+            const date = new Date(year, month, day);
+            return Number.isNaN(date.getTime()) ? null : date;
+        }
+
+        const parsedDate = new Date(value);
+        return Number.isNaN(parsedDate.getTime()) ? null : parsedDate;
+    }
+
+    private formatDate(date: Date): string {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     }
 }

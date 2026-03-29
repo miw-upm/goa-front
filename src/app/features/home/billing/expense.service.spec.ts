@@ -11,6 +11,7 @@ describe('ExpenseService', () => {
     let requestBuilderSpy: {
         success: jasmine.Spy;
         post: jasmine.Spy;
+        put: jasmine.Spy;
         paramsFrom: jasmine.Spy;
         get: jasmine.Spy;
     };
@@ -23,6 +24,7 @@ describe('ExpenseService', () => {
         requestBuilderSpy = {
             success: jasmine.createSpy('success'),
             post: jasmine.createSpy('post'),
+            put: jasmine.createSpy('put'),
             paramsFrom: jasmine.createSpy('paramsFrom'),
             get: jasmine.createSpy('get')
         };
@@ -72,5 +74,25 @@ describe('ExpenseService', () => {
         expect(httpServiceSpy.request).toHaveBeenCalled();
         expect(requestBuilderSpy.paramsFrom).toHaveBeenCalledWith(search);
         expect(requestBuilderSpy.get).toHaveBeenCalledWith(ENDPOINTS.expenses.root);
+    });
+
+    it('should update expense with PUT to expense by id endpoint', () => {
+        const id = 'expense-1';
+        const payload: Expense = {
+            engagementId: 'eng-1',
+            amount: 175.25,
+            date: '2026-03-20',
+            description: 'Taxi corregido'
+        };
+
+        requestBuilderSpy.put.and.returnValue(of(payload));
+
+        service.update(id, payload).subscribe(response => {
+            expect(response).toEqual(payload);
+        });
+
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.success).toHaveBeenCalled();
+        expect(requestBuilderSpy.put).toHaveBeenCalledWith(ENDPOINTS.expenses.byId(id), payload);
     });
 });

@@ -17,6 +17,12 @@ export class ExpenseService {
 			.post(ENDPOINTS.expenses.root, expense);
 	}
 
+    update(id: string, expense: Expense): Observable<Expense> {
+        return this.httpService.request()
+            .success()
+            .put(ENDPOINTS.expenses.byId(id), expense);
+    }
+
     search(criteria: ExpenseSearch): Observable<Expense[]> {
         return this.httpService.request()
             .paramsFrom(criteria)

@@ -53,6 +53,38 @@ describe('ExpensesComponent', () => {
         expect(openedDialog).toBeDefined();
     });
 
+    it('should open expense update dialog with selected expense', () => {
+        const component = new ExpensesComponent(dialogSpy as any, expenseServiceSpy as any);
+        const expense: Expense = {
+            id: '11111111-1111-1111-1111-111111111111',
+            engagementId: '22222222-2222-2222-2222-222222222222',
+            amount: 100,
+            date: '2026-03-24',
+            description: 'Test Expense'
+        };
+
+        component.update(expense);
+
+        expect(dialogSpy.open).toHaveBeenCalledWith(ExpenseCreationDialogComponent, {
+            width: '600px',
+            data: expense
+        });
+    });
+
+    it('should not open expense update dialog when expense has no id', () => {
+        const component = new ExpensesComponent(dialogSpy as any, expenseServiceSpy as any);
+        const expense = {
+            engagementId: '22222222-2222-2222-2222-222222222222',
+            amount: 100,
+            date: '2026-03-24',
+            description: 'Test Expense'
+        } as Expense;
+
+        component.update(expense);
+
+        expect(dialogSpy.open).not.toHaveBeenCalled();
+    });
+
     it('should call search on expense service', () => {
         const component = new ExpensesComponent(dialogSpy as any, expenseServiceSpy as any);
 
