@@ -4,34 +4,56 @@ import {Observable, of} from 'rxjs';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {Expense} from '../models/expense.model';
+import {ExpenseSearch} from '../models/expense-search.model';
 import {ExpenseService} from '../expense.service';
 import {ExpenseCreationDialogComponent} from '../dialogs/expense-creation-dialog.component';
+import {FilterDateComponent} from "../../../../shared/ui/inputs/filter-date.component";
 
 @Component({
     standalone: true,
     selector: 'app-expenses',
-    imports: [CrudComponent],
+    imports: [CrudComponent, FilterDateComponent],
     templateUrl: 'expenses.component.html'
 })
 export class ExpensesComponent {
     title = 'Gastos';
     expenses = of([] as Expense[]);
     expense: Observable<Expense>;
+    criteria: ExpenseSearch = {};
 
     constructor(private readonly dialog: MatDialog, private readonly expenseService: ExpenseService) {
     }
 
     search(): void {
-        // TODO: Add search criteria
-        this.expenses = this.expenseService.search();
+        if (this.criteria.date) {
+            const date = new Date(this.criteria.date);
+            const year = date.getFullYear();
+            const month = ('0' + (date.getMonth() + 1)).slice(-2);
+            const day = ('0' + date.getDate()).slice(-2);
+            this.criteria.date = `${year}-${month}-${day}`;
+        }
+        this.expenses = this.expenseService.search(this.criteria);
     }
 
     create(): void {
         this.dialog.open(ExpenseCreationDialogComponent, {width: '600px'})
-            .afterClosed();
+            .afterClosed()
+            .subscribe(() => this.search());
     }
 
     read(expense: Expense): void {
         this.expense = this.expenseService.read(expense.id);
+    }
+    
+    update(expense: Expense): void {
+        if (!expense.id) {
+            return;
+        }
+
+        this.dialog.open(ExpenseCreationDialogComponent, {
+            width: '600px',
+            data: expense
+        }).afterClosed()
+            .subscribe(() => this.search());
     }
 }

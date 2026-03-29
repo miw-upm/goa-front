@@ -2,10 +2,11 @@
 <app-crud
 	(create)="create()"
 	(searchAll)="search()"
+	(update)="update($event)"
 	[createAction]="true"
 	[data]="incomes"
 	[hiddenFields]="['id']"
 	[readAction]="false"
 	[title]="title"
-	[updateAction]="false">
+	[updateAction]="true">
 </app-crud>

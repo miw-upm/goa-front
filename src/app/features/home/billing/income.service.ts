@@ -17,6 +17,12 @@ export class IncomeService {
 			.post(ENDPOINTS.incomes.root, income);
 	}
 
+    update(id: string, income: Income): Observable<Income> {
+        return this.httpService.request()
+            .success()
+            .put(ENDPOINTS.incomes.byId(id), income);
+    }
+
 	search(criteria?: IncomeSearch): Observable<Income[]> {
 		const request = this.httpService.request();
 		if (criteria) {

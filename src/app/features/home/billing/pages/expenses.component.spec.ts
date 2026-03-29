@@ -63,12 +63,64 @@ describe('ExpensesComponent', () => {
         expect(openedDialog).toBeDefined();
     });
 
+    it('should open expense update dialog with selected expense', () => {
+        const component = new ExpensesComponent(dialogSpy as any, expenseServiceSpy as any);
+        const expense: Expense = {
+            id: '11111111-1111-1111-1111-111111111111',
+            engagementId: '22222222-2222-2222-2222-222222222222',
+            amount: 100,
+            date: '2026-03-24',
+            description: 'Test Expense'
+        };
+
+        component.update(expense);
+
+        expect(dialogSpy.open).toHaveBeenCalledWith(ExpenseCreationDialogComponent, {
+            width: '600px',
+            data: expense
+        });
+    });
+
+    it('should not open expense update dialog when expense has no id', () => {
+        const component = new ExpensesComponent(dialogSpy as any, expenseServiceSpy as any);
+        const expense = {
+            engagementId: '22222222-2222-2222-2222-222222222222',
+            amount: 100,
+            date: '2026-03-24',
+            description: 'Test Expense'
+        } as Expense;
+
+        component.update(expense);
+
+        expect(dialogSpy.open).not.toHaveBeenCalled();
+    });
+
     it('should call search on expense service', () => {
         const component = new ExpensesComponent(dialogSpy as any, expenseServiceSpy as any);
 
         component.search();
 
         expect((expenseServiceSpy as any).search).toHaveBeenCalled();
+    });
+
+    it('should format date correctly before searching', () => {
+        const component = new ExpensesComponent(dialogSpy as any, expenseServiceSpy as any);
+        const testDate = new Date(Date.UTC(2026, 2, 15)); // Month is 0-indexed, so 2 is March
+        component.criteria = { date: testDate.toString() };
+        const expectedFormattedDate = '2026-03-15';
+
+        component.search();
+
+        expect((expenseServiceSpy as any).search).toHaveBeenCalledWith({ date: expectedFormattedDate });
+    });
+
+    it('should not format date if it is not present', () => {
+        const component = new ExpensesComponent(dialogSpy as any, expenseServiceSpy as any);
+        component.criteria = {};
+
+        component.search();
+
+        expect((expenseServiceSpy as any).search).toHaveBeenCalledWith({});
     });
 
     it('should update expenses on search', (done) => {

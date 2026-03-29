@@ -10,6 +10,8 @@ describe('IncomeService', () => {
     let requestBuilderSpy: {
         success: jasmine.Spy;
         post: jasmine.Spy;
+        put: jasmine.Spy;
+        paramsFrom: jasmine.Spy;
         get: jasmine.Spy;
     };
 
@@ -21,10 +23,13 @@ describe('IncomeService', () => {
         requestBuilderSpy = {
             success: jasmine.createSpy('success'),
             post: jasmine.createSpy('post'),
+            put: jasmine.createSpy('put'),
+            paramsFrom: jasmine.createSpy('paramsFrom'),
             get: jasmine.createSpy('get')
         };
 
         requestBuilderSpy.success.and.returnValue(requestBuilderSpy);
+        requestBuilderSpy.paramsFrom.and.returnValue(requestBuilderSpy);
 
         httpServiceSpy = {
             request: jasmine.createSpy('request').and.returnValue(requestBuilderSpy)
@@ -68,6 +73,45 @@ describe('IncomeService', () => {
         });
 
         expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.get).toHaveBeenCalledWith(ENDPOINTS.incomes.root);
+    });
+
+    it('should update income with PUT to income by id endpoint', () => {
+        const payload: Income = {
+            engagementId: 'eng-1',
+            userId: 'user-1',
+            amount: 150.5,
+            date: '2026-03-24'
+        };
+
+        requestBuilderSpy.put.and.returnValue(of(payload));
+
+        service.update('inc-1', payload).subscribe(response => {
+            expect(response).toEqual(payload);
+        });
+
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.success).toHaveBeenCalled();
+        expect(requestBuilderSpy.put).toHaveBeenCalledWith(ENDPOINTS.incomes.byId('inc-1'), payload);
+    });
+
+    it('should search incomes with criteria using paramsFrom', () => {
+        const payload: Income[] = [{
+            id: 'inc-1',
+            engagementId: 'eng-1',
+            userId: 'user-1',
+            amount: 80,
+            date: '2026-03-24'
+        }];
+
+        requestBuilderSpy.get.and.returnValue(of(payload));
+
+        service.search({engagementId: 'eng-1'}).subscribe(response => {
+            expect(response).toEqual(payload);
+        });
+
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.paramsFrom).toHaveBeenCalledWith({engagementId: 'eng-1'});
         expect(requestBuilderSpy.get).toHaveBeenCalledWith(ENDPOINTS.incomes.root);
     });
 });

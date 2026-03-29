@@ -1,12 +1,15 @@
+<app-filter-date [(date)]="criteria.date"></app-filter-date>
+
 <app-crud
 	(create)="create()"
 	(read)="read($event)"
 	(searchAll)="search()"
+	(update)="update($event)"
 	[createAction]="true"
 	[data]="expenses"
 	[hiddenFields]="['id']"
 	[item]="expense"
 	[readAction]="true"
 	[title]="title"
-	[updateAction]="false">
+	[updateAction]="true">
 </app-crud>
