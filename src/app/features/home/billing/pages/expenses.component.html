@@ -1,10 +1,12 @@
 <app-crud
 	(create)="create()"
+	(read)="read($event)"
 	(searchAll)="search()"
 	[createAction]="true"
 	[data]="expenses"
 	[hiddenFields]="['id']"
-	[readAction]="false"
+	[item]="expense"
+	[readAction]="true"
 	[title]="title"
 	[updateAction]="false">
 </app-crud>

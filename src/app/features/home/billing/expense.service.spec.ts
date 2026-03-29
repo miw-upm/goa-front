@@ -9,6 +9,7 @@ describe('ExpenseService', () => {
 
     let requestBuilderSpy: {
         success: jasmine.Spy;
+        get: jasmine.Spy;
         post: jasmine.Spy;
     };
 
@@ -19,6 +20,7 @@ describe('ExpenseService', () => {
     beforeEach(() => {
         requestBuilderSpy = {
             success: jasmine.createSpy('success'),
+            get: jasmine.createSpy('get'),
             post: jasmine.createSpy('post')
         };
 
@@ -48,5 +50,24 @@ describe('ExpenseService', () => {
         expect(httpServiceSpy.request).toHaveBeenCalled();
         expect(requestBuilderSpy.success).toHaveBeenCalled();
         expect(requestBuilderSpy.post).toHaveBeenCalledWith(ENDPOINTS.expenses.root, payload);
+    });
+
+    it('should read expense with GET to expense by id endpoint', () => {
+        const response: Expense = {
+            id: 'expense-1',
+            engagementId: 'eng-1',
+            amount: 150.5,
+            date: '2026-03-20',
+            description: 'Taxi'
+        };
+
+        requestBuilderSpy.get.and.returnValue(of(response));
+
+        service.read('expense-1').subscribe(expense => {
+            expect(expense).toEqual(response);
+        });
+
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.get).toHaveBeenCalledWith(ENDPOINTS.expenses.byId('expense-1'));
     });
 });

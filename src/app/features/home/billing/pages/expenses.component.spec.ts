@@ -9,7 +9,10 @@ describe('ExpensesComponent', () => {
         open: jasmine.Spy;
     };
 
-    let expenseServiceSpy: {};
+    let expenseServiceSpy: {
+        search: jasmine.Spy;
+        read: jasmine.Spy;
+    };
 
     beforeEach(() => {
         dialogSpy = {
@@ -19,7 +22,14 @@ describe('ExpensesComponent', () => {
         };
 
         expenseServiceSpy = {
-            search: jasmine.createSpy('search').and.returnValue(of([]))
+            search: jasmine.createSpy('search').and.returnValue(of([])),
+            read: jasmine.createSpy('read').and.returnValue(of({
+                id: '11111111-1111-1111-1111-111111111111',
+                engagementId: '22222222-2222-2222-2222-222222222222',
+                amount: 100,
+                date: '2026-03-24',
+                description: 'Test Expense'
+            }))
         };
     });
 
@@ -62,20 +72,54 @@ describe('ExpensesComponent', () => {
     });
 
     it('should update expenses on search', (done) => {
-                const expectedExpenses: Expense[] = [{
+        const expectedExpenses: Expense[] = [{
             id: '11111111-1111-1111-1111-111111111111',
             engagementId: '22222222-2222-2222-2222-222222222222',
             amount: 100,
-                        date: '2026-03-24',
+            date: '2026-03-24',
             description: 'Test Expense'
         }];
-        (expenseServiceSpy as any).search.and.returnValue(of(expectedExpenses));
+        expenseServiceSpy.search.and.returnValue(of(expectedExpenses));
         const component = new ExpensesComponent(dialogSpy as any, expenseServiceSpy as any);
 
         component.search();
 
         component.expenses.subscribe(items => {
             expect(items).toEqual(expectedExpenses);
+            done();
+        });
+    });
+
+    it('should call read on expense service with selected id', () => {
+        const component = new ExpensesComponent(dialogSpy as any, expenseServiceSpy as any);
+        const expense: Expense = {
+            id: 'expense-1',
+            engagementId: 'eng-1',
+            amount: 80,
+            date: '2026-03-25',
+            description: 'Hotel'
+        };
+
+        component.read(expense);
+
+        expect(expenseServiceSpy.read).toHaveBeenCalledWith('expense-1');
+    });
+
+    it('should update expense item on read', (done) => {
+        const expectedExpense: Expense = {
+            id: 'expense-1',
+            engagementId: 'eng-1',
+            amount: 80,
+            date: '2026-03-25',
+            description: 'Hotel'
+        };
+        expenseServiceSpy.read.and.returnValue(of(expectedExpense));
+        const component = new ExpensesComponent(dialogSpy as any, expenseServiceSpy as any);
+
+        component.read(expectedExpense);
+
+        component.expense.subscribe(item => {
+            expect(item).toEqual(expectedExpense);
             done();
         });
     });

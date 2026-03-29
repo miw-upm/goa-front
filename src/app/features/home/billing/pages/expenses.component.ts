@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {Expense} from '../models/expense.model';
@@ -16,6 +16,7 @@ import {ExpenseCreationDialogComponent} from '../dialogs/expense-creation-dialog
 export class ExpensesComponent {
     title = 'Gastos';
     expenses = of([] as Expense[]);
+    expense: Observable<Expense>;
 
     constructor(private readonly dialog: MatDialog, private readonly expenseService: ExpenseService) {
     }
@@ -28,5 +29,9 @@ export class ExpensesComponent {
     create(): void {
         this.dialog.open(ExpenseCreationDialogComponent, {width: '600px'})
             .afterClosed();
+    }
+
+    read(expense: Expense): void {
+        this.expense = this.expenseService.read(expense.id);
     }
 }
