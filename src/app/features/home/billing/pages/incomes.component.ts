@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {catchError, map, of} from 'rxjs';
+import {catchError, map, Observable, of} from 'rxjs';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
@@ -19,6 +19,7 @@ import {IncomeSearch} from '../models/income-search.model';
 export class IncomesComponent {
     title = 'Ingresos';
     incomes = of([] as Income[]);
+    income: Observable<Income>;
     criteria: IncomeSearch;
 
     constructor(private readonly dialog: MatDialog, private readonly incomeService: IncomeService) {
@@ -41,6 +42,10 @@ export class IncomesComponent {
         this.dialog.open(IncomeCreationDialogComponent, {width: '600px'})
             .afterClosed()
             .subscribe(() => this.search());
+    }
+
+    read(income: Income): void {
+        this.income = this.incomeService.read(income.id);
     }
 
     update(income: Income): void {

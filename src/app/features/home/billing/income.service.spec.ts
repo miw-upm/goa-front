@@ -57,6 +57,25 @@ describe('IncomeService', () => {
         expect(requestBuilderSpy.post).toHaveBeenCalledWith(ENDPOINTS.incomes.root, payload);
     });
 
+    it('should read income with GET to income by id endpoint', () => {
+        const response: Income = {
+            id: 'inc-1',
+            engagementId: 'eng-1',
+            userId: 'user-1',
+            amount: 80,
+            date: '2026-03-24'
+        };
+
+        requestBuilderSpy.get.and.returnValue(of(response));
+
+        service.read('inc-1').subscribe(income => {
+            expect(income).toEqual(response);
+        });
+
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.get).toHaveBeenCalledWith(ENDPOINTS.incomes.byId('inc-1'));
+    });
+
     it('should search incomes with GET to incomes endpoint', () => {
         const payload: Income[] = [{
             id: 'inc-1',
