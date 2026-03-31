@@ -17,6 +17,11 @@ export class IncomeService {
 			.post(ENDPOINTS.incomes.root, income);
 	}
 
+    read(id: string): Observable<Income> {
+        return this.httpService.request()
+            .get(ENDPOINTS.incomes.byId(id));
+    }
+
     update(id: string, income: Income): Observable<Income> {
         return this.httpService.request()
             .success()
