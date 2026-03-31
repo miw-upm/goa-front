@@ -1,6 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FilterDateComponent } from './filter-date.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+
+import {CapitalizeEnumNamePipe} from '@shared/pipes/capitalize-enum-name.pipe';
+import {UppercaseWordsPipe} from '@shared/pipes/uppercase-words.pipe';
+import {FilterDateComponent} from './filter-date.component';
+import {FilterInputComponent} from './filter-input.component';
+import {SearchComponent} from './search.component';
 
 describe('FilterDateComponent', () => {
   let component: FilterDateComponent;
@@ -58,5 +63,118 @@ describe('FilterDateComponent', () => {
 
     expect(component.date).toBe(testDate.toString());
   });
+});
+
+describe('FilterInputComponent', () => {
+    it('should initialize with the default filter configuration', () => {
+        const component = new FilterInputComponent();
+
+        expect(component.title).toBe('Filter');
+        expect(component.value).toBe('');
+        expect(component.type).toBe('text');
+    });
+
+    it('should clear the model and emit the new value', () => {
+        const component = new FilterInputComponent();
+        spyOn(component.valueChange, 'emit');
+        component.value = 'ABC';
+
+        component.clearModel();
+
+        expect(component.value).toBeUndefined();
+        expect(component.valueChange.emit).toHaveBeenCalledWith(undefined);
+    });
+});
+
+describe('SearchComponent', () => {
+    let component: SearchComponent;
+
+    beforeEach(() => {
+        component = new SearchComponent();
+    });
+
+    it('should initialize with the expected defaults', () => {
+        expect(component.inputValue).toBe('');
+        expect(component.title).toBe('Search');
+        expect(component.key).toBeNull();
+        expect(component.obligatory).toBeFalse();
+    });
+
+    it('should emit renew with the current input value', () => {
+        spyOn(component.renew, 'emit');
+        component.inputValue = 'lawyer';
+
+        component.onRenew();
+
+        expect(component.renew.emit).toHaveBeenCalledWith('lawyer');
+    });
+
+    it('should reset the selected key and notify the change', () => {
+        spyOn(component.keyChange, 'emit');
+        component.key = {id: '1'};
+        component.inputValue = 'search';
+
+        component.resetKey();
+
+        expect(component.key).toBeNull();
+        expect(component.inputValue).toBe('');
+        expect(component.keyChange.emit).toHaveBeenCalledWith(null);
+    });
+
+    it('should select a value and emit both selection events', () => {
+        const user = {id: '1', name: 'Ana'};
+        spyOn(component.keyChange, 'emit');
+        spyOn(component.selected, 'emit');
+        component.inputValue = 'Ana';
+
+        component.onClick(user);
+
+        expect(component.key).toEqual(user);
+        expect(component.keyChange.emit).toHaveBeenCalledWith(user);
+        expect(component.selected.emit).toHaveBeenCalledWith(user);
+        expect(component.inputValue).toBe('');
+    });
+
+    it('should track options using id when available', () => {
+        expect(component.trackOption({id: 'user-1', name: 'Ana'})).toBe('user-1');
+        expect(component.trackOption('plain-value')).toBe('plain-value');
+    });
+});
+
+describe('UppercaseWordsPipe', () => {
+    let pipe: UppercaseWordsPipe;
+
+    beforeEach(() => {
+        pipe = new UppercaseWordsPipe();
+    });
+
+    it('should return an empty string for empty values', () => {
+        expect(pipe.transform('')).toBe('');
+        expect(pipe.transform(null)).toBe('');
+        expect(pipe.transform(undefined)).toBe('');
+    });
+
+    it('should format separated and camel case words', () => {
+        expect(pipe.transform('income_detail')).toBe('Income Detail');
+        expect(pipe.transform('billingRecordDialog')).toBe('Billing Record Dialog');
+    });
+});
+
+describe('CapitalizeEnumNamePipe', () => {
+    let pipe: CapitalizeEnumNamePipe;
+
+    beforeEach(() => {
+        pipe = new CapitalizeEnumNamePipe();
+    });
+
+    it('should return an empty string for empty values', () => {
+        expect(pipe.transform('')).toBe('');
+        expect(pipe.transform(null)).toBe('');
+        expect(pipe.transform(undefined)).toBe('');
+    });
+
+    it('should capitalize enum names separated by underscores', () => {
+        expect(pipe.transform('LEGAL_OPERATOR')).toBe('Legal Operator');
+    });
 });
 

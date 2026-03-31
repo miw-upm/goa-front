@@ -11,6 +11,7 @@ describe('IncomesComponent', () => {
 
     let incomeServiceSpy: {
         search: jasmine.Spy;
+        read: jasmine.Spy;
     };
 
     beforeEach(() => {
@@ -21,7 +22,14 @@ describe('IncomesComponent', () => {
         };
 
         incomeServiceSpy = {
-            search: jasmine.createSpy('search').and.returnValue(of([]))
+            search: jasmine.createSpy('search').and.returnValue(of([])),
+            read: jasmine.createSpy('read').and.returnValue(of({
+                id: '11111111-1111-1111-1111-111111111111',
+                engagementId: '22222222-2222-2222-2222-222222222222',
+                userId: '33333333-3333-3333-3333-333333333333',
+                amount: 100,
+                date: '2026-03-24'
+            }))
         };
     });
 
@@ -251,6 +259,40 @@ describe('IncomesComponent', () => {
         component.incomes.subscribe(items => {
             expect(items.length).toBe(1);
             expect(items[0].engagementId).toBe('target-engagement');
+            done();
+        });
+    });
+
+    it('should call read on income service with selected id', () => {
+        const component = new IncomesComponent(dialogSpy as any, incomeServiceSpy as any);
+        const income: Income = {
+            id: 'income-1',
+            engagementId: 'eng-1',
+            userId: 'user-1',
+            amount: 80,
+            date: '2026-03-25'
+        };
+
+        component.read(income);
+
+        expect(incomeServiceSpy.read).toHaveBeenCalledWith('income-1');
+    });
+
+    it('should update income item on read', (done) => {
+        const expectedIncome: Income = {
+            id: 'income-1',
+            engagementId: 'eng-1',
+            userId: 'user-1',
+            amount: 80,
+            date: '2026-03-25'
+        };
+        incomeServiceSpy.read.and.returnValue(of(expectedIncome));
+        const component = new IncomesComponent(dialogSpy as any, incomeServiceSpy as any);
+
+        component.read(expectedIncome);
+
+        component.income.subscribe(item => {
+            expect(item).toEqual(expectedIncome);
             done();
         });
     });
