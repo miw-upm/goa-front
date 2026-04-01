@@ -1,0 +1,7 @@
+<app-filter-input [(value)]="criteria.engagementId" title="Encargo (ID)"></app-filter-input>
+<app-crud
+	(searchAll)="search()"
+	[data]="invoices"
+	[hiddenFields]="['id']"
+	[title]="title">
+</app-crud>
