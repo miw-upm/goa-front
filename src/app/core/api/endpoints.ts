@@ -8,6 +8,7 @@ const LEGAL_TASK_ROOT = `${environment.REST_ENGAGEMENT}/legal-tasks`;
 const ISSUE_ROOT = `${environment.REST_SUPPORT}/issues`;
 const EXPENSE_ROOT = `${environment.REST_BILLING}/expenses`;
 const INCOME_ROOT = `${environment.REST_BILLING}/incomes`;
+const INVOICE_ROOT = `${environment.REST_BILLING}/invoices`;
 
 const enc = encodeURIComponent;
 
@@ -64,5 +65,11 @@ export const ENDPOINTS = {
         root: INCOME_ROOT,
         byId: (id: string) =>
             `${INCOME_ROOT}/${enc(id)}`,
+    },
+
+    invoices: {
+        root: INVOICE_ROOT,
+        byId: (id: string) =>
+            `${INVOICE_ROOT}/${enc(id)}`,
     },
 } as const;
