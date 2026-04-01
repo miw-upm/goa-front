@@ -90,6 +90,15 @@ describe('ENDPOINTS', () => {
             `${environment.REST_BILLING}/incomes/${encodeURIComponent(id)}`
         );
     });
+
+    it('should build invoices root and byId endpoint', () => {
+        const id = 'invoice id/with special?chars';
+
+        expect(ENDPOINTS.invoices.root).toBe(`${environment.REST_BILLING}/invoices`);
+        expect(ENDPOINTS.invoices.byId(id)).toBe(
+            `${environment.REST_BILLING}/invoices/${encodeURIComponent(id)}`
+        );
+    });
 });
 
 describe('HttpService', () => {
