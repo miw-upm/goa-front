@@ -127,6 +127,21 @@ describe('IncomesComponent', () => {
         });
     });
 
+    it('should normalize Date criteria and keep engagementId when searching', () => {
+        const component = new IncomesComponent(dialogSpy as any, incomeServiceSpy as any);
+        component.criteria = {
+            engagementId: 'eng-1',
+            date: new Date(Date.UTC(2026, 2, 22)).toString()
+        };
+
+        component.search();
+
+        expect(incomeServiceSpy.search).toHaveBeenCalledWith({
+            engagementId: 'eng-1',
+            date: '2026-03-22'
+        });
+    });
+
     it('should update incomes on search', (done) => {
         const expectedIncomes: Income[] = [{
             id: '11111111-1111-1111-1111-111111111111',
