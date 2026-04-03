@@ -4,6 +4,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {catchError, map, Observable, of} from 'rxjs';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
+import {FilterDateComponent} from '@shared/ui/inputs/filter-date.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
 import {IncomeCreationDialogComponent} from '../dialogs/income-creation-dialog.component';
 import {IncomeService} from '../income.service';
@@ -13,7 +14,7 @@ import {IncomeSearch} from '../models/income-search.model';
 @Component({
     standalone: true,
     selector: 'app-incomes',
-    imports: [FormsModule, CrudComponent, FilterInputComponent],
+    imports: [FormsModule, CrudComponent, FilterDateComponent, FilterInputComponent],
     templateUrl: 'incomes.component.html'
 })
 export class IncomesComponent {
@@ -31,6 +32,14 @@ export class IncomesComponent {
     }
 
     search(): void {
+        if (this.criteria.date) {
+            const date = new Date(this.criteria.date);
+            const year = date.getFullYear();
+            const month = ('0' + (date.getMonth() + 1)).slice(-2);
+            const day = ('0' + date.getDate()).slice(-2);
+            this.criteria.date = `${year}-${month}-${day}`;
+        }
+
         this.incomes = this.incomeService.search(this.criteria)
             .pipe(
                 map(incomes => [...incomes].sort((a, b) => b.date.localeCompare(a.date))),

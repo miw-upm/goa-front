@@ -101,6 +101,47 @@ describe('IncomesComponent', () => {
         expect(incomeServiceSpy.search).toHaveBeenCalled();
     });
 
+    it('should format date correctly before searching', () => {
+        const component = new IncomesComponent(dialogSpy as any, incomeServiceSpy as any);
+        const testDate = new Date(Date.UTC(2026, 2, 22));
+        component.criteria = {date: testDate.toString()};
+        const expectedFormattedDate = '2026-03-22';
+
+        component.search();
+
+        expect(incomeServiceSpy.search).toHaveBeenCalledWith({date: expectedFormattedDate});
+    });
+
+    it('should search incomes with engagementId and date criteria', () => {
+        const component = new IncomesComponent(dialogSpy as any, incomeServiceSpy as any);
+        component.criteria = {
+            engagementId: 'eng-1',
+            date: '2026-03-22'
+        };
+
+        component.search();
+
+        expect(incomeServiceSpy.search).toHaveBeenCalledWith({
+            engagementId: 'eng-1',
+            date: '2026-03-22'
+        });
+    });
+
+    it('should normalize Date criteria and keep engagementId when searching', () => {
+        const component = new IncomesComponent(dialogSpy as any, incomeServiceSpy as any);
+        component.criteria = {
+            engagementId: 'eng-1',
+            date: new Date(Date.UTC(2026, 2, 22)).toString()
+        };
+
+        component.search();
+
+        expect(incomeServiceSpy.search).toHaveBeenCalledWith({
+            engagementId: 'eng-1',
+            date: '2026-03-22'
+        });
+    });
+
     it('should update incomes on search', (done) => {
         const expectedIncomes: Income[] = [{
             id: '11111111-1111-1111-1111-111111111111',
