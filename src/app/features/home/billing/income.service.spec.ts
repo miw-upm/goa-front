@@ -133,5 +133,25 @@ describe('IncomeService', () => {
         expect(requestBuilderSpy.paramsFrom).toHaveBeenCalledWith({engagementId: 'eng-1'});
         expect(requestBuilderSpy.get).toHaveBeenCalledWith(ENDPOINTS.incomes.root);
     });
+
+    it('should search incomes with engagementId and date using paramsFrom', () => {
+        const payload: Income[] = [{
+            id: 'inc-1',
+            engagementId: 'eng-1',
+            userId: 'user-1',
+            amount: 80,
+            date: '2026-03-22'
+        }];
+
+        requestBuilderSpy.get.and.returnValue(of(payload));
+
+        service.search({engagementId: 'eng-1', date: '2026-03-22'}).subscribe(response => {
+            expect(response).toEqual(payload);
+        });
+
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.paramsFrom).toHaveBeenCalledWith({engagementId: 'eng-1', date: '2026-03-22'});
+        expect(requestBuilderSpy.get).toHaveBeenCalledWith(ENDPOINTS.incomes.root);
+    });
 });
 
