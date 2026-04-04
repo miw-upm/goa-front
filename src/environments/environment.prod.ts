@@ -10,5 +10,6 @@ export const environment = {
     REST_BILLING: 'https://gestion.ocanabogados.es/api/goa-billing',
     REST_SUPPORT: 'https://gestion.ocanabogados.es/api/goa-support',
     REST_DOCUMENT: 'https://gestion.ocanabogados.es/api/goa-document',
+    REST_CHATBOT: 'https://gestion.ocanabogados.es/api/goa-chatbot',
     SECURE_ROUTES: ['https://gestion.ocanabogados.es/api']
 };
