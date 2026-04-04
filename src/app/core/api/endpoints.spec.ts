@@ -73,6 +73,12 @@ describe('ENDPOINTS', () => {
         );
     });
 
+    it('should build chatbot routes', () => {
+        expect(ENDPOINTS.chatbot.root).toBe(`${environment.REST_CHATBOT}/chatbot`);
+        expect(ENDPOINTS.chatbot.messages()).toBe(
+            `${environment.REST_CHATBOT}/chatbot/messages`);
+    });
+
     it('should build expenses root and byId endpoint', () => {
         const id = 'expense id/with special?chars';
 
