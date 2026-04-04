@@ -16,7 +16,7 @@ describe('InvoicesComponent', () => {
   let dialogSpy: jasmine.SpyObj<MatDialog>;
 
   beforeEach(async () => {
-    invoiceServiceSpy = jasmine.createSpyObj('InvoiceService', ['search']);
+    invoiceServiceSpy = jasmine.createSpyObj('InvoiceService', ['search', 'read']);
     dialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     dialogSpy.open.and.returnValue({
       afterClosed: () => of(undefined)
@@ -118,5 +118,29 @@ describe('InvoicesComponent', () => {
 
     expect(dialogSpy.open).toHaveBeenCalledWith(InvoiceCreationDialogComponent, { width: '600px' });
     expect(invoiceServiceSpy.search).toHaveBeenCalledWith({});
+  });
+
+  it('should read selected invoice and expose details stream', (done) => {
+    const selectedInvoice: Invoice = {
+      id: 'inv-1',
+      engagementId: 'eng-1',
+      date: '2026-03-22',
+      expenses: [],
+      incomes: []
+    };
+    const detailedInvoice: Invoice = {
+      ...selectedInvoice,
+      expenses: [{id: 'exp-1', amount: 10}],
+      incomes: [{id: 'inc-1', amount: 20}]
+    };
+    invoiceServiceSpy.read.and.returnValue(of(detailedInvoice));
+
+    component.read(selectedInvoice);
+
+    expect(invoiceServiceSpy.read).toHaveBeenCalledWith('inv-1');
+    component.invoice.subscribe(invoice => {
+      expect(invoice).toEqual(detailedInvoice);
+      done();
+    });
   });
 });

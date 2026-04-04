@@ -15,6 +15,11 @@ export class InvoiceService {
 			.post(ENDPOINTS.invoices.root, invoice);
 	}
 
+	read(id: string): Observable<Invoice> {
+		return this.httpService.request()
+			.get(ENDPOINTS.invoices.byId(id));
+	}
+
 	search(criteria: { engagementId?: string }): Observable<Invoice[]> {
 		const request = this.httpService.request();
 		if (criteria?.engagementId) {

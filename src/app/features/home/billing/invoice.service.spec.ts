@@ -97,4 +97,23 @@ describe('InvoiceService', () => {
         expect(requestBuilderSpy.success).toHaveBeenCalled();
         expect(requestBuilderSpy.post).toHaveBeenCalledWith(ENDPOINTS.invoices.root, request);
     });
+
+    it('should read invoice with GET to invoice by id endpoint', () => {
+        const payload: Invoice = {
+            id: 'inv-1',
+            engagementId: 'eng-1',
+            date: '2026-04-04',
+            expenses: [{id: 'exp-1', amount: 10}],
+            incomes: [{id: 'inc-1', amount: 20}]
+        };
+
+        requestBuilderSpy.get.and.returnValue(of(payload));
+
+        service.read('inv-1').subscribe(response => {
+            expect(response).toEqual(payload);
+        });
+
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.get).toHaveBeenCalledWith(ENDPOINTS.invoices.byId('inv-1'));
+    });
 });
