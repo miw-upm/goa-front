@@ -1,11 +1,13 @@
 <app-filter-input [(value)]="criteria.engagementId" title="Encargo (ID)"></app-filter-input>
 <app-crud
 	(create)="create()"
+	(read)="read($event)"
 	(searchAll)="search()"
 	[createAction]="true"
 	[data]="invoices"
 	[hiddenFields]="['id']"
-	[readAction]="false"
+	[item]="invoice"
+	[readAction]="true"
 	[updateAction]="false"
 	[title]="title">
 </app-crud>

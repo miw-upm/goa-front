@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {catchError, map, of} from 'rxjs';
+import {catchError, map, Observable, of} from 'rxjs';
 import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
 import {InvoiceService} from '../invoice.service';
@@ -17,6 +17,7 @@ import {InvoiceCreationDialogComponent} from '../dialogs/invoice-creation-dialog
 export class InvoicesComponent {
     title = 'Facturas';
     invoices = of([] as Invoice[]);
+    invoice: Observable<Invoice>;
     criteria: { engagementId?: string } = {};
 
     constructor(
@@ -36,5 +37,9 @@ export class InvoicesComponent {
                 map(invoices => [...invoices].sort((a, b) => b.date.localeCompare(a.date))),
                 catchError(() => of([] as Invoice[]))
             );
+    }
+
+    read(invoice: Invoice): void {
+        this.invoice = this.invoiceService.read(invoice.id);
     }
 }
