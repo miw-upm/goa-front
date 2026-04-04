@@ -3,6 +3,7 @@ import {of} from 'rxjs';
 import {ENDPOINTS} from '@core/api/endpoints';
 import {InvoiceService} from './invoice.service';
 import {Invoice} from './models/invoice.model';
+import {InvoiceCreateRequest} from './models/invoice-create-request.model';
 
 describe('InvoiceService', () => {
     let service: InvoiceService;
@@ -10,6 +11,8 @@ describe('InvoiceService', () => {
     let requestBuilderSpy: {
         paramsFrom: jasmine.Spy;
         get: jasmine.Spy;
+        post: jasmine.Spy;
+        success: jasmine.Spy;
     };
 
     let httpServiceSpy: {
@@ -19,10 +22,13 @@ describe('InvoiceService', () => {
     beforeEach(() => {
         requestBuilderSpy = {
             paramsFrom: jasmine.createSpy('paramsFrom'),
-            get: jasmine.createSpy('get')
+            get: jasmine.createSpy('get'),
+            post: jasmine.createSpy('post'),
+            success: jasmine.createSpy('success')
         };
 
         requestBuilderSpy.paramsFrom.and.returnValue(requestBuilderSpy);
+        requestBuilderSpy.success.and.returnValue(requestBuilderSpy);
 
         httpServiceSpy = {
             request: jasmine.createSpy('request').and.returnValue(requestBuilderSpy)
@@ -64,5 +70,31 @@ describe('InvoiceService', () => {
         expect(httpServiceSpy.request).toHaveBeenCalled();
         expect(requestBuilderSpy.paramsFrom).not.toHaveBeenCalled();
         expect(requestBuilderSpy.get).toHaveBeenCalledWith(ENDPOINTS.invoices.root);
+    });
+
+    it('should create invoice through invoices endpoint', () => {
+        const request: InvoiceCreateRequest = {
+            engagementId: 'eng-1',
+            date: '2026-04-04',
+            expenseIds: ['exp-1'],
+            incomeIds: ['inc-1']
+        };
+        const payload = {
+            id: 'inv-1',
+            engagementId: 'eng-1',
+            date: '2026-04-04',
+            expenses: [{id: 'exp-1'}],
+            incomes: [{id: 'inc-1'}]
+        } as Invoice;
+
+        requestBuilderSpy.post.and.returnValue(of(payload));
+
+        service.create(request).subscribe(response => {
+            expect(response).toEqual(payload);
+        });
+
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.success).toHaveBeenCalled();
+        expect(requestBuilderSpy.post).toHaveBeenCalledWith(ENDPOINTS.invoices.root, request);
     });
 });
