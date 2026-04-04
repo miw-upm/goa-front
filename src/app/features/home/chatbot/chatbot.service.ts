@@ -1,17 +1,19 @@
 import {Injectable} from "@angular/core";
-import {Observable, of} from "rxjs";
-import {delay} from 'rxjs/operators';
+import {Observable} from "rxjs";
 
 import {ChatbotMessageRequest, ChatbotMessageResponse} from "./models/chatbot.model";
+import {HttpService} from "@core/http/http.service";
+import {ENDPOINTS} from "@core/api/endpoints";
 
 @Injectable({ providedIn: 'root' })
 export class ChatbotService {
 
+    constructor(private readonly httpService: HttpService) {
+    }
+
     sendMessage(request: ChatbotMessageRequest): Observable<ChatbotMessageResponse> {
-        return of({
-            conversationId: request.conversationId ?? 'local-conversation',
-            message: 'Respuesta simulada del asistente',
-            createdAt: new Date().toISOString()
-        }).pipe(delay(500));
+        return this.httpService.request()
+            .error('No se pudo obtener respuesta del asistente')
+            .post(ENDPOINTS.chatbot.messages(), request);
     }
 }

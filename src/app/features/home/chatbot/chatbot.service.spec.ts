@@ -1,44 +1,56 @@
-import {fakeAsync, tick} from '@angular/core/testing';
+import {of} from 'rxjs';
 
 import {ChatbotService} from './chatbot.service';
+import {HttpService} from '@core/http/http.service';
+import {ENDPOINTS} from '@core/api/endpoints';
+import {ChatbotMessageRequest, ChatbotMessageResponse} from './models/chatbot.model';
 
 describe('ChatbotService', () => {
     let service: ChatbotService;
+    let httpServiceSpy: jasmine.SpyObj<HttpService>;
+    let requestBuilderSpy: {
+        error: jasmine.Spy;
+        post: jasmine.Spy;
+    };
 
     beforeEach(() => {
-        service = new ChatbotService();
+        requestBuilderSpy = {
+            error: jasmine.createSpy('error'),
+            post: jasmine.createSpy('post')
+        };
+
+        requestBuilderSpy.error.and.returnValue(requestBuilderSpy);
+        requestBuilderSpy.post.and.returnValue(of({
+            conversationId: 'conv-1',
+            message: 'Respuesta simulada del asistente',
+            createdAt: '2026-04-03T00:00:00Z'
+        } as ChatbotMessageResponse));
+
+        httpServiceSpy = jasmine.createSpyObj<HttpService>('HttpService', ['request']);
+        httpServiceSpy.request.and.returnValue(requestBuilderSpy as any);
+
+        service = new ChatbotService(httpServiceSpy);
     });
 
-    it('should return a mock chatbot response', fakeAsync(() => {
-        let response: any;
-
-        service.sendMessage({
+    it('should send message using chatbot endpoint', () => {
+        const request: ChatbotMessageRequest = {
             conversationId: 'conv-1',
             message: 'Hola'
-        }).subscribe(value => {
+        };
+
+        let response: ChatbotMessageResponse | undefined;
+
+        service.sendMessage(request).subscribe(value => {
             response = value;
         });
 
-        tick(500);
-
-        expect(response).toBeTruthy();
-        expect(response.conversationId).toBe('conv-1');
-        expect(response.message).toBe('Respuesta simulada del asistente');
-        expect(response.createdAt).toBeTruthy();
-    }));
-
-    it('should create a local conversation id when none is provided', fakeAsync(() => {
-        let response: any;
-
-        service.sendMessage({
-            message: 'Hola'
-        }).subscribe(value => {
-            response = value;
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.error).toHaveBeenCalledWith('No se pudo obtener respuesta del asistente');
+        expect(requestBuilderSpy.post).toHaveBeenCalledWith(ENDPOINTS.chatbot.messages(), request);
+        expect(response).toEqual({
+            conversationId: 'conv-1',
+            message: 'Respuesta simulada del asistente',
+            createdAt: '2026-04-03T00:00:00Z'
         });
-
-        tick(500);
-
-        expect(response).toBeTruthy();
-        expect(response.conversationId).toBe('local-conversation');
-    }));
+    });
 });
