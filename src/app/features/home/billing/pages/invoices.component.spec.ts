@@ -120,6 +120,37 @@ describe('InvoicesComponent', () => {
     expect(invoiceServiceSpy.search).toHaveBeenCalledWith({});
   });
 
+  it('should open invoice update dialog with selected invoice and refresh data after close', () => {
+    const selectedInvoice: Invoice = {
+      id: 'inv-1',
+      engagementId: 'eng-1',
+      date: '2026-03-22',
+      expenses: [{id: 'exp-1'}],
+      incomes: [{id: 'inc-1'}]
+    };
+    invoiceServiceSpy.search.and.returnValue(of([]));
+
+    component.update(selectedInvoice);
+
+    expect(dialogSpy.open).toHaveBeenCalledWith(InvoiceCreationDialogComponent, {
+      width: '600px',
+      data: selectedInvoice
+    });
+    expect(invoiceServiceSpy.search).toHaveBeenCalledWith({});
+  });
+
+  it('should not open invoice update dialog when invoice has no id', () => {
+    component.update({
+      id: undefined as any,
+      engagementId: 'eng-1',
+      date: '2026-03-22',
+      expenses: [],
+      incomes: []
+    });
+
+    expect(dialogSpy.open).not.toHaveBeenCalled();
+  });
+
   it('should read selected invoice and expose details stream', (done) => {
     const selectedInvoice: Invoice = {
       id: 'inv-1',

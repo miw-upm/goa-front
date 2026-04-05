@@ -12,6 +12,7 @@ describe('InvoiceService', () => {
         paramsFrom: jasmine.Spy;
         get: jasmine.Spy;
         post: jasmine.Spy;
+        put: jasmine.Spy;
         success: jasmine.Spy;
     };
 
@@ -24,6 +25,7 @@ describe('InvoiceService', () => {
             paramsFrom: jasmine.createSpy('paramsFrom'),
             get: jasmine.createSpy('get'),
             post: jasmine.createSpy('post'),
+            put: jasmine.createSpy('put'),
             success: jasmine.createSpy('success')
         };
 
@@ -115,5 +117,31 @@ describe('InvoiceService', () => {
 
         expect(httpServiceSpy.request).toHaveBeenCalled();
         expect(requestBuilderSpy.get).toHaveBeenCalledWith(ENDPOINTS.invoices.byId('inv-1'));
+    });
+
+    it('should update invoice through invoice by id endpoint', () => {
+        const request: InvoiceCreateRequest = {
+            engagementId: 'eng-1',
+            date: '2026-04-05',
+            expenseIds: ['exp-1'],
+            incomeIds: ['inc-1']
+        };
+        const payload = {
+            id: 'inv-1',
+            engagementId: 'eng-1',
+            date: '2026-04-05',
+            expenses: [{id: 'exp-1'}],
+            incomes: [{id: 'inc-1'}]
+        } as Invoice;
+
+        requestBuilderSpy.put.and.returnValue(of(payload));
+
+        service.update('inv-1', request).subscribe(response => {
+            expect(response).toEqual(payload);
+        });
+
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.success).toHaveBeenCalled();
+        expect(requestBuilderSpy.put).toHaveBeenCalledWith(ENDPOINTS.invoices.byId('inv-1'), request);
     });
 });
