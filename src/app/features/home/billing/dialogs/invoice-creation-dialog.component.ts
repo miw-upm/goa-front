@@ -1,7 +1,8 @@
 import {AsyncPipe} from '@angular/common';
-import {Component} from '@angular/core';
+import {Component, Inject, Optional} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {
+    MAT_DIALOG_DATA,
     MatDialog,
     MatDialogActions,
     MatDialogClose,
@@ -23,6 +24,7 @@ import {InvoiceService} from '../invoice.service';
 import {Expense} from '../models/expense.model';
 import {Income} from '../models/income.model';
 import {InvoiceCreateRequest} from '../models/invoice-create-request.model';
+import {Invoice} from '../models/invoice.model';
 
 interface InvoiceSelectableExpense extends Expense {
     id: string;
@@ -57,11 +59,12 @@ interface InvoiceSelectableIncome extends Income {
     ]
 })
 export class InvoiceCreationDialogComponent {
-    title = 'Creacion de Factura';
+    title: string;
     engagementIds: Observable<string[]>;
     availableExpenses: Observable<InvoiceSelectableExpense[]> = of([]);
     availableIncomes: Observable<InvoiceSelectableIncome[]> = of([]);
     private invoiceDateValue: Date | null = null;
+    private currentInvoiceId?: string;
 
     invoice: InvoiceCreateRequest = {
         engagementId: undefined,
@@ -85,8 +88,23 @@ export class InvoiceCreationDialogComponent {
         private readonly expenseService: ExpenseService,
         private readonly incomeService: IncomeService,
         private readonly engagementLetterService: EngagementLetterService,
-        private readonly dialog: MatDialog
+        private readonly dialog: MatDialog,
+        @Optional() @Inject(MAT_DIALOG_DATA) data?: Invoice
     ) {
+        this.currentInvoiceId = data?.id;
+        this.title = data?.id ? 'Actualizacion de Factura' : 'Creacion de Factura';
+        this.invoice = {
+            engagementId: data?.engagementId,
+            date: data?.date,
+            expenseIds: data?.expenses
+                ?.map(expense => expense?.id)
+                .filter((id): id is string => !!id) ?? [],
+            incomeIds: data?.incomes
+                ?.map(income => income?.id)
+                .filter((id): id is string => !!id) ?? []
+        };
+        this.invoiceDate = data?.date;
+
         const criteria: EngagementLetterSearch = {
             opened: true,
             owner: '',
@@ -97,6 +115,10 @@ export class InvoiceCreationDialogComponent {
             .pipe(map(engagements => engagements
                 .map(engagement => engagement.id)
                 .filter((id): id is string => !!id)));
+
+        if (this.invoice.engagementId) {
+            this.loadAvailableItems(this.invoice.engagementId);
+        }
     }
 
     onEngagementChange(engagementId: string | undefined): void {
@@ -110,19 +132,11 @@ export class InvoiceCreationDialogComponent {
             return;
         }
 
-        const invoices$ = this.invoiceService.search({engagementId});
-        const expenses$ = this.expenseService.search({engagementId});
-        const incomes$ = this.incomeService.search({engagementId});
-
-        this.availableExpenses = forkJoin([expenses$, invoices$])
-            .pipe(map(([expenses, invoices]) => this.filterAvailableExpenses(expenses, invoices)));
-
-        this.availableIncomes = forkJoin([incomes$, invoices$])
-            .pipe(map(([incomes, invoices]) => this.filterAvailableIncomes(incomes, invoices)));
+        this.loadAvailableItems(engagementId);
     }
 
     create(): void {
-        if (!this.canSubmit()) {
+        if (!this.isCreate() || !this.canSubmit()) {
             return;
         }
 
@@ -135,6 +149,26 @@ export class InvoiceCreationDialogComponent {
 
         this.invoiceService.create(request)
             .subscribe(() => this.dialog.closeAll());
+    }
+
+    update(): void {
+        if (this.isCreate() || !this.currentInvoiceId || !this.canSubmit()) {
+            return;
+        }
+
+        const request: InvoiceCreateRequest = {
+            ...this.invoice,
+            date: this.invoice.date ?? this.formatDate(new Date()),
+            expenseIds: [...this.invoice.expenseIds],
+            incomeIds: [...this.invoice.incomeIds]
+        };
+
+        this.invoiceService.update(this.currentInvoiceId, request)
+            .subscribe(() => this.dialog.closeAll());
+    }
+
+    isCreate(): boolean {
+        return !this.currentInvoiceId;
     }
 
     canSubmit(): boolean {
@@ -157,9 +191,23 @@ export class InvoiceCreationDialogComponent {
         return `${income.userId} | ${income.amount} | ${income.date} | ${income.id}`;
     }
 
-    private filterAvailableExpenses(expenses: Expense[], invoices: Array<{ expenses: Array<{ id?: string }> }>): InvoiceSelectableExpense[] {
+    private loadAvailableItems(engagementId: string): void {
+        const invoices$ = this.invoiceService.search({engagementId});
+        const expenses$ = this.expenseService.search({engagementId});
+        const incomes$ = this.incomeService.search({engagementId});
+
+        this.availableExpenses = forkJoin([expenses$, invoices$])
+            .pipe(map(([expenses, invoices]) => this.filterAvailableExpenses(expenses, invoices)));
+
+        this.availableIncomes = forkJoin([incomes$, invoices$])
+            .pipe(map(([incomes, invoices]) => this.filterAvailableIncomes(incomes, invoices)));
+    }
+
+    private filterAvailableExpenses(expenses: Expense[], invoices: Array<{ id?: string; expenses: Array<{ id?: string }> }>): InvoiceSelectableExpense[] {
         const assignedExpenseIds = new Set(
-            invoices.flatMap(invoice => invoice.expenses)
+            invoices
+                .filter(invoice => invoice.id !== this.currentInvoiceId)
+                .flatMap(invoice => invoice.expenses)
                 .map(expense => expense?.id)
                 .filter((id): id is string => !!id)
         );
@@ -167,9 +215,11 @@ export class InvoiceCreationDialogComponent {
         return expenses.filter((expense): expense is InvoiceSelectableExpense => !!expense.id && !assignedExpenseIds.has(expense.id));
     }
 
-    private filterAvailableIncomes(incomes: Income[], invoices: Array<{ incomes: Array<{ id?: string }> }>): InvoiceSelectableIncome[] {
+    private filterAvailableIncomes(incomes: Income[], invoices: Array<{ id?: string; incomes: Array<{ id?: string }> }>): InvoiceSelectableIncome[] {
         const assignedIncomeIds = new Set(
-            invoices.flatMap(invoice => invoice.incomes)
+            invoices
+                .filter(invoice => invoice.id !== this.currentInvoiceId)
+                .flatMap(invoice => invoice.incomes)
                 .map(income => income?.id)
                 .filter((id): id is string => !!id)
         );

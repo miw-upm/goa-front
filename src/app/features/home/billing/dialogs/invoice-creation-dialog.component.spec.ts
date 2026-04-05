@@ -5,6 +5,7 @@ import {InvoiceCreationDialogComponent} from './invoice-creation-dialog.componen
 describe('InvoiceCreationDialogComponent', () => {
     let invoiceServiceSpy: {
         create: jasmine.Spy;
+        update: jasmine.Spy;
         search: jasmine.Spy;
     };
 
@@ -27,6 +28,7 @@ describe('InvoiceCreationDialogComponent', () => {
     beforeEach(() => {
         invoiceServiceSpy = {
             create: jasmine.createSpy('create').and.returnValue(of({})),
+            update: jasmine.createSpy('update').and.returnValue(of({})),
             search: jasmine.createSpy('search').and.returnValue(of([
                 {
                     id: 'inv-1',
@@ -155,6 +157,95 @@ describe('InvoiceCreationDialogComponent', () => {
         });
     });
 
+    it('should keep current invoice expenses and incomes available while editing', (done) => {
+        invoiceServiceSpy.search.and.returnValue(of([
+            {
+                id: 'inv-1',
+                engagementId: 'eng-1',
+                date: '2026-04-01',
+                expenses: [{id: 'exp-2'}],
+                incomes: [{id: 'inc-2'}]
+            },
+            {
+                id: 'inv-2',
+                engagementId: 'eng-1',
+                date: '2026-04-02',
+                expenses: [{id: 'exp-3'}],
+                incomes: [{id: 'inc-3'}]
+            }
+        ]));
+        expenseServiceSpy.search.and.returnValue(of([
+            {
+                id: 'exp-1',
+                engagementId: 'eng-1',
+                amount: 50,
+                date: '2026-04-01',
+                description: 'Taxi'
+            },
+            {
+                id: 'exp-2',
+                engagementId: 'eng-1',
+                amount: 70,
+                date: '2026-04-02',
+                description: 'Hotel'
+            },
+            {
+                id: 'exp-3',
+                engagementId: 'eng-1',
+                amount: 30,
+                date: '2026-04-03',
+                description: 'Parking'
+            }
+        ]));
+        incomeServiceSpy.search.and.returnValue(of([
+            {
+                id: 'inc-1',
+                engagementId: 'eng-1',
+                userId: 'user-1',
+                amount: 100,
+                date: '2026-04-01'
+            },
+            {
+                id: 'inc-2',
+                engagementId: 'eng-1',
+                userId: 'user-2',
+                amount: 200,
+                date: '2026-04-03'
+            },
+            {
+                id: 'inc-3',
+                engagementId: 'eng-1',
+                userId: 'user-3',
+                amount: 300,
+                date: '2026-04-04'
+            }
+        ]));
+
+        const component = new InvoiceCreationDialogComponent(
+            invoiceServiceSpy as any,
+            expenseServiceSpy as any,
+            incomeServiceSpy as any,
+            engagementLetterServiceSpy as any,
+            dialogSpy as any,
+            {
+                id: 'inv-1',
+                engagementId: 'eng-1',
+                date: '2026-04-01',
+                expenses: [{id: 'exp-2'}],
+                incomes: [{id: 'inc-2'}]
+            } as any
+        );
+
+        component.availableExpenses.subscribe(expenses => {
+            expect(expenses.map(expense => expense.id)).toEqual(['exp-1', 'exp-2']);
+        });
+
+        component.availableIncomes.subscribe(incomes => {
+            expect(incomes.map(income => income.id)).toEqual(['inc-1', 'inc-2']);
+            done();
+        });
+    });
+
     it('should return false in canSubmit when engagement is missing', () => {
         const component = new InvoiceCreationDialogComponent(
             invoiceServiceSpy as any,
@@ -267,5 +358,80 @@ describe('InvoiceCreationDialogComponent', () => {
         expect(dialogSpy.closeAll).toHaveBeenCalled();
 
         jasmine.clock().uninstall();
+    });
+
+    it('should initialize edit mode with invoice data', () => {
+        const component = new InvoiceCreationDialogComponent(
+            invoiceServiceSpy as any,
+            expenseServiceSpy as any,
+            incomeServiceSpy as any,
+            engagementLetterServiceSpy as any,
+            dialogSpy as any,
+            {
+                id: 'inv-1',
+                engagementId: 'eng-1',
+                date: '2026-04-04',
+                expenses: [{id: 'exp-1'}],
+                incomes: [{id: 'inc-1'}]
+            } as any
+        );
+
+        expect(component.isCreate()).toBeFalse();
+        expect(component.title).toBe('Actualizacion de Factura');
+        expect(component.invoice).toEqual({
+            engagementId: 'eng-1',
+            date: '2026-04-04',
+            expenseIds: ['exp-1'],
+            incomeIds: ['inc-1']
+        });
+    });
+
+    it('should update invoice when data is valid in edit mode', () => {
+        const component = new InvoiceCreationDialogComponent(
+            invoiceServiceSpy as any,
+            expenseServiceSpy as any,
+            incomeServiceSpy as any,
+            engagementLetterServiceSpy as any,
+            dialogSpy as any,
+            {
+                id: 'inv-1',
+                engagementId: 'eng-1',
+                date: '2026-04-04',
+                expenses: [{id: 'exp-1'}],
+                incomes: [{id: 'inc-1'}]
+            } as any
+        );
+
+        component.update();
+
+        expect(invoiceServiceSpy.update).toHaveBeenCalledWith('inv-1', {
+            engagementId: 'eng-1',
+            date: '2026-04-04',
+            expenseIds: ['exp-1'],
+            incomeIds: ['inc-1']
+        });
+        expect(dialogSpy.closeAll).toHaveBeenCalled();
+    });
+
+    it('should not call update when data is invalid in edit mode', () => {
+        const component = new InvoiceCreationDialogComponent(
+            invoiceServiceSpy as any,
+            expenseServiceSpy as any,
+            incomeServiceSpy as any,
+            engagementLetterServiceSpy as any,
+            dialogSpy as any,
+            {
+                id: 'inv-1',
+                engagementId: undefined,
+                date: undefined,
+                expenses: [],
+                incomes: []
+            } as any
+        );
+
+        component.update();
+
+        expect(invoiceServiceSpy.update).not.toHaveBeenCalled();
+        expect(dialogSpy.closeAll).not.toHaveBeenCalled();
     });
 });

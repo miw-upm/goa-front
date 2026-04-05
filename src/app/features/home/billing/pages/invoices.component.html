@@ -3,11 +3,12 @@
 	(create)="create()"
 	(read)="read($event)"
 	(searchAll)="search()"
+	(update)="update($event)"
 	[createAction]="true"
 	[data]="invoices"
 	[hiddenFields]="['id']"
 	[item]="invoice"
 	[readAction]="true"
-	[updateAction]="false"
+	[updateAction]="true"
 	[title]="title">
 </app-crud>

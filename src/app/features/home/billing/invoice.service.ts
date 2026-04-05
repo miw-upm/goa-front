@@ -15,6 +15,12 @@ export class InvoiceService {
 			.post(ENDPOINTS.invoices.root, invoice);
 	}
 
+	update(id: string, invoice: InvoiceCreateRequest): Observable<Invoice> {
+		return this.httpService.request()
+			.success()
+			.put(ENDPOINTS.invoices.byId(id), invoice);
+	}
+
 	read(id: string): Observable<Invoice> {
 		return this.httpService.request()
 			.get(ENDPOINTS.invoices.byId(id));

@@ -31,6 +31,18 @@ export class InvoicesComponent {
             .subscribe(() => this.search());
     }
 
+    update(invoice: Invoice): void {
+        if (!invoice.id) {
+            return;
+        }
+
+        this.dialog.open(InvoiceCreationDialogComponent, {
+            width: '600px',
+            data: invoice
+        }).afterClosed()
+            .subscribe(() => this.search());
+    }
+
     search(): void {
         this.invoices = this.invoiceService.search(this.criteria)
             .pipe(
