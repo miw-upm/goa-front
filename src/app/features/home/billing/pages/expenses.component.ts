@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Observable, of} from 'rxjs';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {Expense} from '../models/expense.model';
@@ -8,11 +9,12 @@ import {ExpenseSearch} from '../models/expense-search.model';
 import {ExpenseService} from '../expense.service';
 import {ExpenseCreationDialogComponent} from '../dialogs/expense-creation-dialog.component';
 import {FilterDateComponent} from "../../../../shared/ui/inputs/filter-date.component";
+import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
 
 @Component({
     standalone: true,
     selector: 'app-expenses',
-    imports: [CrudComponent, FilterDateComponent],
+    imports: [CrudComponent, FilterDateComponent, FilterInputComponent],
     templateUrl: 'expenses.component.html'
 })
 export class ExpensesComponent {
@@ -21,10 +23,23 @@ export class ExpensesComponent {
     expense: Observable<Expense>;
     criteria: ExpenseSearch = {};
 
-    constructor(private readonly dialog: MatDialog, private readonly expenseService: ExpenseService) {
+    private static readonly SNACK_SUCCESS_DURATION = 3000;
+
+    constructor(
+        private readonly dialog: MatDialog,
+        private readonly snackBar: MatSnackBar,
+        private readonly expenseService: ExpenseService
+    ) {
+
     }
 
     search(): void {
+        if (this.criteria.engagementId && !this.isValidUuid(this.criteria.engagementId)) {
+            this.snackBar.open('El ID de búsqueda no es un UUID válido.', '', {
+                duration: ExpensesComponent.SNACK_SUCCESS_DURATION
+            });
+            return;
+        }
         if (this.criteria.date) {
             const date = new Date(this.criteria.date);
             const year = date.getFullYear();
@@ -55,5 +70,10 @@ export class ExpensesComponent {
             data: expense
         }).afterClosed()
             .subscribe(() => this.search());
+    }
+
+    private isValidUuid(uuid: string): boolean {
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        return uuidRegex.test(uuid);
     }
 }

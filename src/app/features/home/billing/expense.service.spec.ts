@@ -78,10 +78,9 @@ describe('ExpenseService', () => {
     });
 
     it('should search expenses with GET from expenses endpoint', () => {
-        const search: ExpenseSearch = {date: '2026-01-01'};
+        const search: ExpenseSearch = {date: '2026-01-01', engagementId: '11111111-1111-1111-1111-111111111111'};
         const expectedExpenses: Expense[] = [
-            {id: '1', engagementId: 'eng-1', amount: 150.5, date: '2026-01-01', description: 'Taxi'},
-            {id: '2', engagementId: 'eng-2', amount: 50, date: '2026-01-01', description: 'Lunch'}
+            {id: '1', engagementId: '11111111-1111-1111-1111-111111111111', amount: 150.5, date: '2026-01-01', description: 'Taxi'},
         ];
 
         requestBuilderSpy.get.and.returnValue(of(expectedExpenses));
@@ -99,9 +98,9 @@ describe('ExpenseService', () => {
         const id = 'expense-1';
         const payload: Expense = {
             engagementId: 'eng-1',
-            amount: 175.25,
-            date: '2026-03-20',
-            description: 'Taxi corregido'
+            amount: 200,
+            date: '2026-03-21',
+            description: 'Updated Taxi'
         };
 
         requestBuilderSpy.put.and.returnValue(of(payload));
