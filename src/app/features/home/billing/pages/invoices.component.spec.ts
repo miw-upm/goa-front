@@ -3,6 +3,7 @@ import {InvoicesComponent} from './invoices.component';
 import {InvoiceService} from '../invoice.service';
 import {of, throwError} from 'rxjs';
 import {CrudComponent} from '@shared/ui/crud/crud.component';
+import {FilterDateComponent} from '@shared/ui/inputs/filter-date.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
 import {FormsModule} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
@@ -22,7 +23,7 @@ describe('InvoicesComponent', () => {
       afterClosed: () => of(undefined)
     } as any);
     await TestBed.configureTestingModule({
-      imports: [InvoicesComponent, CrudComponent, FilterInputComponent, FormsModule],
+      imports: [InvoicesComponent, CrudComponent, FilterDateComponent, FilterInputComponent, FormsModule],
       providers: [
         { provide: InvoiceService, useValue: invoiceServiceSpy },
         { provide: MatDialog, useValue: dialogSpy }
@@ -36,11 +37,31 @@ describe('InvoicesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call invoiceService.search with criteria', () => {
+  it('should call invoiceService.search with normalized date criteria', () => {
     invoiceServiceSpy.search.and.returnValue(of([]));
-    component.criteria.engagementId = 'test-id';
+    component.criteria.date = new Date(Date.UTC(2026, 2, 22)).toString();
     component.search();
-    expect(invoiceServiceSpy.search).toHaveBeenCalledWith({ engagementId: 'test-id' });
+    expect(invoiceServiceSpy.search).toHaveBeenCalledWith({ date: '2026-03-22' });
+  });
+
+  it('should call invoiceService.search with engagement and normalized date criteria', () => {
+    invoiceServiceSpy.search.and.returnValue(of([]));
+    component.criteria.engagementId = 'eng-1';
+    component.criteria.date = new Date(Date.UTC(2026, 2, 22)).toString();
+
+    component.search();
+
+    expect(invoiceServiceSpy.search).toHaveBeenCalledWith({
+      engagementId: 'eng-1',
+      date: '2026-03-22'
+    });
+  });
+
+  it('should throw when invoice date is invalid', () => {
+    component.criteria.date = 'not-a-date';
+
+    expect(() => component.search()).toThrowError('La fecha no es válida.');
+    expect(invoiceServiceSpy.search).not.toHaveBeenCalled();
   });
 
   it('should emit invoices sorted by date descending', (done) => {

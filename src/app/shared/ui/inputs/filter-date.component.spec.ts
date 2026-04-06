@@ -63,6 +63,30 @@ describe('FilterDateComponent', () => {
 
     expect(component.date).toBe(testDate.toString());
   });
+
+    it('should disable clear button when date is empty and enable it when date exists', () => {
+        component.date = undefined;
+        fixture.detectChanges();
+
+        let clearButton = fixture.nativeElement.querySelector('button[aria-label="Limpiar fecha"]') as HTMLButtonElement;
+        expect(clearButton.disabled).toBeTrue();
+
+        component.date = new Date(2026, 2, 15);
+        fixture.detectChanges();
+
+        clearButton = fixture.nativeElement.querySelector('button[aria-label="Limpiar fecha"]') as HTMLButtonElement;
+        expect(clearButton.disabled).toBeFalse();
+    });
+
+    it('should clear date and emit undefined when clearDate is called', () => {
+        spyOn(component.dateChange, 'emit');
+        component.date = new Date(2026, 2, 15);
+
+        component.clearDate();
+
+        expect(component.date).toBeUndefined();
+        expect(component.dateChange.emit).toHaveBeenCalledWith(undefined);
+    });
 });
 
 describe('FilterInputComponent', () => {

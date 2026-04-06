@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
 import {Invoice} from './models/invoice.model';
+import {InvoiceSearch} from './models/invoice-search.model';
 import {InvoiceCreateRequest} from './models/invoice-create-request.model';
 
 @Injectable({providedIn: 'root'})
@@ -26,9 +27,9 @@ export class InvoiceService {
 			.get(ENDPOINTS.invoices.byId(id));
 	}
 
-	search(criteria: { engagementId?: string }): Observable<Invoice[]> {
+	search(criteria?: InvoiceSearch): Observable<Invoice[]> {
 		const request = this.httpService.request();
-		if (criteria?.engagementId) {
+		if (criteria && Object.keys(criteria).length > 0) {
 			request.paramsFrom(criteria);
 		}
 		return request.get(ENDPOINTS.invoices.root);

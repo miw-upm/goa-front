@@ -40,6 +40,30 @@ describe('InvoiceService', () => {
     });
 
     it('should search invoices with criteria using paramsFrom', () => {
+        const criteria = {
+            engagementId: 'eng-1',
+            date: '2026-03-22'
+        };
+        const payload: Invoice[] = [{
+            id: 'inv-1',
+            engagementId: 'eng-1',
+            date: '2026-03-24',
+            expenses: [],
+            incomes: []
+        }];
+
+        requestBuilderSpy.get.and.returnValue(of(payload));
+
+        service.search(criteria).subscribe(response => {
+            expect(response).toEqual(payload);
+        });
+
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.paramsFrom).toHaveBeenCalledWith(criteria);
+        expect(requestBuilderSpy.get).toHaveBeenCalledWith(ENDPOINTS.invoices.root);
+    });
+
+    it('should search invoices filtering only by engagementId', () => {
         const criteria = {engagementId: 'eng-1'};
         const payload: Invoice[] = [{
             id: 'inv-1',
@@ -60,7 +84,7 @@ describe('InvoiceService', () => {
         expect(requestBuilderSpy.get).toHaveBeenCalledWith(ENDPOINTS.invoices.root);
     });
 
-    it('should search invoices without params when criteria has no engagementId', () => {
+    it('should search invoices without params when criteria is empty', () => {
         const payload: Invoice[] = [];
 
         requestBuilderSpy.get.and.returnValue(of(payload));
