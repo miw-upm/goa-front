@@ -11,22 +11,23 @@ import {MatNativeDateModule} from '@angular/material/core';
   standalone: true,
   selector: 'app-filter-date',
   template: `
-    <div class="filter-container">
-      <mat-form-field appearance="fill">
-        <mat-label>{{ title }}</mat-label>
-        <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="date" (dateChange)="onDateChange()">
-        <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
-        <mat-datepicker #pickerFrom></mat-datepicker>
-      </mat-form-field>
-    </div>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ title }}</mat-label>
+      <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="date" (ngModelChange)="onDateChange()">
+      <button
+        (click)="clearDate()"
+        [disabled]="!date"
+        mat-icon-button
+        matSuffix
+        type="button"
+        aria-label="Limpiar fecha"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+      <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+      <mat-datepicker #pickerFrom></mat-datepicker>
+    </mat-form-field>
   `,
-  styles: [`
-    .filter-container {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-  `],
   imports: [
     FormsModule,
     MatFormFieldModule,
@@ -39,11 +40,16 @@ import {MatNativeDateModule} from '@angular/material/core';
 })
 export class FilterDateComponent {
   @Input() title: string = 'Fecha';
-  @Input() date: string | undefined;
+  @Input() date: Date | string | undefined;
 
-  @Output() dateChange = new EventEmitter<string>();
+  @Output() dateChange = new EventEmitter<Date | string | undefined>();
 
   onDateChange(): void {
+    this.dateChange.emit(this.date);
+  }
+
+  clearDate(): void {
+    this.date = undefined;
     this.dateChange.emit(this.date);
   }
 }

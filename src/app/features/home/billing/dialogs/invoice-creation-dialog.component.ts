@@ -64,7 +64,7 @@ export class InvoiceCreationDialogComponent {
     availableExpenses: Observable<InvoiceSelectableExpense[]> = of([]);
     availableIncomes: Observable<InvoiceSelectableIncome[]> = of([]);
     private invoiceDateValue: Date | null = null;
-    private currentInvoiceId?: string;
+    private readonly currentInvoiceId?: string;
 
     invoice: InvoiceCreateRequest = {
         engagementId: undefined,
