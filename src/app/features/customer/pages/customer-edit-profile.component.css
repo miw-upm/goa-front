@@ -16,3 +16,10 @@ mat-dialog-content {
     align-items: center;
     gap: 12px;
 }
+
+.privacy-text {
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+
