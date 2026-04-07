@@ -19,7 +19,7 @@
             />
             <app-form-field #name [(value)]="user.firstName" [required]="true" errorMessage="Obligatorio"
                             label="Nombre"/>
-            <app-form-field [(value)]="user.familyName" label="Email"/>
+            <app-form-field [(value)]="user.familyName" label="Apellidos"/>
             <app-form-field [(value)]="user.address" label="Dirección"/>
             <app-form-select [(selected)]="user.province" [capitalize]="true" [values]="provinces" label="Provincia"/>
             <app-form-field [(value)]="user.city" label="Población"/>
@@ -50,9 +50,8 @@
         </mat-dialog-content>
     </mat-card-content>
     <mat-dialog-actions>
-        <button mat-dialog-close mat-raised-button>Close</button>
         <button (click)="update()" [disabled]="formInvalid(mobile.ngModel, postalCode.ngModel)" color="primary"
-                mat-raised-button>Update
+                mat-raised-button>Actualizar
         </button>
     </mat-dialog-actions>
 </mat-card>
