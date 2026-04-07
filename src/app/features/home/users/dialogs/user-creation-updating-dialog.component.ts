@@ -57,7 +57,7 @@ export class UserCreationUpdatingDialogComponent {
     constructor(@Inject(MAT_DIALOG_DATA) data: User, private readonly userService: UserService,
                 private readonly sharedUserService: SharedUserService,
                 private readonly authService: AuthService, private readonly dialog: MatDialog) {
-        this.title = data ? 'Update User' : 'Create User';
+        this.title = data ? 'Actualización de Usuarios' : 'Creación de Usuarios';
         this.user = data || {mobile: undefined, firstName: undefined, active: true};
         this.oldMobile = data ? data.mobile : undefined;
         this.enablePasswordChange = false;
