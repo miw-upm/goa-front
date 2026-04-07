@@ -1,6 +1,5 @@
 mat-dialog-content {
     width: 450px;
-    font-size: 12px;
 }
 
 .full-width {
@@ -15,4 +14,9 @@ mat-dialog-content {
     display: flex;
     align-items: center;
     gap: 12px;
+}
+
+.privacy-text {
+    font-size: 12px;
+    line-height: 1.4;
 }
