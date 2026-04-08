@@ -1,15 +1,18 @@
 import pkg from '../../package.json';
 
+const HOST = window.location.origin;
+const API = `${HOST}/api`;
+
 export const environment = {
     production: true,
     NAME: pkg.name,
     VERSION: pkg.version,
-    FRONT_END: 'https://gestion.ocanabogados.es',
-    REST_USER: 'https://gestion.ocanabogados.es/api/goa-user',
-    REST_ENGAGEMENT: 'https://gestion.ocanabogados.es/api/goa-engagement',
-    REST_BILLING: 'https://gestion.ocanabogados.es/api/goa-billing',
-    REST_SUPPORT: 'https://gestion.ocanabogados.es/api/goa-support',
-    REST_DOCUMENT: 'https://gestion.ocanabogados.es/api/goa-document',
-    REST_CHATBOT: 'https://gestion.ocanabogados.es/api/goa-chatbot',
-    SECURE_ROUTES: ['https://gestion.ocanabogados.es/api']
+    FRONT_END: HOST,
+    REST_USER: `${API}/goa-user`,
+    REST_ENGAGEMENT: `${API}/goa-engagement`,
+    REST_BILLING: `${API}/goa-billing`,
+    REST_SUPPORT: `${API}/goa-support`,
+    REST_DOCUMENT: `${API}/goa-document`,
+    REST_CHATBOT: `${API}/goa-chatbot`,
+    SECURE_ROUTES: [API]
 };
