@@ -1,6 +1,6 @@
 import pkg from '../../package.json';
 
-const HOST = window.location.origin;
+const HOST = 'https://goa.miwupm.es';
 const API = `${HOST}/api`;
 
 export const environment = {
