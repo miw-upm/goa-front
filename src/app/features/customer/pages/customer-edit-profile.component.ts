@@ -66,7 +66,7 @@ export class CustomerEditProfileComponent {
                 this.dialog.open(InfoDialogComponent, {
                     data: {
                         title: 'Perfil actualizado',
-                        message: 'Si necesita cambiarlo, puede hacerlo, pero recuerde que tiene una caducidad de 7 días.'
+                        message: 'Si necesita cambiarlo, puede hacerlo, pero recuerde que el link tiene una caducidad de 7 días.'
                     }
                 });
             }
