@@ -18,7 +18,6 @@ import {User} from "@features/shared/models/user.model";
 import {UserDocumentType} from "@features/shared/models/UserDocumentType";
 import {SharedUserService} from "@features/shared/services/shared-user.service";
 import {CustomerService} from "../customer.service";
-import {InfoDialogComponent} from "@shared/ui/dialogs/info-dialog.component";
 
 @Component({
     standalone: true,
@@ -61,16 +60,7 @@ export class CustomerEditProfileComponent {
 
     update(): void {
         this.customerService
-            .updateWithToken(this.oldMobile, this.user, this.token).subscribe(user => {
-                this.user = user;
-                this.dialog.open(InfoDialogComponent, {
-                    data: {
-                        title: 'Perfil actualizado',
-                        message: 'Si necesita cambiarlo, puede hacerlo, pero recuerde que el link tiene una caducidad de 7 días.'
-                    }
-                });
-            }
-        );
+            .updateWithToken(this.oldMobile, this.user, this.token).subscribe(user => this.user = user  );
     }
 
     formInvalid(...controls: NgModel[]): boolean {
