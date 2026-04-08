@@ -64,6 +64,6 @@ export class CustomerEditProfileComponent {
     }
 
     formInvalid(...controls: NgModel[]): boolean {
-        return controls.some(ctrl => ctrl.invalid && (ctrl.dirty || ctrl.touched));
+        return controls.some(ctrl => ctrl.invalid);
     }
 }
