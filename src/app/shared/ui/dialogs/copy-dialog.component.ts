@@ -2,6 +2,7 @@ import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogTitle} from '@angular/material/dialog';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
+import {ClipboardComponent} from '@shared/ui/inputs/forms/clipboard.component';
 
 export type InfoDialogData = {
     title?: string;
@@ -10,7 +11,7 @@ export type InfoDialogData = {
 
 @Component({
     standalone: true,
-    templateUrl: 'info-dialog.component.html',
+    templateUrl: 'copy-dialog.component.html',
     styleUrls: ['./dialog.component.css'],
     imports: [
         MatDialogTitle,
@@ -18,8 +19,11 @@ export type InfoDialogData = {
         MatDialogClose,
         MatButtonModule,
         MatIconModule,
+        ClipboardComponent
     ]
 })
-export class InfoDialogComponent {
-    constructor(@Inject(MAT_DIALOG_DATA) public data: InfoDialogData) {}
+export class CopyDialogComponent {
+    constructor(@Inject(MAT_DIALOG_DATA) public data: InfoDialogData) {
+    }
+
 }
