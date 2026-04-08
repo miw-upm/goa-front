@@ -4,7 +4,7 @@ import {Observable, of} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 
 import {CrudComponent} from "@shared/ui/crud/crud.component";
-import {InfoDialogComponent} from "@shared/ui/dialogs/info-dialog.component";
+import {CopyDialogComponent} from "@shared/ui/dialogs/copy-dialog.component";
 import {AccessLinkService} from "../access-link.service";
 import {AccessLink} from "../acces-link.model";
 
@@ -39,7 +39,7 @@ export class AccessLinkComponent {
 
     run(accessLink: any): void {
         const link = this.accessLinkService.createLink(accessLink);
-        this.dialog.open(InfoDialogComponent, {
+        this.dialog.open(CopyDialogComponent, {
             width: '1200px',
             data: {
                 title: 'Access link',
