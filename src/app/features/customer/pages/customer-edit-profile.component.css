@@ -22,4 +22,9 @@ mat-dialog-content {
     line-height: 1.4;
 }
 
+.btn-update {
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-decoration: underline;
+}
 
