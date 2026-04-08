@@ -22,7 +22,8 @@
             <app-form-field [(value)]="user.familyName" label="Apellidos" [required]="true" errorMessage="Obligatorio"/>
             <app-form-field [(value)]="user.address" label="Dirección" [required]="true" errorMessage="Obligatorio"/>
             <app-form-field [(value)]="user.city" label="Población" [required]="true" errorMessage="Obligatorio"/>
-            <app-form-select [(selected)]="user.province" [capitalize]="true" [values]="provinces" label="Provincia" />
+            <app-form-select [(selected)]="user.province" [capitalize]="true" [values]="provinces" label="Provincia"
+                             [required]="true"/>
             <app-form-field
                 #postalCode
                 [(value)]="user.postalCode"
