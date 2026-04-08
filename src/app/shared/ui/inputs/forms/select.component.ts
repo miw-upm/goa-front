@@ -21,7 +21,8 @@ import {CapitalizeEnumNamePipe} from '@shared/pipes/capitalize-enum-name.pipe';
     template: `
         <mat-form-field class="full-width">
             <mat-label>{{ label }}</mat-label>
-            <mat-select [(ngModel)]="selected" (ngModelChange)="selectedChange.emit($event)">
+            <mat-select [(ngModel)]="selected" (ngModelChange)="selectedChange.emit($event)" [required]="required">
+                <mat-option [value]="undefined">-- Selecciona --</mat-option>
                 @for (type of (values | async); track type) {
                     <mat-option [value]="type">
                         @if (capitalize) {
@@ -47,6 +48,7 @@ export class FormSelectComponent {
     @Input() values: Observable<string[]> = new Observable<string[]>();
     @Input() selected: string | undefined;
     @Input() capitalize = false;
+    @Input() required = false;
     @Output() selectedChange = new EventEmitter<string>();
 }
 
