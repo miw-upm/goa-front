@@ -41,6 +41,7 @@ export class CrudComponent {
     @Input() secureDelete = false;
     @Input() printAction = false;
     @Input() runAction = false;
+    @Input() assistantAction = false;
 
     @Input() hiddenFields: string[] = [];
 
@@ -50,6 +51,7 @@ export class CrudComponent {
     @Output() delete = new EventEmitter<any>();
     @Output() print = new EventEmitter<any>();
     @Output() run = new EventEmitter<any>();
+    @Output() assistant = new EventEmitter<any>();
     @Output() searchAll = new EventEmitter<any>();
 
     dataSource = new MatTableDataSource<any>([]);
@@ -139,6 +141,10 @@ export class CrudComponent {
 
     onRun(item: any): void {
         this.run.emit(item);
+    }
+
+    onAssistant(item: any): void {
+        this.assistant.emit(item);
     }
 
     onSearch() {

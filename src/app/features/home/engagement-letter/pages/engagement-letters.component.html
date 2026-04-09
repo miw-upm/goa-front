@@ -2,6 +2,10 @@
 <app-filter-input [(value)]="criteria.legalProcedureTitle" title="Titulo del Procedimiento"></app-filter-input>
 <app-filter-input [(value)]="criteria.owner" title="Responsable"></app-filter-input>
 <app-crud (create)="create()" (delete)="delete($event)" (read)="read($event)" (searchAll)="search()"
-          (update)="update($event)" [data]="engagementLetters"
-          [deleteAction]="true" [hiddenFields]="['id']" [item]="engagementLetter" [secureDelete]="true" [title]="title">
+          (update)="update($event)"
+          (assistant)="openAssistant($event)"
+          [data]="engagementLetters"
+          [deleteAction]="true"
+          [assistantAction]="true"
+          [hiddenFields]="['id']" [item]="engagementLetter" [secureDelete]="true" [title]="title">
 </app-crud>

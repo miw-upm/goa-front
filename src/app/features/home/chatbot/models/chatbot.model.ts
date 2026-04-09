@@ -1,6 +1,17 @@
+export interface ChatbotContextualConversationRequest {
+    engagementLetterId: string;
+}
+
+export interface ChatbotContextualConversationResponse {
+    conversationId: string;
+    engagementLetterId: string;
+    createdAt?: string;
+    error?: string;
+}
+
 export interface ChatbotMessageRequest {
     conversationId?: string;
-    message: string | undefined ;
+    message: string | undefined;
 }
 
 export interface ChatbotMessageResponse {
@@ -10,8 +21,12 @@ export interface ChatbotMessageResponse {
     createdAt?: string;
 }
 
-export interface ChatbotMessageView{
+export interface ChatbotMessageView {
     sender: 'USER' | 'ASSISTANT';
     content: string;
     createdAt?: string;
+}
+
+export interface ContextualChatbotDialogData {
+    engagementLetterId: string;
 }

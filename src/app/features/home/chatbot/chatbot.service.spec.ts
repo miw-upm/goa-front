@@ -3,7 +3,12 @@ import {of} from 'rxjs';
 import {ChatbotService} from './chatbot.service';
 import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
-import {ChatbotMessageRequest, ChatbotMessageResponse} from './models/chatbot.model';
+import {
+    ChatbotContextualConversationRequest,
+    ChatbotContextualConversationResponse,
+    ChatbotMessageRequest,
+    ChatbotMessageResponse
+} from './models/chatbot.model';
 
 describe('ChatbotService', () => {
     let service: ChatbotService;
@@ -30,6 +35,29 @@ describe('ChatbotService', () => {
         httpServiceSpy.request.and.returnValue(requestBuilderSpy as any);
 
         service = new ChatbotService(httpServiceSpy);
+    });
+
+    it('should start contextual conversation using chatbot endpoint', () => {
+        const request: ChatbotContextualConversationRequest = {
+            engagementLetterId: 'eng-1'
+        };
+        const expectedResponse: ChatbotContextualConversationResponse = {
+            conversationId: 'ctx-1',
+            engagementLetterId: 'eng-1',
+            error: 'Aviso controlado'
+        };
+        requestBuilderSpy.post.and.returnValue(of(expectedResponse));
+
+        let response: ChatbotContextualConversationResponse | undefined;
+
+        service.startContextualConversation(request).subscribe(value => {
+            response = value;
+        });
+
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.error).toHaveBeenCalledWith('No se pudo iniciar la conversación contextual');
+        expect(requestBuilderSpy.post).toHaveBeenCalledWith(ENDPOINTS.chatbot.contextualConversation(), request);
+        expect(response).toEqual(expectedResponse);
     });
 
     it('should send message using chatbot endpoint', () => {

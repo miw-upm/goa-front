@@ -12,6 +12,7 @@ import {EngagementLetter} from '../models/engagement-letter.model';
 import {
     EngagementLetterCreationUpdatingDialogComponent
 } from '../dialogs/engagement-letter-creation-updating-dialog.component';
+import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
 
 @Component({
     standalone: true,
@@ -55,6 +56,22 @@ export class EngagementLettersComponent {
 
     read(engagement: EngagementLetter) {
         this.engagementLetter = this.engagementLettersService.read(engagement.id)
+    }
+
+    openAssistant(engagement: EngagementLetter): void {
+        if (!engagement?.id) {
+            return;
+        }
+
+        this.dialog.open(ChatbotComponent, {
+            data: {
+                engagementLetterId: engagement.id
+            },
+            width: '960px',
+            maxWidth: '96vw',
+            height: '80vh',
+            panelClass: 'contextual-chatbot-dialog-panel'
+        });
     }
 
 }

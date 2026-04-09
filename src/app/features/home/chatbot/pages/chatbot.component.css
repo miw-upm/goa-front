@@ -1,34 +1,311 @@
-.chatbot-page {
-    padding: 1rem;
+:host {
+    display: block;
+    height: auto;
+    min-height: auto;
+}
+
+:host.dialog-host {
+    height: 100%;
+    min-height: 0;
+}
+
+.chatbot-shell {
+    height: auto;
+    min-height: auto;
+    padding: 20px 24px 14px;
+    box-sizing: border-box;
+}
+
+.chatbot-shell.dialog-mode {
+    height: 100%;
+    min-height: 0;
+    padding: 0;
+}
+
+.chatbot-shell.dialog-mode .chatbot-card {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.chatbot-card {
+    height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    border-radius: 18px;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+    overflow: hidden;
+}
+
+/* Chat general: altura más realista para evitar scroll de documento */
+.chatbot-shell:not(.dialog-mode) .chatbot-card {
+    height: calc(100dvh - 185px);
+    min-height: 520px;
+    max-height: 780px;
+}
+
+.chatbot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.chatbot-title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    flex: 1;
+}
+
+.chatbot-title-block h2 {
+    margin: 0;
+    font-size: 1.9rem;
+    line-height: 1.15;
+    font-weight: 700;
+    color: #111827;
+}
+
+.context-banner {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: calc(100% - 12px);
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: #eef6ff;
+    border: 1px solid #cfe1ff;
+    color: #1f2937;
+    font-size: 0.96rem;
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+/* Contenedor central del chat */
+.conversation-stage {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* Vista de historial */
+.messages-panel {
+    height: 100%;
+    min-height: 0;
+    border: 1px solid #ececec;
+    border-radius: 16px;
+    background: #fafafa;
+    overflow: hidden;
+    position: relative;
 }
 
 .messages-container {
-    min-height: 18rem;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    border: 1px solid #dcdcdc;
-    border-radius: 0.5rem;
-    background: #fafafa;
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 18px 18px 170px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-sizing: border-box;
+}
+
+/* Reserva extra inferior para el composer flotante */
+.messages-container::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 150px;
+    background: linear-gradient(
+            to bottom,
+            rgba(250, 250, 250, 0) 0%,
+            rgba(250, 250, 250, 0.82) 28%,
+            rgba(250, 250, 250, 0.96) 55%,
+            #fafafa 100%
+    );
+    pointer-events: none;
+    z-index: 2;
 }
 
 .message {
-    margin-bottom: 0.75rem;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
+    max-width: min(78%, 720px);
+    border-radius: 16px;
+    padding: 12px 14px;
+    box-sizing: border-box;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    flex: 0 0 auto;
 }
 
 .message.user {
-    background: #e3f2fd;
+    align-self: flex-end;
+    background: #e7f1ff;
+    border: 1px solid #d4e4ff;
 }
 
 .message.assistant {
-    background: #f1f5f9;
+    align-self: flex-start;
+    background: #ffffff;
+    border: 1px solid #ececec;
 }
 
-.full-width {
-    width: 100%;
+.message strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.88rem;
+    color: #374151;
+}
+
+.message p {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.45;
+    color: #111827;
+}
+
+.chat-state {
+    flex: 1;
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    border: 1px solid #ececec;
+    border-radius: 16px;
+    background: #fafafa;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Composer flotante */
+.composer-overlay {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+    z-index: 3;
 }
 
 .error-message {
-    color: #b91c1c;
+    margin: 0 4px;
+    color: #b00020;
+    font-size: 0.95rem;
+    pointer-events: auto;
+}
+
+.composer-box {
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    border: 1px solid #d9dee7;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    padding: 14px 14px 12px;
+}
+
+.composer-textarea {
+    display: block;
+    width: 100%;
+    min-height: 28px;
+    max-height: 144px;
+    border: none;
+    outline: none;
+    resize: none;
+    overflow-y: auto;
+    background: transparent;
+    font: inherit;
+    line-height: 1.45;
+    color: #111827;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.composer-textarea::placeholder {
+    color: #8b95a7;
+}
+
+.composer-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.send-button {
+    min-width: 92px;
+    height: 40px;
+    border-radius: 999px;
+    box-shadow: none;
+}
+
+/* Scroll interno bonito opcional */
+.messages-container::-webkit-scrollbar,
+.composer-textarea::-webkit-scrollbar {
+    width: 10px;
+}
+
+.messages-container::-webkit-scrollbar-thumb,
+.composer-textarea::-webkit-scrollbar-thumb {
+    background: #d7dce3;
+    border-radius: 999px;
+}
+
+.messages-container::-webkit-scrollbar-track,
+.composer-textarea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+@media (max-width: 960px) {
+    .chatbot-shell {
+        padding: 14px;
+    }
+
+    .chatbot-card {
+        padding: 16px;
+        border-radius: 16px;
+    }
+
+    .chatbot-shell:not(.dialog-mode) .chatbot-card {
+        height: calc(100dvh - 145px);
+        min-height: 460px;
+        max-height: none;
+    }
+
+    .chatbot-title-block h2 {
+        font-size: 1.5rem;
+    }
+
+    .message {
+        max-width: 90%;
+    }
+
+    .composer-box {
+        gap: 8px;
+        padding: 12px 12px 10px;
+    }
+
+    .send-button {
+        min-width: 84px;
+    }
+
+    .messages-container {
+        padding: 16px 16px 164px;
+    }
 }
