@@ -160,39 +160,58 @@ describe('InvoicesComponent', () => {
     expect(invoiceServiceSpy.search).toHaveBeenCalledWith({});
   });
 
-  it('should not open invoice update dialog when invoice has no id', () => {
-    component.update({
-      id: undefined as any,
+  it('should not open invoice update dialog when invoice id is missing', () => {
+    const selectedInvoice: Invoice = {
+      id: undefined,
       engagementId: 'eng-1',
       date: '2026-03-22',
-      expenses: [],
-      incomes: []
-    });
+      expenses: [{id: 'exp-1'}],
+      incomes: [{id: 'inc-1'}]
+    };
+
+    component.update(selectedInvoice);
 
     expect(dialogSpy.open).not.toHaveBeenCalled();
   });
 
-  it('should read selected invoice and expose details stream', (done) => {
+  it('should read invoice details', () => {
     const selectedInvoice: Invoice = {
       id: 'inv-1',
       engagementId: 'eng-1',
       date: '2026-03-22',
-      expenses: [],
-      incomes: []
+      expenses: [{id: 'exp-1'}],
+      incomes: [{id: 'inc-1'}]
     };
-    const detailedInvoice: Invoice = {
-      ...selectedInvoice,
-      expenses: [{id: 'exp-1', amount: 10}],
-      incomes: [{id: 'inc-1', amount: 20}]
-    };
-    invoiceServiceSpy.read.and.returnValue(of(detailedInvoice));
+    invoiceServiceSpy.read.and.returnValue(of(selectedInvoice));
 
     component.read(selectedInvoice);
 
-    expect(invoiceServiceSpy.read).toHaveBeenCalledWith('inv-1');
     component.invoice.subscribe(invoice => {
-      expect(invoice).toEqual(detailedInvoice);
-      done();
+      expect(invoice).toEqual(selectedInvoice);
     });
+    expect(invoiceServiceSpy.read).toHaveBeenCalledWith('inv-1');
+  });
+
+  it('should show breakdown', () => {
+    const selectedInvoice: Invoice = {
+      id: 'inv-1',
+      engagementId: 'eng-1',
+      date: '2026-03-22',
+      expenses: [{id: 'exp-1'}],
+      incomes: [{id: 'inc-1'}]
+    };
+    const breakdown = {
+      taxableBase: 100,
+      vatAmount: 21,
+      totalAmount: 121,
+      incomes: [],
+      expenses: []
+    };
+    invoiceServiceSpy.readBreakdown = jasmine.createSpy().and.returnValue(of(breakdown));
+
+    component.showBreakdown(selectedInvoice);
+
+    expect(invoiceServiceSpy.readBreakdown).toHaveBeenCalledWith('inv-1');
+    expect(dialogSpy.open).toHaveBeenCalled();
   });
 });
