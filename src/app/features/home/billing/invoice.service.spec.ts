@@ -168,4 +168,50 @@ describe('InvoiceService', () => {
         expect(requestBuilderSpy.success).toHaveBeenCalled();
         expect(requestBuilderSpy.put).toHaveBeenCalledWith(ENDPOINTS.invoices.byId('inv-1'), request);
     });
+
+    it('should read breakdown', () => {
+        const id = 'inv-1';
+        const payload = {
+            taxableBase: 100,
+            vatAmount: 21,
+            totalAmount: 121,
+            incomes: [],
+            expenses: []
+        };
+
+        requestBuilderSpy.get.and.returnValue(of(payload));
+
+        service.readBreakdown(id).subscribe(response => {
+            expect(response).toEqual(payload);
+        });
+
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.get).toHaveBeenCalledWith(ENDPOINTS.invoices.breakdown(id));
+    });
+
+    it('should create an invoice', () => {
+        const request: InvoiceCreateRequest = {
+            engagementId: 'eng-1',
+            date: '2026-04-04',
+            expenseIds: ['exp-1'],
+            incomeIds: ['inc-1']
+        };
+        const payload = {
+            id: 'inv-1',
+            engagementId: 'eng-1',
+            date: '2026-04-04',
+            expenses: [{id: 'exp-1'}],
+            incomes: [{id: 'inc-1'}]
+        } as Invoice;
+
+        requestBuilderSpy.post.and.returnValue(of(payload));
+
+        service.create(request).subscribe(response => {
+            expect(response).toEqual(payload);
+        });
+
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.success).toHaveBeenCalled();
+        expect(requestBuilderSpy.post).toHaveBeenCalledWith(ENDPOINTS.invoices.root, request);
+    });
 });
