@@ -10,6 +10,8 @@
 	[hiddenFields]="['id']"
 	[item]="invoice"
 	[readAction]="true"
+	[runAction]="true"
+	(run)="showBreakdown($event)"
 	[updateAction]="true"
 	[title]="title">
 </app-crud>

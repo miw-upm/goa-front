@@ -5,6 +5,7 @@ import {ENDPOINTS} from '@core/api/endpoints';
 import {Invoice} from './models/invoice.model';
 import {InvoiceSearch} from './models/invoice-search.model';
 import {InvoiceCreateRequest} from './models/invoice-create-request.model';
+import {InvoiceBreakdown} from "./models/invoice-breakdown.model";
 
 @Injectable({providedIn: 'root'})
 export class InvoiceService {
@@ -25,6 +26,11 @@ export class InvoiceService {
 	read(id: string): Observable<Invoice> {
 		return this.httpService.request()
 			.get(ENDPOINTS.invoices.byId(id));
+	}
+
+	readBreakdown(id: string): Observable<InvoiceBreakdown> {
+		return this.httpService.request()
+			.get(ENDPOINTS.invoices.breakdown(id));
 	}
 
 	search(criteria?: InvoiceSearch): Observable<Invoice[]> {

@@ -72,6 +72,8 @@ export const ENDPOINTS = {
         root: INVOICE_ROOT,
         byId: (id: string) =>
             `${INVOICE_ROOT}/${enc(id)}`,
+        breakdown: (id: string) =>
+            `${INVOICE_ROOT}/${enc(id)}/breakdown`,
     },
 
     chatbot: {

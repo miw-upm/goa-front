@@ -9,6 +9,7 @@ import {InvoiceService} from '../invoice.service';
 import {Invoice} from '../models/invoice.model';
 import {InvoiceSearch} from '../models/invoice-search.model';
 import {InvoiceCreationDialogComponent} from '../dialogs/invoice-creation-dialog.component';
+import {InvoiceBreakdownDialogComponent} from "../dialogs/invoice-breakdown-dialog.component";
 
 @Component({
     standalone: true,
@@ -57,6 +58,16 @@ export class InvoicesComponent {
 
     read(invoice: Invoice): void {
         this.invoice = this.invoiceService.read(invoice.id);
+    }
+
+    showBreakdown(invoice: Invoice): void {
+        this.invoiceService.readBreakdown(invoice.id).subscribe(breakdown => {
+            this.dialog.open(InvoiceBreakdownDialogComponent, {
+                width: '1000px',
+                maxWidth: 'none',
+                data: breakdown
+            });
+        });
     }
 
     private normalizeCriteria(): InvoiceSearch {
