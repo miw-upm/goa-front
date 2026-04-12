@@ -8,7 +8,7 @@ import {ContextualChatbotDialogData} from '../models/chatbot.model';
 describe('ChatbotComponent', () => {
     let chatbotServiceSpy: {
         startContextualConversation: jasmine.Spy;
-        sendMessage: jasmine.Spy;
+        startGeneralConversation: jasmine.Spy;
     };
     let dialogRefSpy: {
         close: jasmine.Spy;
@@ -26,7 +26,7 @@ describe('ChatbotComponent', () => {
     beforeEach(() => {
         chatbotServiceSpy = {
             startContextualConversation: jasmine.createSpy('startContextualConversation'),
-            sendMessage: jasmine.createSpy('sendMessage')
+            startGeneralConversation: jasmine.createSpy('startGeneralConversation')
         };
         dialogRefSpy = {
             close: jasmine.createSpy('close')
@@ -39,7 +39,7 @@ describe('ChatbotComponent', () => {
 
         component.send();
 
-        expect(chatbotServiceSpy.sendMessage).not.toHaveBeenCalled();
+        expect(chatbotServiceSpy.startGeneralConversation).not.toHaveBeenCalled();
         expect(component.messages.length).toBe(0);
     });
 
@@ -80,7 +80,7 @@ describe('ChatbotComponent', () => {
     });
 
     it('should send user message and append assistant response', () => {
-        chatbotServiceSpy.sendMessage.and.returnValue(of({
+        chatbotServiceSpy.startGeneralConversation.and.returnValue(of({
             conversationId: 'conv-1',
             message: 'Respuesta simulada del asistente',
             createdAt: '2026-03-26T10:00:00Z'
@@ -91,7 +91,7 @@ describe('ChatbotComponent', () => {
 
         component.send();
 
-        expect(chatbotServiceSpy.sendMessage).toHaveBeenCalledWith({
+        expect(chatbotServiceSpy.startGeneralConversation).toHaveBeenCalledWith({
             conversationId: undefined,
             message: 'Hola chatbot'
         });
@@ -114,14 +114,14 @@ describe('ChatbotComponent', () => {
     });
 
     it('should set error when service fails', () => {
-        chatbotServiceSpy.sendMessage.and.returnValue(throwError(() => new Error('fail')));
+        chatbotServiceSpy.startGeneralConversation.and.returnValue(throwError(() => new Error('fail')));
 
         const component = createComponent();
         component.message = 'Hola chatbot';
 
         component.send();
 
-        expect(chatbotServiceSpy.sendMessage).toHaveBeenCalled();
+        expect(chatbotServiceSpy.startGeneralConversation).toHaveBeenCalled();
         expect(component.error).toBe('No se pudo obtener respuesta del asistente.');
         expect(component.loading).toBeFalse();
     });
@@ -133,7 +133,7 @@ describe('ChatbotComponent', () => {
 
         component.send();
 
-        expect(chatbotServiceSpy.sendMessage).not.toHaveBeenCalled();
+        expect(chatbotServiceSpy.startGeneralConversation).not.toHaveBeenCalled();
     });
 
     it('should not send when initializing is true', () => {
@@ -143,7 +143,7 @@ describe('ChatbotComponent', () => {
 
         component.send();
 
-        expect(chatbotServiceSpy.sendMessage).not.toHaveBeenCalled();
+        expect(chatbotServiceSpy.startGeneralConversation).not.toHaveBeenCalled();
     });
 
     it('should not send contextual message before conversation exists', () => {
@@ -152,12 +152,12 @@ describe('ChatbotComponent', () => {
 
         component.send();
 
-        expect(chatbotServiceSpy.sendMessage).not.toHaveBeenCalled();
+        expect(chatbotServiceSpy.startGeneralConversation).not.toHaveBeenCalled();
         expect(component.messages.length).toBe(0);
     });
 
     it('should set error when response contains error message', () => {
-        chatbotServiceSpy.sendMessage.and.returnValue(of({
+        chatbotServiceSpy.startGeneralConversation.and.returnValue(of({
             conversationId: 'conv-1',
             error: 'Respuesta con error controlado',
             createdAt: '2026-03-30T10:00:00Z'
@@ -168,7 +168,7 @@ describe('ChatbotComponent', () => {
 
         component.send();
 
-        expect(chatbotServiceSpy.sendMessage).toHaveBeenCalledWith({
+        expect(chatbotServiceSpy.startGeneralConversation).toHaveBeenCalledWith({
             conversationId: undefined,
             message: 'Hola chatbot'
         });
@@ -178,7 +178,7 @@ describe('ChatbotComponent', () => {
     });
 
     it('should keep only user message when assistant response has no message', () => {
-        chatbotServiceSpy.sendMessage.and.returnValue(of({
+        chatbotServiceSpy.startGeneralConversation.and.returnValue(of({
             conversationId: 'conv-2',
             createdAt: '2026-03-30T10:00:00Z'
         }));
