@@ -80,6 +80,8 @@ export const ENDPOINTS = {
         root: CHATBOT_ROOT,
         contextualConversation: () =>
             `${CHATBOT_ROOT}/conversations/contextual`,
+        generalConversation: () =>
+            `${CHATBOT_ROOT}/conversations/general`,
         messages: () =>
             `${CHATBOT_ROOT}/messages`,
     },

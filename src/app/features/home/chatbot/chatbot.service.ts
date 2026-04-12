@@ -28,4 +28,10 @@ export class ChatbotService {
             .error('No se pudo obtener respuesta del asistente')
             .post(ENDPOINTS.chatbot.messages(), request);
     }
+
+    startGeneralConversation(request: ChatbotMessageRequest): Observable<ChatbotMessageResponse> {
+        return this.httpService.request()
+            .error('No se pudo obtener respuesta del asistente')
+            .post(ENDPOINTS.chatbot.generalConversation(), request);
+    }
 }

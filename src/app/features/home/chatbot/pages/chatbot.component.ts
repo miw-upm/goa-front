@@ -94,7 +94,7 @@ export class ChatbotComponent {
         this.loading = true;
         this.scrollToBottom();
 
-        this.chatbotService.sendMessage({
+        this.chatbotService.startGeneralConversation({
             conversationId: this.conversationId,
             message: normalizedMessage
         }).subscribe({
