@@ -81,4 +81,25 @@ describe('ChatbotService', () => {
             createdAt: '2026-04-03T00:00:00Z'
         });
     });
+
+    it('should start general conversation using chatbot endpoint', () => {
+        const request: ChatbotMessageRequest = {
+            message: 'Hola'
+        };
+
+        let response: ChatbotMessageResponse | undefined;
+
+        service.startGeneralConversation(request).subscribe(value => {
+            response = value;
+        });
+
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.error).toHaveBeenCalledWith('No se pudo obtener respuesta del asistente');
+        expect(requestBuilderSpy.post).toHaveBeenCalledWith(ENDPOINTS.chatbot.generalConversation(), request);
+        expect(response).toEqual({
+            conversationId: 'conv-1',
+            message: 'Respuesta simulada del asistente',
+            createdAt: '2026-04-03T00:00:00Z'
+        });
+    });
 });
