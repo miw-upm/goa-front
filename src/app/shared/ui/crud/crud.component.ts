@@ -77,8 +77,13 @@ export class CrudComponent {
     }
 
     @Input()
-    set item(item$: Observable<any>) {
+    set item(item$: Observable<any> | undefined) {
         this.itemSub?.unsubscribe();
+
+        if (!item$) {
+            return;
+        }
+
         this.itemSub = item$.subscribe(data => {
             this.dialog.open(ReadDetailDialogComponent, {
                 data: {
