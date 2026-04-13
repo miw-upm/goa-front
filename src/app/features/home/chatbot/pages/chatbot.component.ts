@@ -94,10 +94,16 @@ export class ChatbotComponent {
         this.loading = true;
         this.scrollToBottom();
 
-        this.chatbotService.startGeneralConversation({
-            conversationId: this.conversationId,
-            message: normalizedMessage
-        }).subscribe({
+        const request$ = this.conversationId
+            ? this.chatbotService.sendMessage({
+                conversationId: this.conversationId,
+                message: normalizedMessage
+            })
+            : this.chatbotService.startGeneralConversation({
+                message: normalizedMessage
+            });
+
+        request$.subscribe({
             next: response => {
                 this.conversationId = response.conversationId;
 
