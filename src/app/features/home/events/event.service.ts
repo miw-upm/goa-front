@@ -31,5 +31,11 @@ export class EventService {
             .success('Evento actualizado correctamente')
             .put<EventResponse>(ENDPOINTS.events.byId(id), event);
     }
+
+    delete(id: string): Observable<void> {
+        return this.httpService.request()
+            .success('Evento eliminado correctamente')
+            .delete(ENDPOINTS.events.byId(id));
+    }
 }
 
