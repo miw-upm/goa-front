@@ -67,6 +67,10 @@ export class EventsComponent {
         );
     }
 
+    delete(event: EventResponse): void {
+        this.eventService.delete(event.id).subscribe(() => this.search());
+    }
+
     goBack(): void {
         void this.router.navigate(['/home/engagement-letters']);
     }

@@ -5,13 +5,16 @@
     </button>
 </div>
 
+
 <app-crud
         (create)="create()"
         (read)="read($event)"
         (update)="update($event)"
+        (delete)="delete($event)"
         (searchAll)="search()"
         [data]="events$"
         [item]="event$"
+        [deleteAction]="true"
         [hiddenFields]="['id', 'engagementLetterId', 'createdDate', 'comments']"
         [columnOrder]="['title','description', 'eventDate', 'type', 'status' ]"
         [title]="title">
