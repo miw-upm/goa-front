@@ -11,6 +11,7 @@ import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {EventResponse} from '../event.model';
 import {EventService} from '../event.service';
 import {EventCreationDialogComponent} from '../dialogs/event-creation-dialog.component';
+import {EventUpdateDialogComponent} from '../dialogs/event-update-dialog.component';
 
 @Component({
     standalone: true,
@@ -55,6 +56,15 @@ export class EventsComponent {
 
     read(event: EventResponse): void {
         this.event$ = this.eventService.read(event.id);
+    }
+
+    update(event: EventResponse): void {
+        this.eventService.read(event.id).subscribe(eventDb =>
+            this.dialog.open(EventUpdateDialogComponent, {
+                data: eventDb,
+                width: '600px'
+            }).afterClosed().subscribe(() => this.search())
+        );
     }
 
     goBack(): void {
