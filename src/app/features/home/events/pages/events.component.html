@@ -7,9 +7,10 @@
 
 <app-crud
         (create)="create()"
+        (read)="read($event)"
         (searchAll)="search()"
         [data]="events$"
-        [readAction]="false"
+        [item]="event$"
         [updateAction]="false"
         [hiddenFields]="['id', 'engagementLetterId', 'createdDate', 'comments']"
         [columnOrder]="['title','description', 'eventDate', 'type', 'status' ]"

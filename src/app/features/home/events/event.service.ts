@@ -15,6 +15,11 @@ export class EventService {
             .get<EventResponse[]>(ENDPOINTS.events.byEngagementLetterId(engagementLetterId));
     }
 
+    read(id: string): Observable<EventResponse> {
+        return this.httpService.request()
+            .get<EventResponse>(ENDPOINTS.events.byId(id));
+    }
+
     create(event: EventCreate): Observable<EventResponse> {
         return this.httpService.request()
             .success('Evento creado correctamente')

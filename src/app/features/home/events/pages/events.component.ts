@@ -22,6 +22,7 @@ export class EventsComponent {
     title = 'Eventos de Hoja de Encargo';
     engagementLetterId: string;
     events$: Observable<any[]> = of([]);
+    event$: Observable<EventResponse>;
 
     constructor(
         private readonly route: ActivatedRoute,
@@ -52,6 +53,9 @@ export class EventsComponent {
         }).afterClosed().subscribe(() => this.search());
     }
 
+    read(event: EventResponse): void {
+        this.event$ = this.eventService.read(event.id);
+    }
 
     goBack(): void {
         void this.router.navigate(['/home/engagement-letters']);
