@@ -43,6 +43,7 @@ export class CrudComponent {
     @Input() runAction = false;
     @Input() assistantAction = false;
     @Input() eventsAction = false;
+    @Input() commentsAction = false;
 
     @Input() hiddenFields: string[] = [];
     @Input() columnOrder: string[] = [];
@@ -55,6 +56,7 @@ export class CrudComponent {
     @Output() run = new EventEmitter<any>();
     @Output() assistant = new EventEmitter<any>();
     @Output() events = new EventEmitter<any>();
+    @Output() comments = new EventEmitter<any>();
     @Output() searchAll = new EventEmitter<any>();
 
     dataSource = new MatTableDataSource<any>([]);
@@ -165,6 +167,10 @@ export class CrudComponent {
 
     onEvents(item: any): void {
         this.events.emit(item);
+    }
+
+    onComments(item: any): void {
+        this.comments.emit(item);
     }
 
     onSearch() {
