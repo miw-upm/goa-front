@@ -12,6 +12,7 @@ import {EventResponse} from '../event.model';
 import {EventService} from '../event.service';
 import {EventCreationDialogComponent} from '../dialogs/event-creation-dialog.component';
 import {EventUpdateDialogComponent} from '../dialogs/event-update-dialog.component';
+import {EventCommentsComponent} from '../dialogs/event-comments.component';
 
 @Component({
     standalone: true,
@@ -69,6 +70,21 @@ export class EventsComponent {
 
     delete(event: EventResponse): void {
         this.eventService.delete(event.id).subscribe(() => this.search());
+    }
+
+    comments(event: EventResponse): void {
+        if (!event?.id) {
+            return;
+        }
+
+        this.dialog.open(EventCommentsComponent, {
+            data: {
+                eventId: event.id,
+                eventTitle: event.title
+            },
+            width: '700px',
+            maxWidth: '95vw'
+        });
     }
 
     goBack(): void {

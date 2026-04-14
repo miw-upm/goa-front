@@ -51,6 +51,11 @@
                             <mat-icon color="primary">calendar_month</mat-icon>
                         </button>
                     }
+                    @if (commentsAction) {
+                        <button mat-icon-button matSuffix (click)="onComments(item)" aria-label="Ver comentarios">
+                            <mat-icon color="primary">comment</mat-icon>
+                        </button>
+                    }
                     @if (printAction) {
                         <button mat-icon-button matSuffix (click)="onPrint(item)" aria-label="Imprimir">
                             <mat-icon color="warn">print</mat-icon>
