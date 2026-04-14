@@ -33,6 +33,7 @@ describe('IssueService', () => {
 
         requestBuilderSpy.error.and.returnValue(requestBuilderSpy);
         requestBuilderSpy.success.and.returnValue(requestBuilderSpy);
+        requestBuilderSpy.paramsFrom.and.returnValue(requestBuilderSpy);
 
         httpServiceSpy = {
             request: jasmine.createSpy('request').and.returnValue(requestBuilderSpy)
@@ -88,7 +89,7 @@ describe('IssueService', () => {
         expect(requestBuilderSpy.put).toHaveBeenCalledWith(ENDPOINTS.issues.syncById('issue-3'));
     });
 
-    it('should search issues with GET from issues endpoint', () => {
+   it('should search issues with GET from issues endpoint', () => {
         const search: IssueSearch = {
             type: IssueType.BUG,
             status: IssueStatus.PENDING
