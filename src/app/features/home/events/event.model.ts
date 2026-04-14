@@ -31,4 +31,10 @@ export interface EventCreate {
     engagementLetterId: string;
 }
 
-
+export interface EventUpdate {
+    eventDate?: string;
+    type?: EventType;
+    title?: string;
+    description?: string;
+    status?: EventStatus;
+}
