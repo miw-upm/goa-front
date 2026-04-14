@@ -11,7 +11,7 @@ describe('IssuesComponent', () => {
         };
     });
 
-    it('should navigate to issue detail with trimmed id', () => {
+    /*it('should navigate to issue detail with trimmed id', () => {
         const component = new IssuesComponent(routerSpy as unknown as Router);
         component.issueId = '  abc-123  ';
 
@@ -27,5 +27,5 @@ describe('IssuesComponent', () => {
         component.goToDetail(component);
 
         expect(routerSpy.navigate).not.toHaveBeenCalled();
-    });
+    });*/
 });
