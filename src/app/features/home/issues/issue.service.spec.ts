@@ -2,7 +2,8 @@ import {of} from 'rxjs';
 
 import {ENDPOINTS} from '@core/api/endpoints';
 import {IssueService} from './issue.service';
-import {IssueCreationRequest, IssueType} from './issue.model';
+import {IssueCreationRequest, IssueResponse, IssueStatus, IssueType} from './issue.model';
+import {IssueSearch} from "./issue-search.model";
 
 describe('IssueService', () => {
     let service: IssueService;
@@ -13,6 +14,7 @@ describe('IssueService', () => {
         get: jasmine.Spy;
         post: jasmine.Spy;
         put: jasmine.Spy;
+        paramsFrom: jasmine.Spy;
     };
 
     let httpServiceSpy: {
@@ -25,7 +27,8 @@ describe('IssueService', () => {
             success: jasmine.createSpy('success'),
             get: jasmine.createSpy('get'),
             post: jasmine.createSpy('post'),
-            put: jasmine.createSpy('put')
+            put: jasmine.createSpy('put'),
+            paramsFrom: jasmine.createSpy('paramsFrom'),
         };
 
         requestBuilderSpy.error.and.returnValue(requestBuilderSpy);
@@ -83,5 +86,32 @@ describe('IssueService', () => {
         expect(requestBuilderSpy.success).toHaveBeenCalledWith('Incidencia sincronizada correctamente');
         expect(requestBuilderSpy.error).toHaveBeenCalledWith('No se pudo sincronizar la incidencia');
         expect(requestBuilderSpy.put).toHaveBeenCalledWith(ENDPOINTS.issues.syncById('issue-3'));
+    });
+
+    it('should search issues with GET from issues endpoint', () => {
+        const search: IssueSearch = {
+            type: IssueType.BUG,
+            status: IssueStatus.PENDING
+        };
+        const expectedIssues: IssueResponse[] = [
+            {
+                id: '1',
+                title: 'Login not working',
+                type: IssueType.BUG,
+                status: IssueStatus.PENDING,
+                createdAt: '2026-04-14',
+                description: 'Users cannot login to the system'
+            },
+        ];
+
+        requestBuilderSpy.get.and.returnValue(of(expectedIssues));
+
+        service.search(search).subscribe(response => {
+            expect(response).toEqual(expectedIssues);
+        });
+
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.paramsFrom).toHaveBeenCalledWith(search);
+        expect(requestBuilderSpy.get).toHaveBeenCalledWith(ENDPOINTS.issues.root);
     });
 });
