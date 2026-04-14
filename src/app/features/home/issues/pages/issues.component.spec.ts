@@ -15,7 +15,7 @@ describe('IssuesComponent', () => {
         const component = new IssuesComponent(routerSpy as unknown as Router);
         component.issueId = '  abc-123  ';
 
-        component.goToDetail();
+        component.goToDetail(component);
 
         expect(routerSpy.navigate).toHaveBeenCalledWith(['/home/issues', 'abc-123']);
     });
@@ -24,7 +24,7 @@ describe('IssuesComponent', () => {
         const component = new IssuesComponent(routerSpy as unknown as Router);
         component.issueId = '   ';
 
-        component.goToDetail();
+        component.goToDetail(component);
 
         expect(routerSpy.navigate).not.toHaveBeenCalled();
     });
