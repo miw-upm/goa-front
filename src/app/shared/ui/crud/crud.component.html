@@ -46,6 +46,11 @@
                             <mat-icon color="primary">smart_toy</mat-icon>
                         </button>
                     }
+                    @if (eventsAction) {
+                        <button mat-icon-button matSuffix (click)="onEvents(item)" aria-label="Ver eventos">
+                            <mat-icon color="primary">calendar_month</mat-icon>
+                        </button>
+                    }
                     @if (printAction) {
                         <button mat-icon-button matSuffix (click)="onPrint(item)" aria-label="Imprimir">
                             <mat-icon color="warn">print</mat-icon>

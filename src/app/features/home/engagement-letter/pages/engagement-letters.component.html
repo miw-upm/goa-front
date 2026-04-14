@@ -4,8 +4,10 @@
 <app-crud (create)="create()" (delete)="delete($event)" (read)="read($event)" (searchAll)="search()"
           (update)="update($event)"
           (assistant)="openAssistant($event)"
+          (events)="navigateToEvents($event)"
           [data]="engagementLetters"
           [deleteAction]="true"
           [assistantAction]="true"
+          [eventsAction]="true"
           [hiddenFields]="['id']" [item]="engagementLetter" [secureDelete]="true" [title]="title">
 </app-crud>

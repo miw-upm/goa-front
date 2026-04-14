@@ -22,6 +22,8 @@ import {InvoiceService} from "./billing/invoice.service";
 import {IncomeService} from "./billing/income.service";
 import {ExpenseService} from "./billing/expense.service";
 import {ChatbotComponent} from "./chatbot/pages/chatbot.component";
+import {EventsComponent} from "./events/pages/events.component";
+import {EventService} from "./events/event.service";
 
 export const routes: Routes = [
     {
@@ -62,6 +64,13 @@ export const routes: Routes = [
                 canActivate: [RoleGuardService],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [EngagementLetterService],
+            },
+            {
+                path: 'engagement-letters/:id/events',
+                component: EventsComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [EventService],
             },
             {
                 path: 'issues',
