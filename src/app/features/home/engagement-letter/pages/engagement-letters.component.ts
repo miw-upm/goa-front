@@ -3,6 +3,7 @@ import {FormsModule} from '@angular/forms';
 import {Observable, of} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {Router} from '@angular/router';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
@@ -26,7 +27,11 @@ export class EngagementLettersComponent {
     engagementLetter: Observable<any>;
     criteria: EngagementLetterSearch
 
-    constructor(private readonly dialog: MatDialog, private readonly engagementLettersService: EngagementLetterService) {
+    constructor(
+        private readonly dialog: MatDialog,
+        private readonly engagementLettersService: EngagementLetterService,
+        private readonly router: Router
+    ) {
         this.resetSearch();
     }
 
@@ -72,6 +77,11 @@ export class EngagementLettersComponent {
             height: '80vh',
             panelClass: 'contextual-chatbot-dialog-panel'
         });
+    }
+
+    navigateToEvents(engagement: EngagementLetter): void {
+        if (!engagement?.id) return;
+        void this.router.navigate(['/home/engagement-letters', engagement.id, 'events']);
     }
 
 }

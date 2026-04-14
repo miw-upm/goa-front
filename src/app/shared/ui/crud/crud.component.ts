@@ -42,8 +42,10 @@ export class CrudComponent {
     @Input() printAction = false;
     @Input() runAction = false;
     @Input() assistantAction = false;
+    @Input() eventsAction = false;
 
     @Input() hiddenFields: string[] = [];
+    @Input() columnOrder: string[] = [];
 
     @Output() create = new EventEmitter<any>();
     @Output() read = new EventEmitter<any>();
@@ -52,6 +54,7 @@ export class CrudComponent {
     @Output() print = new EventEmitter<any>();
     @Output() run = new EventEmitter<any>();
     @Output() assistant = new EventEmitter<any>();
+    @Output() events = new EventEmitter<any>();
     @Output() searchAll = new EventEmitter<any>();
 
     dataSource = new MatTableDataSource<any>([]);
@@ -95,7 +98,15 @@ export class CrudComponent {
     }
 
     get visibleColumns(): string[] {
-        return this.columns.filter(col => !this.hiddenFields.includes(col));
+        const hidden = this.hiddenFields;
+        if (this.columnOrder.length > 0) {
+            // 1. Los columnas en el orden indicado (excluyendo las ocultas)
+            const ordered = this.columnOrder.filter(col => !hidden.includes(col) && this.columns.includes(col));
+            // 2. Columnas no mencionadas en columnOrder, también visibles, al final
+            const rest = this.columns.filter(col => !hidden.includes(col) && !this.columnOrder.includes(col));
+            return [...ordered, ...rest];
+        }
+        return this.columns.filter(col => !hidden.includes(col));
     }
 
     onCreate(): void {
@@ -150,6 +161,10 @@ export class CrudComponent {
 
     onAssistant(item: any): void {
         this.assistant.emit(item);
+    }
+
+    onEvents(item: any): void {
+        this.events.emit(item);
     }
 
     onSearch() {
