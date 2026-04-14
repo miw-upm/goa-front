@@ -11,10 +11,12 @@
         (read)="read($event)"
         (update)="update($event)"
         (delete)="delete($event)"
+        (comments)="comments($event)"
         (searchAll)="search()"
         [data]="events$"
         [item]="event$"
         [deleteAction]="true"
+        [commentsAction]="true"
         [hiddenFields]="['id', 'engagementLetterId', 'createdDate', 'comments']"
         [columnOrder]="['title','description', 'eventDate', 'type', 'status' ]"
         [title]="title">
