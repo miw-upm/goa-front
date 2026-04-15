@@ -91,3 +91,36 @@
 .state-block.error {
     color: #a94442;
 }
+
+.state-block.success {
+    color: #2f6b3b;
+}
+
+.state-block.compact {
+    min-height: auto;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.action-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.action-copy {
+    margin: 0;
+    color: #444;
+}
+
+.inline-error {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #a94442;
+}
+
+.success-meta {
+    margin: 0;
+    color: #555;
+}
