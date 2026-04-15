@@ -26,6 +26,8 @@ import {EventsComponent} from "./events/pages/events.component";
 import {EventService} from "./events/event.service";
 import {AlertsComponent} from "./alerts/pages/alerts.component";
 import {AlertService} from "./alerts/alert.service";
+import { TimelinePageComponent } from './timeline/pages/timeline-page.component';
+
 
 export const routes: Routes = [
     {
@@ -119,6 +121,12 @@ export const routes: Routes = [
             {
                 path: 'chatbot',
                 component: ChatbotComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR, Role.CUSTOMER]},
+            },
+            {
+                path: 'timeline',
+                component: TimelinePageComponent,
                 canActivate: [RoleGuardService],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR, Role.CUSTOMER]},
             },

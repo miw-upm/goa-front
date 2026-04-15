@@ -1,0 +1,40 @@
+<div class="timeline-container">
+
+    <h2>Event Timeline</h2>
+
+    <div *ngIf="loading">
+        Loading events...
+    </div>
+
+    <div *ngIf="!loading && events.length === 0">
+        No events yet for this engagement.
+    </div>
+
+    <div *ngIf="!loading && events.length > 0" class="timeline">
+
+        <div *ngFor="let event of events" class="timeline-item">
+
+            <div class="timeline-date">
+                {{ event.date | date:'medium' }}
+            </div>
+
+            <div class="timeline-content">
+
+                <h3>{{ event.title }}</h3>
+
+                <p>{{ event.description }}</p>
+
+                <span class="status">
+          Status: {{ event.status }}
+        </span>
+
+                <span class="type">
+          Type: {{ event.type }}
+        </span>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

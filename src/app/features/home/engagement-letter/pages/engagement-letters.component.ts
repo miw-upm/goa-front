@@ -89,6 +89,15 @@ export class EngagementLettersComponent {
         void this.router.navigate(['/home/engagement-letters', engagement.id, 'events']);
     }
 
+    navigateToTimeline(engagement: any): void {
+      this.router.navigate([
+        '/engagements',
+        engagement.id,
+        'timeline'
+      ]);
+    }
+
+
     navigateToAlerts(engagement: EngagementLetter): void {
         if (!engagement?.id) return;
         void this.router.navigate(['/home/engagement-letters', engagement.id, 'alerts']);
