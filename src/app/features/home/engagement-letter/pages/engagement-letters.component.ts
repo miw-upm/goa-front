@@ -89,6 +89,11 @@ export class EngagementLettersComponent {
         void this.router.navigate(['/home/engagement-letters', engagement.id, 'events']);
     }
 
+    navigateToAlerts(engagement: EngagementLetter): void {
+        if (!engagement?.id) return;
+        void this.router.navigate(['/home/engagement-letters', engagement.id, 'alerts']);
+    }
+
     generatePublicLink(engagement: EngagementLetter): void {
         if (!engagement?.id) {
             return;
