@@ -64,6 +64,10 @@ export class EngagementLettersComponent {
         this.engagementLetter = this.engagementLettersService.read(engagement.id)
     }
 
+    print(engagement: EngagementLetter) {
+        this.engagementLettersService.print(engagement.id).subscribe();
+    }
+
     openAssistant(engagement: EngagementLetter): void {
         if (!engagement?.id) {
             return;

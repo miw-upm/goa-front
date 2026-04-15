@@ -37,6 +37,12 @@ export class EngagementLetterService {
             .get(ENDPOINTS.engagementLetters.byId(id));
     }
 
+    print(id: string):Observable<void> {
+        return this.httpService
+            .request()
+            .openPdf(ENDPOINTS.engagementLetters.print(id));
+    }
+
     delete(id: string) {
         return this.httpService.request()
             .success()
@@ -64,4 +70,5 @@ export class EngagementLetterService {
         const normalizedPath = publicUrl.startsWith('/') ? publicUrl : `/${publicUrl}`;
         return `${environment.FRONT_END}${normalizedPath}`;
     }
+
 }
