@@ -2,9 +2,9 @@
     <mat-card class="public-engagement-card">
         <mat-card-header>
             <div class="title-block">
-                <div class="eyebrow">Acceso público</div>
+                <div class="eyebrow">Acceso publico</div>
                 <mat-card-title>Hoja de Encargo</mat-card-title>
-                <mat-card-subtitle>Revise la información antes de aceptar el servicio.</mat-card-subtitle>
+                <mat-card-subtitle>Revise la informacion antes de aceptar el servicio.</mat-card-subtitle>
             </div>
         </mat-card-header>
 
@@ -14,15 +14,15 @@
                     <mat-icon color="primary">hourglass_top</mat-icon>
                     <p>Cargando hoja de encargo...</p>
                 </div>
-            } @else if (errorMessage) {
+            } @else if (loadErrorMessage) {
                 <div class="state-block error">
                     <mat-icon color="warn">error</mat-icon>
-                    <p>{{ errorMessage }}</p>
+                    <p>{{ loadErrorMessage }}</p>
                 </div>
             } @else if (engagementLetter) {
                 <section class="summary-grid">
                     <div class="summary-item">
-                        <span class="label">Fecha de creación</span>
+                        <span class="label">Fecha de creacion</span>
                         <span class="value">{{ engagementLetter.creationDate | date:'longDate' }}</span>
                     </div>
                     <div class="summary-item">
@@ -51,7 +51,7 @@
                                         <div class="item-meta">Cierre: {{ procedure.closingDate | date:'mediumDate' }}</div>
                                     }
                                     @if (procedure.budget !== undefined && procedure.budget !== null) {
-                                        <div class="item-meta">Presupuesto: {{ procedure.budget }}€</div>
+                                        <div class="item-meta">Presupuesto: {{ procedure.budget }} EUR</div>
                                     }
                                 </div>
                             }
@@ -62,7 +62,7 @@
                 </section>
 
                 <section class="content-section">
-                    <h3>Métodos de pago</h3>
+                    <h3>Metodos de pago</h3>
                     @if (engagementLetter.paymentMethods?.length) {
                         <div class="item-list">
                             @for (paymentMethod of engagementLetter.paymentMethods; track paymentMethod.description) {
@@ -73,15 +73,48 @@
                             }
                         </div>
                     } @else {
-                        <p class="empty-state">No hay métodos de pago disponibles.</p>
+                        <p class="empty-state">No hay metodos de pago disponibles.</p>
+                    }
+                </section>
+
+                <mat-divider></mat-divider>
+
+                <section class="content-section action-section">
+                    <h3>Aceptacion</h3>
+                    @if (acceptance) {
+                        <div class="state-block success compact">
+                            <mat-icon color="primary">verified</mat-icon>
+                            <p>La hoja de encargo ha sido aceptada correctamente.</p>
+                            @if (acceptance.signatureDate) {
+                                <p class="success-meta">Fecha de aceptacion: {{ acceptance.signatureDate | date:'medium' }}</p>
+                            }
+                        </div>
+                    } @else {
+                        <p class="action-copy">Si esta conforme con el contenido, puede aceptar la hoja de encargo ahora.</p>
+                        @if (acceptErrorMessage) {
+                            <div class="inline-error">
+                                <mat-icon color="warn">error</mat-icon>
+                                <span>{{ acceptErrorMessage }}</span>
+                            </div>
+                        }
                     }
                 </section>
             }
         </mat-card-content>
 
-        @if (!loading && errorMessage && token) {
+        @if (!loading && loadErrorMessage && token) {
             <mat-card-actions align="end">
                 <button mat-raised-button color="primary" (click)="load()">Reintentar</button>
+            </mat-card-actions>
+        } @else if (!loading && engagementLetter && !acceptance) {
+            <mat-card-actions align="end">
+                <button mat-raised-button color="primary" (click)="accept()" [disabled]="accepting">
+                    @if (accepting) {
+                        Aceptando...
+                    } @else {
+                        Aceptar hoja de encargo
+                    }
+                </button>
             </mat-card-actions>
         }
     </mat-card>

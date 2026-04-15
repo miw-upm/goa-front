@@ -9,6 +9,7 @@ import {finalize} from 'rxjs/operators';
 
 import {PublicEngagementLetterService} from '../public-engagement-letter.service';
 import {PublicEngagementLetter} from '../models/public-engagement-letter.model';
+import {PublicEngagementLetterAcceptResponse} from '../models/public-engagement-letter-accept-response.model';
 
 @Component({
     standalone: true,
@@ -26,8 +27,11 @@ import {PublicEngagementLetter} from '../models/public-engagement-letter.model';
 export class PublicEngagementLetterAccessComponent {
     token: string | null;
     engagementLetter?: PublicEngagementLetter;
-    errorMessage?: string;
     loading = false;
+    accepting = false;
+    loadErrorMessage?: string;
+    acceptErrorMessage?: string;
+    acceptance?: PublicEngagementLetterAcceptResponse;
 
     constructor(
         private readonly route: ActivatedRoute,
@@ -39,12 +43,13 @@ export class PublicEngagementLetterAccessComponent {
 
     load(): void {
         if (!this.token) {
-            this.errorMessage = 'El enlace no incluye un token válido.';
+            this.loadErrorMessage = 'El enlace no incluye un token valido.';
             return;
         }
 
         this.loading = true;
-        this.errorMessage = undefined;
+        this.loadErrorMessage = undefined;
+        this.acceptErrorMessage = undefined;
         this.publicEngagementLetterService.readByToken(this.token)
             .pipe(finalize(() => {
                 this.loading = false;
@@ -55,7 +60,28 @@ export class PublicEngagementLetterAccessComponent {
                 },
                 error: error => {
                     this.engagementLetter = undefined;
-                    this.errorMessage = error?.message || 'No se ha podido cargar la hoja de encargo.';
+                    this.loadErrorMessage = error?.message || 'No se ha podido cargar la hoja de encargo.';
+                }
+            });
+    }
+
+    accept(): void {
+        if (!this.token || this.accepting || this.acceptance) {
+            return;
+        }
+
+        this.accepting = true;
+        this.acceptErrorMessage = undefined;
+        this.publicEngagementLetterService.accept(this.token)
+            .pipe(finalize(() => {
+                this.accepting = false;
+            }))
+            .subscribe({
+                next: acceptance => {
+                    this.acceptance = acceptance;
+                },
+                error: error => {
+                    this.acceptErrorMessage = error?.message || 'No se ha podido aceptar la hoja de encargo.';
                 }
             });
     }
