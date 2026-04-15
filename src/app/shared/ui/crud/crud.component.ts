@@ -43,6 +43,7 @@ export class CrudComponent {
     @Input() runAction = false;
     @Input() assistantAction = false;
     @Input() eventsAction = false;
+    @Input() alertsAction = false;
     @Input() commentsAction = false;
     @Input() publicLinkAction = false;
 
@@ -57,6 +58,7 @@ export class CrudComponent {
     @Output() run = new EventEmitter<any>();
     @Output() assistant = new EventEmitter<any>();
     @Output() events = new EventEmitter<any>();
+    @Output() alerts = new EventEmitter<any>();
     @Output() comments = new EventEmitter<any>();
     @Output() publicLink = new EventEmitter<any>();
     @Output() searchAll = new EventEmitter<any>();
@@ -169,6 +171,10 @@ export class CrudComponent {
 
     onEvents(item: any): void {
         this.events.emit(item);
+    }
+
+    onAlerts(item: any): void {
+        this.alerts.emit(item);
     }
 
     onComments(item: any): void {
