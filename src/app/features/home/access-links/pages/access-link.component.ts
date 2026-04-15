@@ -7,6 +7,7 @@ import {CrudComponent} from "@shared/ui/crud/crud.component";
 import {CopyDialogComponent} from "@shared/ui/dialogs/copy-dialog.component";
 import {AccessLinkService} from "../access-link.service";
 import {AccessLink} from "../acces-link.model";
+import {AuthService} from "@core/auth/auth.service";
 
 @Component({
     standalone: true,
@@ -15,11 +16,14 @@ import {AccessLink} from "../acces-link.model";
     templateUrl: 'access-link.component.html'
 })
 export class AccessLinkComponent {
+    visible: boolean = true;
     title = 'Access Links';
+
     accessLinks: Observable<AccessLink[]> = of([]);
     accessLink: Observable<any>;
 
-    constructor(private readonly dialog: MatDialog, private readonly accessLinkService: AccessLinkService) {
+    constructor(private readonly dialog: MatDialog, private readonly accessLinkService: AccessLinkService, private readonly auth:AuthService) {
+        this.visible = auth.isAdmin();
     }
 
     search(): void {
