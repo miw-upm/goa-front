@@ -56,6 +56,11 @@
                             <mat-icon color="primary">comment</mat-icon>
                         </button>
                     }
+                    @if (publicLinkAction) {
+                        <button mat-icon-button matSuffix (click)="onPublicLink(item)" aria-label="Generar enlace público">
+                            <mat-icon color="primary">link</mat-icon>
+                        </button>
+                    }
                     @if (printAction) {
                         <button mat-icon-button matSuffix (click)="onPrint(item)" aria-label="Imprimir">
                             <mat-icon color="warn">print</mat-icon>

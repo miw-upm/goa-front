@@ -6,6 +6,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {Router} from '@angular/router';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
+import {CopyDialogComponent} from '@shared/ui/dialogs/copy-dialog.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
 import {EngagementLetterService} from '../engagement-letter.service';
 import {EngagementLetterSearch} from '../models/engagement-letter-search.model';
@@ -82,6 +83,21 @@ export class EngagementLettersComponent {
     navigateToEvents(engagement: EngagementLetter): void {
         if (!engagement?.id) return;
         void this.router.navigate(['/home/engagement-letters', engagement.id, 'events']);
+    }
+
+    generatePublicLink(engagement: EngagementLetter): void {
+        if (!engagement?.id) {
+            return;
+        }
+        this.engagementLettersService.createPublicAccessToken(engagement.id).subscribe(publicAccessToken =>
+            this.dialog.open(CopyDialogComponent, {
+                width: '700px',
+                data: {
+                    title: 'Enlace público generado',
+                    message: publicAccessToken.publicUrl
+                }
+            })
+        );
     }
 
 }
