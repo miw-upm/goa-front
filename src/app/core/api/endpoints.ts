@@ -3,6 +3,7 @@ import {environment} from "@env";
 const USERS_ROOT = `${environment.REST_USER}/users`;
 const ACCESS_LINK_ROOT = `${environment.REST_USER}/access-link`;
 const ENGAGEMENT_LETTER_ROOT = `${environment.REST_ENGAGEMENT}/engagement-letters`;
+const PUBLIC_ENGAGEMENT_LETTER_ROOT = `${environment.REST_ENGAGEMENT}/public/engagement-letters`;
 const LEGAL_PROCEDURE_TEMPLATE_ROOT = `${environment.REST_ENGAGEMENT}/legal-procedure-templates`;
 const LEGAL_TASK_ROOT = `${environment.REST_ENGAGEMENT}/legal-tasks`;
 const EVENT_ROOT = `${environment.REST_ENGAGEMENT}/events`;
@@ -37,6 +38,14 @@ export const ENDPOINTS = {
             `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}`,
         publicAccessToken: (id: string) =>
             `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/public-access-token`,
+    },
+
+    publicEngagementLetters: {
+        root: PUBLIC_ENGAGEMENT_LETTER_ROOT,
+        access: () =>
+            `${PUBLIC_ENGAGEMENT_LETTER_ROOT}/access`,
+        accept: () =>
+            `${PUBLIC_ENGAGEMENT_LETTER_ROOT}/accept`,
     },
 
     legalProcedureTemplates: {
