@@ -7,12 +7,13 @@
 
 
 <app-crud
+        (create)="openCreateDialog()"
         (searchAll)="search()"
         [data]="alerts$"
         [readAction]="false"
         [updateAction]="false"
         [deleteAction]="false"
-        [createAction]="false"
+        [createAction]="true"
         [hiddenFields]="['id']"
         [columnOrder]="['title', 'dueDate', 'status']"
         [title]="title">

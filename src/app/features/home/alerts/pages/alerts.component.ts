@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {DatePipe} from '@angular/common';
@@ -8,6 +9,7 @@ import {map} from 'rxjs/operators';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {AlertService} from '../alert.service';
+import {AlertCreationDialogComponent} from '../dialogs/alert-creation-dialog.component';
 
 @Component({
     standalone: true,
@@ -23,6 +25,7 @@ export class AlertsComponent {
     constructor(
         private readonly route: ActivatedRoute,
         private readonly router: Router,
+        private readonly dialog: MatDialog,
         private readonly alertService: AlertService,
         private readonly datePipe: DatePipe
     ) {
@@ -43,5 +46,14 @@ export class AlertsComponent {
 
     goBack(): void {
         void this.router.navigate(['/home/engagement-letters']);
+    }
+
+    openCreateDialog(): void {
+        this.dialog.open(AlertCreationDialogComponent, {
+            data: {
+                engagementLetterId: this.engagementLetterId
+            },
+            width: '600px'
+        }).afterClosed().subscribe(() => this.search());
     }
 }
