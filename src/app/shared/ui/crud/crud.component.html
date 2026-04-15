@@ -51,6 +51,11 @@
                             <mat-icon color="primary">calendar_month</mat-icon>
                         </button>
                     }
+                    @if (alertsAction) {
+                        <button mat-icon-button matSuffix (click)="onAlerts(item)" aria-label="Ver alertas">
+                            <mat-icon color="primary">notifications</mat-icon>
+                        </button>
+                    }
                     @if (commentsAction) {
                         <button mat-icon-button matSuffix (click)="onComments(item)" aria-label="Ver comentarios">
                             <mat-icon color="primary">comment</mat-icon>

@@ -1,0 +1,47 @@
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {DatePipe} from '@angular/common';
+import {Observable, of} from 'rxjs';
+import {map} from 'rxjs/operators';
+
+import {CrudComponent} from '@shared/ui/crud/crud.component';
+import {AlertService} from '../alert.service';
+
+@Component({
+    standalone: true,
+    providers: [AlertService, DatePipe],
+    imports: [CrudComponent, MatButtonModule, MatIconModule],
+    templateUrl: 'alerts.component.html'
+})
+export class AlertsComponent {
+    title = 'Alertas de Hoja de Encargo';
+    engagementLetterId: string;
+    alerts$: Observable<any[]> = of([]);
+
+    constructor(
+        private readonly route: ActivatedRoute,
+        private readonly router: Router,
+        private readonly alertService: AlertService,
+        private readonly datePipe: DatePipe
+    ) {
+        this.engagementLetterId = this.route.snapshot.paramMap.get('id');
+        this.search();
+    }
+
+    search(): void {
+        this.alerts$ = this.alertService.findByEngagementLetterId(this.engagementLetterId).pipe(
+            map(alerts => alerts.map(alert => ({
+                ...alert,
+                dueDate: alert.dueDate
+                    ? this.datePipe.transform(alert.dueDate, 'dd/MM/yyyy')
+                    : null
+            })))
+        );
+    }
+
+    goBack(): void {
+        void this.router.navigate(['/home/engagement-letters']);
+    }
+}
