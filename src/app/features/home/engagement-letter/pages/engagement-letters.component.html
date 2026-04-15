@@ -5,9 +5,11 @@
           (update)="update($event)"
           (assistant)="openAssistant($event)"
           (events)="navigateToEvents($event)"
+          (publicLink)="generatePublicLink($event)"
           [data]="engagementLetters"
           [deleteAction]="true"
           [assistantAction]="true"
           [eventsAction]="true"
+          [publicLinkAction]="true"
           [hiddenFields]="['id']" [item]="engagementLetter" [secureDelete]="true" [title]="title">
 </app-crud>

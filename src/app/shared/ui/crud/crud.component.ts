@@ -44,6 +44,7 @@ export class CrudComponent {
     @Input() assistantAction = false;
     @Input() eventsAction = false;
     @Input() commentsAction = false;
+    @Input() publicLinkAction = false;
 
     @Input() hiddenFields: string[] = [];
     @Input() columnOrder: string[] = [];
@@ -57,6 +58,7 @@ export class CrudComponent {
     @Output() assistant = new EventEmitter<any>();
     @Output() events = new EventEmitter<any>();
     @Output() comments = new EventEmitter<any>();
+    @Output() publicLink = new EventEmitter<any>();
     @Output() searchAll = new EventEmitter<any>();
 
     dataSource = new MatTableDataSource<any>([]);
@@ -171,6 +173,10 @@ export class CrudComponent {
 
     onComments(item: any): void {
         this.comments.emit(item);
+    }
+
+    onPublicLink(item: any): void {
+        this.publicLink.emit(item);
     }
 
     onSearch() {
