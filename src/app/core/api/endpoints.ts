@@ -35,6 +35,8 @@ export const ENDPOINTS = {
         root: ENGAGEMENT_LETTER_ROOT,
         byId: (id: string) =>
             `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}`,
+        publicAccessToken: (id: string) =>
+            `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/public-access-token`,
     },
 
     legalProcedureTemplates: {
