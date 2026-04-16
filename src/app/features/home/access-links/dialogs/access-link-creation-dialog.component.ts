@@ -9,7 +9,7 @@ import {FormFieldComponent} from "@shared/ui/inputs/forms/field.component";
 import {ClipboardComponent} from "@shared/ui/inputs/forms/clipboard.component";
 import {SearchByUserComponent} from "@features/shared/ui/search-by-user.component";
 import {User} from "@features/shared/models/user.model";
-import {AccessLink} from "../acces-link.model";
+import {AccessLink} from "@features/shared/models/acces-link.model";
 import {AccessLinkService} from "../access-link.service";
 
 @Component({
