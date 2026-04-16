@@ -86,5 +86,12 @@ export class TimelinePageComponent implements OnInit {
     this.loadTimeline();
   }
 
-
+    goBackToEvents(): void {
+      this.router.navigate([
+        '/home',
+        'engagement-letters',
+        this.engagementLetterId,
+        'events'
+      ]);
+    }
 }
