@@ -8,10 +8,10 @@
           (alerts)="navigateToAlerts($event)"
           (publicLink)="generatePublicLink($event)"
           [data]="engagementLetters"
-          [deleteAction]="true" [printAction]= "true"
+          [deleteAction]=deleteVisibility [printAction]= "true"
           [assistantAction]="true"
           [eventsAction]="true"
           [alertsAction]="true"
           [publicLinkAction]="true"
-          [hiddenFields]="['id']" [item]="engagementLetter" [secureDelete]="true" [title]="title">
+          [hiddenFields]="['id','attachments','paymentMethods']" [item]="engagementLetter" [secureDelete]="true" [title]="title">
 </app-crud>
