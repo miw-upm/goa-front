@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 
 import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
-import {AlertCreate, AlertNotificationConfig, AlertSummary} from './models/alert.model';
+import {AlertCreate, AlertDetail, AlertNotificationConfig, AlertSummary} from './models/alert.model';
 
 @Injectable()
 export class AlertService {
@@ -13,6 +13,11 @@ export class AlertService {
     findByEngagementLetterId(engagementLetterId: string): Observable<AlertSummary[]> {
         return this.httpService.request()
             .get<AlertSummary[]>(ENDPOINTS.alerts.byEngagementLetterId(engagementLetterId));
+    }
+
+    read(alertId: string): Observable<AlertDetail> {
+        return this.httpService.request()
+            .get<AlertDetail>(ENDPOINTS.alerts.byId(alertId));
     }
 
     create(alert: AlertCreate): Observable<any> {

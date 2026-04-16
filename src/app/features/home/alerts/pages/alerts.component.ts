@@ -59,18 +59,23 @@ export class AlertsComponent {
     }
 
     openNotificationDialog(alert: any): void {
-        this.dialog.open(AlertNotificationDialogComponent, {
-            data: {
-                alertId: alert.id
-            },
-            width: '600px'
-        }).afterClosed().subscribe(result => {
-            if (!result) {
-                return;
-            }
+        this.alertService.read(alert.id).subscribe(alertDetail => {
+            this.dialog.open(AlertNotificationDialogComponent, {
+                data: {
+                    alertId: alert.id,
+                    selectedOffsets: (alertDetail.notifications ?? [])
+                        .map(notification => notification.offsetMinutes)
+                        .filter((offset): offset is number => offset !== undefined && offset !== null)
+                },
+                width: '600px'
+            }).afterClosed().subscribe(result => {
+                if (!result) {
+                    return;
+                }
 
-            this.alertService.configureNotifications(alert.id, result)
-                .subscribe(() => this.search());
+                this.alertService.configureNotifications(alert.id, result)
+                    .subscribe(() => this.search());
+            });
         });
     }
 }

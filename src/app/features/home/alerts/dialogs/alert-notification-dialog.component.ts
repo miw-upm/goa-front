@@ -15,6 +15,7 @@ import {AlertNotificationConfig} from '../models/alert.model';
 
 interface AlertNotificationDialogData {
     alertId: string;
+    selectedOffsets: number[];
 }
 
 @Component({
@@ -43,6 +44,7 @@ export class AlertNotificationDialogComponent {
         @Inject(MAT_DIALOG_DATA) readonly data: AlertNotificationDialogData,
         private readonly dialogRef: MatDialogRef<AlertNotificationDialogComponent>
     ) {
+        this.selectedOffsets = data.selectedOffsets ?? [];
     }
 
     toggleOffset(offset: number, checked: boolean): void {
