@@ -13,7 +13,6 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatListModule} from '@angular/material/list';
 
-import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {FormListComponent} from '@shared/ui/inputs/forms/list.component';
 import {SearchByUserComponent} from '@features/shared/ui/search-by-user.component';
@@ -52,7 +51,6 @@ import {PaymentMethod} from '../models/payment-method.model';
         SearchByUserComponent,
         SearchByLegalProcedureTemplateComponent,
         MatTooltipModule,
-        FormFieldComponent,
         AppDateFieldComponent,
         FormListComponent
     ],
@@ -77,10 +75,7 @@ export class EngagementLetterCreationUpdatingDialogComponent {
             owner: undefined,
             attachments: [],
             legalProcedures: [],
-            paymentMethods: [{
-                description: 'Provisión de Fondos',
-                percentage: 40
-            }, {description: 'Al finalizar el proceso', percentage: 60}],
+            paymentMethods: [{description: 'Al finalizar el proceso', percentage: "Resto"}],
             acceptanceDocuments: undefined,
             ...(data || {})
         };
@@ -122,9 +117,7 @@ export class EngagementLetterCreationUpdatingDialogComponent {
     invalid(): boolean {
         const owner = this.checkInvalid(this.engagementLetter.owner?.mobile);
         const procedures = this.checkInvalid(this.engagementLetter.legalProcedures);
-        const payments = this.checkInvalid(this.engagementLetter.paymentMethods);
-        const validSum = this.isPaymentTotalValid();
-        return owner || procedures || payments || !validSum;
+        return owner || procedures;
     }
 
 
@@ -136,12 +129,6 @@ export class EngagementLetterCreationUpdatingDialogComponent {
             (typeof attr === 'number' && isNaN(attr)) ||
             (Array.isArray(attr) && attr.length === 0)
         );
-    }
-
-    isPaymentTotalValid(): boolean {
-        const payments = this.engagementLetter.paymentMethods ?? [];
-        const total = payments.reduce((sum, p) => sum + (p.percentage || 0), 0);
-        return total === 100;
     }
 
     addAttachment(user: User) {
@@ -168,7 +155,15 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         }
     }
 
-    addLegalProcedureDialog(): void {
+    addPaymentMethod(): void {
+        this.engagementLetter.paymentMethods.push({percentage: '', description: ''});
+    }
+
+    removePaymentMethod(index: number): void {
+        this.engagementLetter.paymentMethods.splice(index, 1);
+    }
+
+    addPaymentMethodDialog(): void {
         this.dialog.open(PaymentMethodDialogComponent).afterClosed().subscribe((result: PaymentMethod | undefined) => {
             if (result) {
                 if (!this.engagementLetter.paymentMethods) {

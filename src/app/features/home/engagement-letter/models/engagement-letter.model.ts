@@ -12,5 +12,6 @@ export interface EngagementLetter {
     attachments?: User[];
     legalProcedures?: LegalProcedure[];
     paymentMethods?: PaymentMethod[];
+    legalClause?: string;
     acceptanceDocuments?: AcceptanceDocument[];
 }

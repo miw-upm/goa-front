@@ -1,29 +1,20 @@
 <h4 mat-dialog-title>{{ title }}</h4>
 <mat-dialog-content>
-    <app-form-field
-        #discount
-        [(value)]="engagementLetter.discount"
-        [max]="100"
-        [min]="0"
-        [step]="1"
-        errorMessage="Porcentaje, 0..100"
-        icon="euro"
-        label="Descuento"
-        type="number"
-    />
     @if (!isCreate()) {
-        <app-form-date [(value)]="engagementLetter.creationDate" label="Fecha de Creación" [disabled]="true"/>
-        <app-form-date [(value)]="engagementLetter.closingDate" label="Fecha de Cierre"/>
+        <div class="dates-row">
+            <app-form-date [(value)]="engagementLetter.creationDate" label="Fecha de Creación" [disabled]="true"/>
+            <app-form-date [(value)]="engagementLetter.closingDate" label="Fecha de Cierre"/>
+        </div>
     }
     <fieldset class="owner-fieldset">
         <legend>Responsable</legend>
-        <app-search-by-user [(user)]="engagementLetter.owner" class="full-width"></app-search-by-user>
+        <app-search-by-user [(user)]="engagementLetter.owner" title="Buscar cliente" class="full-width"></app-search-by-user>
         <app-form-list [(items)]="ownerAsArray"
                        [keyView]="['mobile','familyName','firstName']"></app-form-list>
     </fieldset>
     <fieldset class="owner-fieldset">
         <legend>Resto de clientes</legend>
-        <app-search-by-user (userChange)="addAttachment($event)" class="full-width"></app-search-by-user>
+        <app-search-by-user (userChange)="addAttachment($event)" title="Buscar cliente" class="full-width"></app-search-by-user>
         <app-form-list [(items)]="engagementLetter.attachments"
                        [keyView]="['mobile','familyName','firstName']"></app-form-list>
     </fieldset>
@@ -37,25 +28,48 @@
     </fieldset>
     <fieldset class="owner-fieldset">
         <legend>Métodos de pago</legend>
-        <button (click)="addLegalProcedureDialog()" mat-mini-fab>
-            <mat-icon>add</mat-icon>
-        </button>
-        @if (!isPaymentTotalValid()) {
-            <span class="payment-error"> Error: total debe ser 100%</span>
+        <div class="payment-row">
+            <mat-form-field appearance="outline" class="percentage-field">
+                <mat-label>Descuento</mat-label>
+                <input matInput type="number" [(ngModel)]="engagementLetter.discount"
+                       min="0" max="100" step="1">
+                <span matSuffix>%</span>
+            </mat-form-field>
+            <button mat-icon-button color="primary" (click)="addPaymentMethod()">
+                <mat-icon>add_circle</mat-icon>
+            </button>
+        </div>
+        @for (method of engagementLetter.paymentMethods; track method; let i = $index) {
+            <div class="payment-row">
+                <mat-form-field appearance="outline" class="percentage-field">
+                    <mat-label>Porcentaje</mat-label>
+                    <input matInput [(ngModel)]="method.percentage">
+                    <button mat-icon-button matSuffix color="warn" (click)="removePaymentMethod(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="description-field">
+                    <mat-label>Descripción</mat-label>
+                    <input matInput [(ngModel)]="method.description">
+                </mat-form-field>
+            </div>
         }
-        <app-form-list [(items)]="engagementLetter.paymentMethods"
-                       [keyView]="['percentage','description']"></app-form-list>
     </fieldset>
-
+    <fieldset class="owner-fieldset">
+        <legend>Cláusula Legal</legend>
+        <mat-form-field appearance="outline" class="full-width">
+            <textarea matInput [(ngModel)]="engagementLetter.legalClause" rows="5"></textarea>
+        </mat-form-field>
+    </fieldset>
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Close</button>
-    @if (isCreate()) {
-        <button (click)="create()" [disabled]="formInvalid(discount.ngModel) || invalid()" color="primary"
+    @if (engagementLetter.id === undefined) {
+        <button (click)="create()" [disabled]="invalid()" color="primary"
                 mat-raised-button>Create
         </button>
     } @else {
-        <button (click)="update()" [disabled]="formInvalid(discount.ngModel) || invalid()" color="primary"
+        <button (click)="update()" [disabled]="invalid()" color="primary"
                 mat-raised-button>Update
         </button>
     }
