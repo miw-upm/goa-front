@@ -15,6 +15,7 @@ export class SearchByUserComponent {
     users: Observable<User[]> = of([]);
 
     @Input() user: User;
+    @Input() title: string = 'Search by User';
     @Output() userChange = new EventEmitter<User>();
 
     constructor(private readonly sharedUserService: SharedUserService) {

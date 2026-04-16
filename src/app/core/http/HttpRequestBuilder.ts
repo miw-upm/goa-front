@@ -7,7 +7,7 @@ import {catchError, map} from 'rxjs/operators';
 export class HttpRequestBuilder {
     static readonly CONNECTION_REFUSE = 0;
     static readonly UNAUTHORIZED = 401;
-    private static readonly SNACK_SUCCESS_DURATION = 1000;
+    private static readonly SNACK_SUCCESS_DURATION = 7000;
     private static readonly SNACK_ERROR_DURATION = 7000;
 
     private successNotification: string | undefined;

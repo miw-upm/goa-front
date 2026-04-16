@@ -1,0 +1,24 @@
+<div class="events-toolbar">
+    <button (click)="goBack()" mat-raised-button>
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Hojas de Encargo
+    </button>
+</div>
+
+
+<app-crud
+        (create)="create()"
+        (read)="read($event)"
+        (update)="update($event)"
+        (delete)="delete($event)"
+        (comments)="comments($event)"
+        (searchAll)="search()"
+        [data]="events$"
+        [item]="event$"
+        [deleteAction]="true"
+        [commentsAction]="true"
+        [hiddenFields]="['id', 'engagementLetterId', 'createdDate', 'comments']"
+        [columnOrder]="['title','description', 'eventDate', 'type', 'status' ]"
+        [title]="title">
+</app-crud>
+

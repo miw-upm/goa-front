@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>Comentarios del evento</h2>
+
+<mat-dialog-content>
+
+    <p *ngIf="eventTitle">{{ eventTitle }}</p>
+
+    <!-- INPUT -->
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Añadir comentario</mat-label>
+
+        <textarea
+                matInput
+                rows="3"
+                [formControl]="commentControl">
+        </textarea>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="addComment()" [disabled]="submitting">
+        Añadir comentario
+    </button>
+
+    <hr />
+
+    <!-- LISTA -->
+    <div *ngIf="loading">Cargando...</div>
+
+    <div *ngFor="let comment of comments">
+        <p>{{ comment.content }}</p>
+        <small>{{ comment.createdDate | date:'short' }}</small>
+
+        <button mat-button color="warn" (click)="deleteComment(comment)">
+            Eliminar
+        </button>
+
+        <hr />
+    </div>
+
+    <p *ngIf="!loading && comments.length === 0">
+        No hay comentarios
+    </p>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>

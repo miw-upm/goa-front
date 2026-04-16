@@ -4,47 +4,56 @@ import {Observable, of} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 
 import {CrudComponent} from "@shared/ui/crud/crud.component";
-import {InfoDialogComponent} from "@shared/ui/dialogs/info-dialog.component";
 import {AccessLinkService} from "../access-link.service";
-import {AccessLink} from "../acces-link.model";
+import {AccessLink} from "@features/shared/models/acces-link.model";
+import {AuthService} from "@core/auth/auth.service";
+import {AutoCloseDialogComponent} from "@shared/ui/dialogs/auto-close-dialog.component";
+import {MatSlideToggle} from "@angular/material/slide-toggle";
+import {AccessLinkSearch} from "./access-link-search.model";
+import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
 
 @Component({
     standalone: true,
     providers: [AccessLinkService],
-    imports: [FormsModule, CrudComponent],
+    imports: [FormsModule, CrudComponent, MatSlideToggle, FilterInputComponent],
     templateUrl: 'access-link.component.html'
 })
 export class AccessLinkComponent {
+    visible: boolean = true;
     title = 'Access Links';
+    criteria: AccessLinkSearch;
+
     accessLinks: Observable<AccessLink[]> = of([]);
     accessLink: Observable<any>;
 
-    constructor(private readonly dialog: MatDialog, private readonly accessLinkService: AccessLinkService) {
+    constructor(private readonly dialog: MatDialog, private readonly accessLinkService: AccessLinkService, private readonly auth:AuthService) {
+        this.visible = auth.isAdmin();
+        this.resetSearch();
+    }
+
+    resetSearch(): void {
+        this.criteria = {expired: false, mobile: undefined, scope: undefined};
     }
 
     search(): void {
-        this.accessLinks = this.accessLinkService.search();
+        this.accessLinks = this.accessLinkService.search(this.criteria);
     }
 
-    delete(accessLink: any) {
+    delete(accessLink: AccessLink) {
         this.accessLinkService.delete(accessLink.id).subscribe(
             () => this.search()
         )
 
     }
 
-    read(accessLink: any): void {
+    read(accessLink: AccessLink): void {
         this.accessLink = this.accessLinkService.read(accessLink.id);
     }
 
-    run(accessLink: any): void {
-        const link = this.accessLinkService.createLink(accessLink);
-        this.dialog.open(InfoDialogComponent, {
-            width: '1200px',
-            data: {
-                title: 'Access link',
-                message: link
-            }
+    viewLink(accessLink: AccessLink): void {
+        navigator.clipboard.writeText(this.accessLinkService.buildAccessUrl(accessLink));
+        this.dialog.open(AutoCloseDialogComponent, {
+            data: 'Link de acceso copiado'
         });
     }
 

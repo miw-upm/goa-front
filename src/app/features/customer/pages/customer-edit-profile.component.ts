@@ -4,7 +4,7 @@ import {FormsModule, NgModel} from "@angular/forms";
 import {Observable, of} from "rxjs";
 import {MatCardModule} from "@angular/material/card";
 import {MatOptionModule} from "@angular/material/core";
-import {MatDialogModule} from "@angular/material/dialog";
+import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -46,10 +46,10 @@ export class CustomerEditProfileComponent {
     token: string;
     provinces: Observable<string[]>;
     userDocumentTypes: Observable<string[]> = of(Object.values(UserDocumentType));
-    acceptsPromotions: boolean
+    acceptsPromotions: boolean;
 
     constructor(private readonly customerService: CustomerService, private readonly sharedUserService: SharedUserService,
-                private readonly route: ActivatedRoute) {
+                private readonly route: ActivatedRoute, private readonly dialog: MatDialog) {
         this.token = this.route.snapshot.paramMap.get("token");
         this.user = {mobile: this.route.snapshot.paramMap.get('mobile'), firstName: null}
         this.oldMobile = this.user.mobile;
@@ -60,10 +60,10 @@ export class CustomerEditProfileComponent {
 
     update(): void {
         this.customerService
-            .updateWithToken(this.oldMobile, this.user, this.token).subscribe(user => this.user = user);
+            .updateWithToken(this.oldMobile, this.user, this.token).subscribe(user => this.user = user  );
     }
 
     formInvalid(...controls: NgModel[]): boolean {
-        return controls.some(ctrl => ctrl.invalid && (ctrl.dirty || ctrl.touched));
+        return controls.some(ctrl => ctrl.invalid);
     }
 }

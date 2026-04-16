@@ -15,7 +15,9 @@ export class CustomerService {
     }
 
     updateWithToken(oldMobile: string, user: User, token: string): Observable<User> {
-        return this.httpService.request().success().put(ENDPOINTS.users.byMobileAndToken(oldMobile, token), user);
+        return this.httpService.request()
+            .success(" PERFIL ACTUALIZADO!!! Si necesita cambiarlo, puede hacerlo, pero recuerde que el enlace caduca en 7 días.")
+            .put(ENDPOINTS.users.byMobileAndToken(oldMobile, token), user);
     }
 
 }

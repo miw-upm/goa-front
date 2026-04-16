@@ -26,7 +26,7 @@
         <mat-icon>groups</mat-icon>
         <span>Usuarios</span>
     </button>
-    <button [matMenuTriggerFor]="accessLinks" mat-menu-item>
+    <button mat-menu-item routerLink="/home/access-links">
         <mat-icon>language</mat-icon>
         <span>Links de Acceso</span>
     </button>
@@ -38,19 +38,17 @@
         <mat-icon>support_agent</mat-icon>
         <span>Incidencias</span>
     </button>
+    <button [matMenuTriggerFor]="billingMenu" mat-menu-item>
+        <mat-icon>request_quote</mat-icon>
+        <span>Facturación</span>
+    </button>
+    <button mat-menu-item routerLink="/home/chatbot">
+        <mat-icon>smart_toy</mat-icon>
+        <span>Asistente IA</span>
+    </button>
     <button (click)="logout()" mat-menu-item>
         <mat-icon>logout</mat-icon>
         <span>Logout</span>
-    </button>
-</mat-menu>
-<mat-menu #accessLinks="matMenu">
-    <button mat-menu-item routerLink="/home/access-links">
-        <mat-icon>vpn_lock_2</mat-icon>
-        <span>Links de Acceso</span>
-    </button>
-    <button (click)="createAccessLink()" mat-menu-item>
-        <mat-icon>playlist_add</mat-icon>
-        <span>Crear Link de Edición de Perfil</span>
     </button>
 </mat-menu>
 <mat-menu #engagementLetters="matMenu">
@@ -75,6 +73,20 @@
     <button (click)="createIssue()" mat-menu-item>
         <mat-icon>add_circle</mat-icon>
         <span>Crear incidencia</span>
+    </button>
+</mat-menu>
+<mat-menu #billingMenu="matMenu">
+    <button mat-menu-item routerLink="/home/invoices">
+        <mat-icon>document_scanner</mat-icon>
+        <span>Facturas</span>
+    </button>
+    <button mat-menu-item routerLink="/home/incomes">
+        <mat-icon>trending_up</mat-icon>
+        <span>Ingresos</span>
+    </button>
+    <button mat-menu-item routerLink="/home/expenses">
+        <mat-icon>trending_down</mat-icon>
+        <span>Gastos</span>
     </button>
 </mat-menu>
 <router-outlet></router-outlet>

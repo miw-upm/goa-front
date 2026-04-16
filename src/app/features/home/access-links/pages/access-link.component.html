@@ -1,3 +1,8 @@
-<app-crud (delete)="delete($event)" (read)=read($event) (run)="run($event)" (searchAll)="search()"
-          [createAction]="false" [data]="accessLinks" [deleteAction]="true" [item]="accessLink"
-          [runAction]="true" [title]="title" [updateAction]="false"></app-crud>
+<mat-slide-toggle [(ngModel)]="criteria.expired">Expirado sin uso</mat-slide-toggle>
+<app-filter-input [(value)]="criteria.mobile" title="Móvil" (enter)="search()"></app-filter-input>
+<app-filter-input [(value)]="criteria.scope" title="Alcance del link" (enter)="search()"></app-filter-input>
+
+<app-crud (delete)="delete($event)" (read)=read($event) (publicLink)="viewLink($event)" (searchAll)="search()"
+          [createAction]="false" [data]="accessLinks" [deleteAction]=visible [item]="accessLink"
+          [publicLinkAction]="true" [title]="title" [updateAction]="false"
+          [hiddenFields]="['id','document','createdAt']" ></app-crud>

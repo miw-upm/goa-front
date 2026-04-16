@@ -1,0 +1,52 @@
+<h4 mat-dialog-title>{{ title }}</h4>
+<mat-dialog-content>
+    <mat-form-field class="full-width">
+        <mat-label>Id de Hoja de Encargo</mat-label>
+        <mat-select [(ngModel)]="expense.engagementId">
+            @for (engagementId of (engagementIds | async); track engagementId) {
+                <mat-option [value]="engagementId">{{ engagementId }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
+    <app-form-field
+        #amountNg
+        [(value)]="expense.amount"
+        [min]="0.01"
+        [required]="true"
+        [step]="0.01"
+        errorMessage="Obligatorio y mayor que 0"
+        label="Importe"
+        type="number"/>
+
+    <app-form-date
+        [(value)]="expenseDate"
+        label="Fecha"/>
+
+    <app-form-field
+        #descriptionNg
+        [(value)]="expense.description"
+        [required]="true"
+        errorMessage="Obligatorio"
+        label="Descripcion"/>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Close</button>
+    @if (isCreate()) {
+        <button
+            (click)="create()"
+            [disabled]="!canSubmit() || formInvalid(amountNg.ngModel, descriptionNg.ngModel)"
+            color="primary"
+            mat-raised-button>
+            Create
+        </button>
+    } @else {
+        <button
+            (click)="update()"
+            [disabled]="!canSubmit() || formInvalid(amountNg.ngModel, descriptionNg.ngModel)"
+            color="primary"
+            mat-raised-button>
+            Update
+        </button>
+    }
+</mat-dialog-actions>

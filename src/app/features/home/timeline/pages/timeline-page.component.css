@@ -1,0 +1,108 @@
+.timeline-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* HEADER (si lo tienes en HTML) */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* TIMELINE LINE */
+.timeline {
+  position: relative;
+  margin-left: 20px;
+  border-left: 2px solid #ccc;
+  padding-left: 10px;
+}
+
+/* ITEM */
+.timeline-item {
+  margin-bottom: 20px;
+  padding-left: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* DOT */
+.timeline-item::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background: #1976d2;
+  border-radius: 50%;
+  position: absolute;
+  left: -7px;
+  top: 8px;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.2);
+}
+
+/* DATE */
+.timeline-date {
+  font-size: 12px;
+  color: gray;
+}
+
+/* TITLE */
+.timeline-content h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* DESCRIPTION */
+.timeline-content p {
+  margin: 4px 0;
+  color: #444;
+}
+
+/* TAGS */
+.tags {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+/* STATUS */
+.status {
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  color: white;
+}
+
+
+.status.PENDING {
+  background: orange;
+}
+
+.status.IN_PROGRESS {
+  background: #1976d2;
+}
+
+.status.COMPLETED {
+  background: green;
+}
+.status.CANCELLED {
+  background: gray;
+}
+
+
+/* TYPE BADGE */
+.type {
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background: #e0e0e0;
+  color: #333;
+}
+
+/* HOVER EFFECT (BONITO UX) */
+.timeline-item:hover {
+  transform: translateX(3px);
+}

@@ -2,7 +2,7 @@ name: CD. AWS Lightsail
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   cd:
@@ -35,20 +35,20 @@ jobs:
       - name: ☁️ Upload build to AWS
         uses: appleboy/scp-action@v0.1.4
         with:
-          host: ${{ secrets.AWS_LIGHTSAIL_IP }}
-          username: ${{ secrets.AWS_LIGHTSAIL_USER }}
+          host: ${{ secrets.AWS_LIGHTSAIL_IP_MAIN }}
+          username: ${{ secrets.AWS_LIGHTSAIL_USER_MAIN }}
           port: 22 # SSH
-          key: ${{ secrets.AWS_LIGHTSAIL_SSH_KEY }}
+          key: ${{ secrets.AWS_LIGHTSAIL_SSH_KEY_MAIN }}
           source: "dist/goa-front/**"
           target: "~/goa-front-temp"
 
       - name: 🚀 Deploy frontend on Nginx (AWS Lightsail)
         uses: appleboy/ssh-action@v1.2.1
         with:
-          host: ${{ secrets.AWS_LIGHTSAIL_IP }}
-          username: ${{ secrets.AWS_LIGHTSAIL_USER }}
+          host: ${{ secrets.AWS_LIGHTSAIL_IP_MAIN }}
+          username: ${{ secrets.AWS_LIGHTSAIL_USER_MAIN }}
           port: 22
-          key: ${{ secrets.AWS_LIGHTSAIL_SSH_KEY }}
+          key: ${{ secrets.AWS_LIGHTSAIL_SSH_KEY_MAIN }}
           script: |
             sudo mkdir -p /var/www/goa-front
             sudo rm -rf /var/www/goa-front/*

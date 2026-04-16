@@ -15,6 +15,19 @@ import {EngagementLetterService} from "./engagement-letter/engagement-letter.ser
 import {IssueDetailComponent} from "./issues/pages/issue-detail.component";
 import {IssuesComponent} from "./issues/pages/issues.component";
 import {IssueService} from "./issues/issue.service";
+import {InvoicesComponent} from "./billing/pages/invoices.component";
+import {IncomesComponent} from "./billing/pages/incomes.component";
+import {ExpensesComponent} from "./billing/pages/expenses.component";
+import {InvoiceService} from "./billing/invoice.service";
+import {IncomeService} from "./billing/income.service";
+import {ExpenseService} from "./billing/expense.service";
+import {ChatbotComponent} from "./chatbot/pages/chatbot.component";
+import {EventsComponent} from "./events/pages/events.component";
+import {EventService} from "./events/event.service";
+import {AlertsComponent} from "./alerts/pages/alerts.component";
+import {AlertService} from "./alerts/alert.service";
+import {TimelinePageComponent } from './timeline/pages/timeline-page.component';
+import {TimelineService} from "./timeline/services/timeline.service";
 
 export const routes: Routes = [
     {
@@ -57,6 +70,20 @@ export const routes: Routes = [
                 providers: [EngagementLetterService],
             },
             {
+                path: 'engagement-letters/:id/events',
+                component: EventsComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [EventService],
+            },
+            {
+                path: 'engagement-letters/:id/alerts',
+                component: AlertsComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [AlertService],
+            },
+            {
                 path: 'issues',
                 component: IssuesComponent,
                 canActivate: [RoleGuardService],
@@ -69,6 +96,40 @@ export const routes: Routes = [
                 canActivate: [RoleGuardService],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [IssueService],
+            },
+            {
+                path: 'invoices',
+                component: InvoicesComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [InvoiceService],
+            },
+            {
+                path: 'incomes',
+                component: IncomesComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [IncomeService],
+            },
+            {
+                path: 'expenses',
+                component: ExpensesComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [ExpenseService],
+            },
+            {
+                path: 'chatbot',
+                component: ChatbotComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR, Role.CUSTOMER]},
+            },
+            {
+                path: 'engagement-letters/:id/timeline',
+                component: TimelinePageComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR, Role.CUSTOMER]},
+                providers: [TimelineService]
             },
         ],
     },

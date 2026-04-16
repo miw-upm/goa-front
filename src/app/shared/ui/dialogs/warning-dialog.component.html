@@ -1,0 +1,12 @@
+<h3 mat-dialog-title>
+    <mat-icon color="warn">warning</mat-icon>
+    {{ data?.title ?? 'Warning' }}.
+</h3>
+
+<div class="mat-body-1" style="padding: 0 24px 12px;">
+    <p>{{ data?.message ?? '' }}</p>
+</div>
+
+<mat-dialog-actions align="end">
+    <button color="warn" mat-dialog-close mat-raised-button>Cerrar</button>
+</mat-dialog-actions>

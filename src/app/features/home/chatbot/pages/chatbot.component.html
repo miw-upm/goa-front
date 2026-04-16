@@ -1,0 +1,75 @@
+<section class="chatbot-shell" [class.dialog-mode]="isDialogMode()">
+    <div class="chatbot-card">
+        <div class="chatbot-header">
+            <div class="chatbot-title-block">
+                <h2>Asistente conversacional</h2>
+
+                @if (dialogData?.engagementLetterId) {
+                    <div class="context-banner">
+                        <strong>Contexto activo:</strong>
+                        Hoja de encargo {{ dialogData?.engagementLetterId }}
+                    </div>
+                }
+            </div>
+
+            @if (isDialogMode()) {
+                <button mat-icon-button type="button" aria-label="Cerrar" (click)="close()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            }
+        </div>
+
+        @if (initializing) {
+            <div class="chat-state loading-state">
+                <mat-spinner diameter="36"></mat-spinner>
+                <p>Cargando contexto del caso...</p>
+            </div>
+        } @else {
+            <div class="conversation-stage">
+                <div class="messages-panel">
+                    <div #messagesContainer class="messages-container">
+                        <div *ngFor="let item of messages"
+                             class="message"
+                             [ngClass]="item.sender.toLowerCase()">
+                            <strong>{{ item.sender === 'USER' ? 'Tú' : 'Asistente' }}</strong>
+                            <p>{{ item.content }}</p>
+                        </div>
+
+                        <div *ngIf="loading" class="message assistant">
+                            <strong>Asistente</strong>
+                            <p>Escribiendo...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="composer-overlay">
+                    <p *ngIf="error" class="error-message">{{ error }}</p>
+
+                    <div class="composer-box">
+                        <textarea
+                                [(ngModel)]="message"
+                                cdkTextareaAutosize
+                                cdkAutosizeMinRows="1"
+                                cdkAutosizeMaxRows="6"
+                                class="composer-textarea"
+                                placeholder="Escribe tu consulta"
+                                [disabled]="loading || initializing || (requiresConversation() && !conversationId)">
+                        </textarea>
+
+                        <div class="composer-actions">
+                            <button
+                                    mat-flat-button
+                                    color="primary"
+                                    type="button"
+                                    class="send-button"
+                                    (click)="send()"
+                                    [disabled]="!message?.trim() || loading || initializing || (requiresConversation() && !conversationId)">
+                                Enviar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>

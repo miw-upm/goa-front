@@ -1,35 +1,27 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
-
-import {environment} from "@env";
 import {HttpService} from "@core/http/http.service";
 import {ENDPOINTS} from "@core/api/endpoints";
-import {AccessLink} from "./acces-link.model";
+import {AccessLink} from "@features/shared/models/acces-link.model";
+import {SharedAccessLinkService} from "@features/shared/services/shared-access-link.service";
+import {AccessLinkSearch} from "./pages/access-link-search.model";
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class AccessLinkService {
-    constructor(private readonly httpService: HttpService) {
+    constructor(private readonly httpService: HttpService, private readonly sharedAccessLinkService: SharedAccessLinkService) {
     }
 
     createAccessLink(accessLink: AccessLink): Observable<string> {
-        return this.httpService.request()
-            .post<AccessLink>(ENDPOINTS.accessLink.root, accessLink)
-            .pipe(
-                map(response => this.createLink(response))
-            );
+        return this.sharedAccessLinkService.createAccessLink(accessLink);
     }
 
-    createLink(accessLink: AccessLink): string {
-        let link = `${environment.FRONT_END}/customer/${accessLink.scope}/${accessLink.mobile}/${accessLink.id}`;
-        if (accessLink.document) {
-            link += `/${accessLink.document}`;
-        }
-        return link;
+    buildAccessUrl(accessLink: AccessLink) {
+        return this.sharedAccessLinkService.buildAccessUrl(accessLink);
     }
 
-    search(): Observable<AccessLink[]> {
+    search(criteria: AccessLinkSearch): Observable<AccessLink[]> {
         return this.httpService.request()
+            .paramsFrom(criteria)
             .get<AccessLink[]>(ENDPOINTS.accessLink.root);
     }
 
@@ -40,4 +32,6 @@ export class AccessLinkService {
     read(id) {
         return this.httpService.request().get(ENDPOINTS.accessLink.byId(id));
     }
+
+
 }

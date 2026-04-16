@@ -1,0 +1,51 @@
+<h4 mat-dialog-title>{{ title }}</h4>
+<mat-dialog-content>
+    <mat-form-field class="full-width">
+        <mat-label>Id de Hoja de Encargo</mat-label>
+        <mat-select
+            [ngModel]="invoice.engagementId"
+            (ngModelChange)="onEngagementChange($event)">
+            @for (engagementId of (engagementIds | async); track engagementId) {
+                <mat-option [value]="engagementId">{{ engagementId }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
+    <app-form-date
+        [(value)]="invoiceDate"
+        label="Fecha"/>
+
+    <mat-form-field class="full-width">
+        <mat-label>Gastos</mat-label>
+        <mat-select
+            [(ngModel)]="invoice.expenseIds"
+            [disabled]="!hasEngagementId()"
+            multiple>
+            @for (expense of (availableExpenses | async); track expense.id) {
+                <mat-option [value]="expense.id">{{ expenseLabel(expense) }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+        <mat-label>Ingresos</mat-label>
+        <mat-select
+            [(ngModel)]="invoice.incomeIds"
+            [disabled]="!hasEngagementId()"
+            multiple>
+            @for (income of (availableIncomes | async); track income.id) {
+                <mat-option [value]="income.id">{{ incomeLabel(income) }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Close</button>
+    <button
+        (click)="isCreate() ? create() : update()"
+        [disabled]="!canSubmit()"
+        color="primary"
+        mat-raised-button>
+        {{ isCreate() ? 'Create' : 'Update' }}
+    </button>
+</mat-dialog-actions>

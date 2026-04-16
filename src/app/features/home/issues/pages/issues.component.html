@@ -1,12 +1,25 @@
 <section class="issues-page">
-    <h2>Incidencias</h2>
+    <div class="filters-section">
+        <mat-form-field appearance="outline">
+            <mat-label>Tipo de Incidencia</mat-label>
+            <mat-select [(ngModel)]="criteria.type">
+                <mat-option [value]="undefined">Todos</mat-option>
+                <mat-option *ngFor="let type of issueTypes" [value]="type">
+                    {{ type }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
 
-    <mat-form-field class="full-width">
-        <mat-label>ID de incidencia</mat-label>
-        <input [(ngModel)]="issueId" matInput placeholder="Ej: b7944662-6c8e-4532-9503-9d2f5cb89659"/>
-    </mat-form-field>
-
-    <button (click)="goToDetail()" [disabled]="!issueId?.trim()" color="primary" mat-raised-button>
-        Ir al detalle (temporal)
-    </button>
+    <app-crud
+            (searchAll)="search()"
+            (read)="goToDetail($event)"
+            [data]="issues"
+            [hiddenFields]="['id', 'description', 'technicalContext', 'lastUpdatedAt', 'createdByUserId', 'createdByUser', 'githubIssueId', 'githubIssueUrl', 'message', 'error']"
+            [item]="issue"
+            [title]="title"
+            [createAction]="false"
+            [readAction]="true"
+            [updateAction]="false">
+    </app-crud>
 </section>
