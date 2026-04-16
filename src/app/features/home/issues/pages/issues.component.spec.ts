@@ -61,7 +61,6 @@ describe('IssuesComponent', () => {
 
         expect(issueServiceSpy.search).toHaveBeenCalled();
     });
-
     it('should read issue', () => {
         const issue: IssueResponse = {
             id: '123',
@@ -71,5 +70,27 @@ describe('IssuesComponent', () => {
         component.read(issue);
 
         expect(issueServiceSpy.read).toHaveBeenCalledWith('123');
+    });
+
+    it('should have correct issue types', () => {
+        expect(component.issueTypes).toEqual([IssueType.BUG, IssueType.IMPROVEMENT]);
+    });
+
+    it('should filter by type and search', () => {
+        component.criteria.type = IssueType.BUG;
+
+        component.search();
+
+        expect(issueServiceSpy.search).toHaveBeenCalledWith({
+            type: IssueType.BUG
+        });
+    });
+
+    it('should search without filters when type is null', () => {
+        component.criteria.type = null as any;
+
+        component.search();
+
+        expect(issueServiceSpy.search).toHaveBeenCalledWith({});
     });
 });

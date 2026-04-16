@@ -1,42 +1,32 @@
 import {Component} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
-import {MatButtonModule} from '@angular/material/button';
+import {FormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
-import {IssueSearch} from "../issue-search.model";
-import {IssueResponse, IssueType, IssueStatus} from "../issue.model";
-import {CrudComponent} from "@shared/ui/crud/crud.component";
-import {IssueService} from "../issue.service";
+import {CommonModule} from '@angular/common';
+
+import {CrudComponent} from '@shared/ui/crud/crud.component';
+import {IssueResponse, IssueType} from '../issue.model';
+import {IssueSearch} from '../issue-search.model';
+import {IssueService} from '../issue.service';
 
 @Component({
     standalone: true,
     selector: 'app-issues',
-    imports: [
-        FormsModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        CrudComponent
-    ],
+    imports: [CrudComponent, FormsModule, MatFormFieldModule, MatSelectModule, CommonModule],
     templateUrl: 'issues.component.html',
     styleUrls: ['issues.component.css']
 })
 export class IssuesComponent {
     title = 'Incidencias';
-    issueId = '';
-    issues: Observable<IssueResponse[]> = of([]);
+    issues = of([] as IssueResponse[]);
     issue: Observable<IssueResponse>;
     criteria: IssueSearch = {};
     issueTypes = Object.values(IssueType);
-    issueStatuses = Object.values(IssueStatus);
 
     private static readonly SNACK_SUCCESS_DURATION = 3000;
-
 
     constructor(
         private readonly router: Router,
