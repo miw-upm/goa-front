@@ -11,3 +11,26 @@
     color: red;
 }
 
+.payment-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.percentage-field {
+    flex: 0 0 30%;
+}
+
+.description-field {
+    flex: 0 0 70%;
+}
+
+.dates-row {
+    display: flex;
+    gap: 16px;
+}
+
+.dates-row app-form-date {
+    flex: 1;
+}

@@ -13,7 +13,6 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatListModule} from '@angular/material/list';
 
-import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {FormListComponent} from '@shared/ui/inputs/forms/list.component';
 import {SearchByUserComponent} from '@features/shared/ui/search-by-user.component';
@@ -52,7 +51,6 @@ import {PaymentMethod} from '../models/payment-method.model';
         SearchByUserComponent,
         SearchByLegalProcedureTemplateComponent,
         MatTooltipModule,
-        FormFieldComponent,
         AppDateFieldComponent,
         FormListComponent
     ],
@@ -155,6 +153,14 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         if (title && !this.engagementLetter.legalProcedures.some(proc => proc.title === title)) {
             this.engagementLetter.legalProcedures.push(procedure);
         }
+    }
+
+    addPaymentMethod(): void {
+        this.engagementLetter.paymentMethods.push({percentage: '', description: ''});
+    }
+
+    removePaymentMethod(index: number): void {
+        this.engagementLetter.paymentMethods.splice(index, 1);
     }
 
     addPaymentMethodDialog(): void {
