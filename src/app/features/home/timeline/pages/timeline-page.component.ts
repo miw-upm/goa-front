@@ -19,7 +19,7 @@ export class TimelinePageComponent implements OnInit {
 
   constructor(
     private timelineService: TimelineService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {

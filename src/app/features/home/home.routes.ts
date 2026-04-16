@@ -26,8 +26,8 @@ import {EventsComponent} from "./events/pages/events.component";
 import {EventService} from "./events/event.service";
 import {AlertsComponent} from "./alerts/pages/alerts.component";
 import {AlertService} from "./alerts/alert.service";
-import { TimelinePageComponent } from './timeline/pages/timeline-page.component';
-
+import {TimelinePageComponent } from './timeline/pages/timeline-page.component';
+import {TimelineService} from "./timeline/services/timeline.service";
 
 export const routes: Routes = [
     {
@@ -125,10 +125,11 @@ export const routes: Routes = [
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR, Role.CUSTOMER]},
             },
             {
-                path: 'timeline',
+                path: 'engagement-letters/:id/timeline',
                 component: TimelinePageComponent,
                 canActivate: [RoleGuardService],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR, Role.CUSTOMER]},
+                providers: [TimelineService]
             },
         ],
     },

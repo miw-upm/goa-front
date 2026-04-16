@@ -91,7 +91,7 @@ export class EngagementLettersComponent {
 
     navigateToTimeline(engagement: any): void {
       this.router.navigate([
-        '/engagements',
+        '/home/engagement-letters',
         engagement.id,
         'timeline'
       ]);
