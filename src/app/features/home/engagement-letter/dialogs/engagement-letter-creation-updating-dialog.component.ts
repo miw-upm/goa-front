@@ -154,7 +154,7 @@ export class EngagementLetterCreationUpdatingDialogComponent {
 
     addProcedure(template: LegalProcedureTemplate) {
         const procedure: LegalProcedure = {
-            id: template.id,
+            id: crypto.randomUUID(),
             title: template.title,
             budget: template.budget,
             vatIncluded: false,
