@@ -51,6 +51,14 @@
                             <mat-icon color="primary">calendar_month</mat-icon>
                         </button>
                     }
+
+                    @if (timelineAction) {
+                    <button mat-icon-button matSuffix (click)="onTimeline(item)" aria-label="Ver timeline">
+                        <mat-icon color="primary">timeline</mat-icon>
+                    </button>
+                    }
+
+
                     @if (alertsAction) {
                         <button mat-icon-button matSuffix (click)="onAlerts(item)" aria-label="Ver alertas">
                             <mat-icon color="primary">notifications</mat-icon>

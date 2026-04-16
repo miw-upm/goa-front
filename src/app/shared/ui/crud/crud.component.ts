@@ -43,6 +43,7 @@ export class CrudComponent {
     @Input() runAction = false;
     @Input() assistantAction = false;
     @Input() eventsAction = false;
+    @Input() timelineAction = false;
     @Input() alertsAction = false;
     @Input() commentsAction = false;
     @Input() publicLinkAction = false;
@@ -58,6 +59,7 @@ export class CrudComponent {
     @Output() run = new EventEmitter<any>();
     @Output() assistant = new EventEmitter<any>();
     @Output() events = new EventEmitter<any>();
+    @Output() timeline = new EventEmitter<any>();
     @Output() alerts = new EventEmitter<any>();
     @Output() comments = new EventEmitter<any>();
     @Output() publicLink = new EventEmitter<any>();
@@ -188,4 +190,10 @@ export class CrudComponent {
     onSearch() {
         this.searchAll.emit();
     }
+
+    onTimeline(item: any): void {
+        console.log('CLICK timeline', item);
+      this.timeline.emit(item);
+    }
+
 }

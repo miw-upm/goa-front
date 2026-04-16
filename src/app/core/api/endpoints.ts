@@ -71,6 +71,9 @@ export const ENDPOINTS = {
             `${EVENT_ROOT}/engagement-letter/${enc(engagementLetterId)}`,
         commentsByEventId: (eventId: string) =>
             `${EVENT_ROOT}/${enc(eventId)}/comments`,
+        timelineByEngagementLetterId: (engagementLetterId: string) =>
+            `${EVENT_ROOT}/engagement-letter/${enc(engagementLetterId)}/timeline-events`,
+
     },
 
     alerts: {
