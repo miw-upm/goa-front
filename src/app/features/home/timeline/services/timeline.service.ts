@@ -11,10 +11,24 @@ export class TimelineService {
 
   constructor(private http: HttpClient) {}
 
-  getTimelineEvents(engagementId: string, ascending: boolean = false): Observable<TimelineEvent[]> {
-    return this.http.get<TimelineEvent[]>(
-      `${ENDPOINTS.events.timelineByEngagementLetterId(engagementId)}?ascending=${ascending}`
-    );
-  }
+    getTimelineEvents(
+      engagementId: string,
+      ascending: boolean = false,
+      type?: string,
+      status?: string
+    ): Observable<TimelineEvent[]> {
+
+      let url = `${ENDPOINTS.events.byEngagementLetterId(engagementId)}/timeline-events?ascending=${ascending}`;
+
+      if (type) {
+        url += `&type=${type}`;
+      }
+
+      if (status) {
+        url += `&status=${status}`;
+      }
+
+      return this.http.get<TimelineEvent[]>(url);
+    }
 }
 
