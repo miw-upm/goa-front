@@ -90,4 +90,12 @@ export class EventsComponent {
     goBack(): void {
         void this.router.navigate(['/home/engagement-letters']);
     }
-}
+      goToTimeline(): void {
+        this.router.navigate([
+          '/home',
+          'engagement-letters',
+          this.engagementLetterId,
+          'timeline'
+        ]);
+      }
+  }
