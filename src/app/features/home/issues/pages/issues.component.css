@@ -7,10 +7,12 @@
     gap: 16px;
     margin-bottom: 24px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .filters-section mat-form-field {
-    min-width: 200px;
+    width: 220px;
+    flex: 0 0 auto;
 }
 
 .full-width {

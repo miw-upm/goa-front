@@ -9,6 +9,17 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Estado</mat-label>
+            <mat-select [(ngModel)]="criteria.status">
+                <mat-option [value]="undefined">Todos</mat-option>
+                <mat-option *ngFor="let status of issueStatus" [value]="status">
+                    {{ status }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
     </div>
 
     <app-crud

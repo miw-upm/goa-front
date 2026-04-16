@@ -8,7 +8,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {CommonModule} from '@angular/common';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
-import {IssueResponse, IssueType} from '../issue.model';
+import {IssueResponse, IssueStatus, IssueType} from '../issue.model';
 import {IssueSearch} from '../issue-search.model';
 import {IssueService} from '../issue.service';
 
@@ -25,6 +25,7 @@ export class IssuesComponent {
     issue: Observable<IssueResponse>;
     criteria: IssueSearch = {};
     issueTypes = Object.values(IssueType);
+    issueStatus = Object.values(IssueStatus)
 
     private static readonly SNACK_SUCCESS_DURATION = 3000;
 
