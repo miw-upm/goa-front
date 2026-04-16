@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 
 import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
-import {AlertCreate, AlertSummary} from './models/alert.model';
+import {AlertCreate, AlertNotificationConfig, AlertSummary} from './models/alert.model';
 
 @Injectable()
 export class AlertService {
@@ -19,5 +19,11 @@ export class AlertService {
         return this.httpService.request()
             .success('Alerta creada correctamente')
             .post(ENDPOINTS.alerts.root, alert);
+    }
+
+    configureNotifications(alertId: string, payload: AlertNotificationConfig): Observable<any> {
+        return this.httpService.request()
+            .success('Notificaciones configuradas correctamente')
+            .put(ENDPOINTS.alerts.notifications(alertId), payload);
     }
 }

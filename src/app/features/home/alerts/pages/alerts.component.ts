@@ -56,4 +56,8 @@ export class AlertsComponent {
             width: '600px'
         }).afterClosed().subscribe(() => this.search());
     }
+
+    openNotificationDialog(alert: any): void {
+        console.log('Configurar notificaciones para', alert);
+    }
 }

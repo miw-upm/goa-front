@@ -8,12 +8,14 @@
 
 <app-crud
         (create)="openCreateDialog()"
+        (notifications)="openNotificationDialog($event)"
         (searchAll)="search()"
         [data]="alerts$"
         [readAction]="false"
         [updateAction]="false"
         [deleteAction]="false"
         [createAction]="true"
+        [notificationsAction]="true"
         [hiddenFields]="['id']"
         [columnOrder]="['title', 'dueDate', 'status']"
         [title]="title">
