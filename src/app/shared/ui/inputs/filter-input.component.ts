@@ -17,6 +17,7 @@ export class FilterInputComponent {
     @Input() value: any = '';
     @Input() type: string = 'text';
     @Output() valueChange = new EventEmitter<string>();
+    @Output() enter = new EventEmitter<void>();
 
     clearModel() {
         this.value = undefined;
