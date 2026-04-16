@@ -85,4 +85,30 @@ describe('IssuesComponent', () => {
             type: IssueType.BUG
         });
     });
+
+    it('should have correct issue status', () => {
+        expect(component.issueStatus).toEqual([IssueStatus.PENDING, IssueStatus.IN_PROGRESS, IssueStatus.FINISHED]);
+    });
+
+    it('should filter by status and search', () => {
+        component.criteria.status = IssueStatus.PENDING;
+
+        component.search();
+
+        expect(issueServiceSpy.search).toHaveBeenCalledWith({
+            status: IssueStatus.PENDING
+        });
+    });
+
+    it('should filter by type and status and search', () => {
+        component.criteria.type = IssueType.BUG;
+        component.criteria.status = IssueStatus.PENDING;
+
+        component.search();
+
+        expect(issueServiceSpy.search).toHaveBeenCalledWith({
+            type: IssueType.BUG,
+            status: IssueStatus.PENDING
+        });
+    });
 });
