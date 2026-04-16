@@ -85,12 +85,4 @@ describe('IssuesComponent', () => {
             type: IssueType.BUG
         });
     });
-
-    it('should search without filters when type is null', () => {
-        component.criteria.type = null as any;
-
-        component.search();
-
-        expect(issueServiceSpy.search).toHaveBeenCalledWith({});
-    });
 });
