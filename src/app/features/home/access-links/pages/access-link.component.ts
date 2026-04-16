@@ -4,31 +4,39 @@ import {Observable, of} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 
 import {CrudComponent} from "@shared/ui/crud/crud.component";
-import {CopyDialogComponent} from "@shared/ui/dialogs/copy-dialog.component";
 import {AccessLinkService} from "../access-link.service";
 import {AccessLink} from "@features/shared/models/acces-link.model";
 import {AuthService} from "@core/auth/auth.service";
 import {AutoCloseDialogComponent} from "@shared/ui/dialogs/auto-close-dialog.component";
+import {MatSlideToggle} from "@angular/material/slide-toggle";
+import {AccessLinkSearch} from "./access-link-search.model";
+import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
 
 @Component({
     standalone: true,
     providers: [AccessLinkService],
-    imports: [FormsModule, CrudComponent],
+    imports: [FormsModule, CrudComponent, MatSlideToggle, FilterInputComponent],
     templateUrl: 'access-link.component.html'
 })
 export class AccessLinkComponent {
     visible: boolean = true;
     title = 'Access Links';
+    criteria: AccessLinkSearch;
 
     accessLinks: Observable<AccessLink[]> = of([]);
     accessLink: Observable<any>;
 
     constructor(private readonly dialog: MatDialog, private readonly accessLinkService: AccessLinkService, private readonly auth:AuthService) {
         this.visible = auth.isAdmin();
+        this.resetSearch();
+    }
+
+    resetSearch(): void {
+        this.criteria = {expired: true, mobile: undefined, scope: undefined};
     }
 
     search(): void {
-        this.accessLinks = this.accessLinkService.search();
+        this.accessLinks = this.accessLinkService.search(this.criteria);
     }
 
     delete(accessLink: AccessLink) {
