@@ -21,5 +21,6 @@ export type WarningDialogData = {
     ]
 })
 export class WarningDialogComponent {
-    constructor(@Inject(MAT_DIALOG_DATA) public data: WarningDialogData) {}
+    constructor(@Inject(MAT_DIALOG_DATA) public data: WarningDialogData) {
+    }
 }

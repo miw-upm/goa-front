@@ -7,7 +7,7 @@ import {HttpService} from "@core/http/http.service";
 import {ENDPOINTS} from "@core/api/endpoints";
 import {AccessLink} from "./acces-link.model";
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class AccessLinkService {
     constructor(private readonly httpService: HttpService) {
     }
