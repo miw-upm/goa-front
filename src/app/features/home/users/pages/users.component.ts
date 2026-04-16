@@ -10,8 +10,8 @@ import {UserCreationUpdatingDialogComponent} from '../dialogs/user-creation-upda
 import {UserSearch} from '../user-search.model';
 import {UserService} from '../user.service';
 import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
-import {AccessLinkService} from "../../access-links/access-link.service";
 import {AutoCloseDialogComponent} from "@shared/ui/dialogs/auto-close-dialog.component";
+import {SharedAccessLinkService} from "@features/shared/services/shared-access-link.service";
 
 @Component({
     standalone: true,
@@ -25,7 +25,7 @@ export class UsersComponent {
     user: Observable<any>;
 
     constructor(private readonly dialog: MatDialog, private readonly userService: UserService,
-                private readonly accessLinkService: AccessLinkService) {
+                private readonly sharedAccessLinkService: SharedAccessLinkService) {
         this.resetSearch();
     }
 
@@ -65,9 +65,10 @@ export class UsersComponent {
                     }
                 });
             } else {
-                this.accessLinkService
+                this.sharedAccessLinkService
                     .createAccessLink({mobile: userFull.mobile, scope: "edit-profile"})
                     .subscribe(link => {
+                        navigator.clipboard.writeText(link);
                         this.dialog.open(AutoCloseDialogComponent, {
                             data: 'Link de acceso copiado'
                         });
