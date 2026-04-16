@@ -2,6 +2,17 @@
     padding: 16px;
 }
 
+.filters-section {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    align-items: center;
+}
+
+.filters-section mat-form-field {
+    min-width: 200px;
+}
+
 .full-width {
     width: 100%;
     max-width: 560px;
