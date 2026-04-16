@@ -32,7 +32,7 @@ export class AccessLinkComponent {
     }
 
     resetSearch(): void {
-        this.criteria = {expired: true, mobile: undefined, scope: undefined};
+        this.criteria = {expired: false, mobile: undefined, scope: undefined};
     }
 
     search(): void {
