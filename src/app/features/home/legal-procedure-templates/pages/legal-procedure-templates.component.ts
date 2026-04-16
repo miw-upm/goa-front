@@ -12,6 +12,7 @@ import {LegalProcedureTemplateService} from "../legal-procedure-template.service
 import {
     LegalProcedureTemplateCreationUpdatingDialogComponent
 } from "../dialogs/legal-procedure-template-creation-updating-dialog.component";
+import {AuthService} from "@core/auth/auth.service";
 
 @Component({
     standalone: true,
@@ -19,12 +20,15 @@ import {
     templateUrl: 'legal-procedure-templates.component.html'
 })
 export class LegalProcedureTemplatesComponent {
+    deleteVisibility: boolean = false;
     legalProcedureSearch: LegalProcedureSearch;
     title = "Plantillas de Procedimientos Legales";
     legalProcedures = of([]);
     legalProcedure: Observable<any>;
 
-    constructor(private readonly dialog: MatDialog, private readonly legalProcedureService: LegalProcedureTemplateService) {
+    constructor(private readonly dialog: MatDialog, private readonly legalProcedureService: LegalProcedureTemplateService,
+                auth:AuthService) {
+        this.deleteVisibility = auth.isAdmin();
         this.resetSearch();
     }
 

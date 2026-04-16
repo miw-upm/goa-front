@@ -9,6 +9,9 @@ import {User} from '@features/shared/models/user.model';
 import {UserCreationUpdatingDialogComponent} from '../dialogs/user-creation-updating-dialog.component';
 import {UserSearch} from '../user-search.model';
 import {UserService} from '../user.service';
+import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
+import {AccessLinkService} from "../../access-links/access-link.service";
+import {AutoCloseDialogComponent} from "@shared/ui/dialogs/auto-close-dialog.component";
 
 @Component({
     standalone: true,
@@ -21,7 +24,8 @@ export class UsersComponent {
     users = of([]);
     user: Observable<any>;
 
-    constructor(private readonly dialog: MatDialog, private readonly userService: UserService) {
+    constructor(private readonly dialog: MatDialog, private readonly userService: UserService,
+                private readonly accessLinkService: AccessLinkService) {
         this.resetSearch();
     }
 
@@ -49,6 +53,27 @@ export class UsersComponent {
                 .afterClosed()
                 .subscribe(() => this.search())
             );
+    }
+
+    link(user: User): void {
+        this.userService.read(user.mobile).subscribe(userFull => {
+            if (userFull.role !== 'CUSTOMER') {
+                this.dialog.open(WarningDialogComponent, {
+                    data: {
+                        title: 'Warning',
+                        message: 'Sólo se puede crear links a los clientes'
+                    }
+                });
+            } else {
+                this.accessLinkService
+                    .createAccessLink({mobile: userFull.mobile, scope: "edit-profile"})
+                    .subscribe(link => {
+                        this.dialog.open(AutoCloseDialogComponent, {
+                            data: 'Link de acceso copiado'
+                        });
+                    });
+            }
+        });
     }
 
 }
