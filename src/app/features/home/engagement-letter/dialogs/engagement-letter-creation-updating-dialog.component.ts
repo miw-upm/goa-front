@@ -77,10 +77,7 @@ export class EngagementLetterCreationUpdatingDialogComponent {
             owner: undefined,
             attachments: [],
             legalProcedures: [],
-            paymentMethods: [{
-                description: 'Provisión de Fondos',
-                percentage: '1.500€'
-            }, {description: 'Al finalizar el proceso', percentage: "Resto"}],
+            paymentMethods: [{description: 'Al finalizar el proceso', percentage: "Resto"}],
             acceptanceDocuments: undefined,
             ...(data || {})
         };
@@ -122,8 +119,7 @@ export class EngagementLetterCreationUpdatingDialogComponent {
     invalid(): boolean {
         const owner = this.checkInvalid(this.engagementLetter.owner?.mobile);
         const procedures = this.checkInvalid(this.engagementLetter.legalProcedures);
-        const payments = this.checkInvalid(this.engagementLetter.paymentMethods);
-        return owner || procedures || payments;
+        return owner || procedures;
     }
 
 
@@ -161,7 +157,7 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         }
     }
 
-    addLegalProcedureDialog(): void {
+    addPaymentMethodDialog(): void {
         this.dialog.open(PaymentMethodDialogComponent).afterClosed().subscribe((result: PaymentMethod | undefined) => {
             if (result) {
                 if (!this.engagementLetter.paymentMethods) {

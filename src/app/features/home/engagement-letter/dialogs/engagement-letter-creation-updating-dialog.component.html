@@ -1,29 +1,18 @@
 <h4 mat-dialog-title>{{ title }}</h4>
 <mat-dialog-content>
-    <app-form-field
-        #discount
-        [(value)]="engagementLetter.discount"
-        [max]="100"
-        [min]="0"
-        [step]="1"
-        errorMessage="Porcentaje, 0..100"
-        icon="euro"
-        label="Descuento"
-        type="number"
-    />
     @if (!isCreate()) {
         <app-form-date [(value)]="engagementLetter.creationDate" label="Fecha de Creación" [disabled]="true"/>
         <app-form-date [(value)]="engagementLetter.closingDate" label="Fecha de Cierre"/>
     }
     <fieldset class="owner-fieldset">
         <legend>Responsable</legend>
-        <app-search-by-user [(user)]="engagementLetter.owner" class="full-width"></app-search-by-user>
+        <app-search-by-user [(user)]="engagementLetter.owner" title="Buscar cliente" class="full-width"></app-search-by-user>
         <app-form-list [(items)]="ownerAsArray"
                        [keyView]="['mobile','familyName','firstName']"></app-form-list>
     </fieldset>
     <fieldset class="owner-fieldset">
         <legend>Resto de clientes</legend>
-        <app-search-by-user (userChange)="addAttachment($event)" class="full-width"></app-search-by-user>
+        <app-search-by-user (userChange)="addAttachment($event)" title="Buscar cliente" class="full-width"></app-search-by-user>
         <app-form-list [(items)]="engagementLetter.attachments"
                        [keyView]="['mobile','familyName','firstName']"></app-form-list>
     </fieldset>
@@ -37,12 +26,19 @@
     </fieldset>
     <fieldset class="owner-fieldset">
         <legend>Métodos de pago</legend>
-        <button (click)="addLegalProcedureDialog()" mat-mini-fab>
+        <button (click)="addPaymentMethodDialog()" mat-mini-fab>
             <mat-icon>add</mat-icon>
         </button>
         <app-form-list [(items)]="engagementLetter.paymentMethods"
                        [keyView]="['percentage','description']"></app-form-list>
     </fieldset>
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Cláusula Legal</mat-label>
+        <textarea matInput [(ngModel)]="engagementLetter.legalClause" rows="5"></textarea>
+    </mat-form-field>
+    <app-form-field #discount [(value)]="engagementLetter.discount"
+                    [max]="100" [min]="0" [step]="1"
+                    errorMessage="Porcentaje, 0..100" icon="euro" label="Descuento" type="number"/>
 
 </mat-dialog-content>
 <mat-dialog-actions>
