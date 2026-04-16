@@ -40,9 +40,6 @@
         <button (click)="addLegalProcedureDialog()" mat-mini-fab>
             <mat-icon>add</mat-icon>
         </button>
-        @if (!isPaymentTotalValid()) {
-            <span class="payment-error"> Error: total debe ser 100%</span>
-        }
         <app-form-list [(items)]="engagementLetter.paymentMethods"
                        [keyView]="['percentage','description']"></app-form-list>
     </fieldset>

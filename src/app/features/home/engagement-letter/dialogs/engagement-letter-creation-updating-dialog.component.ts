@@ -79,8 +79,8 @@ export class EngagementLetterCreationUpdatingDialogComponent {
             legalProcedures: [],
             paymentMethods: [{
                 description: 'Provisión de Fondos',
-                percentage: 40
-            }, {description: 'Al finalizar el proceso', percentage: 60}],
+                percentage: '1.500€'
+            }, {description: 'Al finalizar el proceso', percentage: "Resto"}],
             acceptanceDocuments: undefined,
             ...(data || {})
         };
@@ -123,8 +123,7 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         const owner = this.checkInvalid(this.engagementLetter.owner?.mobile);
         const procedures = this.checkInvalid(this.engagementLetter.legalProcedures);
         const payments = this.checkInvalid(this.engagementLetter.paymentMethods);
-        const validSum = this.isPaymentTotalValid();
-        return owner || procedures || payments || !validSum;
+        return owner || procedures || payments;
     }
 
 
@@ -136,12 +135,6 @@ export class EngagementLetterCreationUpdatingDialogComponent {
             (typeof attr === 'number' && isNaN(attr)) ||
             (Array.isArray(attr) && attr.length === 0)
         );
-    }
-
-    isPaymentTotalValid(): boolean {
-        const payments = this.engagementLetter.paymentMethods ?? [];
-        const total = payments.reduce((sum, p) => sum + (p.percentage || 0), 0);
-        return total === 100;
     }
 
     addAttachment(user: User) {
