@@ -26,7 +26,7 @@
         <mat-icon>groups</mat-icon>
         <span>Usuarios</span>
     </button>
-    <button [matMenuTriggerFor]="accessLinks" mat-menu-item>
+    <button mat-menu-item routerLink="/home/access-links">
         <mat-icon>language</mat-icon>
         <span>Links de Acceso</span>
     </button>
@@ -49,16 +49,6 @@
     <button (click)="logout()" mat-menu-item>
         <mat-icon>logout</mat-icon>
         <span>Logout</span>
-    </button>
-</mat-menu>
-<mat-menu #accessLinks="matMenu">
-    <button mat-menu-item routerLink="/home/access-links">
-        <mat-icon>vpn_lock_2</mat-icon>
-        <span>Links de Acceso</span>
-    </button>
-    <button (click)="createAccessLink()" mat-menu-item>
-        <mat-icon>playlist_add</mat-icon>
-        <span>Crear Link de Edición de Perfil</span>
     </button>
 </mat-menu>
 <mat-menu #engagementLetters="matMenu">

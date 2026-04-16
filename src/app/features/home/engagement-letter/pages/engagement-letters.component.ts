@@ -15,6 +15,7 @@ import {
     EngagementLetterCreationUpdatingDialogComponent
 } from '../dialogs/engagement-letter-creation-updating-dialog.component';
 import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
+import {AuthService} from "@core/auth/auth.service";
 
 @Component({
     standalone: true,
@@ -23,6 +24,7 @@ import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
     templateUrl: 'engagement-letters.component.html'
 })
 export class EngagementLettersComponent {
+    deleteVisibility: boolean = false;
     title = "Hojas de Encargo";
     engagementLetters = of([]);
     engagementLetter: Observable<any>;
@@ -31,8 +33,9 @@ export class EngagementLettersComponent {
     constructor(
         private readonly dialog: MatDialog,
         private readonly engagementLettersService: EngagementLetterService,
-        private readonly router: Router
+        private readonly router: Router, auth: AuthService
     ) {
+        this.deleteVisibility = auth.isAdmin();
         this.resetSearch();
     }
 

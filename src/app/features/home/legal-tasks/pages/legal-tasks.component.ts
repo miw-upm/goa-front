@@ -9,6 +9,7 @@ import {LegalTask} from '@features/shared/models/legal-task.model';
 import {LegalTaskCreationUpdatingDialogComponent} from '../dialogs/legal-task-creation-updating-dialog.component';
 import {LegalTaskSearch} from '../legal-task-search.model';
 import {LegalTaskService} from '../legal-task.service';
+import {AuthService} from "@core/auth/auth.service";
 
 @Component({
     standalone: true,
@@ -16,12 +17,14 @@ import {LegalTaskService} from '../legal-task.service';
     templateUrl: 'legal-tasks.component.html'
 })
 export class LegalTasksComponent {
+    deleteVisibility: boolean = false;
     legalTaskSearch: LegalTaskSearch;
     title = "Tareas Legales";
     legalTasks = of([]);
     task: Observable<LegalTask>;
 
-    constructor(private readonly dialog: MatDialog, private readonly legalTaskService: LegalTaskService) {
+    constructor(private readonly dialog: MatDialog, private readonly legalTaskService: LegalTaskService, auth:AuthService) {
+        this.deleteVisibility = auth.isAdmin();
         this.resetSearch();
     }
 

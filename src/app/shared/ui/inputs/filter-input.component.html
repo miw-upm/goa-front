@@ -1,6 +1,10 @@
 <mat-form-field appearance="outline">
     <mat-label>{{ title }}</mat-label>
-    <input (ngModelChange)="valueChange.emit($event)" [(ngModel)]="value" [type]="type" matInput>
+    <input (ngModelChange)="valueChange.emit($event)"
+           (keyup.enter)="enter.emit()"
+           [(ngModel)]="value"
+           [type]="type"
+           matInput>
     <button (click)="clearModel()" [disabled]="!value" mat-icon-button matSuffix>
         <mat-icon>delete</mat-icon>
     </button>

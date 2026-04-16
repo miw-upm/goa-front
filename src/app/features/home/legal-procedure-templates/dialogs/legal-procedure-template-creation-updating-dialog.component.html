@@ -22,11 +22,11 @@
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Close</button>
     @if (isCreate()) {
-        <button (click)="create()" [disabled]="formInvalid(titleNg.ngModel,budget.ngModel)" color="primary"
+        <button (click)="create()" [disabled]="formInvalid(legalProcedure.legalTasks, titleNg.ngModel,budget.ngModel)" color="primary"
                 mat-raised-button>Create
         </button>
     } @else {
-        <button (click)="update()" [disabled]="formInvalid(titleNg.ngModel,budget.ngModel)" color="primary"
+        <button (click)="update()" [disabled]="formInvalid(legalProcedure.legalTasks, titleNg.ngModel,budget.ngModel)" color="primary"
                 mat-raised-button>Update
         </button>
     }
