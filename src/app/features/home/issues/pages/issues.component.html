@@ -1,4 +1,16 @@
 <section class="issues-page">
+    <div class="filters-section">
+        <mat-form-field appearance="outline">
+            <mat-label>Tipo de Incidencia</mat-label>
+            <mat-select [(ngModel)]="criteria.type">
+                <mat-option [value]="undefined">Todos</mat-option>
+                <mat-option *ngFor="let type of issueTypes" [value]="type">
+                    {{ type }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
     <app-crud
             (searchAll)="search()"
             (read)="goToDetail($event)"
