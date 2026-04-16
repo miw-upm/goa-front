@@ -42,7 +42,7 @@ export interface IssueResponse {
     type?: IssueType;
     status?: IssueStatus;
     createdAt?: string;
-    lastUpdatedAt?: string;
+    lastUpdateAt?: string;
     createdByUserId?: string;
     createdByUser?: IssueCreatedByUser;
     githubIssueId?: string;
