@@ -64,6 +64,11 @@
                             <mat-icon color="primary">notifications</mat-icon>
                         </button>
                     }
+                    @if (notificationsAction) {
+                        <button mat-icon-button matSuffix (click)="onNotifications(item)" aria-label="Configurar avisos">
+                            <mat-icon color="primary">alarm</mat-icon>
+                        </button>
+                    }
                     @if (commentsAction) {
                         <button mat-icon-button matSuffix (click)="onComments(item)" aria-label="Ver comentarios">
                             <mat-icon color="primary">comment</mat-icon>

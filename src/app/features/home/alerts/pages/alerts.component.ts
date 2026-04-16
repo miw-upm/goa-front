@@ -10,6 +10,7 @@ import {map} from 'rxjs/operators';
 import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {AlertService} from '../alert.service';
 import {AlertCreationDialogComponent} from '../dialogs/alert-creation-dialog.component';
+import {AlertNotificationDialogComponent} from '../dialogs/alert-notification-dialog.component';
 
 @Component({
     standalone: true,
@@ -55,5 +56,26 @@ export class AlertsComponent {
             },
             width: '600px'
         }).afterClosed().subscribe(() => this.search());
+    }
+
+    openNotificationDialog(alert: any): void {
+        this.alertService.read(alert.id).subscribe(alertDetail => {
+            this.dialog.open(AlertNotificationDialogComponent, {
+                data: {
+                    alertId: alert.id,
+                    selectedOffsets: (alertDetail.notifications ?? [])
+                        .map(notification => notification.offsetMinutes)
+                        .filter((offset): offset is number => offset !== undefined && offset !== null)
+                },
+                width: '600px'
+            }).afterClosed().subscribe(result => {
+                if (!result) {
+                    return;
+                }
+
+                this.alertService.configureNotifications(alert.id, result)
+                    .subscribe(() => this.search());
+            });
+        });
     }
 }

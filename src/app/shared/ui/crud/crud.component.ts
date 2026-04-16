@@ -45,6 +45,7 @@ export class CrudComponent {
     @Input() eventsAction = false;
     @Input() timelineAction = false;
     @Input() alertsAction = false;
+    @Input() notificationsAction = false;
     @Input() commentsAction = false;
     @Input() publicLinkAction = false;
 
@@ -61,6 +62,7 @@ export class CrudComponent {
     @Output() events = new EventEmitter<any>();
     @Output() timeline = new EventEmitter<any>();
     @Output() alerts = new EventEmitter<any>();
+    @Output() notifications = new EventEmitter<any>();
     @Output() comments = new EventEmitter<any>();
     @Output() publicLink = new EventEmitter<any>();
     @Output() searchAll = new EventEmitter<any>();
@@ -177,6 +179,10 @@ export class CrudComponent {
 
     onAlerts(item: any): void {
         this.alerts.emit(item);
+    }
+
+    onNotifications(item: any): void {
+        this.notifications.emit(item);
     }
 
     onComments(item: any): void {

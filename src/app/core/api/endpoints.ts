@@ -82,6 +82,8 @@ export const ENDPOINTS = {
             `${ALERT_ROOT}/${enc(id)}`,
         byEngagementLetterId: (engagementLetterId: string) =>
             `${ALERT_ROOT}?engagementLetterId=${enc(engagementLetterId)}`,
+        notifications: (id: string) =>
+            `${ALERT_ROOT}/${enc(id)}/notifications`,
     },
 
     issues: {
