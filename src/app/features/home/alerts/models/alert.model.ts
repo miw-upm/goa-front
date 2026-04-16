@@ -11,3 +11,20 @@ export interface AlertCreate {
     dueDate: string;
     engagementLetterId: string;
 }
+
+export interface AlertNotificationConfig {
+    offsetMinutes: number[];
+}
+
+export interface AlertNotification {
+    offsetMinutes?: number;
+}
+
+export interface AlertDetail {
+    id?: string;
+    title?: string;
+    description?: string;
+    dueDate?: string;
+    status?: string;
+    notifications?: AlertNotification[];
+}
