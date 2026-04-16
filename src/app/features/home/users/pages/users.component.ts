@@ -70,7 +70,7 @@ export class UsersComponent {
                     .subscribe(link => {
                         navigator.clipboard.writeText(link);
                         this.dialog.open(AutoCloseDialogComponent, {
-                            data: 'Link de acceso copiado'
+                            data: 'Link de acceso creado y copiado'
                         });
                     });
             }
