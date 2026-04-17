@@ -78,4 +78,10 @@ export class AlertsComponent {
             });
         });
     }
+
+    cancelAlert(alert: any): void {
+        this.alertService.cancel(alert.id).subscribe(() => {
+            this.search();
+        });
+    }
 }

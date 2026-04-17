@@ -40,6 +40,7 @@ export class CrudComponent {
     @Input() createAction = true;
     @Input() readAction = true;
     @Input() updateAction = true;
+    @Input() cancelAction = false;
     @Input() deleteAction = false;
     @Input() printAction = false;
     @Input() runAction = false;
@@ -57,6 +58,7 @@ export class CrudComponent {
     @Output() create = new EventEmitter<any>();
     @Output() read = new EventEmitter<any>();
     @Output() update = new EventEmitter<any>();
+    @Output() cancel = new EventEmitter<any>();
     @Output() delete = new EventEmitter<any>();
     @Output() print = new EventEmitter<any>();
     @Output() run = new EventEmitter<any>();
@@ -209,6 +211,10 @@ export class CrudComponent {
     onTimeline(item: any): void {
         console.log('CLICK timeline', item);
         this.timeline.emit(item);
+    }
+
+    onCancel(item: any): void {
+        this.cancel.emit(item);  
     }
 
 }

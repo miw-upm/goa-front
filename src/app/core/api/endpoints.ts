@@ -85,6 +85,8 @@ export const ENDPOINTS = {
             `${ALERT_ROOT}?engagementLetterId=${enc(engagementLetterId)}`,
         notifications: (id: string) =>
             `${ALERT_ROOT}/${enc(id)}/notifications`,
+        cancel: (alertId: string ) =>
+            `${ALERT_ROOT}/${enc(alertId)}/cancel`,
     },
 
     alertNotifications: {
