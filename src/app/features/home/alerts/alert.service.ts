@@ -26,6 +26,11 @@ export class AlertService {
             .get<PendingAlertNotification[]>(ENDPOINTS.alertNotifications.pending());
     }
 
+    markNotificationAsShown(notificationId: string): Observable<any> {
+        return this.httpService.request()
+            .patch(ENDPOINTS.alertNotifications.shown(notificationId), {});
+    }
+
     read(alertId: string): Observable<AlertDetail> {
         return this.httpService.request()
             .get<AlertDetail>(ENDPOINTS.alerts.byId(alertId));

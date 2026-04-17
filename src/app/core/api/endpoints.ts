@@ -93,6 +93,8 @@ export const ENDPOINTS = {
         root: ALERT_NOTIFICATION_ROOT,
         pending: () =>
             `${ALERT_NOTIFICATION_ROOT}/pending`,
+        shown: (notificationId: string) =>
+            `${ALERT_NOTIFICATION_ROOT}/${enc(notificationId)}/shown`,
     },
 
     issues: {
