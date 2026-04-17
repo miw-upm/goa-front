@@ -1,4 +1,4 @@
-<mat-slide-toggle [(ngModel)]="criteria.expired">Expirado sin uso</mat-slide-toggle>
+<mat-slide-toggle [(ngModel)]="criteria.expired" (change)="search()">Expirado sin uso</mat-slide-toggle>
 <app-filter-input [(value)]="criteria.mobile" title="Móvil" (enter)="search()"></app-filter-input>
 <app-filter-input [(value)]="criteria.scope" title="Alcance del link" (enter)="search()"></app-filter-input>
 
