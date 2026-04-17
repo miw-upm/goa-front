@@ -1,5 +1,12 @@
 <h4 mat-dialog-title>{{ title }}</h4>
 <mat-dialog-content>
+    <mat-slide-toggle [(ngModel)]="engagementLetter.budgetOnly">
+        @if (engagementLetter.budgetOnly) {
+            <strong>⚠️ SOLO presupuesto!</strong>
+        } @else {
+            Pulsa para presupuesto
+        }
+    </mat-slide-toggle>
     @if (!isCreate()) {
         <div class="dates-row">
             <app-form-date [(value)]="engagementLetter.creationDate" label="Fecha de Creación" [disabled]="true"/>

@@ -28,6 +28,7 @@ import {PaymentMethodDialogComponent} from './payment-method-dialog.component';
 import {EngagementLetter} from '../models/engagement-letter.model';
 import {LegalProcedure} from '../models/legal-procedure.model';
 import {PaymentMethod} from '../models/payment-method.model';
+import {MatSlideToggle} from "@angular/material/slide-toggle";
 
 
 @Component({
@@ -52,7 +53,8 @@ import {PaymentMethod} from '../models/payment-method.model';
         SearchByLegalProcedureTemplateComponent,
         MatTooltipModule,
         AppDateFieldComponent,
-        FormListComponent
+        FormListComponent,
+        MatSlideToggle
     ],
 
 })
@@ -69,6 +71,7 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         this.title = data ? 'Actualizar Hoja de Encargo' : 'Crear Hoja de Encargo';
         this.engagementLetter = {
             id: undefined,
+            budgetOnly:true,
             discount: 0,
             creationDate: data?.creationDate ? new Date(data.creationDate) : undefined,
             closingDate: data?.closingDate ? new Date(data.closingDate) : undefined,
