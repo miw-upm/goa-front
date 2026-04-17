@@ -11,6 +11,7 @@ import {AutoCloseDialogComponent} from "@shared/ui/dialogs/auto-close-dialog.com
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {AccessLinkSearch} from "./access-link-search.model";
 import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
+import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
 
 @Component({
     standalone: true,
@@ -40,10 +41,24 @@ export class AccessLinkComponent {
     }
 
     delete(accessLink: AccessLink) {
-        this.accessLinkService.delete(accessLink.id).subscribe(
-            () => this.search()
-        )
-
+        if (accessLink.lastUsedForUpdateAt) {
+            this.dialog.open(CancelYesDialogComponent, {
+                data: {
+                    title: 'Confirmar eliminación',
+                    message: 'Este enlace está en uso. ¿Desea eliminarlo?'
+                }
+            }).afterClosed().subscribe(result => {
+                if (result) {
+                    this.accessLinkService.delete(accessLink.id).subscribe(
+                        () => this.search()
+                    );
+                }
+            });
+        } else {
+            this.accessLinkService.delete(accessLink.id).subscribe(
+                () => this.search()
+            );
+        }
     }
 
     read(accessLink: AccessLink): void {
