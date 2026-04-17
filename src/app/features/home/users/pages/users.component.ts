@@ -42,7 +42,7 @@ export class UsersComponent {
             .open(UserCreationUpdatingDialogComponent)
             .afterClosed()
             .subscribe(() => {
-                this.users = this.userService.search(this.criteria);
+                this.search();
             });
     }
 

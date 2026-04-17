@@ -16,6 +16,11 @@ import {
 import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
 import {AuthService} from "@core/auth/auth.service";
 import {ClipboardToastDialogComponent} from "@shared/ui/dialogs/clipboard-toast-dialog.component";
+import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
+import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
+import {
+    LegalTaskCreationUpdatingDialogComponent
+} from "../../legal-tasks/dialogs/legal-task-creation-updating-dialog.component";
 
 @Component({
     standalone: true,
@@ -48,7 +53,11 @@ export class EngagementLettersComponent {
     }
 
     create(): void {
-        this.dialog.open(EngagementLetterCreationUpdatingDialogComponent, {width: '800px'});
+        this.dialog.open(EngagementLetterCreationUpdatingDialogComponent, {width: '800px'})
+            .afterClosed()
+            .subscribe(() => {
+                this.search();
+            });
     }
 
     update(engagement: EngagementLetter): void {
@@ -60,7 +69,15 @@ export class EngagementLettersComponent {
     }
 
     delete(engagement: EngagementLetter) {
-        this.engagementLettersService.delete(engagement.id).subscribe(() => this.search())
+        this.dialog.open(CancelYesDialogComponent, {
+            data: {
+                title:'Opeción peligrosa!!!',
+                message: '¿Estás seguro de eliminar esta hoja de encargo?\n\nSi es una Hoja antigua, podrían quedar conexiones rotas!!!' }
+        }).afterClosed().subscribe(result => {
+            if (result) {
+                this.engagementLettersService.delete(engagement.id).subscribe(() => this.search());
+            }
+        });
     }
 
     read(engagement: EngagementLetter) {
