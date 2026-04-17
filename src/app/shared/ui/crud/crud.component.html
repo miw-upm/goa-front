@@ -99,6 +99,12 @@
                                     <span>Eliminar</span>
                                 </button>
                             }
+                            @if (cancelAction) {
+                                <button mat-menu-item (click)="onCancel(item)">
+                                    <mat-icon color="warn">cancel</mat-icon>
+                                    <span>Cancelar</span>
+                                </button>
+                            }
                         </mat-menu>
                     }
                 </mat-cell>

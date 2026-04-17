@@ -42,4 +42,10 @@ export class AlertService {
             .success('Notificaciones configuradas correctamente')
             .put(ENDPOINTS.alerts.notifications(alertId), payload);
     }
+
+    cancel(alertId: string): Observable<any> {
+        return this.httpService.request()
+            .success('Alerta cancelada correctamente')
+            .patch(ENDPOINTS.alerts.cancel(alertId), {});
+    }
 }
