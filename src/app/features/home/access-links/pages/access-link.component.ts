@@ -7,10 +7,11 @@ import {CrudComponent} from "@shared/ui/crud/crud.component";
 import {AccessLinkService} from "../access-link.service";
 import {AccessLink} from "@features/shared/models/acces-link.model";
 import {AuthService} from "@core/auth/auth.service";
-import {AutoCloseDialogComponent} from "@shared/ui/dialogs/auto-close-dialog.component";
+import {ClipboardToastDialogComponent} from "@shared/ui/dialogs/clipboard-toast-dialog.component";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {AccessLinkSearch} from "./access-link-search.model";
 import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
+import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
 
 @Component({
     standalone: true,
@@ -40,10 +41,24 @@ export class AccessLinkComponent {
     }
 
     delete(accessLink: AccessLink) {
-        this.accessLinkService.delete(accessLink.id).subscribe(
-            () => this.search()
-        )
-
+        if (accessLink.lastUsedForUpdateAt) {
+            this.dialog.open(CancelYesDialogComponent, {
+                data: {
+                    title: 'Confirmar eliminación',
+                    message: 'Este enlace está en uso. ¿Desea eliminarlo?'
+                }
+            }).afterClosed().subscribe(result => {
+                if (result) {
+                    this.accessLinkService.delete(accessLink.id).subscribe(
+                        () => this.search()
+                    );
+                }
+            });
+        } else {
+            this.accessLinkService.delete(accessLink.id).subscribe(
+                () => this.search()
+            );
+        }
     }
 
     read(accessLink: AccessLink): void {
@@ -51,9 +66,11 @@ export class AccessLinkComponent {
     }
 
     viewLink(accessLink: AccessLink): void {
-        navigator.clipboard.writeText(this.accessLinkService.buildAccessUrl(accessLink));
-        this.dialog.open(AutoCloseDialogComponent, {
-            data: 'Link de acceso copiado'
+        this.dialog.open(ClipboardToastDialogComponent, {
+            data: {
+                message: 'Enlace público copiado al portapapeles',
+                clipboard: this.accessLinkService.buildAccessUrl(accessLink)
+            }
         });
     }
 

@@ -7,6 +7,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSortModule} from '@angular/material/sort';
 import {MatDialog} from '@angular/material/dialog';
 import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatMenuModule} from '@angular/material/menu';
 
 import {DataCellComponent} from '@shared/ui/crud/data-cell.component';
 import {ReadDetailDialogComponent} from '@shared/ui/crud/read-detail.dialog.component';
@@ -26,19 +27,20 @@ import {TypeToConfirmDialogComponent} from '@shared/ui/dialogs/type-to-confirm-d
         MatSortModule,
         MatIconModule,
         MatButtonModule,
-
+        MatMenuModule,
         UppercaseWordsPipe,
         DataCellComponent
     ],
 })
 export class CrudComponent {
     @Input() title = 'Management';
+    @Input() secureDelete = false;
+    @Input() token: string = null;
 
     @Input() createAction = true;
     @Input() readAction = true;
     @Input() updateAction = true;
     @Input() deleteAction = false;
-    @Input() secureDelete = false;
     @Input() printAction = false;
     @Input() runAction = false;
     @Input() assistantAction = false;
@@ -119,6 +121,12 @@ export class CrudComponent {
         return this.columns.filter(col => !hidden.includes(col));
     }
 
+    hasMoreActions(): boolean {
+        return this.deleteAction || this.assistantAction || this.eventsAction ||
+            this.timelineAction || this.alertsAction || this.notificationsAction ||
+            this.commentsAction || this.runAction;
+    }
+
     onCreate(): void {
         this.create.emit();
     }
@@ -147,12 +155,13 @@ export class CrudComponent {
                 }
             });
         } else {
+            const field:string = this.token ? item[this.token] : 'Delete';
             this.dialog.open(TypeToConfirmDialogComponent, {
                 disableClose: true,
                 data: {
                     title: `Delete ${this.title}`,
                     message: 'Type the confirmation text to proceed.',
-                    token: 'Delete'
+                    token: field
                 }
             }).afterClosed()
                 .subscribe((ok: boolean) => {
@@ -199,7 +208,7 @@ export class CrudComponent {
 
     onTimeline(item: any): void {
         console.log('CLICK timeline', item);
-      this.timeline.emit(item);
+        this.timeline.emit(item);
     }
 
 }

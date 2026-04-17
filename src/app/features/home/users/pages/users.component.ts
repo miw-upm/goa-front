@@ -10,7 +10,7 @@ import {UserCreationUpdatingDialogComponent} from '../dialogs/user-creation-upda
 import {UserSearch} from '../user-search.model';
 import {UserService} from '../user.service';
 import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
-import {AutoCloseDialogComponent} from "@shared/ui/dialogs/auto-close-dialog.component";
+import {ClipboardToastDialogComponent} from "@shared/ui/dialogs/clipboard-toast-dialog.component";
 import {SharedAccessLinkService} from "@features/shared/services/shared-access-link.service";
 
 @Component({
@@ -39,7 +39,11 @@ export class UsersComponent {
 
     create(): void {
         this.dialog
-            .open(UserCreationUpdatingDialogComponent);
+            .open(UserCreationUpdatingDialogComponent)
+            .afterClosed()
+            .subscribe(() => {
+                this.users = this.userService.search(this.criteria);
+            });
     }
 
     read(user: User): void {
@@ -69,7 +73,7 @@ export class UsersComponent {
                     .createAccessLink({mobile: userFull.mobile, scope: "edit-profile"})
                     .subscribe(link => {
                         navigator.clipboard.writeText(link);
-                        this.dialog.open(AutoCloseDialogComponent, {
+                        this.dialog.open(ClipboardToastDialogComponent, {
                             data: 'Link de acceso creado y copiado'
                         });
                     });

@@ -1,8 +1,8 @@
-<mat-slide-toggle [(ngModel)]="criteria.expired">Expirado sin uso</mat-slide-toggle>
+<mat-slide-toggle [(ngModel)]="criteria.expired" (change)="search()">Expirado sin uso</mat-slide-toggle>
 <app-filter-input [(value)]="criteria.mobile" title="Móvil" (enter)="search()"></app-filter-input>
 <app-filter-input [(value)]="criteria.scope" title="Alcance del link" (enter)="search()"></app-filter-input>
 
 <app-crud (delete)="delete($event)" (read)=read($event) (publicLink)="viewLink($event)" (searchAll)="search()"
           [createAction]="false" [data]="accessLinks" [deleteAction]=visible [item]="accessLink"
-          [publicLinkAction]="true" [title]="title" [updateAction]="false"
+          [publicLinkAction]="true" [title]="title" [updateAction]="false" [secureDelete]="true" token="mobile"
           [hiddenFields]="['id','document','createdAt']" ></app-crud>

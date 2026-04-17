@@ -8,7 +8,7 @@
     } @else if (isObject(value)) {
         {{ getFirstKey(value) }}: {{ getFirstValue(value) }}...({{ Object.entries(value).length }})
     } @else if (isDate(value)) {
-        {{ value | date: 'short' }}
+        {{ value | date: 'dd/MM/yyyy HH:mm:ss' }}
     } @else if (value === null || value === undefined) {
         —
     } @else {
@@ -41,7 +41,7 @@
             }
         </ul>
     } @else if (isDate(value)) {
-        {{ value | date: 'short' }}
+        {{ value | date: 'dd/MM/yyyy HH:mm:ss' }}
     } @else if (value === null || value === undefined) {
         —
     } @else {

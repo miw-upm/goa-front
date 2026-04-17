@@ -36,7 +36,7 @@
             <app-form-select [(selected)]="user.documentType" [values]="userDocumentTypes" label="Tipo de Documento"
                              [required]="true" />
             <app-form-field [(value)]="user.identity" label="Nº Identificación" [required]="true"/>
-            <app-form-field [(value)]="user.email" label="Email" />
+            <app-form-field [(value)]="user.email" label="Email (no)" [required]="true" />
             <div class="privacy-text">
                 <strong>Protección de datos personales:</strong><br/>
                 <p> Los datos proporcionados serán tratados por <em>Nuria Ocaña Pérez (DNI.46882956D)</em> con la
