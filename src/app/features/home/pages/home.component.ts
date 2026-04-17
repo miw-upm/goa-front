@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {RouterLink, RouterOutlet} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
@@ -12,9 +12,12 @@ import {FooterComponent} from '@core/layout/footer/footer.component';
 import {UserService} from "../users/user.service";
 import {UserCreationUpdatingDialogComponent} from "../users/dialogs/user-creation-updating-dialog.component";
 import {IssueCreationDialogComponent} from "app/features/home/issues/dialogs/issue-creation-dialog.component";
+import {AlertService} from "../alerts/alert.service";
+import {AlertPendingNotificationsDialogComponent} from "../alerts/dialogs/alert-pending-notifications-dialog.component";
 
 @Component({
     standalone: true,
+    providers: [AlertService],
     imports: [
         CommonModule,
         RouterLink,
@@ -31,11 +34,31 @@ import {IssueCreationDialogComponent} from "app/features/home/issues/dialogs/iss
     styleUrls: ['./home.component.css'],
 
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
     title = 'GOA';
 
     constructor(private readonly dialog: MatDialog, private readonly userService: UserService,
-                private readonly authService: AuthService) {
+                private readonly authService: AuthService,
+                private readonly alertService: AlertService) {
+    }
+
+    ngOnInit(): void {
+        if (!this.isAuthenticated()) {
+            return;
+        }
+
+        this.alertService.findPendingNotifications()
+            .subscribe(notifications => {
+                if (notifications.length === 0) {
+                    return;
+                }
+
+                this.dialog.open(AlertPendingNotificationsDialogComponent, {
+                    data: notifications,
+                    width: '700px',
+                    maxWidth: '95vw'
+                });
+            });
     }
 
     login(): void {
