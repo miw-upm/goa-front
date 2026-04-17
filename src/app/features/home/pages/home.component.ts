@@ -57,6 +57,20 @@ export class HomeComponent implements OnInit {
                     data: notifications,
                     width: '700px',
                     maxWidth: '95vw'
+                }).afterClosed().subscribe(() => {
+                    const notificationIds = notifications
+                        .map(notification => notification.notificationId)
+                        .filter((notificationId): notificationId is string =>
+                            notificationId !== undefined && notificationId !== null
+                        );
+
+                    if (notificationIds.length === 0) {
+                        return;
+                    }
+
+                    notificationIds.forEach(notificationId =>
+                        this.alertService.markNotificationAsShown(notificationId).subscribe()
+                    );
                 });
             });
     }
