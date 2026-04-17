@@ -38,7 +38,11 @@ export class LegalTasksComponent {
 
     create(): void {
         this.dialog
-            .open(LegalTaskCreationUpdatingDialogComponent);
+            .open(LegalTaskCreationUpdatingDialogComponent)
+            .afterClosed()
+            .subscribe(() => {
+                this.search();
+            });
     }
 
     update(task: LegalTask): void {

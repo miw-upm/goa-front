@@ -27,7 +27,7 @@ export class LegalProcedureTemplatesComponent {
     legalProcedure: Observable<any>;
 
     constructor(private readonly dialog: MatDialog, private readonly legalProcedureService: LegalProcedureTemplateService,
-                auth:AuthService) {
+                auth: AuthService) {
         this.deleteVisibility = auth.isAdmin();
         this.resetSearch();
     }
@@ -41,7 +41,11 @@ export class LegalProcedureTemplatesComponent {
     }
 
     create(): void {
-        this.dialog.open(LegalProcedureTemplateCreationUpdatingDialogComponent);
+        this.dialog.open(LegalProcedureTemplateCreationUpdatingDialogComponent)
+            .afterClosed()
+            .subscribe(() => {
+                this.search();
+            });
     }
 
     update(procedure: LegalProcedureTemplate): void {
