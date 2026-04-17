@@ -5,6 +5,7 @@ import {AcceptanceDocument} from "./acceptance-document.model";
 
 export interface EngagementLetter {
     id?: string;
+    budgetOnly?: boolean;
     discount?: number;
     creationDate?: Date;
     closingDate?: Date;
