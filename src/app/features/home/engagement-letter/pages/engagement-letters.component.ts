@@ -6,7 +6,6 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {Router} from '@angular/router';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
-import {CopyDialogComponent} from '@shared/ui/dialogs/copy-dialog.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
 import {EngagementLetterService} from '../engagement-letter.service';
 import {EngagementLetterSearch} from '../models/engagement-letter-search.model';
@@ -16,6 +15,7 @@ import {
 } from '../dialogs/engagement-letter-creation-updating-dialog.component';
 import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
 import {AuthService} from "@core/auth/auth.service";
+import {ClipboardToastDialogComponent} from "@shared/ui/dialogs/clipboard-toast-dialog.component";
 
 @Component({
     standalone: true,
@@ -103,11 +103,10 @@ export class EngagementLettersComponent {
             return;
         }
         this.engagementLettersService.createPublicAccessToken(engagement.id).subscribe(publicAccessToken =>
-            this.dialog.open(CopyDialogComponent, {
-                width: '700px',
+            this.dialog.open(ClipboardToastDialogComponent, {
                 data: {
-                    title: 'Enlace público generado',
-                    message: publicAccessToken.publicUrl
+                    message: 'Enlace público copiado al portapapeles',
+                    clipboard: publicAccessToken.publicUrl
                 }
             })
         );
