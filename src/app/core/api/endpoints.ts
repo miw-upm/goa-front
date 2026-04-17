@@ -8,6 +8,7 @@ const LEGAL_PROCEDURE_TEMPLATE_ROOT = `${environment.REST_ENGAGEMENT}/legal-proc
 const LEGAL_TASK_ROOT = `${environment.REST_ENGAGEMENT}/legal-tasks`;
 const EVENT_ROOT = `${environment.REST_ENGAGEMENT}/events`;
 const ALERT_ROOT = `${environment.REST_ENGAGEMENT}/alerts`;
+const ALERT_NOTIFICATION_ROOT = `${environment.REST_ENGAGEMENT}/alert-notifications`;
 const ISSUE_ROOT = `${environment.REST_SUPPORT}/issues`;
 const EXPENSE_ROOT = `${environment.REST_BILLING}/expenses`;
 const INCOME_ROOT = `${environment.REST_BILLING}/incomes`;
@@ -84,6 +85,12 @@ export const ENDPOINTS = {
             `${ALERT_ROOT}?engagementLetterId=${enc(engagementLetterId)}`,
         notifications: (id: string) =>
             `${ALERT_ROOT}/${enc(id)}/notifications`,
+    },
+
+    alertNotifications: {
+        root: ALERT_NOTIFICATION_ROOT,
+        pending: () =>
+            `${ALERT_NOTIFICATION_ROOT}/pending`,
     },
 
     issues: {

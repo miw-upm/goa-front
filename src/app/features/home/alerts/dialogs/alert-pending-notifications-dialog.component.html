@@ -1,0 +1,16 @@
+<h4 mat-dialog-title>Notificaciones pendientes</h4>
+<mat-dialog-content>
+    <div *ngFor="let notification of notifications; let last = last">
+        <p><strong>{{ notification.title }}</strong></p>
+        <p *ngIf="notification.description">{{ notification.description }}</p>
+        <p *ngIf="notification.dueDate">Vencimiento: {{ notification.dueDate | date:'dd/MM/yyyy' }}</p>
+        <p *ngIf="notification.triggerAt">Activación: {{ notification.triggerAt | date:'dd/MM/yyyy HH:mm' }}</p>
+        <p *ngIf="notification.offsetMinutes !== undefined && notification.offsetMinutes !== null">
+            Aviso: {{ offsetLabel(notification.offsetMinutes) }}
+        </p>
+        <hr *ngIf="!last"/>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-dialog-close mat-raised-button>Cerrar</button>
+</mat-dialog-actions>
