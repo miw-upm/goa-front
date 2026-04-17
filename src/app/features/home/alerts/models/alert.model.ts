@@ -28,3 +28,15 @@ export interface AlertDetail {
     status?: string;
     notifications?: AlertNotification[];
 }
+
+export interface PendingAlertNotification {
+    notificationId?: string;
+    alertId?: string;
+    offsetMinutes?: number;
+    triggerAt?: string;
+    status?: string;
+    title?: string;
+    description?: string;
+    dueDate?: string;
+    engagementLetterId?: string;
+}
