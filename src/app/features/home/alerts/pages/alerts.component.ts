@@ -12,6 +12,7 @@ import {AlertService} from '../alert.service';
 import {AlertCreationDialogComponent} from '../dialogs/alert-creation-dialog.component';
 import {AlertNotificationDialogComponent} from '../dialogs/alert-notification-dialog.component';
 import { AlertDetailDialogComponent } from '../dialogs/alert-detail-dialog/alert-detail-dialog.component';
+import { AlertEditDialogComponent } from '../dialogs/alert-edit-dialog/alert-edit-dialog.component';
 
 @Component({
     standalone: true,
@@ -90,6 +91,17 @@ export class AlertsComponent {
         this.dialog.open(AlertDetailDialogComponent, {
             data: { alertId },
             width: '600px'
+        });
+    }
+
+    openEditAlertDialog(alertId: string): void {
+        this.dialog.open(AlertEditDialogComponent, {
+            data: { alertId },
+            width: '600px'
+        }).afterClosed().subscribe(result => {
+        if (result) {
+            this.search();
+        }
         });
     }
 }
