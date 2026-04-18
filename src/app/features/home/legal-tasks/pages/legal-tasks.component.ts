@@ -23,7 +23,7 @@ export class LegalTasksComponent {
     legalTasks = of([]);
     task: Observable<LegalTask>;
 
-    constructor(private readonly dialog: MatDialog, private readonly legalTaskService: LegalTaskService, auth:AuthService) {
+    constructor(private readonly dialog: MatDialog, private readonly legalTaskService: LegalTaskService, auth: AuthService) {
         this.deleteVisibility = auth.isAdmin();
         this.resetSearch();
     }

@@ -1,7 +1,7 @@
-<app-filter-input [(value)]="legalTaskSearch.title" title="Titulo" (enter)="search()"></app-filter-input>
+<app-filter-input (enter)="search()" [(value)]="legalTaskSearch.title" title="Titulo"></app-filter-input>
 
 <app-crud (create)="create()" (delete)="delete($event)" (read)="read($event)" (searchAll)="search()"
           (update)="update($event)"
-          [data]="legalTasks" [deleteAction]=deleteVisibility [hiddenFields]="['id']" [secureDelete]="true"
-          [item]="task" [title]="title">
+          [data]="legalTasks" [deleteAction]=deleteVisibility [hiddenFields]="['id']" [item]="task"
+          [secureDelete]="true" [title]="title">
 </app-crud>

@@ -37,7 +37,7 @@ export class EngagementLetterService {
             .get(ENDPOINTS.engagementLetters.byId(id));
     }
 
-    print(id: string):Observable<void> {
+    print(id: string): Observable<void> {
         return this.httpService
             .request()
             .openPdf(ENDPOINTS.engagementLetters.print(id));

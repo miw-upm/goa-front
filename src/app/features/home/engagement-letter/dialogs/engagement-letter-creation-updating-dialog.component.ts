@@ -1,5 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {FormsModule, NgModel} from '@angular/forms';
+import {FormsModule} from '@angular/forms';
 import {CommonModule, DatePipe} from '@angular/common';
 
 import {MAT_DIALOG_DATA, MatDialog, MatDialogModule} from '@angular/material/dialog';
@@ -24,10 +24,8 @@ import {LegalProcedureTemplate} from '@features/shared/models/legal-procedure-te
 
 import {LegalProcedureEditDialogComponent} from './legal-procedure-edit-dialog.component';
 import {EngagementLetterService} from '../engagement-letter.service';
-import {PaymentMethodDialogComponent} from './payment-method-dialog.component';
 import {EngagementLetter} from '../models/engagement-letter.model';
 import {LegalProcedure} from '../models/legal-procedure.model';
-import {PaymentMethod} from '../models/payment-method.model';
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 
 
@@ -71,7 +69,7 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         this.title = data ? 'Actualizar Hoja de Encargo' : 'Crear Hoja de Encargo';
         this.engagementLetter = {
             id: undefined,
-            budgetOnly:true,
+            budgetOnly: true,
             discount: 0,
             creationDate: data?.creationDate ? new Date(data.creationDate) : undefined,
             closingDate: data?.closingDate ? new Date(data.closingDate) : undefined,

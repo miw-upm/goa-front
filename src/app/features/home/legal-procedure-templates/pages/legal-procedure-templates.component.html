@@ -1,7 +1,7 @@
-<app-filter-input [(value)]="legalProcedureSearch.title" title="Titulo" (enter)="search()"></app-filter-input>
-<app-filter-input [(value)]="legalProcedureSearch.task" title="Tarea" (enter)="search()"></app-filter-input>
+<app-filter-input (enter)="search()" [(value)]="legalProcedureSearch.title" title="Titulo"></app-filter-input>
+<app-filter-input (enter)="search()" [(value)]="legalProcedureSearch.task" title="Tarea"></app-filter-input>
 
 <app-crud (create)="create()" (delete)="delete($event)" (read)="read($event)" (searchAll)="search()"
           (update)="update($event)"
-          [data]="legalProcedures" [deleteAction]=deleteVisibility [secureDelete]="true"
-          [hiddenFields]="['id']" [item]="legalProcedure" [readAction]="true" [title]="title"></app-crud>
+          [data]="legalProcedures" [deleteAction]=deleteVisibility [hiddenFields]="['id']"
+          [item]="legalProcedure" [readAction]="true" [secureDelete]="true" [title]="title"></app-crud>
