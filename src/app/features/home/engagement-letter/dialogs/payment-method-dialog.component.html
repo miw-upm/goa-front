@@ -1,10 +1,10 @@
 <h2 mat-dialog-title>Nueva Forma de Pago</h2>
 <mat-dialog-content>
-    <mat-form-field class="full-width">
+    <mat-form-field appearance="outline" class="full-width">
         <mat-label>Porcentaje</mat-label>
-        <input [(ngModel)]="percentage" matInput />
+        <input [(ngModel)]="percentage" matInput/>
     </mat-form-field>
-    <mat-form-field class="full-width">
+    <mat-form-field appearance="outline" class="full-width">
         <mat-label>Descripción</mat-label>
         <input [(ngModel)]="description" matInput/>
     </mat-form-field>
@@ -12,5 +12,5 @@
 
 <mat-dialog-actions align="end">
     <button (click)="cancel()" mat-button>Cancelar</button>
-    <button (click)="save()" color="primary" mat-flat-button>Guardar</button>
+    <button (click)="save()" [disabled]="!description.trim() || !percentage" color="primary" mat-flat-button>Guardar</button>
 </mat-dialog-actions>
