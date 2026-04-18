@@ -7,14 +7,14 @@
     <div class="mat-body-1">{{ data?.message ?? 'Type the confirmation text to proceed.' }}</div>
 
     <div class="mat-body-2" style="margin-top: 10px;">
-        Type exactly: <strong>{{ data.token }}</strong>
+        Type exactly: <strong>{{ data.expectedText }}</strong>
     </div>
 
     <mat-form-field appearance="outline" style="width: 100%; margin-top: 12px;">
         <input
                 (keyup.enter)="confirm()"
                 [formControl]="input"
-                [placeholder]="'Type: ' + data.token"
+                [placeholder]="'Type: ' + data.expectedText"
                 autocomplete="off"
                 matInput
         />

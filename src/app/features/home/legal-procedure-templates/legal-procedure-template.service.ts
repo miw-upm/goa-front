@@ -5,7 +5,7 @@ import {map} from 'rxjs/operators';
 import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
 import {LegalProcedureTemplate} from '@features/shared/models/legal-procedure-template.model';
-import {LegalProcedureSearch} from './legal-procedure-search.model';
+import {LegalProcedureCriteria} from './legal-procedure-search.model';
 
 
 @Injectable({providedIn: 'root'})
@@ -24,7 +24,7 @@ export class LegalProcedureTemplateService {
             .put(ENDPOINTS.legalProcedureTemplates.byId(id), procedure);
     }
 
-    search(legalProcedureSearch: LegalProcedureSearch): Observable<LegalProcedureTemplate[]> {
+    search(legalProcedureSearch: LegalProcedureCriteria): Observable<LegalProcedureTemplate[]> {
         return this.httpService.request()
             .paramsFrom(legalProcedureSearch)
             .get<LegalProcedureTemplate[]>(ENDPOINTS.legalProcedureTemplates.root)

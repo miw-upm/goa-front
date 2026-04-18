@@ -14,7 +14,7 @@ import {CommonModule} from '@angular/common';
 })
 export class PaymentMethodDialogComponent {
     description: string = '';
-    percentage: number | null = null;
+    percentage: string = '';
 
     constructor(private readonly dialogRef: MatDialogRef<PaymentMethodDialogComponent>) {
     }

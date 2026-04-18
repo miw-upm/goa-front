@@ -1,6 +1,12 @@
-<mat-slide-toggle [(ngModel)]="criteria.opened">Abierto</mat-slide-toggle>
-<app-filter-input [(value)]="criteria.legalProcedureTitle" title="Titulo del Procedimiento" (enter)="search()"></app-filter-input>
+<mat-button-toggle-group [(ngModel)]="criteria.opened" (change)="search()">
+    <mat-button-toggle [value]="null">Todos</mat-button-toggle>
+    <mat-button-toggle [value]="true">Abierto</mat-button-toggle>
+    <mat-button-toggle [value]="false">Cerrado</mat-button-toggle>
+</mat-button-toggle-group>
 <app-filter-input [(value)]="criteria.owner" title="Responsable" (enter)="search()"></app-filter-input>
+<app-filter-input [(value)]="criteria.legalProcedureTitle" title="Titulo del Procedimiento" (enter)="search()"></app-filter-input>
+<app-filter-input [(value)]="criteria.taskTitle" title="Tarea" (enter)="search()"></app-filter-input>
+
 <app-crud (create)="create()" (delete)="delete($event)" (read)="read($event)" (searchAll)="search()"
           (update)="update($event)" (print)="print($event)"
           (assistant)="openAssistant($event)"

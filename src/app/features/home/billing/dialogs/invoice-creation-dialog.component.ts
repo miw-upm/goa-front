@@ -17,7 +17,7 @@ import {map} from 'rxjs/operators';
 
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {EngagementLetterService} from '../../engagement-letter/engagement-letter.service';
-import {EngagementLetterSearch} from '../../engagement-letter/models/engagement-letter-search.model';
+import {EngagementLetterCriteria} from '../../engagement-letter/models/engagement-letter-criteria.model';
 import {ExpenseService} from '../expense.service';
 import {IncomeService} from '../income.service';
 import {InvoiceService} from '../invoice.service';
@@ -105,7 +105,7 @@ export class InvoiceCreationDialogComponent {
         };
         this.invoiceDate = data?.date;
 
-        const criteria: EngagementLetterSearch = {
+        const criteria: EngagementLetterCriteria = {
             opened: true,
             owner: '',
             legalProcedureTitle: ''

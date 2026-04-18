@@ -7,7 +7,7 @@ import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
 import {LegalTask} from '@features/shared/models/legal-task.model';
 import {LegalTaskCreationUpdatingDialogComponent} from '../dialogs/legal-task-creation-updating-dialog.component';
-import {LegalTaskSearch} from '../legal-task-search.model';
+import {LegalTaskCriteria} from '../legal-task-search.model';
 import {LegalTaskService} from '../legal-task.service';
 import {AuthService} from "@core/auth/auth.service";
 
@@ -18,7 +18,7 @@ import {AuthService} from "@core/auth/auth.service";
 })
 export class LegalTasksComponent {
     deleteVisibility: boolean = false;
-    legalTaskSearch: LegalTaskSearch;
+    legalTaskSearch: LegalTaskCriteria;
     title = "Tareas Legales";
     legalTasks = of([]);
     task: Observable<LegalTask>;
