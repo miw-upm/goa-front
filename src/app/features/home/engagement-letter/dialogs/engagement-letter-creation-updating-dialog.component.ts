@@ -113,10 +113,6 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         return this.engagementLetter.id === undefined;
     }
 
-    formInvalid(...controls: NgModel[]): boolean {
-        return controls.some(ctrl => ctrl.invalid && (ctrl.dirty || ctrl.touched));
-    }
-
     invalid(): boolean {
         const owner = this.checkInvalid(this.engagementLetter.owner?.mobile);
         const procedures = this.checkInvalid(this.engagementLetter.legalProcedures);
@@ -164,17 +160,6 @@ export class EngagementLetterCreationUpdatingDialogComponent {
 
     removePaymentMethod(index: number): void {
         this.engagementLetter.paymentMethods.splice(index, 1);
-    }
-
-    addPaymentMethodDialog(): void {
-        this.dialog.open(PaymentMethodDialogComponent).afterClosed().subscribe((result: PaymentMethod | undefined) => {
-            if (result) {
-                if (!this.engagementLetter.paymentMethods) {
-                    this.engagementLetter.paymentMethods = [];
-                }
-                this.engagementLetter.paymentMethods.push(result);
-            }
-        });
     }
 
     editLegalProcedureDialog(procedure: LegalProcedure): void {

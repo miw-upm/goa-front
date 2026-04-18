@@ -1,0 +1,29 @@
+<h4 mat-dialog-title>Editar Alerta</h4>
+
+<mat-dialog-content>
+  <div *ngIf="alert">
+    <form>
+      <app-form-field
+        [(value)]="alert.title"
+        label="Título"
+        [required]="true"
+        errorMessage="El título es obligatorio"
+      ></app-form-field>
+
+      <app-form-field
+        [(value)]="alert.description"
+        label="Descripción"
+      ></app-form-field>
+
+      <app-form-date
+        [(value)]="alert.dueDate"
+        label="Fecha de vencimiento"
+      ></app-form-date>
+    </form>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-dialog-close mat-raised-button color="accent">Cancelar</button>
+  <button mat-raised-button (click)="save()" color="primary" [disabled]="!alert.title">Guardar</button>
+</mat-dialog-actions>

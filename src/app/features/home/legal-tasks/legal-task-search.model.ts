@@ -1,3 +1,3 @@
-export class LegalTaskSearch {
+export class LegalTaskCriteria {
     title?: string;
 }
