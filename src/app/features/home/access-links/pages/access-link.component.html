@@ -4,5 +4,5 @@
 
 <app-crud (delete)="delete($event)" (read)=read($event) (publicLink)="viewLink($event)" (searchAll)="search()"
           [createAction]="false" [data]="accessLinks" [deleteAction]=visible [item]="accessLink"
-          [publicLinkAction]="true" [title]="title" [updateAction]="false" [secureDelete]="true" token="mobile"
+          [publicLinkAction]="true" [title]="title" [updateAction]="false" [secureDelete]="true" typeToDelete="mobile"
           [hiddenFields]="['id','document','createdAt']" ></app-crud>

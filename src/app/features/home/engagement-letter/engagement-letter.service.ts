@@ -7,7 +7,7 @@ import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
 import {LegalProcedureTemplate} from '@features/shared/models/legal-procedure-template.model';
 import {EngagementLetter} from './models/engagement-letter.model';
-import {EngagementLetterCriteria} from './models/engagement-letter-search.model';
+import {EngagementLetterCriteria} from './models/engagement-letter-criteria.model';
 import {PublicAccessToken} from './models/public-access-token.model';
 
 @Injectable()

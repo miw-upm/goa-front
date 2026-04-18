@@ -15,7 +15,7 @@ import {MatInputModule} from '@angular/material/input';
 export type TypeToConfirmDialogData = {
     title?: string;
     message?: string;
-    token: string;
+    expectedText: string;
 };
 
 @Component({
@@ -43,7 +43,7 @@ export class TypeToConfirmDialogComponent {
     }
 
     get canConfirm(): boolean {
-        return this.input.value === this.data.token;
+        return this.input.value === this.data.expectedText;
     }
 
     confirm(): void {

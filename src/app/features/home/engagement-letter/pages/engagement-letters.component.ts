@@ -8,7 +8,7 @@ import {Router} from '@angular/router';
 import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
 import {EngagementLetterService} from '../engagement-letter.service';
-import {EngagementLetterCriteria} from '../models/engagement-letter-search.model';
+import {EngagementLetterCriteria} from '../models/engagement-letter-criteria.model';
 import {EngagementLetter} from '../models/engagement-letter.model';
 import {
     EngagementLetterCreationUpdatingDialogComponent
@@ -17,11 +17,12 @@ import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
 import {AuthService} from "@core/auth/auth.service";
 import {ClipboardToastDialogComponent} from "@shared/ui/dialogs/clipboard-toast-dialog.component";
 import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
+import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
 
 @Component({
     standalone: true,
     providers: [EngagementLetterService],
-    imports: [FormsModule, CrudComponent, MatSlideToggleModule, FilterInputComponent],
+    imports: [FormsModule, CrudComponent, MatSlideToggleModule, FilterInputComponent, MatButtonToggleGroup, MatButtonToggle],
     templateUrl: 'engagement-letters.component.html'
 })
 export class EngagementLettersComponent {
@@ -29,7 +30,7 @@ export class EngagementLettersComponent {
     title = "Hojas de Encargo";
     engagementLetters = of([]);
     engagementLetter: Observable<any>;
-    criteria: EngagementLetterCriteria
+    criteria: EngagementLetterCriteria;
 
     constructor(
         private readonly dialog: MatDialog,
