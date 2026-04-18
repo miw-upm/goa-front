@@ -35,7 +35,7 @@ import {TypeToConfirmDialogComponent} from '@shared/ui/dialogs/type-to-confirm-d
 export class CrudComponent {
     @Input() title = 'Management';
     @Input() secureDelete = false;
-    @Input() token: string = null;
+    @Input() typeToDelete: string = null;
 
     @Input() createAction = true;
     @Input() readAction = true;
@@ -96,11 +96,9 @@ export class CrudComponent {
     @Input()
     set item(item$: Observable<any> | undefined) {
         this.itemSub?.unsubscribe();
-
         if (!item$) {
             return;
         }
-
         this.itemSub = item$.subscribe(data => {
             this.dialog.open(ReadDetailDialogComponent, {
                 data: {
@@ -157,13 +155,13 @@ export class CrudComponent {
                 }
             });
         } else {
-            const field:string = this.token ? item[this.token] : 'Delete';
+            const confirmationText:string = this.typeToDelete ? item[this.typeToDelete] : 'Delete';
             this.dialog.open(TypeToConfirmDialogComponent, {
                 disableClose: true,
                 data: {
                     title: `Delete ${this.title}`,
                     message: 'Type the confirmation text to proceed.',
-                    token: field
+                    expectedText: confirmationText
                 }
             }).afterClosed()
                 .subscribe((ok: boolean) => {

@@ -3,5 +3,4 @@ export class EngagementLetterCriteria {
     owner?: string;
     legalProcedureTitle?: string;
     taskTitle?: string;
-
 }

@@ -20,7 +20,7 @@ import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
 import {FormSelectComponent} from '@shared/ui/inputs/forms/select.component';
 import {SharedUserService} from '@features/shared/services/shared-user.service';
 import {EngagementLetterService} from '../../engagement-letter/engagement-letter.service';
-import {EngagementLetterCriteria} from '../../engagement-letter/models/engagement-letter-search.model';
+import {EngagementLetterCriteria} from '../../engagement-letter/models/engagement-letter-criteria.model';
 import {IncomeService} from '../income.service';
 import {Income} from '../models/income.model';
 
