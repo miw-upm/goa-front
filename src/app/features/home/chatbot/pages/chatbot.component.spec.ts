@@ -4,12 +4,16 @@ import {fakeAsync, tick} from '@angular/core/testing';
 import {ChatbotComponent} from './chatbot.component';
 import {ChatbotService} from '../chatbot.service';
 import {ContextualChatbotDialogData} from '../models/chatbot.model';
+import {AuthService} from '@core/auth/auth.service';
 
 describe('ChatbotComponent', () => {
     let chatbotServiceSpy: {
         startContextualConversation: jasmine.Spy;
         startGeneralConversation: jasmine.Spy;
         sendMessage: jasmine.Spy;
+    };
+    let authServiceSpy: {
+        isCustomer: jasmine.Spy;
     };
     let dialogRefSpy: {
         close: jasmine.Spy;
@@ -20,6 +24,7 @@ describe('ChatbotComponent', () => {
         dialogRef: { close: jasmine.Spy } | null = null
     ) => new ChatbotComponent(
         chatbotServiceSpy as unknown as ChatbotService,
+        authServiceSpy as unknown as AuthService,
         dialogData,
         dialogRef as any
     );
@@ -29,6 +34,9 @@ describe('ChatbotComponent', () => {
             startContextualConversation: jasmine.createSpy('startContextualConversation'),
             startGeneralConversation: jasmine.createSpy('startGeneralConversation'),
             sendMessage: jasmine.createSpy('sendMessage')
+        };
+        authServiceSpy = {
+            isCustomer: jasmine.createSpy('isCustomer').and.returnValue(false)
         };
         dialogRefSpy = {
             close: jasmine.createSpy('close')
@@ -48,6 +56,7 @@ describe('ChatbotComponent', () => {
     it('should initialize contextual conversation when dialog data is provided', () => {
         chatbotServiceSpy.startContextualConversation.and.returnValue(of({
             conversationId: 'ctx-1',
+            engagementLetterId: 'eng-1',
             error: 'Aviso controlado'
         }));
         const component = createComponent({engagementLetterId: 'eng-1'});
@@ -59,6 +68,21 @@ describe('ChatbotComponent', () => {
         });
         expect(component.conversationId).toBe('ctx-1');
         expect(component.error).toBe('Aviso controlado');
+        expect(component.initializing).toBeFalse();
+    });
+
+    it('should clear contextual initialization error when response has no error', () => {
+        chatbotServiceSpy.startContextualConversation.and.returnValue(of({
+            conversationId: 'ctx-1',
+            engagementLetterId: 'eng-1'
+        }));
+        const component = createComponent({engagementLetterId: 'eng-1'});
+        component.error = 'Error previo';
+
+        component.ngOnInit();
+
+        expect(component.conversationId).toBe('ctx-1');
+        expect(component.error).toBe('');
         expect(component.initializing).toBeFalse();
     });
 
@@ -252,6 +276,24 @@ describe('ChatbotComponent', () => {
     it('should require conversation only when engagement letter id exists', () => {
         expect(createComponent().requiresConversation()).toBeFalse();
         expect(createComponent({engagementLetterId: 'eng-1'}).requiresConversation()).toBeTrue();
+    });
+
+    it('should expose customer conversation copy when user is customer', () => {
+        authServiceSpy.isCustomer.and.returnValue(true);
+        const component = createComponent();
+
+        expect(component.conversationModeLabel()).toBe('Modo cliente');
+        expect(component.conversationModeDescription()).toBe('El asistente usará un lenguaje más claro y guiado.');
+        expect(component.composerPlaceholder()).toBe('Escribe tu duda sobre el encargo');
+    });
+
+    it('should expose professional conversation copy when user is not customer', () => {
+        authServiceSpy.isCustomer.and.returnValue(false);
+        const component = createComponent();
+
+        expect(component.conversationModeLabel()).toBe('Modo profesional');
+        expect(component.conversationModeDescription()).toBe('El asistente usará un lenguaje más técnico y operativo.');
+        expect(component.composerPlaceholder()).toBe('Escribe tu consulta operativa o técnica');
     });
 
     it('should scroll messages container to bottom when available', fakeAsync(() => {
