@@ -1,4 +1,4 @@
-<mat-button-toggle-group [(ngModel)]="criteria.opened">
+<mat-button-toggle-group [(ngModel)]="criteria.opened" (change)="search()">
     <mat-button-toggle [value]="null">Todos</mat-button-toggle>
     <mat-button-toggle [value]="true">Abierto</mat-button-toggle>
     <mat-button-toggle [value]="false">Cerrado</mat-button-toggle>
