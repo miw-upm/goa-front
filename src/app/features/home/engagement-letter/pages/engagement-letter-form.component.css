@@ -1,14 +1,14 @@
-.mat-dialog-content {
+mat-card {
     max-width: 1400px;
-    font-size: 10px;
+    margin: 20px auto;
+}
+
+mat-card-content {
+    padding: 16px;
 }
 
 .full-width {
     width: 100%;
-}
-
-.payment-error {
-    color: red;
 }
 
 .payment-row {
@@ -29,8 +29,17 @@
 .dates-row {
     display: flex;
     gap: 16px;
+    margin: 16px 0;
 }
 
 .dates-row app-form-date {
     flex: 1;
+}
+
+.owner-fieldset {
+    margin: 16px 0;
+}
+
+mat-slide-toggle {
+    margin-bottom: 16px;
 }

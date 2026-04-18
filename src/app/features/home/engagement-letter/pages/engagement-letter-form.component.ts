@@ -1,8 +1,8 @@
-import {Component, Inject} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {CommonModule, DatePipe} from '@angular/common';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import {MAT_DIALOG_DATA, MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
@@ -12,6 +12,9 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatListModule} from '@angular/material/list';
+import {MatDialog} from '@angular/material/dialog';
+import {MatCardModule} from '@angular/material/card';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {FormListComponent} from '@shared/ui/inputs/forms/list.component';
@@ -22,23 +25,20 @@ import {
 import {User} from '@features/shared/models/user.model';
 import {LegalProcedureTemplate} from '@features/shared/models/legal-procedure-template.model';
 
-import {LegalProcedureEditDialogComponent} from './legal-procedure-edit-dialog.component';
 import {EngagementLetterService} from '../engagement-letter.service';
 import {EngagementLetter} from '../models/engagement-letter.model';
 import {LegalProcedure} from '../models/legal-procedure.model';
-import {MatSlideToggle} from "@angular/material/slide-toggle";
-
+import {LegalProcedureEditDialogComponent} from "../dialogs/legal-procedure-edit-dialog.component";
 
 @Component({
     standalone: true,
-    selector: 'app-engagement-letter-creation-updating-dialog',
+    selector: 'app-engagement-letter-form',
     providers: [DatePipe, EngagementLetterService],
-    templateUrl: 'engagement-letter-creation-updating-dialog.component.html',
-    styleUrls: ['engagement-letter-dialog.component.css'],
+    templateUrl: 'engagement-letter-form.component.html',
+    styleUrls: ['engagement-letter-form.component.css'],
     imports: [
         CommonModule,
         FormsModule,
-        MatDialogModule,
         MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
@@ -47,39 +47,29 @@ import {MatSlideToggle} from "@angular/material/slide-toggle";
         MatNativeDateModule,
         MatChipsModule,
         MatListModule,
+        MatCardModule,
+        MatSlideToggleModule,
         SearchByUserComponent,
         SearchByLegalProcedureTemplateComponent,
         MatTooltipModule,
         AppDateFieldComponent,
-        FormListComponent,
-        MatSlideToggle
+        FormListComponent
     ],
-
 })
-export class EngagementLetterCreationUpdatingDialogComponent {
+export class EngagementLetterFormComponent implements OnInit {
     engagementLetter: EngagementLetter;
     title: string;
+    isEditMode = false;
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) data: EngagementLetter,
+        private readonly route: ActivatedRoute,
+        private readonly router: Router,
         private readonly datePipe: DatePipe,
         private readonly engagementLetterService: EngagementLetterService,
         private readonly dialog: MatDialog
     ) {
-        this.title = data ? 'Actualizar Hoja de Encargo' : 'Crear Hoja de Encargo';
-        this.engagementLetter = {
-            id: undefined,
-            budgetOnly: true,
-            discount: 0,
-            creationDate: data?.creationDate ? new Date(data.creationDate) : undefined,
-            closingDate: data?.closingDate ? new Date(data.closingDate) : undefined,
-            owner: undefined,
-            attachments: [],
-            legalProcedures: [],
-            paymentMethods: [{description: 'Al finalizar el proceso', percentage: "Resto"}],
-            acceptanceDocuments: undefined,
-            ...(data || {})
-        };
+        this.engagementLetter = this.createEmptyEngagementLetter();
+        this.title = 'Crear Hoja de Encargo';
     }
 
     get ownerAsArray(): any[] {
@@ -87,28 +77,49 @@ export class EngagementLetterCreationUpdatingDialogComponent {
     }
 
     set ownerAsArray(list: any[]) {
-        this.engagementLetter.owner = list[0]; // solo tomas el primero
+        this.engagementLetter.owner = list[0];
+    }
+
+    ngOnInit(): void {
+        const id = this.route.snapshot.paramMap.get('id');
+        if (id) {
+            this.isEditMode = true;
+            this.title = 'Actualizar Hoja de Encargo';
+            this.engagementLetterService.read(id).subscribe(data => {
+                this.engagementLetter = {
+                    ...data,
+                    creationDate: data.creationDate ? new Date(data.creationDate) : undefined,
+                    closingDate: data.closingDate ? new Date(data.closingDate) : undefined
+                };
+            });
+        }
+    }
+
+    save(): void {
+        if (this.isEditMode) {
+            this.update();
+        } else {
+            this.create();
+        }
     }
 
     create(): void {
-        this.engagementLetterService
-            .create(this.engagementLetter)
-            .subscribe(() => this.dialog.closeAll());
+        this.engagementLetterService.create(this.engagementLetter).subscribe(() => {
+            this.router.navigate(['/engagement-letters']);
+        });
     }
 
     update(): void {
         const formattedDate = this.datePipe.transform(this.engagementLetter.closingDate, 'yyyy-MM-dd');
         this.engagementLetter.closingDate = formattedDate as any;
 
-        console.log(JSON.parse(JSON.stringify(this.engagementLetter)));
-
-        this.engagementLetterService
-            .update(this.engagementLetter.id, this.engagementLetter)
-            .subscribe(() => this.dialog.closeAll());
+        this.engagementLetterService.update(this.engagementLetter.id, this.engagementLetter).subscribe(() => {
+            this.router.navigate(['/engagement-letters']);
+        });
     }
 
-    isCreate(): boolean {
-        return this.engagementLetter.id === undefined;
+    cancel(): void {
+        this.router.navigate(['/engagement-letters']);
     }
 
     invalid(): boolean {
@@ -116,7 +127,6 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         const procedures = this.checkInvalid(this.engagementLetter.legalProcedures);
         return owner || procedures;
     }
-
 
     checkInvalid(attr: string | number | null | undefined | object): boolean {
         return (
@@ -128,7 +138,7 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         );
     }
 
-    addAttachment(user: User) {
+    addAttachment(user: User): void {
         const alreadyInAttachments = this.engagementLetter.attachments.some(t => t.mobile === user.mobile);
         const isOwner = this.engagementLetter.owner?.mobile === user.mobile;
         if (!alreadyInAttachments && !isOwner) {
@@ -136,7 +146,7 @@ export class EngagementLetterCreationUpdatingDialogComponent {
         }
     }
 
-    addProcedure(template: LegalProcedureTemplate) {
+    addProcedure(template: LegalProcedureTemplate): void {
         const procedure: LegalProcedure = {
             id: crypto.randomUUID(),
             title: template.title,
@@ -145,7 +155,7 @@ export class EngagementLetterCreationUpdatingDialogComponent {
             legalTasks: template.legalTasks?.map(task => task.title) ?? [],
             startDate: undefined,
             closingDate: undefined
-        }
+        };
         const title = (template?.title || '').trim();
         if (title && !this.engagementLetter.legalProcedures.some(proc => proc.title === title)) {
             this.engagementLetter.legalProcedures.push(procedure);
@@ -172,5 +182,20 @@ export class EngagementLetterCreationUpdatingDialogComponent {
                 }
             }
         });
+    }
+
+    private createEmptyEngagementLetter(): EngagementLetter {
+        return {
+            id: undefined,
+            budgetOnly: true,
+            discount: 0,
+            creationDate: undefined,
+            closingDate: undefined,
+            owner: undefined,
+            attachments: [],
+            legalProcedures: [],
+            paymentMethods: [{description: 'Al finalizar el proceso', percentage: 'Resto'}],
+            acceptanceDocuments: undefined
+        };
     }
 }

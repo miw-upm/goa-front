@@ -10,9 +10,6 @@ import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
 import {EngagementLetterService} from '../engagement-letter.service';
 import {EngagementLetterCriteria} from '../models/engagement-letter-criteria.model';
 import {EngagementLetter} from '../models/engagement-letter.model';
-import {
-    EngagementLetterCreationUpdatingDialogComponent
-} from '../dialogs/engagement-letter-creation-updating-dialog.component';
 import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
 import {AuthService} from "@core/auth/auth.service";
 import {ClipboardToastDialogComponent} from "@shared/ui/dialogs/clipboard-toast-dialog.component";
@@ -50,19 +47,11 @@ export class EngagementLettersComponent {
     }
 
     create(): void {
-        this.dialog.open(EngagementLetterCreationUpdatingDialogComponent, {width: '800px'})
-            .afterClosed()
-            .subscribe(() => {
-                this.search();
-            });
+        this.router.navigate(['/home/engagement-letters/new']);
     }
 
     update(engagement: EngagementLetter): void {
-        this.engagementLettersService.read(engagement.id).subscribe(engagementDb =>
-            this.dialog.open(EngagementLetterCreationUpdatingDialogComponent, {data: engagementDb, width: '800px'})
-                .afterClosed()
-                .subscribe(() => this.search())
-        );
+        this.router.navigate(['/home/engagement-letters', engagement.id, 'edit']);
     }
 
     delete(engagement: EngagementLetter) {
