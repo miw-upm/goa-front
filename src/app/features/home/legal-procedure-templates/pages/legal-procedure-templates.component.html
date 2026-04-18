@@ -1,4 +1,5 @@
 <app-filter-input [(value)]="legalProcedureSearch.title" title="Titulo" (enter)="search()"></app-filter-input>
+<app-filter-input [(value)]="legalProcedureSearch.task" title="Tarea" (enter)="search()"></app-filter-input>
 
 <app-crud (create)="create()" (delete)="delete($event)" (read)="read($event)" (searchAll)="search()"
           (update)="update($event)"
