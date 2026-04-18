@@ -12,6 +12,12 @@ export interface AlertCreate {
     engagementLetterId: string;
 }
 
+export interface AlertEdit {
+    title: string;
+    description?: string;
+    dueDate: string;
+}
+
 export interface AlertNotificationConfig {
     offsetMinutes: number[];
 }
