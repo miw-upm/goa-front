@@ -1,5 +1,7 @@
-export class EngagementLetterSearch {
+export class EngagementLetterCriteria {
     opened?: boolean;
-    legalProcedureTitle?: string;
     owner?: string;
+    legalProcedureTitle?: string;
+    taskTitle?: string;
+
 }

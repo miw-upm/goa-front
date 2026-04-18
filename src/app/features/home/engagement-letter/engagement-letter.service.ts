@@ -7,7 +7,7 @@ import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
 import {LegalProcedureTemplate} from '@features/shared/models/legal-procedure-template.model';
 import {EngagementLetter} from './models/engagement-letter.model';
-import {EngagementLetterSearch} from './models/engagement-letter-search.model';
+import {EngagementLetterCriteria} from './models/engagement-letter-search.model';
 import {PublicAccessToken} from './models/public-access-token.model';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class EngagementLetterService {
             .put(ENDPOINTS.engagementLetters.byId(id), engagement);
     }
 
-    search(criteria: EngagementLetterSearch): Observable<EngagementLetter[]> {
+    search(criteria: EngagementLetterCriteria): Observable<EngagementLetter[]> {
         return this.httpService.request()
             .paramsFrom(criteria)
             .get(ENDPOINTS.engagementLetters.root);

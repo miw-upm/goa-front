@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from "@core/api/endpoints";
 import {LegalTask} from "@features/shared/models/legal-task.model";
-import {LegalTaskSearch} from "./legal-task-search.model";
+import {LegalTaskCriteria} from "./legal-task-search.model";
 
 @Injectable({providedIn: 'root'})
 export class LegalTaskService {
@@ -17,7 +17,7 @@ export class LegalTaskService {
             .put(ENDPOINTS.legalTasks.byId(id), task);
     }
 
-    search(legalTaskSearch: LegalTaskSearch): Observable<LegalTask[]> {
+    search(legalTaskSearch: LegalTaskCriteria): Observable<LegalTask[]> {
         return this.httpService.request()
             .paramsFrom(legalTaskSearch)
             .get(ENDPOINTS.legalTasks.root);
