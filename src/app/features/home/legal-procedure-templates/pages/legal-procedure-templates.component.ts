@@ -7,7 +7,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {CrudComponent} from "@shared/ui/crud/crud.component";
 import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
 import {LegalProcedureTemplate} from '@features/shared/models/legal-procedure-template.model';
-import {LegalProcedureSearch} from "../legal-procedure-search.model";
+import {LegalProcedureCriteria} from "../legal-procedure-search.model";
 import {LegalProcedureTemplateService} from "../legal-procedure-template.service";
 import {
     LegalProcedureTemplateCreationUpdatingDialogComponent
@@ -21,7 +21,7 @@ import {AuthService} from "@core/auth/auth.service";
 })
 export class LegalProcedureTemplatesComponent {
     deleteVisibility: boolean = false;
-    legalProcedureSearch: LegalProcedureSearch;
+    legalProcedureSearch: LegalProcedureCriteria;
     title = "Plantillas de Procedimientos Legales";
     legalProcedures = of([]);
     legalProcedure: Observable<any>;

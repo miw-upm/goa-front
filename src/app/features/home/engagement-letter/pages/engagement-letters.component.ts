@@ -8,7 +8,7 @@ import {Router} from '@angular/router';
 import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
 import {EngagementLetterService} from '../engagement-letter.service';
-import {EngagementLetterSearch} from '../models/engagement-letter-search.model';
+import {EngagementLetterCriteria} from '../models/engagement-letter-search.model';
 import {EngagementLetter} from '../models/engagement-letter.model';
 import {
     EngagementLetterCreationUpdatingDialogComponent
@@ -16,11 +16,7 @@ import {
 import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
 import {AuthService} from "@core/auth/auth.service";
 import {ClipboardToastDialogComponent} from "@shared/ui/dialogs/clipboard-toast-dialog.component";
-import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
 import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
-import {
-    LegalTaskCreationUpdatingDialogComponent
-} from "../../legal-tasks/dialogs/legal-task-creation-updating-dialog.component";
 
 @Component({
     standalone: true,
@@ -33,7 +29,7 @@ export class EngagementLettersComponent {
     title = "Hojas de Encargo";
     engagementLetters = of([]);
     engagementLetter: Observable<any>;
-    criteria: EngagementLetterSearch
+    criteria: EngagementLetterCriteria
 
     constructor(
         private readonly dialog: MatDialog,
@@ -71,8 +67,9 @@ export class EngagementLettersComponent {
     delete(engagement: EngagementLetter) {
         this.dialog.open(CancelYesDialogComponent, {
             data: {
-                title:'Opeción peligrosa!!!',
-                message: '¿Estás seguro de eliminar esta hoja de encargo?\n\nSi es una Hoja antigua, podrían quedar conexiones rotas!!!' }
+                title: 'Opeción peligrosa!!!',
+                message: '¿Estás seguro de eliminar esta hoja de encargo?\n\nSi es una Hoja antigua, podrían quedar conexiones rotas!!!'
+            }
         }).afterClosed().subscribe(result => {
             if (result) {
                 this.engagementLettersService.delete(engagement.id).subscribe(() => this.search());
