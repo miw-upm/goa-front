@@ -11,6 +11,7 @@ import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {AlertService} from '../alert.service';
 import {AlertCreationDialogComponent} from '../dialogs/alert-creation-dialog.component';
 import {AlertNotificationDialogComponent} from '../dialogs/alert-notification-dialog.component';
+import { AlertDetailDialogComponent } from '../dialogs/alert-detail-dialog/alert-detail-dialog.component';
 
 @Component({
     standalone: true,
@@ -82,6 +83,13 @@ export class AlertsComponent {
     cancelAlert(alert: any): void {
         this.alertService.cancel(alert.id).subscribe(() => {
             this.search();
+        });
+    }
+
+    openAlertDetailDialog(alertId: string): void {
+        this.dialog.open(AlertDetailDialogComponent, {
+            data: { alertId },
+            width: '600px'
         });
     }
 }
