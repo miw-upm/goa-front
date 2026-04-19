@@ -63,24 +63,6 @@ export class UserCreationUpdatingDialogComponent {
         this.enablePasswordChange = false;
         this.roles = of(this.authService.allowedRoles());
         this.provinces = this.sharedUserService.findProvinces();
-        if (this.user.rgpdDate && typeof this.user.rgpdDate === 'string') {
-            this.user.rgpdDate = new Date(this.user.rgpdDate);
-        }
-    }
-
-    consentTypes = of([
-        'Explícito (Web)',
-        'Firma Manuscrita',
-        'Interés Legítimo',
-        'Contrato de Servicio'
-    ]);
-
-    onRgpdChange(accepted: boolean): void {
-        if (accepted) {
-            this.user.rgpdDate = new Date();
-        } else {
-            this.user.rgpdDate = null;
-        }
     }
 
     isCreate(): boolean {

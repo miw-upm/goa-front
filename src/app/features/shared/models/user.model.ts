@@ -15,7 +15,4 @@ export interface User {
     role?: Role;
     registrationDate?: Date;
     active?: boolean;
-    consentType?: string;
-    rgpdAccepted?: boolean;
-    rgpdDate?: Date;
 }
