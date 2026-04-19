@@ -7,8 +7,8 @@ export interface EngagementLetter {
     id?: string;
     budgetOnly?: boolean;
     discount?: number;
-    creationDate?: Date;
-    closingDate?: Date;
+    creationDate?: Date | string;
+    closingDate?: Date | string;
     owner?: User;
     attachments?: User[];
     legalProcedures?: LegalProcedure[];

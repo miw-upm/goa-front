@@ -1,23 +1,26 @@
-<mat-button-toggle-group [(ngModel)]="criteria.opened" (change)="search()">
+<mat-button-toggle-group (change)="search()" [(ngModel)]="criteria.opened">
     <mat-button-toggle [value]="null">Todos</mat-button-toggle>
     <mat-button-toggle [value]="true">Abierto</mat-button-toggle>
     <mat-button-toggle [value]="false">Cerrado</mat-button-toggle>
 </mat-button-toggle-group>
-<app-filter-input [(value)]="criteria.owner" title="Responsable" (enter)="search()"></app-filter-input>
-<app-filter-input [(value)]="criteria.legalProcedureTitle" title="Titulo del Procedimiento" (enter)="search()"></app-filter-input>
-<app-filter-input [(value)]="criteria.taskTitle" title="Tarea" (enter)="search()"></app-filter-input>
+<app-filter-input (enter)="search()" [(value)]="criteria.owner" title="Responsable"></app-filter-input>
+<app-filter-input (enter)="search()" [(value)]="criteria.legalProcedureTitle"
+                  title="Titulo del Procedimiento"></app-filter-input>
+<app-filter-input (enter)="search()" [(value)]="criteria.taskTitle" title="Tarea"></app-filter-input>
 
-<app-crud (create)="create()" (delete)="delete($event)" (read)="read($event)" (searchAll)="search()"
-          (update)="update($event)" (print)="print($event)"
-          (assistant)="openAssistant($event)"
-          (events)="navigateToEvents($event)"
-          (alerts)="navigateToAlerts($event)"
+<app-crud (alerts)="navigateToAlerts($event)" (assistant)="openAssistant($event)" (create)="create()"
+          (delete)="delete($event)"
+          (events)="navigateToEvents($event)" (print)="print($event)"
           (publicLink)="generatePublicLink($event)"
-          [data]="engagementLetters"
-          [deleteAction]=deleteVisibility [printAction]= "true"
-          [assistantAction]="true"
-          [eventsAction]="true"
+          (read)="read($event)"
+          (searchAll)="search()"
+          (update)="update($event)"
           [alertsAction]="true"
-          [publicLinkAction]="true"
-          [hiddenFields]="['id','discount','attachments','paymentMethods','legalClause']" [item]="engagementLetter" [secureDelete]="true" [title]="title">
+          [assistantAction]="true" [data]="engagementLetters"
+          [deleteAction]=deleteVisibility
+          [eventsAction]="true"
+          [hiddenFields]="['id','discount','attachments','paymentMethods','legalClause']"
+          [item]="engagementLetter"
+          [printAction]="true" [publicLinkAction]="true"
+          [secureDelete]="true" [title]="title">
 </app-crud>

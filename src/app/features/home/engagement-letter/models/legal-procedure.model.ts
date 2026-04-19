@@ -1,8 +1,7 @@
 export interface LegalProcedure {
-    id?: string;
     title: string;
-    startDate?: Date;
-    closingDate?: Date;
+    startDate?: Date | string;
+    closingDate?: Date | string;
     budget?: number;
     vatIncluded?: boolean;
     legalTasks?: string[];

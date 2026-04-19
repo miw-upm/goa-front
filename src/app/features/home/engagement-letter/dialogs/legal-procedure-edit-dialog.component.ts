@@ -1,17 +1,15 @@
 import {Component, Inject} from '@angular/core';
 import {FormsModule, NgModel} from '@angular/forms';
-import {CommonModule} from '@angular/common';
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButton} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatListModule} from "@angular/material/list";
+import {MatListModule} from '@angular/material/list';
 
 import {FormListComponent} from '@shared/ui/inputs/forms/list.component';
 import {InputData} from '@shared/ui/inputs/input-data.component';
 import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
-
 import {SharedLegalTaskService} from '@features/shared/services/shared-legal-task.service';
 import {SearchByLegalTaskComponent} from '@features/shared/ui/search-by-legal-task.component';
 import {LegalTask} from '@features/shared/models/legal-task.model';
@@ -24,7 +22,6 @@ import {LegalProcedure} from '../models/legal-procedure.model';
     templateUrl: './legal-procedure-edit-dialog.component.html',
     styleUrls: ['./legal-procedure-edit-dialog.component.css'],
     imports: [
-        CommonModule,
         FormsModule,
         MatFormFieldModule,
         MatCheckboxModule,
@@ -42,12 +39,13 @@ export class LegalProcedureEditDialogComponent {
     procedure: LegalProcedure;
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public data: any, private readonly sharedLegalTaskService: SharedLegalTaskService,
+        @Inject(MAT_DIALOG_DATA) data: LegalProcedure,
+        private readonly sharedLegalTaskService: SharedLegalTaskService,
         private readonly dialogRef: MatDialogRef<LegalProcedureEditDialogComponent>
     ) {
         this.procedure = {
             ...data,
-            legalTasks: [...(data.legalTasks ?? [])],
+            legalTasks: [...(data.legalTasks ?? [])]
         };
     }
 
@@ -60,17 +58,17 @@ export class LegalProcedureEditDialogComponent {
     }
 
     addTask(task: LegalTask): void {
-        const taskTitle = task?.title?.trim();
-        if (taskTitle && !this.procedure.legalTasks.some(t => t === taskTitle)) {
-            this.procedure.legalTasks.push(task.title);
+        const title = task?.title?.trim();
+        if (title && !this.procedure.legalTasks.includes(title)) {
+            this.procedure.legalTasks.push(title);
         }
     }
 
-    addNewTask(newTask: string): void {
-        const task = (newTask || '').trim();
-        if (task && !this.procedure.legalTasks.some(t => t === task)) {
-            this.sharedLegalTaskService.create({title: task}).subscribe(
-                () => this.procedure.legalTasks.push(task)
+    addNewTask(value: string): void {
+        const title = (value || '').trim();
+        if (title && !this.procedure.legalTasks.includes(title)) {
+            this.sharedLegalTaskService.create({title}).subscribe(
+                () => this.procedure.legalTasks.push(title)
             );
         }
     }

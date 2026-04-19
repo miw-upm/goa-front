@@ -1,4 +1,4 @@
-export class EngagementLetterCriteria {
+export interface EngagementLetterCriteria {
     opened?: boolean;
     owner?: string;
     legalProcedureTitle?: string;

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnChanges, SimpleChanges} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
@@ -23,8 +23,8 @@ import {MatIconModule} from '@angular/material/icon';
         <mat-form-field class="full-width">
             <mat-label>{{ label }}</mat-label>
             <input
-                    [ngModel]="value"
-                    (ngModelChange)="valueChange.emit($event)"
+                    [ngModel]="dateValue"
+                    (ngModelChange)="onDateChange($event)"
                     [matDatepicker]="picker"
                     [disabled]="disabled"
                     matInput
@@ -33,17 +33,35 @@ import {MatIconModule} from '@angular/material/icon';
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
     `,
-    styles: [
-        `
-            .full-width {
-                width: 100%;
-            }
-        `
-    ]
+    styles: [`
+        .full-width {
+            width: 100%;
+        }
+    `]
 })
-export class AppDateFieldComponent {
+export class AppDateFieldComponent implements OnChanges {
     @Input() label!: string;
-    @Input() value: Date | null = null;
-    @Output() valueChange = new EventEmitter<Date>();
+    @Input() value: Date | string | null | undefined = null;
+    @Output() valueChange = new EventEmitter<Date | null>();
     @Input() disabled = false;
+
+    dateValue: Date | null = null;
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['value']) {
+            const val = changes['value'].currentValue;
+            if (!val) {
+                this.dateValue = null;
+            } else if (val instanceof Date) {
+                this.dateValue = val;
+            } else {
+                this.dateValue = new Date(val);
+            }
+        }
+    }
+
+    onDateChange(date: Date | null): void {
+        this.dateValue = date;
+        this.valueChange.emit(date);
+    }
 }

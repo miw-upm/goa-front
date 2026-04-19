@@ -3,7 +3,7 @@ import {Observable} from "rxjs";
 
 import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from "@core/api/endpoints";
-import {LegalProcedureTemplate} from "../models/legal-procedure-template.model";
+import {LegalProcedureTemplate} from "../../home/legal-procedure-templates/models/legal-procedure-template.model";
 
 @Injectable({providedIn: 'root'})
 export class SharedLegalProcedureService {

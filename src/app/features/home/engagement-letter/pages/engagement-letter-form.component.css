@@ -1,0 +1,50 @@
+mat-card {
+    max-width: 1400px;
+    margin: 20px auto;
+}
+
+mat-card-content {
+    padding: 16px;
+}
+
+.header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.dates-discount-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.discount-field {
+    width: 120px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.payment-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.percentage-field {
+    flex: 0 0 25%;
+}
+
+.description-field {
+    flex: 1;
+    min-width: 0;
+}
+
+.owner-fieldset {
+    margin: 16px 0;
+}

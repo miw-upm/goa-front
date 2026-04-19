@@ -28,6 +28,7 @@ import {AlertsComponent} from "./alerts/pages/alerts.component";
 import {AlertService} from "./alerts/alert.service";
 import {TimelinePageComponent } from './timeline/pages/timeline-page.component';
 import {TimelineService} from "./timeline/services/timeline.service";
+import {EngagementLetterFormComponent} from "./engagement-letter/pages/engagement-letter-form.component";
 
 export const routes: Routes = [
     {
@@ -65,6 +66,21 @@ export const routes: Routes = [
             {
                 path: 'engagement-letters',
                 component: EngagementLettersComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [EngagementLetterService],
+                pathMatch: 'full',
+            },
+            {
+                path: 'engagement-letters/new',
+                component: EngagementLetterFormComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [EngagementLetterService],
+            },
+            {
+                path: 'engagement-letters/:id/edit',
+                component: EngagementLetterFormComponent,
                 canActivate: [RoleGuardService],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [EngagementLetterService],

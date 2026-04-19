@@ -41,7 +41,7 @@
                     <h3>Procedimientos legales</h3>
                     @if (engagementLetter.legalProcedures?.length) {
                         <div class="item-list">
-                            @for (procedure of engagementLetter.legalProcedures; track procedure.id ?? procedure.title) {
+                            @for (procedure of engagementLetter.legalProcedures; track $index) {
                                 <div class="item-card">
                                     <div class="item-title">{{ procedure.title }}</div>
                                     @if (procedure.startDate) {
@@ -65,7 +65,7 @@
                     <h3>Metodos de pago</h3>
                     @if (engagementLetter.paymentMethods?.length) {
                         <div class="item-list">
-                            @for (paymentMethod of engagementLetter.paymentMethods; track paymentMethod.description) {
+                            @for (paymentMethod of engagementLetter.paymentMethods; track $index) {
                                 <div class="item-card">
                                     <div class="item-title">{{ paymentMethod.description }}</div>
                                     <div class="item-meta">Porcentaje: {{ paymentMethod.percentage }}%</div>

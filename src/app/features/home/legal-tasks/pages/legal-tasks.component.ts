@@ -7,7 +7,6 @@ import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
 import {LegalTask} from '@features/shared/models/legal-task.model';
 import {LegalTaskCreationUpdatingDialogComponent} from '../dialogs/legal-task-creation-updating-dialog.component';
-import {LegalTaskCriteria} from '../legal-task-search.model';
 import {LegalTaskService} from '../legal-task.service';
 import {AuthService} from "@core/auth/auth.service";
 
@@ -18,22 +17,22 @@ import {AuthService} from "@core/auth/auth.service";
 })
 export class LegalTasksComponent {
     deleteVisibility: boolean = false;
-    legalTaskSearch: LegalTaskCriteria;
-    title = "Tareas Legales";
-    legalTasks = of([]);
+    searchTitle: string;
+    crudTitle = "Tareas Legales";
+    tasks = of([]);
     task: Observable<LegalTask>;
 
-    constructor(private readonly dialog: MatDialog, private readonly legalTaskService: LegalTaskService, auth:AuthService) {
+    constructor(private readonly dialog: MatDialog, private readonly legalTaskService: LegalTaskService, auth: AuthService) {
         this.deleteVisibility = auth.isAdmin();
         this.resetSearch();
     }
 
     search(): void {
-        this.legalTasks = this.legalTaskService.search(this.legalTaskSearch);
+        this.tasks = this.legalTaskService.search(this.searchTitle);
     }
 
     resetSearch(): void {
-        this.legalTaskSearch = {};
+        this.searchTitle = undefined;
     }
 
     create(): void {
