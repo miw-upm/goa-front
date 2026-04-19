@@ -15,9 +15,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {FormListComponent} from '@shared/ui/inputs/forms/list.component';
 import {SearchByUserComponent} from '@features/shared/ui/search-by-user.component';
-import {
-    SearchByLegalProcedureTemplateComponent
-} from '@features/shared/ui/search-by-legal-procedure-template.component';
+import {SearchByLegalProcedureTemplateComponent} from '@features/shared/ui/search-by-legal-procedure-template.component';
 import {User} from '@features/shared/models/user.model';
 import {LegalProcedureTemplate} from '../../legal-procedure-templates/models/legal-procedure-template.model';
 
@@ -90,20 +88,13 @@ export class EngagementLetterFormComponent implements OnInit {
     }
 
     create(): void {
-        this.engagementLetterService.create(this.engagementLetter).subscribe(() => {
+        this.engagementLetterService.create(this.prepareForSend()).subscribe(() => {
             this.router.navigate(['/home/engagement-letters']);
         });
     }
 
     update(): void {
-        const engagementLetterToSend = {
-            ...this.engagementLetter,
-            closingDate: this.engagementLetter.closingDate
-                ? this.datePipe.transform(this.engagementLetter.closingDate, 'yyyy-MM-dd')
-                : null
-        } as EngagementLetter;
-
-        this.engagementLetterService.update(this.engagementLetter.id, engagementLetterToSend).subscribe(() => {
+        this.engagementLetterService.update(this.engagementLetter.id, this.prepareForSend()).subscribe(() => {
             this.router.navigate(['/home/engagement-letters']);
         });
     }
@@ -146,7 +137,6 @@ export class EngagementLetterFormComponent implements OnInit {
     }
 
     editLegalProcedureDialog(procedure: LegalProcedure): void {
-        console.log('editLegalProcedureDialog', procedure);
         const index = this.engagementLetter.legalProcedures.indexOf(procedure);
         this.dialog.open(LegalProcedureEditDialogComponent, {
             data: procedure,
@@ -156,6 +146,30 @@ export class EngagementLetterFormComponent implements OnInit {
                 this.engagementLetter.legalProcedures[index] = result;
             }
         });
+    }
+
+    private prepareForSend(): EngagementLetter {
+        return {
+            ...this.engagementLetter,
+            creationDate: this.formatDate(this.engagementLetter.creationDate),
+            closingDate: this.formatDate(this.engagementLetter.closingDate),
+            legalProcedures: this.engagementLetter.legalProcedures.map(proc => ({
+                ...proc,
+                startDate: this.formatDate(proc.startDate),
+                closingDate: this.formatDate(proc.closingDate)
+            }))
+        } as EngagementLetter;
+    }
+
+    private formatDate(date: Date | string | undefined | null): string | null {
+        if (!date) return null;
+        if (date instanceof Date) {
+            return this.datePipe.transform(date, 'yyyy-MM-dd');
+        }
+        if (typeof date === 'string' && date.includes('T')) {
+            return date.split('T')[0];
+        }
+        return date;
     }
 
     private checkInvalid(attr: string | number | null | undefined | object): boolean {
