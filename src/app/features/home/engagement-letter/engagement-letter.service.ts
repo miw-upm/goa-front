@@ -5,7 +5,6 @@ import {map} from 'rxjs/operators';
 import {environment} from '@env';
 import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
-import {LegalProcedureTemplate} from '@features/shared/models/legal-procedure-template.model';
 import {EngagementLetter} from './models/engagement-letter.model';
 import {EngagementLetterCriteria} from './models/engagement-letter-criteria.model';
 import {PublicAccessToken} from './models/public-access-token.model';
@@ -15,12 +14,12 @@ export class EngagementLetterService {
     constructor(private readonly httpService: HttpService) {
     }
 
-    create(engagement: EngagementLetter): Observable<LegalProcedureTemplate> {
+    create(engagement: EngagementLetter): Observable<EngagementLetter> {
         return this.httpService.request()
             .post(ENDPOINTS.engagementLetters.root, engagement);
     }
 
-    update(id: string, engagement: EngagementLetter): Observable<LegalProcedureTemplate> {
+    update(id: string, engagement: EngagementLetter): Observable<void> {
         return this.httpService.request()
             .success()
             .put(ENDPOINTS.engagementLetters.byId(id), engagement);
@@ -43,7 +42,7 @@ export class EngagementLetterService {
             .openPdf(ENDPOINTS.engagementLetters.print(id));
     }
 
-    delete(id: string) {
+    delete(id: string): Observable<void> {
         return this.httpService.request()
             .success()
             .delete(ENDPOINTS.engagementLetters.byId(id));
@@ -70,5 +69,4 @@ export class EngagementLetterService {
         const normalizedPath = publicUrl.startsWith('/') ? publicUrl : `/${publicUrl}`;
         return `${environment.FRONT_END}${normalizedPath}`;
     }
-
 }

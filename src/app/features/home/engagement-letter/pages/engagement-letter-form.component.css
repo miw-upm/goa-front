@@ -7,6 +7,24 @@ mat-card-content {
     padding: 16px;
 }
 
+.header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.dates-discount-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.discount-field {
+    width: 120px;
+}
+
 .full-width {
     width: 100%;
 }
@@ -19,27 +37,14 @@ mat-card-content {
 }
 
 .percentage-field {
-    flex: 0 0 30%;
+    flex: 0 0 25%;
 }
 
 .description-field {
-    flex: 0 0 70%;
-}
-
-.dates-row {
-    display: flex;
-    gap: 16px;
-    margin: 16px 0;
-}
-
-.dates-row app-form-date {
     flex: 1;
+    min-width: 0;
 }
 
 .owner-fieldset {
     margin: 16px 0;
-}
-
-mat-slide-toggle {
-    margin-bottom: 16px;
 }

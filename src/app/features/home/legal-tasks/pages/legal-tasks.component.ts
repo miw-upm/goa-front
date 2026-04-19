@@ -7,7 +7,7 @@ import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
 import {LegalTask} from '@features/shared/models/legal-task.model';
 import {LegalTaskCreationUpdatingDialogComponent} from '../dialogs/legal-task-creation-updating-dialog.component';
-import {LegalTaskCriteria} from '../legal-task-search.model';
+import {LegalTaskCriteria} from '../legal-task-criteria.model';
 import {LegalTaskService} from '../legal-task.service';
 import {AuthService} from "@core/auth/auth.service";
 

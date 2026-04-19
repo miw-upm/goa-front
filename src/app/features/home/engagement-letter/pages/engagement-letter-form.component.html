@@ -3,63 +3,60 @@
         <mat-card-title>{{ title }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <mat-slide-toggle [(ngModel)]="engagementLetter.budgetOnly">
-            @if (engagementLetter.budgetOnly) {
-                <strong>⚠️ SOLO presupuesto!</strong>
-            } @else {
-                Hoja de Encargo formalizada
-            }
-        </mat-slide-toggle>
+        <div class="header-row">
+            <mat-slide-toggle [(ngModel)]="engagementLetter.budgetOnly">
+                @if (engagementLetter.budgetOnly) {
+                    <strong>⚠️ SOLO presupuesto!</strong>
+                } @else {
+                    Hoja de Encargo formalizada
+                }
+            </mat-slide-toggle>
 
-        @if (isEditMode) {
-            <div class="dates-row">
-                <app-form-date [(value)]="engagementLetter.creationDate" label="Fecha de Creación" [disabled]="true"/>
-                <app-form-date [(value)]="engagementLetter.closingDate" label="Fecha de Cierre"/>
+            <div class="dates-discount-row">
+                @if (isEditMode) {
+                    <app-form-date [(value)]="engagementLetter.creationDate" label="Fecha de Creación" [disabled]="true"/>
+                    <app-form-date [(value)]="engagementLetter.closingDate" label="Fecha de Cierre"/>
+                }
+                <mat-form-field appearance="outline" class="discount-field">
+                    <mat-label>Descuento</mat-label>
+                    <input matInput type="number" [(ngModel)]="engagementLetter.discount" min="0" max="100" step="1">
+                    <span matSuffix>%</span>
+                </mat-form-field>
             </div>
-        }
-
+        </div>
         <fieldset class="owner-fieldset">
             <legend>Responsable</legend>
-            <app-search-by-user [(user)]="engagementLetter.owner" class="full-width"
-                                title="Buscar cliente"></app-search-by-user>
+            <app-search-by-user [(user)]="engagementLetter.owner" title="Buscar cliente" class="full-width"></app-search-by-user>
             <app-form-list [(items)]="ownerAsArray" [keyView]="['mobile','familyName','firstName']"></app-form-list>
         </fieldset>
 
         <fieldset class="owner-fieldset">
             <legend>Resto de clientes</legend>
-            <app-search-by-user (userChange)="addAttachment($event)" class="full-width"
-                                title="Buscar cliente"></app-search-by-user>
-            <app-form-list [(items)]="engagementLetter.attachments"
-                           [keyView]="['mobile','familyName','firstName']"></app-form-list>
+            <app-search-by-user (userChange)="addAttachment($event)" title="Buscar cliente" class="full-width"></app-search-by-user>
+            <app-form-list [(items)]="engagementLetter.attachments" [keyView]="['mobile','familyName','firstName']"></app-form-list>
         </fieldset>
 
         <fieldset class="owner-fieldset">
             <legend>Procedimientos Legales</legend>
             <app-search-by-legal-procedure (procedureChange)="addProcedure($event)"></app-search-by-legal-procedure>
-            <app-form-list (action)="editLegalProcedureDialog($event)" [(items)]="engagementLetter.legalProcedures"
-                           [keyView]="['title']" actionIcon="edit"></app-form-list>
+            <app-form-list (action)="editLegalProcedureDialog($event)" [(items)]="engagementLetter.legalProcedures" [keyView]="['title']" actionIcon="edit"></app-form-list>
         </fieldset>
 
         <fieldset class="owner-fieldset">
             <legend>Métodos de pago</legend>
             <div class="payment-row">
-                <mat-form-field appearance="outline" class="percentage-field">
-                    <mat-label>Descuento</mat-label>
-                    <input [(ngModel)]="engagementLetter.discount" matInput max="100" min="0" step="1" type="number">
-                    <span matSuffix>%</span>
-                </mat-form-field>
-                <button (click)="addPaymentMethod()" color="primary" mat-icon-button>
+                <button mat-icon-button color="primary" (click)="addPaymentMethod()">
                     <mat-icon>add_circle</mat-icon>
                 </button>
             </div>
             @for (method of engagementLetter.paymentMethods; track method; let i = $index) {
                 <div class="payment-row">
+                    <button mat-icon-button color="warn" (click)="removePaymentMethod(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
                     <mat-form-field appearance="outline" class="percentage-field">
                         <mat-label>Porcentaje</mat-label>
                         <input matInput [(ngModel)]="method.percentage">
-                        <button mat-icon-button matSuffix color="warn" (click)="removePaymentMethod(i)">
-                            <mat-icon>delete</mat-icon>
-                        </button>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="description-field">
                         <mat-label>Descripción</mat-label>
@@ -72,14 +69,14 @@
         <fieldset class="owner-fieldset">
             <legend>Cláusula Legal</legend>
             <mat-form-field appearance="outline" class="full-width">
-                <textarea [(ngModel)]="engagementLetter.legalClause" matInput rows="5"></textarea>
+                <textarea matInput [(ngModel)]="engagementLetter.legalClause" rows="5"></textarea>
             </mat-form-field>
         </fieldset>
     </mat-card-content>
 
     <mat-card-actions align="end">
-        <button (click)="cancel()" mat-raised-button>Cancelar</button>
-        <button (click)="save()" [disabled]="invalid()" color="primary" mat-raised-button>
+        <button mat-raised-button (click)="cancel()">Cancelar</button>
+        <button mat-raised-button color="primary" [disabled]="invalid()" (click)="save()">
             {{ isEditMode ? 'Actualizar' : 'Crear' }}
         </button>
     </mat-card-actions>

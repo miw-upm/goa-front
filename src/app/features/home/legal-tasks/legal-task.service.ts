@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from "@core/api/endpoints";
 import {LegalTask} from "@features/shared/models/legal-task.model";
-import {LegalTaskCriteria} from "./legal-task-search.model";
+import {LegalTaskCriteria} from "./legal-task-criteria.model";
 
 @Injectable({providedIn: 'root'})
 export class LegalTaskService {

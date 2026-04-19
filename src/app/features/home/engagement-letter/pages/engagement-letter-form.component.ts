@@ -105,21 +105,30 @@ export class EngagementLetterFormComponent implements OnInit {
 
     create(): void {
         this.engagementLetterService.create(this.engagementLetter).subscribe(() => {
-            this.router.navigate(['/engagement-letters']);
+            this.router.navigate(['/home/engagement-letters']);
         });
     }
 
     update(): void {
-        const formattedDate = this.datePipe.transform(this.engagementLetter.closingDate, 'yyyy-MM-dd');
-        this.engagementLetter.closingDate = formattedDate as any;
+        const engagementLetterToSend = {
+            ...this.engagementLetter,
+            closingDate: this.engagementLetter.closingDate
+                ? this.datePipe.transform(this.engagementLetter.closingDate, 'yyyy-MM-dd')
+                : null
+        } as EngagementLetter;
 
-        this.engagementLetterService.update(this.engagementLetter.id, this.engagementLetter).subscribe(() => {
-            this.router.navigate(['/engagement-letters']);
+        this.engagementLetterService.update(this.engagementLetter.id, engagementLetterToSend).subscribe(() => {
+            this.router.navigate(['/home/engagement-letters']);
         });
     }
 
+    private formatDate(date: Date | string | undefined): string | undefined {
+        if (!date) return undefined;
+        return this.datePipe.transform(date, 'yyyy-MM-dd') ?? undefined;
+    }
+
     cancel(): void {
-        this.router.navigate(['/engagement-letters']);
+        this.router.navigate(['/home/engagement-letters']);
     }
 
     invalid(): boolean {
