@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
 
 import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
-import {LegalProcedureTemplate} from '@features/shared/models/legal-procedure-template.model';
-import {LegalProcedureCriteria} from './legal-procedure-search.model';
+import {LegalProcedureTemplate} from './models/legal-procedure-template.model';
+import {LegalProcedureCriteria} from './models/legal-procedure-criteria.model';
 
 
 @Injectable({providedIn: 'root'})
@@ -24,29 +23,15 @@ export class LegalProcedureTemplateService {
             .put(ENDPOINTS.legalProcedureTemplates.byId(id), procedure);
     }
 
-    search(legalProcedureSearch: LegalProcedureCriteria): Observable<LegalProcedureTemplate[]> {
+    search(criteria: LegalProcedureCriteria): Observable<LegalProcedureTemplate[]> {
         return this.httpService.request()
-            .paramsFrom(legalProcedureSearch)
-            .get<LegalProcedureTemplate[]>(ENDPOINTS.legalProcedureTemplates.root)
-            .pipe(
-                map((procedures) =>
-                    procedures.map(procedure => ({
-                        ...procedure,
-                        legalTasks: procedure.legalTasks.map(task => ({title: task.title}))
-                    }))
-                )
-            );
+            .paramsFrom(criteria)
+            .get<LegalProcedureTemplate[]>(ENDPOINTS.legalProcedureTemplates.root);
     }
 
     read(id: string): Observable<LegalProcedureTemplate> {
         return this.httpService.request()
-            .get<LegalProcedureTemplate>(ENDPOINTS.legalProcedureTemplates.byId(id))
-            .pipe(
-                map(procedure => ({
-                    ...procedure,
-                    legalTasks: procedure.legalTasks.map(task => ({title: task.title}))
-                }))
-            );
+            .get<LegalProcedureTemplate>(ENDPOINTS.legalProcedureTemplates.byId(id));
     }
 
     delete(id: string): Observable<void> {

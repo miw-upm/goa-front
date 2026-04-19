@@ -1,13 +1,12 @@
 import {Component} from "@angular/core";
 import {FormsModule} from "@angular/forms";
-import {map} from "rxjs/operators";
 import {Observable, of} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 
 import {CrudComponent} from "@shared/ui/crud/crud.component";
 import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
-import {LegalProcedureTemplate} from '@features/shared/models/legal-procedure-template.model';
-import {LegalProcedureCriteria} from "../legal-procedure-search.model";
+import {LegalProcedureTemplate} from '../models/legal-procedure-template.model';
+import {LegalProcedureCriteria} from "../models/legal-procedure-criteria.model";
 import {LegalProcedureTemplateService} from "../legal-procedure-template.service";
 import {
     LegalProcedureTemplateCreationUpdatingDialogComponent
@@ -21,23 +20,23 @@ import {AuthService} from "@core/auth/auth.service";
 })
 export class LegalProcedureTemplatesComponent {
     deleteVisibility: boolean = false;
-    legalProcedureSearch: LegalProcedureCriteria;
+    criteria: LegalProcedureCriteria;
     title = "Plantillas de Procedimientos Legales";
-    legalProcedures = of([]);
-    legalProcedure: Observable<any>;
+    templates: Observable<LegalProcedureTemplate[]> = of([]);
+    template: Observable<LegalProcedureTemplate>;
 
-    constructor(private readonly dialog: MatDialog, private readonly legalProcedureService: LegalProcedureTemplateService,
+    constructor(private readonly dialog: MatDialog, private readonly legalProcedureTemplateService: LegalProcedureTemplateService,
                 auth: AuthService) {
         this.deleteVisibility = auth.isAdmin();
         this.resetSearch();
     }
 
     search(): void {
-        this.legalProcedures = this.legalProcedureService.search(this.legalProcedureSearch);
+        this.templates = this.legalProcedureTemplateService.search(this.criteria);
     }
 
     resetSearch(): void {
-        this.legalProcedureSearch = {};
+        this.criteria = {};
     }
 
     create(): void {
@@ -48,24 +47,18 @@ export class LegalProcedureTemplatesComponent {
             });
     }
 
-    update(procedure: LegalProcedureTemplate): void {
-        this.dialog.open(LegalProcedureTemplateCreationUpdatingDialogComponent, {data: procedure})
+    update(template: LegalProcedureTemplate): void {
+        this.dialog.open(LegalProcedureTemplateCreationUpdatingDialogComponent, {data: template})
             .afterClosed()
             .subscribe(() => this.search());
     }
 
-    delete(procedure: LegalProcedureTemplate): void {
-        this.legalProcedureService.delete(procedure.id).subscribe(() => this.search());
+    delete(template: LegalProcedureTemplate): void {
+        this.legalProcedureTemplateService.delete(template.id).subscribe(() => this.search());
     }
 
-    read(procedure: LegalProcedureTemplate): void {
-        this.legalProcedure = this.legalProcedureService.read(procedure.id)
-            .pipe(
-                map(template => ({
-                    ...template,
-                    legalTasks: template.legalTasks.map(task => task.title)
-                }))
-            );
+    read(template: LegalProcedureTemplate): void {
+        this.template = this.legalProcedureTemplateService.read(template.id);
     }
 
 }

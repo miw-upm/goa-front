@@ -2,44 +2,45 @@ import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Observable, of} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {Router} from '@angular/router';
+import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
+import {CancelYesDialogComponent} from '@shared/ui/dialogs/cancel-yes-dialog.component';
+import {ClipboardToastDialogComponent} from '@shared/ui/dialogs/clipboard-toast-dialog.component';
+import {AuthService} from '@core/auth/auth.service';
+
 import {EngagementLetterService} from '../engagement-letter.service';
 import {EngagementLetterCriteria} from '../models/engagement-letter-criteria.model';
 import {EngagementLetter} from '../models/engagement-letter.model';
 import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
-import {AuthService} from "@core/auth/auth.service";
-import {ClipboardToastDialogComponent} from "@shared/ui/dialogs/clipboard-toast-dialog.component";
-import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
-import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
 
 @Component({
     standalone: true,
     providers: [EngagementLetterService],
-    imports: [FormsModule, CrudComponent, MatSlideToggleModule, FilterInputComponent, MatButtonToggleGroup, MatButtonToggle],
+    imports: [FormsModule, CrudComponent, FilterInputComponent, MatButtonToggleGroup, MatButtonToggle],
     templateUrl: 'engagement-letters.component.html'
 })
 export class EngagementLettersComponent {
-    deleteVisibility: boolean = false;
-    title = "Hojas de Encargo";
-    engagementLetters = of([]);
-    engagementLetter: Observable<any>;
+    deleteVisibility = false;
+    title = 'Hojas de Encargo';
+    engagementLetters: Observable<EngagementLetter[]> = of([]);
+    engagementLetter: Observable<EngagementLetter>;
     criteria: EngagementLetterCriteria;
 
     constructor(
         private readonly dialog: MatDialog,
         private readonly engagementLettersService: EngagementLetterService,
-        private readonly router: Router, auth: AuthService
+        private readonly router: Router,
+        auth: AuthService
     ) {
         this.deleteVisibility = auth.isAdmin();
         this.resetSearch();
     }
 
     resetSearch(): void {
-        this.criteria = {opened: true, legalProcedureTitle: undefined};
+        this.criteria = {opened: true};
     }
 
     search(): void {
@@ -54,10 +55,10 @@ export class EngagementLettersComponent {
         this.router.navigate(['/home/engagement-letters', engagement.id, 'edit']);
     }
 
-    delete(engagement: EngagementLetter) {
+    delete(engagement: EngagementLetter): void {
         this.dialog.open(CancelYesDialogComponent, {
             data: {
-                title: 'Opeción peligrosa!!!',
+                title: 'Opción peligrosa!!!',
                 message: '¿Estás seguro de eliminar esta hoja de encargo?\n\nSi es una Hoja antigua, podrían quedar conexiones rotas!!!'
             }
         }).afterClosed().subscribe(result => {
@@ -67,23 +68,18 @@ export class EngagementLettersComponent {
         });
     }
 
-    read(engagement: EngagementLetter) {
-        this.engagementLetter = this.engagementLettersService.read(engagement.id)
+    read(engagement: EngagementLetter): void {
+        this.engagementLetter = this.engagementLettersService.read(engagement.id);
     }
 
-    print(engagement: EngagementLetter) {
+    print(engagement: EngagementLetter): void {
         this.engagementLettersService.print(engagement.id).subscribe();
     }
 
     openAssistant(engagement: EngagementLetter): void {
-        if (!engagement?.id) {
-            return;
-        }
-
+        if (!engagement?.id) return;
         this.dialog.open(ChatbotComponent, {
-            data: {
-                engagementLetterId: engagement.id
-            },
+            data: {engagementLetterId: engagement.id},
             width: '960px',
             maxWidth: '96vw',
             height: '80vh',
@@ -93,27 +89,23 @@ export class EngagementLettersComponent {
 
     navigateToEvents(engagement: EngagementLetter): void {
         if (!engagement?.id) return;
-        void this.router.navigate(['/home/engagement-letters', engagement.id, 'events']);
+        this.router.navigate(['/home/engagement-letters', engagement.id, 'events']);
     }
-
 
     navigateToAlerts(engagement: EngagementLetter): void {
         if (!engagement?.id) return;
-        void this.router.navigate(['/home/engagement-letters', engagement.id, 'alerts']);
+        this.router.navigate(['/home/engagement-letters', engagement.id, 'alerts']);
     }
 
     generatePublicLink(engagement: EngagementLetter): void {
-        if (!engagement?.id) {
-            return;
-        }
-        this.engagementLettersService.createPublicAccessToken(engagement.id).subscribe(publicAccessToken =>
+        if (!engagement?.id) return;
+        this.engagementLettersService.createPublicAccessToken(engagement.id).subscribe(token =>
             this.dialog.open(ClipboardToastDialogComponent, {
                 data: {
                     message: 'Enlace público copiado al portapapeles',
-                    clipboard: publicAccessToken.publicUrl
+                    clipboard: token.publicUrl
                 }
             })
         );
     }
-
 }

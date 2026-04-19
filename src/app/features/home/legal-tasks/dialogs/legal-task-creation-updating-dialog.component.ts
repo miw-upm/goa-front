@@ -35,29 +35,29 @@ import {LegalTaskService} from '../legal-task.service';
 })
 
 export class LegalTaskCreationUpdatingDialogComponent {
-    legalTask: LegalTask;
+    task: LegalTask;
     title: string;
 
     constructor(@Inject(MAT_DIALOG_DATA) data: LegalTask, private readonly legalTaskService: LegalTaskService,
                 private readonly sharedLegalTaskService: SharedLegalTaskService, private readonly dialog: MatDialog) {
         this.title = data ? 'Actualización de Tarea Legal' : 'Creación de Tarea Legal';
-        this.legalTask = data || {id: undefined, title: undefined};
+        this.task = data || {id: undefined, title: undefined};
     }
 
     create(): void {
         this.sharedLegalTaskService
-            .create(this.legalTask)
+            .create(this.task)
             .subscribe(() => this.dialog.closeAll());
     }
 
     update(): void {
         this.legalTaskService
-            .update(this.legalTask.id, this.legalTask)
+            .update(this.task.id, this.task)
             .subscribe(() => this.dialog.closeAll());
     }
 
     isCreate(): boolean {
-        return this.legalTask.id === undefined;
+        return this.task.id === undefined;
     }
 
     formInvalid(...controls: NgModel[]): boolean {

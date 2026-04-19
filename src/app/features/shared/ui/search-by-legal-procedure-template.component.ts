@@ -3,7 +3,7 @@ import {Observable, of} from 'rxjs';
 
 import {SearchComponent} from '@shared/ui/inputs/search.component';
 import {SharedLegalProcedureService} from "../services/shared-legal-procedure.service";
-import {LegalProcedureTemplate} from "../models/legal-procedure-template.model";
+import {LegalProcedureTemplate} from "../../home/legal-procedure-templates/models/legal-procedure-template.model";
 
 @Component({
     standalone: true,

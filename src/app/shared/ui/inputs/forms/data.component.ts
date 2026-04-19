@@ -23,8 +23,8 @@ import {MatIconModule} from '@angular/material/icon';
         <mat-form-field class="full-width">
             <mat-label>{{ label }}</mat-label>
             <input
-                    [ngModel]="value"
-                    (ngModelChange)="valueChange.emit($event)"
+                    [ngModel]="dateValue"
+                    (ngModelChange)="onDateChange($event)"
                     [matDatepicker]="picker"
                     [disabled]="disabled"
                     matInput
@@ -33,17 +33,24 @@ import {MatIconModule} from '@angular/material/icon';
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
     `,
-    styles: [
-        `
-            .full-width {
-                width: 100%;
-            }
-        `
-    ]
+    styles: [`
+        .full-width {
+            width: 100%;
+        }
+    `]
 })
 export class AppDateFieldComponent {
     @Input() label!: string;
-    @Input() value: Date | null = null;
-    @Output() valueChange = new EventEmitter<Date>();
+    @Input() value: Date | string | null | undefined = null;
+    @Output() valueChange = new EventEmitter<Date | null>();
     @Input() disabled = false;
+
+    get dateValue(): Date | null {
+        if (!this.value) return null;
+        return this.value instanceof Date ? this.value : new Date(this.value);
+    }
+
+    onDateChange(date: Date | null): void {
+        this.valueChange.emit(date);
+    }
 }
