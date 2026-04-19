@@ -21,9 +21,11 @@
                             <mat-icon color="warn">add_circle</mat-icon>
                         </button>
                     }
-                    <button (click)="onSearch()" mat-icon-button matSuffix>
-                        <mat-icon color="warn">search</mat-icon>
-                    </button>
+                    @if (searchAction) {
+                        <button (click)="onSearch()" mat-icon-button matSuffix>
+                            <mat-icon color="warn">search</mat-icon>
+                        </button>
+                    }
                 </mat-header-cell>
                 <mat-cell *matCellDef="let item">
                     @if (readAction) {
@@ -46,6 +48,17 @@
                             <mat-icon color="primary">link</mat-icon>
                         </button>
                     }
+                    @if (deleteAction && deleteInline) {
+                        <button mat-icon-button matSuffix (click)="onDelete(item)" aria-label="Eliminar">
+                            <mat-icon color="warn">delete</mat-icon>
+                        </button>
+                    }
+                    @if (commentsAction && commentsInline) {
+                        <button mat-icon-button matSuffix (click)="onComments(item)" aria-label="Comentarios">
+                            <mat-icon color="primary">comment</mat-icon>
+                        </button>
+                    }
+
                     @if (hasMoreActions()) {
                         <button mat-icon-button [matMenuTriggerFor]="moreMenu">
                             <mat-icon>more_vert</mat-icon>
@@ -81,7 +94,7 @@
                                     <span>Avisos</span>
                                 </button>
                             }
-                            @if (commentsAction) {
+                            @if (commentsAction && !commentsInline) {
                                 <button mat-menu-item (click)="onComments(item)">
                                     <mat-icon color="primary">comment</mat-icon>
                                     <span>Comentarios</span>
@@ -93,7 +106,7 @@
                                     <span>Ejecutar</span>
                                 </button>
                             }
-                            @if (deleteAction) {
+                            @if (deleteAction && !deleteInline) {
                                 <button mat-menu-item (click)="onDelete(item)" class="delete-action">
                                     <mat-icon color="warn">delete</mat-icon>
                                     <span>Eliminar</span>

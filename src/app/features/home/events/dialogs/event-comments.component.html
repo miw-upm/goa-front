@@ -28,8 +28,13 @@
         <p>{{ comment.content }}</p>
         <small>{{ comment.createdDate | date:'short' }}</small>
 
-        <button mat-button color="warn" (click)="deleteComment(comment)">
-            Eliminar
+        <button
+                *ngIf="comment.authorId && comment.content && comment.createdDate"
+                mat-button
+                color="warn"
+                (click)="deleteComment(comment)"
+                [disabled]="deletingKey === getDeleteKey(comment) || loading || submitting">
+            {{ deletingKey === getDeleteKey(comment) ? 'Eliminando...' : 'Eliminar' }}
         </button>
 
         <hr />
