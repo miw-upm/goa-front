@@ -51,6 +51,9 @@ export class CrudComponent {
     @Input() notificationsAction = false;
     @Input() commentsAction = false;
     @Input() publicLinkAction = false;
+    @Input() searchAction = true;
+    @Input() deleteInline = false;
+    @Input() commentsInline = false;
 
     @Input() hiddenFields: string[] = [];
     @Input() columnOrder: string[] = [];
@@ -122,9 +125,11 @@ export class CrudComponent {
     }
 
     hasMoreActions(): boolean {
-        return this.deleteAction || this.assistantAction || this.eventsAction ||
+        const deleteInMenu = this.deleteAction && !this.deleteInline;
+        const commentsInMenu = this.commentsAction && !this.commentsInline;
+        return deleteInMenu || commentsInMenu || this.assistantAction || this.eventsAction ||
             this.timelineAction || this.alertsAction || this.notificationsAction ||
-            this.commentsAction || this.runAction;
+            this.runAction || this.cancelAction;
     }
 
     onCreate(): void {

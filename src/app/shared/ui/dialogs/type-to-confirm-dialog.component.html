@@ -22,8 +22,8 @@
 </div>
 
 <mat-dialog-actions align="end">
-    <button color="primary" mat-dialog-close mat-raised-button>Cancel</button>
     <button (click)="confirm()" [disabled]="!canConfirm" color="warn" mat-raised-button>
         Delete
     </button>
+    <button color="primary" mat-dialog-close mat-raised-button>Cancel</button>
 </mat-dialog-actions>
