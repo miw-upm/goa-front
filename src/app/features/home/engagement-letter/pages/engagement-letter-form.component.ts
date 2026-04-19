@@ -193,9 +193,9 @@ export class EngagementLetterFormComponent implements OnInit {
     }
 
     private navigateBack(): void {
-        const owner = this.engagementLetter.owner?.mobile;
+        const client = this.engagementLetter.owner?.mobile;
         this.router.navigate(['/home/engagement-letters'], {
-            queryParams: owner ? { owner, opened: true } : { opened: true }
+            queryParams: client ? { client, opened: true } : { opened: true }
         });
     }
 }

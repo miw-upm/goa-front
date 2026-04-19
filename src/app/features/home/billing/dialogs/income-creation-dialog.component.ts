@@ -86,7 +86,7 @@ export class IncomeCreationDialogComponent {
 
         const criteria: EngagementLetterCriteria = {
             opened: true,
-            owner: '',
+            client: '',
             legalProcedureTitle: ''
         };
         this.engagementIds = this.engagementLetterService.search(criteria)

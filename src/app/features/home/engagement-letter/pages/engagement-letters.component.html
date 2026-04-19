@@ -3,7 +3,14 @@
     <mat-button-toggle [value]="true">Abierto</mat-button-toggle>
     <mat-button-toggle [value]="false">Cerrado</mat-button-toggle>
 </mat-button-toggle-group>
-<app-filter-input (enter)="search()" [(value)]="criteria.owner" title="Responsable"></app-filter-input>
+
+<mat-button-toggle-group (change)="search()" [(ngModel)]="criteria.budgetOnly">
+    <mat-button-toggle [value]="null">Todos</mat-button-toggle>
+    <mat-button-toggle [value]="true">Presupuesto</mat-button-toggle>
+    <mat-button-toggle [value]="false">Hoja</mat-button-toggle>
+</mat-button-toggle-group>
+
+<app-filter-input (enter)="search()" [(value)]="criteria.client" title="Cliente"></app-filter-input>
 <app-filter-input (enter)="search()" [(value)]="criteria.legalProcedureTitle"
                   title="Titulo del Procedimiento"></app-filter-input>
 <app-filter-input (enter)="search()" [(value)]="criteria.taskTitle" title="Tarea"></app-filter-input>
