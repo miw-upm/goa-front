@@ -1,10 +1,12 @@
 import {of, throwError} from 'rxjs';
-import {fakeAsync, tick} from '@angular/core/testing';
+import {ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
 import {ChatbotComponent} from './chatbot.component';
 import {ChatbotService} from '../chatbot.service';
 import {ContextualChatbotDialogData} from '../models/chatbot.model';
 import {AuthService} from '@core/auth/auth.service';
+import {CHATBOT_SCOPE_RESTRICTED_REPLIES, CHATBOT_SCOPE_UI} from '../support/chatbot-scope-ui';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 describe('ChatbotComponent', () => {
     let chatbotServiceSpy: {
@@ -28,6 +30,22 @@ describe('ChatbotComponent', () => {
         dialogData,
         dialogRef as any
     );
+
+    const createRenderedComponent = (
+        dialogData: ContextualChatbotDialogData | null = null
+    ): ComponentFixture<ChatbotComponent> => {
+        TestBed.configureTestingModule({
+            imports: [ChatbotComponent],
+            providers: [
+                {provide: ChatbotService, useValue: chatbotServiceSpy},
+                {provide: AuthService, useValue: authServiceSpy},
+                {provide: MAT_DIALOG_DATA, useValue: dialogData},
+                {provide: MatDialogRef, useValue: null}
+            ]
+        });
+
+        return TestBed.createComponent(ChatbotComponent);
+    };
 
     beforeEach(() => {
         chatbotServiceSpy = {
@@ -132,7 +150,8 @@ describe('ChatbotComponent', () => {
         expect(component.messages[1]).toEqual({
             sender: 'ASSISTANT',
             content: 'Respuesta simulada del asistente',
-            createdAt: '2026-03-26T10:00:00Z'
+            createdAt: '2026-03-26T10:00:00Z',
+            restricted: false
         });
         expect(component.conversationId).toBe('conv-1');
         expect(component.message).toBe('');
@@ -294,6 +313,67 @@ describe('ChatbotComponent', () => {
         expect(component.conversationModeLabel()).toBe('Modo profesional');
         expect(component.conversationModeDescription()).toBe('El asistente usará un lenguaje más técnico y operativo.');
         expect(component.composerPlaceholder()).toBe('Escribe tu consulta operativa o técnica');
+    });
+
+    it('should show general scope banner when there is no engagement context', () => {
+        const fixture = createRenderedComponent();
+
+        fixture.detectChanges();
+
+        const compiled = fixture.nativeElement as HTMLElement;
+        const scopeBanner = compiled.querySelector('.scope-banner');
+
+        expect(scopeBanner).toBeTruthy();
+        expect(scopeBanner?.textContent).toContain(CHATBOT_SCOPE_UI.general.title);
+        expect(scopeBanner?.textContent).toContain('Este chat ofrece orientación general y ayuda de uso de la plataforma.');
+    });
+
+    it('should show contextual scope banner when there is engagement context', () => {
+        chatbotServiceSpy.startContextualConversation.and.returnValue(of({
+            conversationId: 'ctx-1',
+            engagementLetterId: 'eng-123'
+        }));
+        const fixture = createRenderedComponent({engagementLetterId: 'eng-123'});
+
+        fixture.detectChanges();
+
+        const compiled = fixture.nativeElement as HTMLElement;
+        const scopeBanner = compiled.querySelector('.scope-banner');
+
+        expect(scopeBanner).toBeTruthy();
+        expect(scopeBanner?.textContent).toContain(CHATBOT_SCOPE_UI.contextual.title);
+        expect(scopeBanner?.textContent).toContain('Este chat está limitado a la hoja de encargo activa');
+    });
+
+    it('should detect restricted assistant replies', () => {
+        const restrictedMessage = CHATBOT_SCOPE_RESTRICTED_REPLIES[1];
+        const normalMessage = 'Mensaje recibido. La integración actual sigue siendo simulada, pero la respuesta se orienta a soporte operativo y gestión del encargo.';
+        const component = createComponent();
+
+        expect(component.isRestrictedAssistantReply(restrictedMessage)).toBeTrue();
+        expect(component.isRestrictedAssistantReply(normalMessage)).toBeFalse();
+        expect(component.isRestrictedAssistantReply(undefined)).toBeFalse();
+    });
+
+    it('should render restricted class for restricted assistant messages', () => {
+        const restrictedMessage = CHATBOT_SCOPE_RESTRICTED_REPLIES[1];
+        const fixture = createRenderedComponent();
+
+        fixture.componentInstance.messages = [
+            {
+                sender: 'ASSISTANT',
+                content: restrictedMessage,
+                restricted: true
+            }
+        ];
+
+        fixture.detectChanges();
+
+        const compiled = fixture.nativeElement as HTMLElement;
+        const message = compiled.querySelector('.message.assistant.restricted');
+
+        expect(message).toBeTruthy();
+        expect(message?.textContent).toContain('Solo puedo responder dentro del ámbito del encargo activo');
     });
 
     it('should scroll messages container to bottom when available', fakeAsync(() => {

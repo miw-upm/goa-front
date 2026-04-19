@@ -25,6 +25,7 @@ export interface ChatbotMessageView {
     sender: 'USER' | 'ASSISTANT';
     content: string;
     createdAt?: string;
+    restricted?: boolean;
 }
 
 export interface ContextualChatbotDialogData {
