@@ -107,7 +107,7 @@ export class InvoiceCreationDialogComponent {
 
         const criteria: EngagementLetterCriteria = {
             opened: true,
-            owner: '',
+            client: '',
             legalProcedureTitle: ''
         };
 

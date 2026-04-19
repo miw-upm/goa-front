@@ -1,6 +1,7 @@
 export interface EngagementLetterCriteria {
     opened?: boolean;
-    owner?: string;
+    budgetOnly?: boolean;
+    client?: string;
     legalProcedureTitle?: string;
     taskTitle?: string;
 }

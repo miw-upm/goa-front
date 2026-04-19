@@ -43,7 +43,8 @@ export class EngagementLettersComponent implements OnInit {
         this.route.queryParams.subscribe(params => {
             this.criteria = {
                 opened: params['opened'] === 'false' ? false : params['opened'] === 'true' ? true : null,
-                owner: params['owner'] || undefined,
+                budgetOnly: params['budgetOnly'] === 'false' ? false : params['budgetOnly'] === 'true' ? true : null,
+                client: params['client'] || undefined,
                 legalProcedureTitle: params['legalProcedureTitle'] || undefined,
                 taskTitle: params['taskTitle'] || undefined
             };
