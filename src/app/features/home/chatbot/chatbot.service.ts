@@ -34,4 +34,9 @@ export class ChatbotService {
             .error('No se pudo obtener respuesta del asistente')
             .post(ENDPOINTS.chatbot.generalConversation(), request);
     }
+
+    closeConversation(conversationId: string): Observable<void> {
+        return this.httpService.request()
+            .patch<void>(ENDPOINTS.chatbot.closeConversation(conversationId), {});
+    }
 }
