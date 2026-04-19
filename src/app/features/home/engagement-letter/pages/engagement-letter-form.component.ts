@@ -23,6 +23,7 @@ import {EngagementLetterService} from '../engagement-letter.service';
 import {EngagementLetter} from '../models/engagement-letter.model';
 import {LegalProcedure} from '../models/legal-procedure.model';
 import {LegalProcedureEditDialogComponent} from '../dialogs/legal-procedure-edit-dialog.component';
+import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
 
 @Component({
     standalone: true,
@@ -135,7 +136,16 @@ export class EngagementLetterFormComponent implements OnInit {
     }
 
     removePaymentMethod(index: number): void {
-        this.engagementLetter.paymentMethods.splice(index, 1);
+        this.dialog.open(CancelYesDialogComponent, {
+            data: {
+                title: 'Eliminar método de pago',
+                message: '¿Estás seguro de eliminar este método de pago?'
+            }
+        }).afterClosed().subscribe(result => {
+            if (result) {
+                this.engagementLetter.paymentMethods.splice(index, 1);
+            }
+        });
     }
 
     editLegalProcedureDialog(procedure: LegalProcedure): void {
