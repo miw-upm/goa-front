@@ -2,6 +2,8 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CdkDragDrop, DragDropModule, moveItemInArray} from '@angular/cdk/drag-drop';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
+import {MatDialog} from "@angular/material/dialog";
+import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
 
 @Component({
     standalone: true,
@@ -39,14 +41,25 @@ export class FormListComponent {
     @Output() itemsChange = new EventEmitter<any[]>();
     @Output() action = new EventEmitter<any>();
 
+    constructor(private readonly dialog: MatDialog) {}
+
     onDrop(event: CdkDragDrop<any[]>): void {
         moveItemInArray(this.items, event.previousIndex, event.currentIndex);
         this.itemsChange.emit(this.items);
     }
 
     removeItem(index: number): void {
-        this.items.splice(index, 1);
-        this.itemsChange.emit([...this.items]);
+        this.dialog.open(CancelYesDialogComponent, {
+            data: {
+                title: 'Eliminar elemento',
+                message: '¿Estás seguro de eliminar este elemento?'
+            }
+        }).afterClosed().subscribe(result => {
+            if (result) {
+                this.items.splice(index, 1);
+                this.itemsChange.emit([...this.items]);
+            }
+        });
     }
 
     onAction(item: any): void {
