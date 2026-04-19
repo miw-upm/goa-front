@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {NgOptimizedImage} from "@angular/common";
 import {MatDividerModule} from '@angular/material/divider';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatListModule} from '@angular/material/list';
@@ -12,7 +11,7 @@ import {environment} from '@env';
     selector: 'app-footer',
     templateUrl: './footer.component.html',
     styleUrls: ['./footer.component.css'],
-    imports: [NgOptimizedImage, MatDividerModule, MatGridListModule, MatListModule, MatIconModule]
+    imports: [MatDividerModule, MatGridListModule, MatListModule, MatIconModule]
 })
 export class FooterComponent {
     readonly version = `${environment.NAME}:${environment.VERSION}`;
