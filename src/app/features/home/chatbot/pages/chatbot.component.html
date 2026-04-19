@@ -8,6 +8,10 @@
                     <strong>{{ conversationModeLabel() }}</strong>
                     <span>{{ conversationModeDescription() }}</span>
                 </div>
+                <div class="scope-banner">
+                    <strong>{{ scopeTitle() }}</strong>
+                    <span>{{ scopeDescription() }}</span>
+                </div>
 
                 @if (dialogData?.engagementLetterId) {
                     <div class="context-banner">
@@ -35,7 +39,11 @@
                     <div #messagesContainer class="messages-container">
                         <div *ngFor="let item of messages"
                              class="message"
-                             [ngClass]="item.sender.toLowerCase()">
+                             [ngClass]="{
+                                 'user': item.sender === 'USER',
+                                 'assistant': item.sender === 'ASSISTANT',
+                                 'restricted': !!item.restricted
+                             }">
                             <strong>{{ item.sender === 'USER' ? 'Tú' : 'Asistente' }}</strong>
                             <p>{{ item.content }}</p>
                         </div>

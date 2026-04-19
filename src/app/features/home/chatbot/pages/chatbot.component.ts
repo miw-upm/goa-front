@@ -8,6 +8,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {AuthService} from "@core/auth/auth.service";
+import {CHATBOT_SCOPE_RESTRICTED_REPLIES, CHATBOT_SCOPE_UI} from "../support/chatbot-scope-ui";
 
 import {
     ChatbotMessageView,
@@ -113,7 +114,8 @@ export class ChatbotComponent {
                     this.messages.push({
                         sender: 'ASSISTANT',
                         content: response.message,
-                        createdAt: response.createdAt
+                        createdAt: response.createdAt,
+                        restricted: this.isRestrictedAssistantReply(response.message)
                     });
                     this.scrollToBottom();
                 }
@@ -173,5 +175,25 @@ export class ChatbotComponent {
         return this.authService.isCustomer()
             ? 'Escribe tu duda sobre el encargo'
             : 'Escribe tu consulta operativa o técnica';
+    }
+
+    scopeTitle(): string {
+        return this.requiresConversation()
+            ? CHATBOT_SCOPE_UI.contextual.title
+            : CHATBOT_SCOPE_UI.general.title;
+    }
+
+    scopeDescription(): string {
+        return this.requiresConversation()
+            ? CHATBOT_SCOPE_UI.contextual.description
+            : CHATBOT_SCOPE_UI.general.description;
+    }
+
+    isRestrictedAssistantReply(message: string | undefined): boolean {
+        if (!message) {
+            return false;
+        }
+
+        return CHATBOT_SCOPE_RESTRICTED_REPLIES.includes(message as typeof CHATBOT_SCOPE_RESTRICTED_REPLIES[number]);
     }
 }
