@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Observable, of} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
@@ -22,25 +22,33 @@ import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
     imports: [FormsModule, CrudComponent, FilterInputComponent, MatButtonToggleGroup, MatButtonToggle],
     templateUrl: 'engagement-letters.component.html'
 })
-export class EngagementLettersComponent {
+export class EngagementLettersComponent implements OnInit {
     deleteVisibility = false;
     title = 'Hojas de Encargo';
     engagementLetters: Observable<EngagementLetter[]> = of([]);
     engagementLetter: Observable<EngagementLetter>;
-    criteria: EngagementLetterCriteria;
+    criteria: EngagementLetterCriteria = { opened: true };
 
     constructor(
         private readonly dialog: MatDialog,
         private readonly engagementLettersService: EngagementLetterService,
         private readonly router: Router,
+        private readonly route: ActivatedRoute,
         auth: AuthService
     ) {
         this.deleteVisibility = auth.isAdmin();
-        this.resetSearch();
     }
 
-    resetSearch(): void {
-        this.criteria = {opened: true};
+    ngOnInit(): void {
+        this.route.queryParams.subscribe(params => {
+            this.criteria = {
+                opened: params['opened'] === 'false' ? false : params['opened'] === 'true' ? true : null,
+                owner: params['owner'] || undefined,
+                legalProcedureTitle: params['legalProcedureTitle'] || undefined,
+                taskTitle: params['taskTitle'] || undefined
+            };
+            this.search();
+        });
     }
 
     search(): void {

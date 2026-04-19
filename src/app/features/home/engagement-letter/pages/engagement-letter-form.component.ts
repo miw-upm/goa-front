@@ -89,18 +89,18 @@ export class EngagementLetterFormComponent implements OnInit {
 
     create(): void {
         this.engagementLetterService.create(this.prepareForSend()).subscribe(() => {
-            this.router.navigate(['/home/engagement-letters']);
+            this.navigateBack();
         });
     }
 
     update(): void {
         this.engagementLetterService.update(this.engagementLetter.id, this.prepareForSend()).subscribe(() => {
-            this.router.navigate(['/home/engagement-letters']);
+            this.navigateBack();
         });
     }
 
     cancel(): void {
-        this.router.navigate(['/home/engagement-letters']);
+        this.navigateBack();
     }
 
     invalid(): boolean {
@@ -190,5 +190,12 @@ export class EngagementLetterFormComponent implements OnInit {
             legalProcedures: [],
             paymentMethods: [{description: 'Al finalizar el proceso', percentage: 'Resto'}]
         };
+    }
+
+    private navigateBack(): void {
+        const owner = this.engagementLetter.owner?.mobile;
+        this.router.navigate(['/home/engagement-letters'], {
+            queryParams: owner ? { owner, opened: true } : { opened: true }
+        });
     }
 }
