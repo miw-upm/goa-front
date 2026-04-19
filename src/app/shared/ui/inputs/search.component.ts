@@ -4,7 +4,7 @@ import {of} from 'rxjs';
 import {FormsModule} from '@angular/forms';
 import {MatFormFieldModule, MatLabel, MatSuffix} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
-import {MatAutocompleteModule, MatAutocompleteTrigger,} from '@angular/material/autocomplete';
+import {MatAutocompleteModule, MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {MatIconButton} from '@angular/material/button';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatInputModule} from '@angular/material/input';
@@ -31,7 +31,7 @@ import {MatOptionModule} from '@angular/material/core';
     ]
 })
 export class SearchComponent {
-    inputValue: string = '';
+    inputValue = '';
     @Input() title = 'Search';
     @Input() key: any = null;
     @Input() keyView: string[];
@@ -57,9 +57,5 @@ export class SearchComponent {
         this.keyChange.emit(value);
         this.selected.emit(value);
         this.inputValue = '';
-    }
-
-    trackOption(item: any): any {
-        return item?.id ?? item;
     }
 }

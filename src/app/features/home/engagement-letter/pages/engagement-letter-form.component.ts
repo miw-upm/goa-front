@@ -146,6 +146,7 @@ export class EngagementLetterFormComponent implements OnInit {
     }
 
     editLegalProcedureDialog(procedure: LegalProcedure): void {
+        console.log('editLegalProcedureDialog', procedure);
         const index = this.engagementLetter.legalProcedures.indexOf(procedure);
         this.dialog.open(LegalProcedureEditDialogComponent, {
             data: procedure,

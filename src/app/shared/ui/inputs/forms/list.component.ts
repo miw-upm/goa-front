@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {CdkDragDrop, DragDropModule, moveItemInArray} from '@angular/cdk/drag-drop';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -7,26 +6,24 @@ import {MatIconModule} from '@angular/material/icon';
 @Component({
     standalone: true,
     selector: 'app-form-list',
-    imports: [CommonModule, DragDropModule, MatButtonModule, MatIconModule],
+    imports: [DragDropModule, MatButtonModule, MatIconModule],
     template: `
         <div cdkDropList class="example-list" (cdkDropListDropped)="onDrop($event)">
-            @for (item of items; track item) {
+            @for (item of items; track $index; let i = $index) {
                 <div class="example-box" cdkDrag>
-                    <button mat-icon-button (click)="removeItem(item)" aria-label="Eliminar elemento">
+                    <button mat-icon-button (click)="removeItem(i)" aria-label="Eliminar elemento">
                         <mat-icon>delete</mat-icon>
                     </button>
                     @if (actionIcon) {
                         <button mat-icon-button (click)="onAction(item)" class="mat-button-mini">
-                            <mat-icon>edit</mat-icon>
+                            <mat-icon>{{ actionIcon }}</mat-icon>
                         </button>
                     }
                     @if (!keyView?.length) {
                         {{ item }}
                     } @else {
-                        @for (key of keyView; let i = $index; track i) {
-                            {{ item[key] }}@if (i < keyView.length - 1) {
-                                ,
-                            }
+                        @for (key of keyView; track $index; let last = $last) {
+                            {{ item[key] }}@if (!last) {, }
                         }
                     }
                 </div>
@@ -36,24 +33,23 @@ import {MatIconModule} from '@angular/material/icon';
 })
 export class FormListComponent {
     @Input() items: any[] = [];
-    @Input() title: string = 'List';
+    @Input() title = 'List';
     @Input() keyView: string[];
-    @Input() actionIcon: string = undefined;
+    @Input() actionIcon: string;
     @Output() itemsChange = new EventEmitter<any[]>();
     @Output() action = new EventEmitter<any>();
 
-    onDrop(event: CdkDragDrop<any[]>) {
+    onDrop(event: CdkDragDrop<any[]>): void {
         moveItemInArray(this.items, event.previousIndex, event.currentIndex);
         this.itemsChange.emit(this.items);
     }
 
-    removeItem(item: any) {
-        this.items = this.items.filter(i => i !== item);
-        this.itemsChange.emit(this.items);
+    removeItem(index: number): void {
+        this.items.splice(index, 1);
+        this.itemsChange.emit([...this.items]);
     }
 
-    onAction(item: any) {
+    onAction(item: any): void {
         this.action.emit(item);
     }
-
 }

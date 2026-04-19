@@ -16,15 +16,13 @@
     }
     <mat-autocomplete #auto="matAutocomplete">
         @if (keys | async; as options) {
-            @for (option of options; track trackOption) {
+            @for (option of options; track $index) {
                 <mat-option [value]="option" (click)="onClick(option)">
                     @if (!keyView?.length) {
                         {{ option }}
                     } @else {
-                        @for (key of keyView; let i = $index; track i) {
-                            {{ option[key] }}@if (i < keyView.length - 1) {
-                                ,
-                            }
+                        @for (key of keyView; track $index; let last = $last) {
+                            {{ option[key] }}@if (!last) {, }
                         }
                     }
                 </mat-option>
@@ -33,7 +31,4 @@
             <mat-option disabled>Cargando...</mat-option>
         }
     </mat-autocomplete>
-
 </mat-form-field>
-
-
