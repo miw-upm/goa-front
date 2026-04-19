@@ -41,15 +41,23 @@ export class EngagementLettersComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.queryParams.subscribe(params => {
+            const hasParams = Object.keys(params).length > 0;
             this.criteria = {
-                opened: params['opened'] === 'false' ? false : params['opened'] === 'true' ? true : null,
-                budgetOnly: params['budgetOnly'] === 'false' ? false : params['budgetOnly'] === 'true' ? true : null,
-                client: params['client'] || undefined,
-                legalProcedureTitle: params['legalProcedureTitle'] || undefined,
-                taskTitle: params['taskTitle'] || undefined
+                opened: this.parseBoolean(params['opened'], hasParams ? null : true),
+                budgetOnly: this.parseBoolean(params['budgetOnly'], null),
+                client: params['client'] ?? undefined,
+                legalProcedureTitle: params['legalProcedureTitle'] ?? undefined,
+                taskTitle: params['taskTitle'] ?? undefined
             };
             this.search();
         });
+    }
+
+    private parseBoolean(value: string | undefined, defaultValue: boolean | null): boolean | null {
+        if (value === 'true') return true;
+        if (value === 'false') return false;
+        if (value === 'null') return null;
+        return defaultValue;
     }
 
     search(): void {
@@ -57,11 +65,25 @@ export class EngagementLettersComponent implements OnInit {
     }
 
     create(): void {
-        this.router.navigate(['/home/engagement-letters/new']);
+        this.router.navigate(['/home/engagement-letters/new'], {
+            queryParams: this.buildQueryParams()
+        });
     }
 
     update(engagement: EngagementLetter): void {
-        this.router.navigate(['/home/engagement-letters', engagement.id, 'edit']);
+        this.router.navigate(['/home/engagement-letters', engagement.id, 'edit'], {
+            queryParams: this.buildQueryParams()
+        });
+    }
+
+    private buildQueryParams(): object {
+        return {
+            opened: this.criteria.opened,
+            budgetOnly: this.criteria.budgetOnly,
+            client: this.criteria.client ?? null,
+            legalProcedureTitle: this.criteria.legalProcedureTitle ?? null,
+            taskTitle: this.criteria.taskTitle ?? null
+        };
     }
 
     delete(engagement: EngagementLetter): void {

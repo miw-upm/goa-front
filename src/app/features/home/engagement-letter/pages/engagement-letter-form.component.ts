@@ -100,7 +100,9 @@ export class EngagementLetterFormComponent implements OnInit {
     }
 
     cancel(): void {
-        this.navigateBack();
+        this.router.navigate(['/home/engagement-letters'], {
+            queryParamsHandling: 'preserve'
+        });
     }
 
     invalid(): boolean {
@@ -195,7 +197,7 @@ export class EngagementLetterFormComponent implements OnInit {
     private navigateBack(): void {
         const client = this.engagementLetter.owner?.mobile;
         this.router.navigate(['/home/engagement-letters'], {
-            queryParams: client ? { client, opened: true } : { opened: true }
+            queryParams: { client, opened: true }
         });
     }
 }
