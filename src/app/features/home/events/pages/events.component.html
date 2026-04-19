@@ -21,13 +21,14 @@
         (update)="update($event)"
         (delete)="delete($event)"
         (comments)="comments($event)"
-        (searchAll)="search()"
         [data]="events$"
         [item]="event$"
         [deleteAction]="true"
         [commentsAction]="true"
+        [deleteInline]="true"
+        [commentsInline]="true"
+        [searchAction]="false"
         [hiddenFields]="['id', 'engagementLetterId', 'createdDate', 'comments']"
         [columnOrder]="['title','description', 'eventDate', 'type', 'status' ]"
         [title]="title">
 </app-crud>
-

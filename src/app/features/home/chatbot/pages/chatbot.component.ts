@@ -7,6 +7,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {AuthService} from "@core/auth/auth.service";
 
 import {
     ChatbotMessageView,
@@ -47,6 +48,7 @@ export class ChatbotComponent {
 
     constructor(
         private readonly chatbotService: ChatbotService,
+        private readonly authService: AuthService,
         @Optional() @Inject(MAT_DIALOG_DATA) public readonly dialogData: ContextualChatbotDialogData | null,
         @Optional() private readonly dialogRef: MatDialogRef<ChatbotComponent> | null
     ) {
@@ -155,5 +157,21 @@ export class ChatbotComponent {
 
             container.scrollTop = container.scrollHeight;
         });
+    }
+
+    conversationModeLabel(): string {
+        return this.authService.isCustomer() ? 'Modo cliente' : 'Modo profesional';
+    }
+
+    conversationModeDescription(): string {
+        return this.authService.isCustomer()
+            ? 'El asistente usará un lenguaje más claro y guiado.'
+            : 'El asistente usará un lenguaje más técnico y operativo.';
+    }
+
+    composerPlaceholder(): string {
+        return this.authService.isCustomer()
+            ? 'Escribe tu duda sobre el encargo'
+            : 'Escribe tu consulta operativa o técnica';
     }
 }

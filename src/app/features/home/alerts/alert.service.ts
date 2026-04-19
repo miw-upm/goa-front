@@ -6,6 +6,7 @@ import {ENDPOINTS} from '@core/api/endpoints';
 import {
     AlertCreate,
     AlertDetail,
+    AlertEdit,
     AlertNotificationConfig,
     AlertSummary,
     PendingAlertNotification
@@ -52,5 +53,11 @@ export class AlertService {
         return this.httpService.request()
             .success('Alerta cancelada correctamente')
             .patch(ENDPOINTS.alerts.cancel(alertId), {});
+    }
+
+    updateAlert(alertId: string, alert: AlertEdit): Observable<any> {
+        return this.httpService.request()
+            .success('Alerta actualizada correctamente')
+            .put(ENDPOINTS.alerts.byId(alertId), alert);
     }
 }

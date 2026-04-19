@@ -12,20 +12,35 @@ export interface AlertCreate {
     engagementLetterId: string;
 }
 
+export interface AlertEdit {
+    title: string;
+    description?: string;
+    dueDate: string;
+}
+
 export interface AlertNotificationConfig {
     offsetMinutes: number[];
 }
 
 export interface AlertNotification {
-    offsetMinutes?: number;
+    id: string;            
+    offsetMinutes: number; 
+    triggerAt: string;     
+    status: string;       
+    createdAt: string;  
+    updatedAt: string;
 }
 
 export interface AlertDetail {
-    id?: string;
-    title?: string;
-    description?: string;
-    dueDate?: string;
-    status?: string;
+    id: string;
+    title: string;
+    description: string;
+    dueDate: Date;
+    status: string;
+    createdAt: Date;
+    updatedAt?: Date;
+    createdBy: string;
+    updatedBy?: string;
     notifications?: AlertNotification[];
 }
 

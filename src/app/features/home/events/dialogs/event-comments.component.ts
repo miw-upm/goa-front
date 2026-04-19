@@ -12,7 +12,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
-import {finalize} from 'rxjs/operators';
+import {finalize, switchMap} from 'rxjs/operators';
 
 import {CommentService} from '../comments/comment.service';
 import {Comment} from '../comments/comment.model';
@@ -64,15 +64,11 @@ export class EventCommentsComponent {
     }
 
     loadComments(): void {
+        this.loading = true;
         this.commentService.getCommentsByEvent(this.eventId)
+            .pipe(finalize(() => this.loading = false))
             .subscribe(comments => {
-
-                this.comments = comments.map(c => ({
-                    content: c.content,
-                    createdDate: c.createdDate,
-                    authorId: c.authorId
-                }));
-
+                this.comments = this.mapComments(comments);
             });
     }
 
@@ -83,11 +79,18 @@ export class EventCommentsComponent {
         const content = this.commentControl.value.trim();
 
         this.submitting = true;
+        this.loading = true;
 
         this.commentService.createComment(this.eventId, content)
-            .pipe(finalize(() => this.submitting = false))
-            .subscribe(comment => {
-                this.comments.unshift(comment);
+            .pipe(
+                switchMap(() => this.commentService.getCommentsByEvent(this.eventId)),
+                finalize(() => {
+                    this.submitting = false;
+                    this.loading = false;
+                })
+            )
+            .subscribe(comments => {
+                this.comments = this.mapComments(comments);
                 this.commentControl.reset('');
             });
     }
@@ -95,24 +98,23 @@ export class EventCommentsComponent {
 
  deleteComment(comment: Comment): void {
 
-     console.log('CLICK DELETE', comment); // 👈 AÑADE ESTO
-
      const key = this.getDeleteKey(comment);
 
      if (this.deletingKey) return;
 
      this.deletingKey = key;
+     this.loading = true;
 
      this.commentService.deleteComment(this.eventId, comment)
-         .pipe(finalize(() => this.deletingKey = null))
-         .subscribe({
-             next: () => {
-                 console.log('DELETE OK'); // 👈 AÑADE ESTO
-                 this.comments = this.comments.filter(c => this.getDeleteKey(c) !== key);
-             },
-             error: (err) => {
-                 console.error('DELETE ERROR', err); // 👈 AÑADE ESTO
-             }
+         .pipe(
+             switchMap(() => this.commentService.getCommentsByEvent(this.eventId)),
+             finalize(() => {
+                 this.deletingKey = null;
+                 this.loading = false;
+             })
+         )
+         .subscribe(comments => {
+             this.comments = this.mapComments(comments);
          });
  }
 
@@ -120,5 +122,13 @@ export class EventCommentsComponent {
 
     getDeleteKey(comment: Comment): string {
         return `${comment.authorId}|${comment.content}|${comment.createdDate}`;
+    }
+
+    private mapComments(comments: Comment[]): Comment[] {
+        return comments.map(c => ({
+            content: c.content,
+            createdDate: c.createdDate,
+            authorId: c.authorId
+        }));
     }
 }
