@@ -1,21 +1,10 @@
 <mat-divider></mat-divider>
-<mat-grid-list cols="1" rowHeight="100px">
-    <mat-grid-tile>
-        <div mat-subheader><img alt="miw" height="64" ngSrc="../../../../assets/oa-s.png" width="64"/></div>
-        <mat-list>
-            <mat-list-item>
-                <mat-icon class="icon-small">computer</mat-icon>
-                <small>{{ version }}</small>
-            </mat-list-item>
-            <mat-list-item>
-                <mat-icon class="icon-small">cloud_queue</mat-icon>
-                <small>{{ backEndUser }}. </small>
-                <small> {{ backEndEngagement }}. </small>
-                <small>{{ backEndBilling }}. </small>
-                <small>{{ backEndSupport }}. </small>
-                <small>{{ backEndDocument }}. </small>
-                <small>{{ backEndChatbot }}. </small>
-            </mat-list-item>
-        </mat-list>
-    </mat-grid-tile>
-</mat-grid-list>
+<div class="footer-container">
+    <div><mat-icon class="icon-small">computer</mat-icon> <small>{{ version }}</small></div>
+    <div class="badges">
+        <div><mat-icon class="icon-small">cloud_queue</mat-icon>User: <img [src]="backEndUser + '/system/version-badge'" alt="⚠️ Sin respuesta"/></div>
+        <div><mat-icon class="icon-small">cloud_queue</mat-icon>Engagement: <img [src]="backEndEngagement + '/system/version-badge'" alt="⚠️ Sin respuesta"/></div>
+        <div><mat-icon class="icon-small">cloud_queue</mat-icon>Support: <img [src]="backEndSupport + '/system/version-badge'" alt="⚠️ Sin respuesta"/></div>
+        <div><mat-icon class="icon-small">cloud_queue</mat-icon>Billing: <img [src]="backEndBilling + '/system/version-badge'" alt="⚠️ Sin respuesta"/></div>
+    </div>
+</div>
