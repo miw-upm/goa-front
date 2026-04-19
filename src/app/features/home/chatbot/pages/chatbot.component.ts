@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, Optional, ViewChild} from "@angular/core";
+import {Component, ElementRef, Inject, OnDestroy, OnInit, Optional, ViewChild} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
@@ -37,7 +37,7 @@ import {TextFieldModule} from "@angular/cdk/text-field";
     styleUrls: ["./chatbot.component.css"]
 })
 
-export class ChatbotComponent {
+export class ChatbotComponent implements OnInit, OnDestroy {
     @ViewChild('messagesContainer') private messagesContainer?: ElementRef<HTMLDivElement>;
 
     message = '';
@@ -46,6 +46,7 @@ export class ChatbotComponent {
     initializing = false;
     error = '';
     messages: ChatbotMessageView[] = [];
+    private conversationClosed = false;
 
     constructor(
         private readonly chatbotService: ChatbotService,
@@ -76,6 +77,10 @@ export class ChatbotComponent {
                 this.initializing = false;
             }
         });
+    }
+
+    ngOnDestroy(): void {
+        this.closeConversationOnExit();
     }
 
 
@@ -195,5 +200,17 @@ export class ChatbotComponent {
         }
 
         return CHATBOT_SCOPE_RESTRICTED_REPLIES.includes(message as typeof CHATBOT_SCOPE_RESTRICTED_REPLIES[number]);
+    }
+
+    private closeConversationOnExit(): void {
+        if (!this.conversationId || this.conversationClosed) {
+            return;
+        }
+
+        this.conversationClosed = true;
+
+        this.chatbotService.closeConversation(this.conversationId).subscribe({
+            error: () => undefined
+        });
     }
 }
