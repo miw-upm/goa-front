@@ -45,6 +45,7 @@ import {CapitalizeEnumNamePipe} from '@shared/pipes/capitalize-enum-name.pipe';
 })
 export class FormSelectComponent {
     @Input() label = 'Select';
+    @Input() disabled: boolean = false;
     @Input() values: Observable<string[]> = new Observable<string[]>();
     @Input() selected: string | undefined;
     @Input() capitalize = false;

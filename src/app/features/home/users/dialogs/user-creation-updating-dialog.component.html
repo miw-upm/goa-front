@@ -33,6 +33,24 @@
     }
     <app-form-select [(selected)]="user.role" [values]="roles" label="Rol"/>
     <mat-slide-toggle [(ngModel)]="user.active">Active</mat-slide-toggle>
+    <div class="rgpd-container">
+        <mat-slide-toggle
+                [(ngModel)]="user.rgpdAccepted"
+                (change)="onRgpdChange($event.checked)">
+            RGPD Aceptado
+        </mat-slide-toggle>
+
+        <app-form-select
+                [(selected)]="user.consentType"
+                [values]="consentTypes"
+                [disabled]="!user.rgpdAccepted"
+                label="Tipo de Consentimiento" />
+
+        <app-form-date
+                [(value)]="user.rgpdDate"
+                label="Fecha RGPD"
+                [disabled]="true" />
+    </div>
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Cancelar</button>
