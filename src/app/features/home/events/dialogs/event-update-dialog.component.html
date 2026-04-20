@@ -8,35 +8,35 @@
         label="Título"
     />
     <app-form-field
-        [(value)]="description"
-        label="Descripción"
+            [(value)]="description"
+            label="Descripción"
     />
     <app-form-date
-        [(value)]="eventDate"
-        label="Fecha del Evento"
+            [(value)]="eventDate"
+            label="Fecha del Evento"
     />
     <app-form-select
-        [(selected)]="type"
-        [capitalize]="true"
-        [required]="true"
-        [values]="typeOptions"
-        label="Tipo"
+            [(selected)]="type"
+            [capitalize]="true"
+            [required]="true"
+            [values]="typeOptions"
+            label="Tipo"
     />
     <app-form-select
-        [(selected)]="status"
-        [capitalize]="true"
-        [required]="true"
-        [values]="statusOptions"
-        label="Estado"
+            [(selected)]="status"
+            [capitalize]="true"
+            [required]="true"
+            [values]="statusOptions"
+            label="Estado"
     />
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Cerrar</button>
     <button
-        (click)="update()"
-        [disabled]="formInvalid(titleField.ngModel) || invalid()"
-        color="primary"
-        mat-raised-button>
+            (click)="update()"
+            [disabled]="formInvalid(titleField.ngModel) || invalid()"
+            color="primary"
+            mat-raised-button>
         Actualizar
     </button>
 </mat-dialog-actions>

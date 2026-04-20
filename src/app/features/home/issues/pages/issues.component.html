@@ -23,14 +23,14 @@
     </div>
 
     <app-crud
-            (searchAll)="search()"
             (read)="goToDetail($event)"
+            (searchAll)="search()"
+            [createAction]="false"
             [data]="issues"
             [hiddenFields]="['id', 'description', 'technicalContext', 'lastUpdatedAt', 'createdByUserId', 'createdByUser', 'githubIssueId', 'githubIssueUrl', 'message', 'error']"
             [item]="issue"
-            [title]="title"
-            [createAction]="false"
             [readAction]="true"
+            [title]="title"
             [updateAction]="false">
     </app-crud>
 </section>

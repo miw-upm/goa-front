@@ -7,20 +7,20 @@
 
 
 <app-crud
+        (cancel)="cancelAlert($event)"
         (create)="openCreateDialog()"
         (notifications)="openNotificationDialog($event)"
-        (searchAll)="search()"
-        (cancel)="cancelAlert($event)"
         (read)="openAlertDetailDialog($event.id)"
+        (searchAll)="search()"
         (update)="openEditAlertDialog($event.id)"
-        [data]="alerts$"
-        [readAction]="true"
-        [updateAction]="true"
         [cancelAction]="true"
-        [deleteAction]="false"
-        [createAction]="true"
-        [notificationsAction]="true"
-        [hiddenFields]="['id']"
         [columnOrder]="['title', 'dueDate', 'status']"
-        [title]="title">
+        [createAction]="true"
+        [data]="alerts$"
+        [deleteAction]="false"
+        [hiddenFields]="['id']"
+        [notificationsAction]="true"
+        [readAction]="true"
+        [title]="title"
+        [updateAction]="true">
 </app-crud>

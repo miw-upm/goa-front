@@ -17,7 +17,8 @@
             <section class="card main-card">
                 <div class="card-title-row">
                     <h2>{{ issue.title || 'Sin título' }}</h2>
-                    <span class="status-pill" [class]="'status-pill ' + statusClass()">{{ (issue.status || 'PENDING') | capitalizeEnumName }}</span>
+                    <span class="status-pill"
+                          [class]="'status-pill ' + statusClass()">{{ (issue.status || 'PENDING') | capitalizeEnumName }}</span>
                 </div>
 
                 <div class="meta-grid">
@@ -104,7 +105,8 @@
                         <div>
                             <p class="meta-label">Documento</p>
                             <p class="meta-value">
-                                <span class="enum-tag" [class]="'enum-tag document-tag ' + enumTagClass(issue.createdByUser.documentType, 'document')">
+                                <span class="enum-tag"
+                                      [class]="'enum-tag document-tag ' + enumTagClass(issue.createdByUser.documentType, 'document')">
                                     {{ (issue.createdByUser.documentType || '-') | capitalizeEnumName }}
                                 </span>
                             </p>
@@ -116,7 +118,8 @@
                         <div>
                             <p class="meta-label">Rol</p>
                             <p class="meta-value">
-                                <span class="enum-tag" [class]="'enum-tag role-tag ' + enumTagClass(issue.createdByUser.role, 'role')">
+                                <span class="enum-tag"
+                                      [class]="'enum-tag role-tag ' + enumTagClass(issue.createdByUser.role, 'role')">
                                     {{ (issue.createdByUser.role || '-') | capitalizeEnumName }}
                                 </span>
                             </p>

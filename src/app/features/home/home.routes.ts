@@ -26,7 +26,7 @@ import {EventsComponent} from "./events/pages/events.component";
 import {EventService} from "./events/event.service";
 import {AlertsComponent} from "./alerts/pages/alerts.component";
 import {AlertService} from "./alerts/alert.service";
-import {TimelinePageComponent } from './timeline/pages/timeline-page.component';
+import {TimelinePageComponent} from './timeline/pages/timeline-page.component';
 import {TimelineService} from "./timeline/services/timeline.service";
 import {EngagementLetterFormComponent} from "./engagement-letter/pages/engagement-letter-form.component";
 

@@ -20,8 +20,8 @@
         type="number"/>
 
     <app-form-date
-        [(value)]="expenseDate"
-        label="Fecha"/>
+            [(value)]="expenseDate"
+            label="Fecha"/>
 
     <app-form-field
         #descriptionNg
@@ -34,18 +34,18 @@
     <button mat-dialog-close mat-raised-button>Close</button>
     @if (isCreate()) {
         <button
-            (click)="create()"
-            [disabled]="!canSubmit() || formInvalid(amountNg.ngModel, descriptionNg.ngModel)"
-            color="primary"
-            mat-raised-button>
+                (click)="create()"
+                [disabled]="!canSubmit() || formInvalid(amountNg.ngModel, descriptionNg.ngModel)"
+                color="primary"
+                mat-raised-button>
             Create
         </button>
     } @else {
         <button
-            (click)="update()"
-            [disabled]="!canSubmit() || formInvalid(amountNg.ngModel, descriptionNg.ngModel)"
-            color="primary"
-            mat-raised-button>
+                (click)="update()"
+                [disabled]="!canSubmit() || formInvalid(amountNg.ngModel, descriptionNg.ngModel)"
+                color="primary"
+                mat-raised-button>
             Update
         </button>
     }

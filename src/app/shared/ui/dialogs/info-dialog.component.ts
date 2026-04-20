@@ -21,5 +21,6 @@ export type InfoDialogData = {
     ]
 })
 export class InfoDialogComponent {
-    constructor(@Inject(MAT_DIALOG_DATA) public data: InfoDialogData) {}
+    constructor(@Inject(MAT_DIALOG_DATA) public data: InfoDialogData) {
+    }
 }

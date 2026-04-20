@@ -96,28 +96,27 @@ export class EventCommentsComponent {
     }
 
 
- deleteComment(comment: Comment): void {
+    deleteComment(comment: Comment): void {
 
-     const key = this.getDeleteKey(comment);
+        const key = this.getDeleteKey(comment);
 
-     if (this.deletingKey) return;
+        if (this.deletingKey) return;
 
-     this.deletingKey = key;
-     this.loading = true;
+        this.deletingKey = key;
+        this.loading = true;
 
-     this.commentService.deleteComment(this.eventId, comment)
-         .pipe(
-             switchMap(() => this.commentService.getCommentsByEvent(this.eventId)),
-             finalize(() => {
-                 this.deletingKey = null;
-                 this.loading = false;
-             })
-         )
-         .subscribe(comments => {
-             this.comments = this.mapComments(comments);
-         });
- }
-
+        this.commentService.deleteComment(this.eventId, comment)
+            .pipe(
+                switchMap(() => this.commentService.getCommentsByEvent(this.eventId)),
+                finalize(() => {
+                    this.deletingKey = null;
+                    this.loading = false;
+                })
+            )
+            .subscribe(comments => {
+                this.comments = this.mapComments(comments);
+            });
+    }
 
 
     getDeleteKey(comment: Comment): string {

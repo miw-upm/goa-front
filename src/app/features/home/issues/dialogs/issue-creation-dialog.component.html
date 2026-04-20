@@ -3,9 +3,9 @@
     <app-form-field
         #titleNg
         [(value)]="issue.title"
-        [required]="true"
         [maxlength]="120"
         [minlength]="3"
+        [required]="true"
         errorMessage="Obligatorio, mínimo 3 caracteres"
         label="Título"
     />
@@ -16,9 +16,9 @@
             #descriptionNg="ngModel"
             [(ngModel)]="issue.description"
             matInput
-            required
-            minlength="5"
             maxlength="2000"
+            minlength="5"
+            required
             rows="5"
         ></textarea>
         @if (descriptionNg.invalid && (descriptionNg.dirty || descriptionNg.touched)) {
@@ -32,9 +32,9 @@
             #technicalContextNg="ngModel"
             [(ngModel)]="issue.technicalContext"
             matInput
-            required
-            minlength="5"
             maxlength="2000"
+            minlength="5"
+            required
             rows="5"
         ></textarea>
         @if (technicalContextNg.invalid && (technicalContextNg.dirty || technicalContextNg.touched)) {

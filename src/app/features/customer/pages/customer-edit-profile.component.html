@@ -19,11 +19,11 @@
             />
             <app-form-field #name [(value)]="user.firstName" [required]="true" errorMessage="Obligatorio"
                             label="Nombre"/>
-            <app-form-field [(value)]="user.familyName" label="Apellidos" [required]="true" errorMessage="Obligatorio"/>
-            <app-form-field [(value)]="user.address" label="Dirección" [required]="true" errorMessage="Obligatorio"/>
-            <app-form-field [(value)]="user.city" label="Población" [required]="true" errorMessage="Obligatorio"/>
-            <app-form-select [(selected)]="user.province" [capitalize]="true" [values]="provinces" label="Provincia"
-                             [required]="true"/>
+            <app-form-field [(value)]="user.familyName" [required]="true" errorMessage="Obligatorio" label="Apellidos"/>
+            <app-form-field [(value)]="user.address" [required]="true" errorMessage="Obligatorio" label="Dirección"/>
+            <app-form-field [(value)]="user.city" [required]="true" errorMessage="Obligatorio" label="Población"/>
+            <app-form-select [(selected)]="user.province" [capitalize]="true" [required]="true" [values]="provinces"
+                             label="Provincia"/>
             <app-form-field
                 #postalCode
                 [(value)]="user.postalCode"
@@ -33,10 +33,10 @@
                 label="Código postal"
                 pattern="^[0-9]{5}$"
             />
-            <app-form-select [(selected)]="user.documentType" [values]="userDocumentTypes" label="Tipo de Documento"
-                             [required]="true" />
-            <app-form-field [(value)]="user.identity" label="Nº Identificación" [required]="true"/>
-            <app-form-field [(value)]="user.email" label="Email (no)" [required]="true" />
+            <app-form-select [(selected)]="user.documentType" [required]="true" [values]="userDocumentTypes"
+                             label="Tipo de Documento"/>
+            <app-form-field [(value)]="user.identity" [required]="true" label="Nº Identificación"/>
+            <app-form-field [(value)]="user.email" [required]="true" label="Email (no)"/>
             <div class="privacy-text">
                 <strong>Protección de datos personales:</strong><br/>
                 <p> Los datos proporcionados serán tratados por <em>Nuria Ocaña Pérez (DNI.46882956D)</em> con la
@@ -57,8 +57,8 @@
         </mat-dialog-content>
     </mat-card-content>
     <mat-dialog-actions align="center">
-        <button (click)="update()" [disabled]="formInvalid(mobile.ngModel, postalCode.ngModel)" color="primary"
-                mat-raised-button class="btn-update">ENVIAR
+        <button (click)="update()" [disabled]="formInvalid(mobile.ngModel, postalCode.ngModel)" class="btn-update"
+                color="primary" mat-raised-button>ENVIAR
         </button>
     </mat-dialog-actions>
 </mat-card>

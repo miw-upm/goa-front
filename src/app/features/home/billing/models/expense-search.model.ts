@@ -1,4 +1,4 @@
 export class ExpenseSearch {
-  engagementId?: string;
-  date?: string;
+    engagementId?: string;
+    date?: string;
 }

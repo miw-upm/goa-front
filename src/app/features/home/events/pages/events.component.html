@@ -6,7 +6,7 @@
 </div>
 <div style="display:flex; gap:10px">
 
-    <button mat-raised-button color="primary" (click)="goToTimeline()" class="timeline-btn">
+    <button (click)="goToTimeline()" class="timeline-btn" color="primary" mat-raised-button>
         <mat-icon>timeline</mat-icon>
         <span>Ver línea temporal</span>
     </button>
@@ -16,19 +16,19 @@
 
 
 <app-crud
+        (comments)="comments($event)"
         (create)="create()"
+        (delete)="delete($event)"
         (read)="read($event)"
         (update)="update($event)"
-        (delete)="delete($event)"
-        (comments)="comments($event)"
-        [data]="events$"
-        [item]="event$"
-        [deleteAction]="true"
-        [commentsAction]="true"
-        [deleteInline]="true"
-        [commentsInline]="true"
-        [searchAction]="false"
-        [hiddenFields]="['id', 'engagementLetterId', 'createdDate', 'comments']"
         [columnOrder]="['title','description', 'eventDate', 'type', 'status' ]"
+        [commentsAction]="true"
+        [commentsInline]="true"
+        [data]="events$"
+        [deleteAction]="true"
+        [deleteInline]="true"
+        [hiddenFields]="['id', 'engagementLetterId', 'createdDate', 'comments']"
+        [item]="event$"
+        [searchAction]="false"
         [title]="title">
 </app-crud>

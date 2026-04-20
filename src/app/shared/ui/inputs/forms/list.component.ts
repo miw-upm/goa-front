@@ -41,7 +41,8 @@ export class FormListComponent {
     @Output() itemsChange = new EventEmitter<any[]>();
     @Output() action = new EventEmitter<any>();
 
-    constructor(private readonly dialog: MatDialog) {}
+    constructor(private readonly dialog: MatDialog) {
+    }
 
     onDrop(event: CdkDragDrop<any[]>): void {
         moveItemInArray(this.items, event.previousIndex, event.currentIndex);

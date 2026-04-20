@@ -8,22 +8,23 @@ mat-dialog-content {
 .full-width {
     width: 100%;
 }
+
 .comments-container {
-  margin-top: 16px;
+    margin-top: 16px;
 }
 
 .full-width {
-  width: 100%;
+    width: 100%;
 }
 
 .comments-list {
-  margin-top: 16px;
+    margin-top: 16px;
 }
 
 .comment-card {
-  padding: 10px;
-  border-radius: 8px;
-  background: #f5f5f5;
-  margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 8px;
+    background: #f5f5f5;
+    margin-bottom: 10px;
 }
 

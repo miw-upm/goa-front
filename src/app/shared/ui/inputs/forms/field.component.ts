@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, ViewChild, AfterViewInit, ChangeDetectionStrategy} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {FormsModule, NgModel, Validators} from '@angular/forms';
 import {MatError, MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
@@ -69,7 +69,7 @@ export class FormFieldComponent implements AfterViewInit {
             if (this.minlength !== undefined) validators.push(Validators.minLength(this.minlength));
             if (this.maxlength !== undefined) validators.push(Validators.maxLength(this.maxlength));
             this.ngModel.control.setValidators(validators);
-            this.ngModel.control.updateValueAndValidity({ emitEvent: false });
+            this.ngModel.control.updateValueAndValidity({emitEvent: false});
         });
     }
 }

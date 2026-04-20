@@ -44,7 +44,6 @@ import {Expense} from '../models/expense.model';
 export class ExpenseCreationDialogComponent {
     title: string;
     engagementIds: Observable<string[]>;
-    private expenseDateValue: Date | null = null;
     expense: Expense = {
         id: undefined,
         engagementId: undefined,
@@ -52,16 +51,7 @@ export class ExpenseCreationDialogComponent {
         date: undefined,
         description: undefined,
     };
-
-    get expenseDate(): Date | null {
-        return this.expenseDateValue;
-    }
-
-    set expenseDate(value: Date | string | null | undefined) {
-        const parsedDate = value instanceof Date ? value : this.parseDate(value);
-        this.expenseDateValue = parsedDate;
-        this.expense.date = parsedDate ? this.formatDate(parsedDate) : undefined;
-    }
+    private expenseDateValue: Date | null = null;
 
     constructor(
         private readonly expenseService: ExpenseService,
@@ -88,6 +78,16 @@ export class ExpenseCreationDialogComponent {
             .pipe(map(engagements => engagements
                 .map(engagement => engagement.id)
                 .filter((id): id is string => !!id)));
+    }
+
+    get expenseDate(): Date | null {
+        return this.expenseDateValue;
+    }
+
+    set expenseDate(value: Date | string | null | undefined) {
+        const parsedDate = value instanceof Date ? value : this.parseDate(value);
+        this.expenseDateValue = parsedDate;
+        this.expense.date = parsedDate ? this.formatDate(parsedDate) : undefined;
     }
 
     create(): void {
@@ -121,6 +121,10 @@ export class ExpenseCreationDialogComponent {
             && this.hasDescription();
     }
 
+    formInvalid(...controls: NgModel[]): boolean {
+        return controls.some(ctrl => ctrl.invalid && (ctrl.dirty || ctrl.touched));
+    }
+
     private hasEngagementId(): boolean {
         return !!this.expense.engagementId;
     }
@@ -136,10 +140,6 @@ export class ExpenseCreationDialogComponent {
 
     private hasDescription(): boolean {
         return !!this.expense.description?.trim();
-    }
-
-    formInvalid(...controls: NgModel[]): boolean {
-        return controls.some(ctrl => ctrl.invalid && (ctrl.dirty || ctrl.touched));
     }
 
     private parseDate(value: Date | string | null | undefined): Date | null {

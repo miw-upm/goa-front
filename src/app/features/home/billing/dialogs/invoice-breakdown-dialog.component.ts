@@ -8,9 +8,9 @@ import {InvoiceBreakdown} from '../models/invoice-breakdown.model';
 import {MatButtonModule} from "@angular/material/button";
 
 @Component({
-  standalone: true,
-  selector: 'app-invoice-breakdown-dialog',
-  template: `
+    standalone: true,
+    selector: 'app-invoice-breakdown-dialog',
+    template: `
     <h2 mat-dialog-title>Desglose de Factura</h2>
     <mat-dialog-content>
       <mat-card class="mat-elevation-z4">
@@ -89,7 +89,7 @@ import {MatButtonModule} from "@angular/material/button";
       <button mat-button mat-dialog-close>Cerrar</button>
     </mat-dialog-actions>
   `,
-  styles: [`
+    styles: [`
     mat-card {
       margin-bottom: 20px;
     }
@@ -113,16 +113,18 @@ import {MatButtonModule} from "@angular/material/button";
       width: 100%;
     }
   `],
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    MatTableModule,
-    MatCardModule,
-    MatListModule,
-    MatButtonModule
-  ]
+    imports: [
+        CommonModule,
+        MatDialogModule,
+        MatTableModule,
+        MatCardModule,
+        MatListModule,
+        MatButtonModule
+    ]
 })
 export class InvoiceBreakdownDialogComponent {
-  displayedColumns: string[] = ['id', 'taxableBase', 'vatAmount', 'amountWithVat'];
-  constructor(@Inject(MAT_DIALOG_DATA) public data: InvoiceBreakdown) {}
+    displayedColumns: string[] = ['id', 'taxableBase', 'vatAmount', 'amountWithVat'];
+
+    constructor(@Inject(MAT_DIALOG_DATA) public data: InvoiceBreakdown) {
+    }
 }

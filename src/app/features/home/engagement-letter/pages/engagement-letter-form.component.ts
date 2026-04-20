@@ -15,7 +15,9 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {FormListComponent} from '@shared/ui/inputs/forms/list.component';
 import {SearchByUserComponent} from '@features/shared/ui/search-by-user.component';
-import {SearchByLegalProcedureTemplateComponent} from '@features/shared/ui/search-by-legal-procedure-template.component';
+import {
+    SearchByLegalProcedureTemplateComponent
+} from '@features/shared/ui/search-by-legal-procedure-template.component';
 import {User} from '@features/shared/models/user.model';
 import {LegalProcedureTemplate} from '../../legal-procedure-templates/models/legal-procedure-template.model';
 
@@ -207,7 +209,7 @@ export class EngagementLetterFormComponent implements OnInit {
     private navigateBack(): void {
         const client = this.engagementLetter.owner?.mobile;
         this.router.navigate(['/home/engagement-letters'], {
-            queryParams: { client, opened: true }
+            queryParams: {client, opened: true}
         });
     }
 }

@@ -9,7 +9,7 @@ import {
     ChatbotMessageResponse
 } from "./models/chatbot.model";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class ChatbotService {
 
     constructor(private readonly httpService: HttpService) {

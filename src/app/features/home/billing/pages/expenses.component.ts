@@ -18,12 +18,11 @@ import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
     templateUrl: 'expenses.component.html'
 })
 export class ExpensesComponent {
+    private static readonly SNACK_SUCCESS_DURATION = 3000;
     title = 'Gastos';
     expenses = of([] as Expense[]);
     expense: Observable<Expense>;
     criteria: ExpenseSearch = {};
-
-    private static readonly SNACK_SUCCESS_DURATION = 3000;
 
     constructor(
         private readonly dialog: MatDialog,
@@ -59,7 +58,7 @@ export class ExpensesComponent {
     read(expense: Expense): void {
         this.expense = this.expenseService.read(expense.id);
     }
-    
+
     update(expense: Expense): void {
         if (!expense.id) {
             return;

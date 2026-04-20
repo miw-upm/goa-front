@@ -20,14 +20,13 @@ import {IssueService} from '../issue.service';
     styleUrls: ['issues.component.css']
 })
 export class IssuesComponent {
+    private static readonly SNACK_SUCCESS_DURATION = 3000;
     title = 'Incidencias';
     issues = of([] as IssueResponse[]);
     issue: Observable<IssueResponse>;
     criteria: IssueSearch = {};
     issueTypes = Object.values(IssueType);
     issueStatus = Object.values(IssueStatus)
-
-    private static readonly SNACK_SUCCESS_DURATION = 3000;
 
     constructor(
         private readonly router: Router,

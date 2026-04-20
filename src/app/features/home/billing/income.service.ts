@@ -8,14 +8,14 @@ import {IncomeSearch} from './models/income-search.model';
 
 @Injectable({providedIn: 'root'})
 export class IncomeService {
-	constructor(private readonly httpService: HttpService) {
-	}
+    constructor(private readonly httpService: HttpService) {
+    }
 
-	create(income: Income): Observable<Income> {
-		return this.httpService.request()
-			.success()
-			.post(ENDPOINTS.incomes.root, income);
-	}
+    create(income: Income): Observable<Income> {
+        return this.httpService.request()
+            .success()
+            .post(ENDPOINTS.incomes.root, income);
+    }
 
     read(id: string): Observable<Income> {
         return this.httpService.request()
@@ -28,11 +28,11 @@ export class IncomeService {
             .put(ENDPOINTS.incomes.byId(id), income);
     }
 
-	search(criteria?: IncomeSearch): Observable<Income[]> {
-		const request = this.httpService.request();
-		if (criteria) {
-			request.paramsFrom(criteria);
-		}
-		return request.get(ENDPOINTS.incomes.root);
-	}
+    search(criteria?: IncomeSearch): Observable<Income[]> {
+        const request = this.httpService.request();
+        if (criteria) {
+            request.paramsFrom(criteria);
+        }
+        return request.get(ENDPOINTS.incomes.root);
+    }
 }

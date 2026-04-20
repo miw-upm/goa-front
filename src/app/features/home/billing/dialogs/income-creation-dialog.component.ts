@@ -48,7 +48,6 @@ export class IncomeCreationDialogComponent {
     title: string;
     engagementIds: Observable<string[]>;
     userIds: Observable<string[]>;
-    private incomeDateValue: Date | null = null;
     income: Income = {
         id: undefined,
         engagementId: undefined,
@@ -56,16 +55,7 @@ export class IncomeCreationDialogComponent {
         amount: undefined,
         date: undefined,
     };
-
-    get incomeDate(): Date | null {
-        return this.incomeDateValue;
-    }
-
-    set incomeDate(value: Date | string | null | undefined) {
-        const parsedDate = value instanceof Date ? value : this.parseDate(value);
-        this.incomeDateValue = parsedDate;
-        this.income.date = parsedDate ? this.formatDate(parsedDate) : undefined;
-    }
+    private incomeDateValue: Date | null = null;
 
     constructor(
         private readonly incomeService: IncomeService,
@@ -96,6 +86,16 @@ export class IncomeCreationDialogComponent {
 
         this.userIds = this.sharedUserService.searchUsers('')
             .pipe(map(users => this.buildUserIds(users)));
+    }
+
+    get incomeDate(): Date | null {
+        return this.incomeDateValue;
+    }
+
+    set incomeDate(value: Date | string | null | undefined) {
+        const parsedDate = value instanceof Date ? value : this.parseDate(value);
+        this.incomeDateValue = parsedDate;
+        this.income.date = parsedDate ? this.formatDate(parsedDate) : undefined;
     }
 
     create(): void {
@@ -129,6 +129,10 @@ export class IncomeCreationDialogComponent {
             && this.hasValidDate();
     }
 
+    formInvalid(...controls: NgModel[]): boolean {
+        return controls.some(ctrl => ctrl.invalid && (ctrl.dirty || ctrl.touched));
+    }
+
     private hasEngagementId(): boolean {
         return !!this.income.engagementId;
     }
@@ -156,10 +160,6 @@ export class IncomeCreationDialogComponent {
         }
 
         return userIds;
-    }
-
-    formInvalid(...controls: NgModel[]): boolean {
-        return controls.some(ctrl => ctrl.invalid && (ctrl.dirty || ctrl.touched));
     }
 
     private parseDate(value: Date | string | null | undefined): Date | null {

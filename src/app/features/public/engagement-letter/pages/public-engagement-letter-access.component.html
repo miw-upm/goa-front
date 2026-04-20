@@ -45,10 +45,12 @@
                                 <div class="item-card">
                                     <div class="item-title">{{ procedure.title }}</div>
                                     @if (procedure.startDate) {
-                                        <div class="item-meta">Inicio: {{ procedure.startDate | date:'mediumDate' }}</div>
+                                        <div class="item-meta">Inicio: {{ procedure.startDate | date:'mediumDate' }}
+                                        </div>
                                     }
                                     @if (procedure.closingDate) {
-                                        <div class="item-meta">Cierre: {{ procedure.closingDate | date:'mediumDate' }}</div>
+                                        <div class="item-meta">Cierre: {{ procedure.closingDate | date:'mediumDate' }}
+                                        </div>
                                     }
                                     @if (procedure.budget !== undefined && procedure.budget !== null) {
                                         <div class="item-meta">Presupuesto: {{ procedure.budget }} EUR</div>
@@ -86,11 +88,13 @@
                             <mat-icon color="primary">verified</mat-icon>
                             <p>La hoja de encargo ha sido aceptada correctamente.</p>
                             @if (acceptance.signatureDate) {
-                                <p class="success-meta">Fecha de aceptacion: {{ acceptance.signatureDate | date:'medium' }}</p>
+                                <p class="success-meta">Fecha de
+                                    aceptacion: {{ acceptance.signatureDate | date:'medium' }}</p>
                             }
                         </div>
                     } @else {
-                        <p class="action-copy">Si esta conforme con el contenido, puede aceptar la hoja de encargo ahora.</p>
+                        <p class="action-copy">Si esta conforme con el contenido, puede aceptar la hoja de encargo
+                            ahora.</p>
                         @if (acceptErrorMessage) {
                             <div class="inline-error">
                                 <mat-icon color="warn">error</mat-icon>

@@ -27,7 +27,7 @@ export class EngagementLettersComponent implements OnInit {
     title = 'Hojas de Encargo';
     engagementLetters: Observable<EngagementLetter[]> = of([]);
     engagementLetter: Observable<EngagementLetter>;
-    criteria: EngagementLetterCriteria = { opened: true };
+    criteria: EngagementLetterCriteria = {opened: true};
 
     constructor(
         private readonly dialog: MatDialog,
@@ -53,13 +53,6 @@ export class EngagementLettersComponent implements OnInit {
         });
     }
 
-    private parseBoolean(value: string | undefined, defaultValue: boolean | null): boolean | null {
-        if (value === 'true') return true;
-        if (value === 'false') return false;
-        if (value === 'null') return null;
-        return defaultValue;
-    }
-
     search(): void {
         this.engagementLetters = this.engagementLettersService.search(this.criteria);
     }
@@ -74,16 +67,6 @@ export class EngagementLettersComponent implements OnInit {
         this.router.navigate(['/home/engagement-letters', engagement.id, 'edit'], {
             queryParams: this.buildQueryParams()
         });
-    }
-
-    private buildQueryParams(): object {
-        return {
-            opened: this.criteria.opened,
-            budgetOnly: this.criteria.budgetOnly,
-            client: this.criteria.client ?? null,
-            legalProcedureTitle: this.criteria.legalProcedureTitle ?? null,
-            taskTitle: this.criteria.taskTitle ?? null
-        };
     }
 
     delete(engagement: EngagementLetter): void {
@@ -138,5 +121,22 @@ export class EngagementLettersComponent implements OnInit {
                 }
             })
         );
+    }
+
+    private parseBoolean(value: string | undefined, defaultValue: boolean | null): boolean | null {
+        if (value === 'true') return true;
+        if (value === 'false') return false;
+        if (value === 'null') return null;
+        return defaultValue;
+    }
+
+    private buildQueryParams(): object {
+        return {
+            opened: this.criteria.opened,
+            budgetOnly: this.criteria.budgetOnly,
+            client: this.criteria.client ?? null,
+            legalProcedureTitle: this.criteria.legalProcedureTitle ?? null,
+            taskTitle: this.criteria.taskTitle ?? null
+        };
     }
 }

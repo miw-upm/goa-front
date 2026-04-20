@@ -23,11 +23,11 @@ export interface AlertNotificationConfig {
 }
 
 export interface AlertNotification {
-    id: string;            
-    offsetMinutes: number; 
-    triggerAt: string;     
-    status: string;       
-    createdAt: string;  
+    id: string;
+    offsetMinutes: number;
+    triggerAt: string;
+    status: string;
+    createdAt: string;
     updatedAt: string;
 }
 

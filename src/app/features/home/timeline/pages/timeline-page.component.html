@@ -1,18 +1,18 @@
 <div class="timeline-container">
     <div class="header">
-        <button mat-stroked-button (click)="goBackToEvents()" class="back-btn">
+        <button (click)="goBackToEvents()" class="back-btn" mat-stroked-button>
             <mat-icon>arrow_back</mat-icon>
             <span>Volver a eventos</span>
         </button>
     </div>
-<h2>Timeline</h2>
+    <h2>Timeline</h2>
     <div class="filters">
 
 
         <mat-form-field appearance="outline">
             <mat-label>Type</mat-label>
 
-            <mat-select [(ngModel)]="typeFilter" (selectionChange)="onFilterChange()">
+            <mat-select (selectionChange)="onFilterChange()" [(ngModel)]="typeFilter">
                 <mat-option value="">All</mat-option>
                 <mat-option value="MILESTONE">MILESTONE</mat-option>
                 <mat-option value="PHASES">PHASES</mat-option>
@@ -24,7 +24,7 @@
         <mat-form-field appearance="outline">
             <mat-label>Status</mat-label>
 
-            <mat-select [(ngModel)]="statusFilter" (selectionChange)="onFilterChange()">
+            <mat-select (selectionChange)="onFilterChange()" [(ngModel)]="statusFilter">
                 <mat-option value="">All</mat-option>
                 <mat-option value="PENDING">PENDING</mat-option>
                 <mat-option value="IN_PROGRESS">IN_PROGRESS</mat-option>
@@ -34,7 +34,7 @@
         </mat-form-field>
 
 
-        <button mat-stroked-button color="warn" (click)="clearFilters()">
+        <button (click)="clearFilters()" color="warn" mat-stroked-button>
             Clear
         </button>
 
@@ -71,7 +71,7 @@
 
                 <div class="tags">
 
-          <span class="status" [ngClass]="event.status">
+          <span [ngClass]="event.status" class="status">
             {{ event.status }}
           </span>
 

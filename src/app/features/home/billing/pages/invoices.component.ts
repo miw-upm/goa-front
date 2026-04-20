@@ -26,7 +26,8 @@ export class InvoicesComponent {
     constructor(
         private readonly dialog: MatDialog,
         private readonly invoiceService: InvoiceService
-    ) {}
+    ) {
+    }
 
     create(): void {
         this.dialog.open(InvoiceCreationDialogComponent, {width: '600px'})

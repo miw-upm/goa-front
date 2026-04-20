@@ -9,17 +9,17 @@
         <mat-label>Añadir comentario</mat-label>
 
         <textarea
+                [formControl]="commentControl"
                 matInput
-                rows="3"
-                [formControl]="commentControl">
+                rows="3">
         </textarea>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" (click)="addComment()" [disabled]="submitting">
+    <button (click)="addComment()" [disabled]="submitting" color="primary" mat-raised-button>
         Añadir comentario
     </button>
 
-    <hr />
+    <hr/>
 
     <!-- LISTA -->
     <div *ngIf="loading">Cargando...</div>
@@ -29,15 +29,15 @@
         <small>{{ comment.createdDate | date:'short' }}</small>
 
         <button
-                *ngIf="comment.authorId && comment.content && comment.createdDate"
-                mat-button
-                color="warn"
                 (click)="deleteComment(comment)"
-                [disabled]="deletingKey === getDeleteKey(comment) || loading || submitting">
+                *ngIf="comment.authorId && comment.content && comment.createdDate"
+                [disabled]="deletingKey === getDeleteKey(comment) || loading || submitting"
+                color="warn"
+                mat-button>
             {{ deletingKey === getDeleteKey(comment) ? 'Eliminando...' : 'Eliminar' }}
         </button>
 
-        <hr />
+        <hr/>
     </div>
 
     <p *ngIf="!loading && comments.length === 0">

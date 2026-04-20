@@ -1,5 +1,4 @@
 import {Component, Inject} from '@angular/core';
-import {Observable} from 'rxjs';
 import {
     MAT_DIALOG_DATA,
     MatDialogActions,

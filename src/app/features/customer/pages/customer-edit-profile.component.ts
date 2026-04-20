@@ -60,7 +60,7 @@ export class CustomerEditProfileComponent {
 
     update(): void {
         this.customerService
-            .updateWithToken(this.oldMobile, this.user, this.token).subscribe(user => this.user = user  );
+            .updateWithToken(this.oldMobile, this.user, this.token).subscribe(user => this.user = user);
     }
 
     formInvalid(...controls: NgModel[]): boolean {

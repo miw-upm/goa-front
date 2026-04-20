@@ -4,9 +4,9 @@ import {
     MatDialogActions,
     MatDialogClose,
     MatDialogContent,
+    MatDialogModule,
     MatDialogRef,
-    MatDialogTitle,
-    MatDialogModule
+    MatDialogTitle
 } from '@angular/material/dialog';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';

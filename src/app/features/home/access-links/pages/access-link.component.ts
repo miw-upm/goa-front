@@ -27,7 +27,7 @@ export class AccessLinkComponent {
     accessLinks: Observable<AccessLink[]> = of([]);
     accessLink: Observable<any>;
 
-    constructor(private readonly dialog: MatDialog, private readonly accessLinkService: AccessLinkService, private readonly auth:AuthService) {
+    constructor(private readonly dialog: MatDialog, private readonly accessLinkService: AccessLinkService, private readonly auth: AuthService) {
         this.visible = auth.isAdmin();
         this.resetSearch();
     }

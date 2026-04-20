@@ -1,8 +1,8 @@
-<app-filter-input [(value)]="criteria.attribute" title="All fields - Customers" (enter)="search()"></app-filter-input>
-<app-filter-input [(value)]="criteria.mobile" title="Mobile" (enter)="search()"></app-filter-input>
-<app-filter-input [(value)]="criteria.firstName" title="First Name" (enter)="search()"></app-filter-input>
-<app-filter-input [(value)]="criteria.familyName" title="Family Name" (enter)="search()"></app-filter-input>
-<app-filter-input [(value)]="criteria.email" title="Email" (enter)="search()"></app-filter-input>
+<app-filter-input (enter)="search()" [(value)]="criteria.attribute" title="All fields - Customers"></app-filter-input>
+<app-filter-input (enter)="search()" [(value)]="criteria.mobile" title="Mobile"></app-filter-input>
+<app-filter-input (enter)="search()" [(value)]="criteria.firstName" title="First Name"></app-filter-input>
+<app-filter-input (enter)="search()" [(value)]="criteria.familyName" title="Family Name"></app-filter-input>
+<app-filter-input (enter)="search()" [(value)]="criteria.email" title="Email"></app-filter-input>
 
 <app-crud (create)="create()" (publicLink)="link($event)" (read)="read($event)" (searchAll)="search()"
           (update)="update($event)"

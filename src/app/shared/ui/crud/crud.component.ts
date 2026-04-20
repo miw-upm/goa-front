@@ -160,7 +160,7 @@ export class CrudComponent {
                 }
             });
         } else {
-            const confirmationText:string = this.typeToDelete ? item[this.typeToDelete] : 'Delete';
+            const confirmationText: string = this.typeToDelete ? item[this.typeToDelete] : 'Delete';
             this.dialog.open(TypeToConfirmDialogComponent, {
                 disableClose: true,
                 data: {
@@ -217,7 +217,7 @@ export class CrudComponent {
     }
 
     onCancel(item: any): void {
-        this.cancel.emit(item);  
+        this.cancel.emit(item);
     }
 
 }

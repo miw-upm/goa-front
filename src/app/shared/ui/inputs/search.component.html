@@ -22,7 +22,9 @@
                         {{ option }}
                     } @else {
                         @for (key of keyView; track $index; let last = $last) {
-                            {{ option[key] }}@if (!last) {, }
+                            {{ option[key] }}@if (!last) {
+                                ,
+                            }
                         }
                     }
                 </mat-option>
