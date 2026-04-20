@@ -43,6 +43,7 @@ import {CustomerService} from "../customer.service";
 export class CustomerEditProfileComponent {
     user: User;
     oldMobile: string;
+    acceptsLopd = false;
     token: string;
     provinces: Observable<string[]>;
     userDocumentTypes: Observable<string[]> = of(Object.values(UserDocumentType));

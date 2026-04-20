@@ -28,3 +28,8 @@ mat-dialog-content {
     text-decoration: underline;
 }
 
+mat-checkbox {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+

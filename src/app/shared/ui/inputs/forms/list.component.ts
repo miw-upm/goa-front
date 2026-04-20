@@ -25,7 +25,9 @@ import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.com
                         {{ item }}
                     } @else {
                         @for (key of keyView; track $index; let last = $last) {
-                            {{ item[key] }}@if (!last) {, }
+                            {{ item[key] }}@if (!last) {
+                                ,
+                            }
                         }
                     }
                 </div>
