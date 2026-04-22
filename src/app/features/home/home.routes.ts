@@ -29,6 +29,8 @@ import {AlertService} from "./alerts/alert.service";
 import {TimelinePageComponent} from './timeline/pages/timeline-page.component';
 import {TimelineService} from "./timeline/services/timeline.service";
 import {EngagementLetterFormComponent} from "./engagement-letter/pages/engagement-letter-form.component";
+import {ConsentsComponent} from "./consents/pages/consents.component";
+import {ConsentService} from "./consents/consent.service";
 
 export const routes: Routes = [
     {
@@ -41,6 +43,13 @@ export const routes: Routes = [
                 canActivate: [RoleGuardService],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [UserService],
+            },
+            {
+                path: 'consents',
+                component: ConsentsComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [ConsentService],
             },
             {
                 path: 'access-links',

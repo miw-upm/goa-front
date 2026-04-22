@@ -11,23 +11,23 @@ import {MatNativeDateModule} from '@angular/material/core';
     standalone: true,
     selector: 'app-filter-date',
     template: `
-    <mat-form-field appearance="outline">
-      <mat-label>{{ title }}</mat-label>
-      <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="date" (ngModelChange)="onDateChange()">
-      <button
-        (click)="clearDate()"
-        [disabled]="!date"
-        mat-icon-button
-        matSuffix
-        type="button"
-        aria-label="Limpiar fecha"
-      >
-        <mat-icon>delete</mat-icon>
-      </button>
-      <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
-      <mat-datepicker #pickerFrom></mat-datepicker>
-    </mat-form-field>
-  `,
+        <mat-form-field appearance="outline">
+            <mat-label>{{ title }}</mat-label>
+            <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="date" (ngModelChange)="onDateChange()">
+            <button
+                    (click)="clearDate()"
+                    [disabled]="!date"
+                    mat-icon-button
+                    matSuffix
+                    type="button"
+                    aria-label="Limpiar fecha"
+            >
+                <mat-icon>delete</mat-icon>
+            </button>
+            <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFrom></mat-datepicker>
+        </mat-form-field>
+    `,
     imports: [
         FormsModule,
         MatFormFieldModule,

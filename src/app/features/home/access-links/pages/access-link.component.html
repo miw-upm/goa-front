@@ -3,6 +3,7 @@
 <app-filter-input (enter)="search()" [(value)]="criteria.scope" title="Alcance del link"></app-filter-input>
 
 <app-crud (delete)="delete($event)" (publicLink)="viewLink($event)" (read)=read($event) (searchAll)="search()"
-          [createAction]="false" [data]="accessLinks" [deleteAction]=visible [hiddenFields]="['id','document','createdAt']"
+          [createAction]="false" [data]="accessLinks" [deleteAction]=visible
+          [hiddenFields]="['id','document','createdAt']"
           [item]="accessLink" [publicLinkAction]="true" [secureDelete]="true" [title]="title" [updateAction]="false"
           typeToDelete="mobile"></app-crud>

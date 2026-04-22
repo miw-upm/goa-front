@@ -22,14 +22,27 @@
         <mat-icon>manage_accounts</mat-icon>
         <span>Perfil</span>
     </button>
-    <button mat-menu-item routerLink="/home/users">
+
+    <button [matMenuTriggerFor]="usersMenu" mat-menu-item>
         <mat-icon>groups</mat-icon>
         <span>Usuarios</span>
     </button>
+    <mat-menu #usersMenu="matMenu">
+        <button mat-menu-item routerLink="/home/users">
+            <mat-icon>groups</mat-icon>
+            <span>Listado de usuarios</span>
+        </button>
+        <button mat-menu-item routerLink="/home/consents">
+            <mat-icon>verified_user</mat-icon>
+            <span>Consentimientos LOPD</span>
+        </button>
+    </mat-menu>
+
     <button mat-menu-item routerLink="/home/access-links">
         <mat-icon>language</mat-icon>
         <span>Links de Acceso</span>
     </button>
+
     <button [matMenuTriggerFor]="engagementLetters" mat-menu-item>
         <mat-icon>receipt</mat-icon>
         <span>Hojas de Encargo</span>
