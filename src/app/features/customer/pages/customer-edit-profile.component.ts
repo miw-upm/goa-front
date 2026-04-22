@@ -18,6 +18,7 @@ import {User} from "@features/shared/models/user.model";
 import {UserDocumentType} from "@features/shared/models/UserDocumentType";
 import {SharedUserService} from "@features/shared/services/shared-user.service";
 import {CustomerService} from "../customer.service";
+import {DataProcessingConsentCreation} from "./ProcessingConsentCreation.model";
 
 @Component({
     standalone: true,
@@ -42,18 +43,18 @@ import {CustomerService} from "../customer.service";
 })
 export class CustomerEditProfileComponent {
     user: User;
+    dataProcessingConsentCreation: DataProcessingConsentCreation;
     oldMobile: string;
-    acceptsLopd = false;
     token: string;
     provinces: Observable<string[]>;
     userDocumentTypes: Observable<string[]> = of(Object.values(UserDocumentType));
-    acceptsPromotions: boolean;
 
     constructor(private readonly customerService: CustomerService, private readonly sharedUserService: SharedUserService,
                 private readonly route: ActivatedRoute, private readonly dialog: MatDialog) {
         this.token = this.route.snapshot.paramMap.get("token");
         this.user = {mobile: this.route.snapshot.paramMap.get('mobile'), firstName: null}
         this.oldMobile = this.user.mobile;
+        this.dataProcessingConsentCreation = {dataProcessingAccepted:false, promotionsAccepted:false }
         this.customerService.readWithToken(this.user.mobile, this.token)
             .subscribe(user => this.user = user);
         this.provinces = this.sharedUserService.findProvinces();
@@ -61,7 +62,8 @@ export class CustomerEditProfileComponent {
 
     update(): void {
         this.customerService
-            .updateWithToken(this.oldMobile, this.user, this.token).subscribe(user => this.user = user);
+            .updateWithToken(this.oldMobile, this.user, this.dataProcessingConsentCreation, this.token)
+            .subscribe(user => this.user = user);
     }
 
     formInvalid(...controls: NgModel[]): boolean {
