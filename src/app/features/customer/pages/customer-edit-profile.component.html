@@ -48,19 +48,21 @@
                                                   target="_blank">Política de Privacidad</a>.</p>
             </div>
             <!-- CHECKBOX OBLIGATORIO DE ACEPTACIÓN LOPD -->
-            <mat-checkbox [(ngModel)]="acceptsLopd" name="acceptsLopd" required>
+            <mat-checkbox [(ngModel)]="dataProcessingConsentCreation.dataProcessingAccepted"
+                          name="dataProcessingAccepted" required>
                 He revisado mis datos y acepto su tratamiento conforme a la
                 <a href="https://ocanabogados.es/politicas-de-privacidad/" target="_blank">Política de Privacidad</a>.
             </mat-checkbox>
             <!-- CHECKBOX OPCIONAL DE PROMOCIONES -->
-            <mat-checkbox [(ngModel)]="acceptsPromotions" name="acceptsPromotions">
+            <mat-checkbox [(ngModel)]="dataProcessingConsentCreation.promotionsAccepted" name="promotionsAccepted">
                 Acepto recibir comunicaciones comerciales y promociones de Nuria Ocaña Pérez (DNI.46882956D)
                 por medios electrónicos.
             </mat-checkbox>
         </mat-dialog-content>
     </mat-card-content>
     <mat-dialog-actions align="center">
-        <button (click)="update()" [disabled]="formInvalid(mobile.ngModel, postalCode.ngModel) || !acceptsLopd"  class="btn-update"
+        <button (click)="update()" [disabled]="formInvalid(mobile.ngModel, postalCode.ngModel)
+         || !dataProcessingConsentCreation.dataProcessingAccepted"  class="btn-update"
                 color="primary" mat-raised-button>ENVIAR
         </button>
     </mat-dialog-actions>
