@@ -1,0 +1,5 @@
+<app-filter-input (enter)="search()" [(value)]="criteria.attribute" title="Cliente"></app-filter-input>
+
+<app-crud (read)="read($event)" (searchAll)="search()" [data]="consents" [hiddenFields]="['id']"
+          [item]="consent" [title]="title" [updateAction]="false" [createAction]="false">
+</app-crud>
