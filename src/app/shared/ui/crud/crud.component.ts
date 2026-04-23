@@ -56,6 +56,7 @@ export class CrudComponent {
     @Input() commentsInline = false;
 
     @Input() hiddenFields: string[] = [];
+    @Input() changeFields: string[] = [];
     @Input() columnOrder: string[] = [];
 
     @Output() create = new EventEmitter<any>();
@@ -122,6 +123,19 @@ export class CrudComponent {
             return [...ordered, ...rest];
         }
         return this.columns.filter(col => !hidden.includes(col));
+    }
+
+    getChangeFields(column: string): string[] {
+        const rule = this.changeFields.find(item => item.startsWith(column + ':'));
+        if (!rule) return [];
+
+        const [, fieldsPart] = rule.split(':');
+        if (!fieldsPart) return [];
+
+        return fieldsPart
+            .split('.')
+            .map(x => x.trim())
+            .filter(Boolean);
     }
 
     hasMoreActions(): boolean {

@@ -28,6 +28,7 @@ export class EngagementLettersComponent implements OnInit {
     engagementLetters: Observable<EngagementLetter[]> = of([]);
     engagementLetter: Observable<EngagementLetter>;
     criteria: EngagementLetterCriteria = {opened: true};
+    changeFields = ['owner:firstName.familyName.mobile'];
 
     constructor(
         private readonly dialog: MatDialog,
