@@ -50,7 +50,9 @@ export class EngagementLettersComponent implements OnInit {
                 legalProcedureTitle: params['legalProcedureTitle'] ?? undefined,
                 taskTitle: params['taskTitle'] ?? undefined
             };
-            this.search();
+            if (hasParams) {
+                this.search();
+            }
         });
     }
 
