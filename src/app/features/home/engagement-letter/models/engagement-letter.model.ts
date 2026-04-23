@@ -7,7 +7,7 @@ export interface EngagementLetter {
     id?: string;
     budgetOnly?: boolean;
     discount?: number;
-    creationDate?: Date | string;
+    lastUpdatedDate?: Date | string;
     closingDate?: Date | string;
     owner?: User;
     attachments?: User[];

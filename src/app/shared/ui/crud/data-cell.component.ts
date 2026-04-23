@@ -13,6 +13,7 @@ import {UppercaseWordsPipe} from '@shared/pipes/uppercase-words.pipe';
 export class DataCellComponent {
     @Input() value: any;
     @Input() fullList: boolean = false;
+    @Input() changeFields: string[] = [];
     protected readonly Object = Object;
 
     isArray(val: any): boolean {
@@ -33,5 +34,13 @@ export class DataCellComponent {
 
     getFirstValue(obj: any): any {
         return Object.entries(obj)[0]?.[1];
+    }
+
+    buildChangedFieldsText(obj: any): string {
+        if (!obj || !this.changeFields?.length) return '';
+        return this.changeFields
+            .map(field => obj?.[field])
+            .filter(value => value !== null && value !== undefined && value !== '')
+            .join(' ');
     }
 }

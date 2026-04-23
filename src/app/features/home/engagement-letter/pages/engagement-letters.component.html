@@ -23,11 +23,12 @@
           (searchAll)="search()"
           (update)="update($event)"
           [alertsAction]="true"
-          [assistantAction]="true" [data]="engagementLetters"
+          [assistantAction]="true" [changeFields]="changeFields"
+          [data]="engagementLetters"
           [deleteAction]=deleteVisibility
           [eventsAction]="true"
           [hiddenFields]="['id','discount','attachments','paymentMethods','legalClause']"
-          [item]="engagementLetter"
-          [printAction]="true" [publicLinkAction]="true"
-          [secureDelete]="true" [title]="title">
+          [item]="engagementLetter" [printAction]="true"
+          [publicLinkAction]="true" [secureDelete]="true"
+          [title]="title">
 </app-crud>

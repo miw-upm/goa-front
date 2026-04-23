@@ -79,7 +79,7 @@ export class EngagementLetterFormComponent implements OnInit {
             this.engagementLetterService.read(id).subscribe(data => {
                 this.engagementLetter = {
                     ...data,
-                    creationDate: data.creationDate ? new Date(data.creationDate) : undefined,
+                    lastUpdatedDate: data.lastUpdatedDate ? new Date(data.lastUpdatedDate) : undefined,
                     closingDate: data.closingDate ? new Date(data.closingDate) : undefined
                 };
             });
@@ -165,7 +165,7 @@ export class EngagementLetterFormComponent implements OnInit {
     private prepareForSend(): EngagementLetter {
         return {
             ...this.engagementLetter,
-            creationDate: this.formatDate(this.engagementLetter.creationDate),
+            lastUpdatedDate: this.formatDate(this.engagementLetter.lastUpdatedDate),
             closingDate: this.formatDate(this.engagementLetter.closingDate),
             legalProcedures: this.engagementLetter.legalProcedures.map(proc => ({
                 ...proc,

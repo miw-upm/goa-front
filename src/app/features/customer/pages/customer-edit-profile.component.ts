@@ -54,7 +54,7 @@ export class CustomerEditProfileComponent {
         this.token = this.route.snapshot.paramMap.get("token");
         this.user = {mobile: this.route.snapshot.paramMap.get('mobile'), firstName: null}
         this.oldMobile = this.user.mobile;
-        this.dataProcessingConsentCreation = {dataProcessingAccepted:false, promotionsAccepted:false }
+        this.dataProcessingConsentCreation = {dataProcessingAccepted: false, promotionsAccepted: false}
         this.customerService.readWithToken(this.user.mobile, this.token)
             .subscribe(user => this.user = user);
         this.provinces = this.sharedUserService.findProvinces();

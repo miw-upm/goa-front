@@ -14,7 +14,7 @@
 
             <div class="dates-discount-row">
                 @if (isEditMode) {
-                    <app-form-date [(value)]="engagementLetter.creationDate" label="Fecha de Creación"
+                    <app-form-date [(value)]="engagementLetter.lastUpdatedDate" label="Fecha de Última Actualización"
                                    [disabled]="true"/>
                     <app-form-date [(value)]="engagementLetter.closingDate" label="Fecha de Cierre"/>
                 }
