@@ -1,5 +1,5 @@
 export class AccessLinkSearch {
     expired?: boolean;
-    mobile?: string;
+    client?: string;
     scope?: string;
 }

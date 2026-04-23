@@ -1,5 +1,5 @@
 <mat-slide-toggle (change)="search()" [(ngModel)]="criteria.expired">Expirado sin uso</mat-slide-toggle>
-<app-filter-input (enter)="search()" [(value)]="criteria.mobile" title="Móvil"></app-filter-input>
+<app-filter-input (enter)="search()" [(value)]="criteria.client" title="Cliente"></app-filter-input>
 <app-filter-input (enter)="search()" [(value)]="criteria.scope" title="Alcance del link"></app-filter-input>
 
 <app-crud (delete)="delete($event)" (publicLink)="viewLink($event)" (read)=read($event) (searchAll)="search()"
