@@ -1,5 +1,5 @@
 import {Routes} from '@angular/router';
-import {CustomerEditProfileComponent} from "./pages/customer-edit-profile.component";
+import {CustomerEditProfileComponent} from "./edit-profile/pages/customer-edit-profile.component";
 
 export const routes: Routes = [
     {
