@@ -4,7 +4,7 @@ import {HttpService} from "@core/http/http.service";
 import {ENDPOINTS} from "@core/api/endpoints";
 import {AccessLink} from "@features/shared/models/acces-link.model";
 import {SharedAccessLinkService} from "@features/shared/services/shared-access-link.service";
-import {AccessLinkSearch} from "./pages/access-link-search.model";
+import {AccessLinkFindCriteria} from "./pages/access-link-find-criteria.model";
 
 @Injectable({providedIn: 'root'})
 export class AccessLinkService {
@@ -19,7 +19,7 @@ export class AccessLinkService {
         return this.sharedAccessLinkService.buildAccessUrl(accessLink);
     }
 
-    search(criteria: AccessLinkSearch): Observable<AccessLink[]> {
+    search(criteria: AccessLinkFindCriteria): Observable<AccessLink[]> {
         return this.httpService.request()
             .paramsFrom(criteria)
             .get<AccessLink[]>(ENDPOINTS.accessLink.root);

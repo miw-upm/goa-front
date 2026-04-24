@@ -1,4 +1,4 @@
-export class UserSearch {
+export class UserFindCriteria {
     mobile?: string;
     firstName?: string;
     familyName?: string;

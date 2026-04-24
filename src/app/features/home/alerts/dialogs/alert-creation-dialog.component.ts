@@ -12,7 +12,7 @@ import {
 import {MatButtonModule} from '@angular/material/button';
 import {MatNativeDateModule} from '@angular/material/core';
 
-import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
+import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {AlertService} from '../alert.service';
 import {AlertCreate} from '../models/alert.model';

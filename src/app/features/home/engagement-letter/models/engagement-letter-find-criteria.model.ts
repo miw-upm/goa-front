@@ -1,4 +1,4 @@
-export interface EngagementLetterCriteria {
+export interface EngagementLetterFindCriteria {
     opened?: boolean;
     budgetOnly?: boolean;
     client?: string;

@@ -13,9 +13,9 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatNativeDateModule} from '@angular/material/core';
 import {of} from 'rxjs';
 
-import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
+import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
-import {FormSelectComponent} from '@shared/ui/inputs/forms/select.component';
+import {FormSelectComponent} from '@shared/ui/inputs/forms/form-select.component';
 import {EventResponse, EventStatus, EventType, EventUpdate} from '../event.model';
 import {EventService} from '../event.service';
 

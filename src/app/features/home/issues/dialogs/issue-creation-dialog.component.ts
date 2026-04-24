@@ -8,7 +8,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 
-import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
+import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
 import {IssueCreationRequest, IssueType} from '../issue.model';
 import {IssueService} from '../issue.service';
 

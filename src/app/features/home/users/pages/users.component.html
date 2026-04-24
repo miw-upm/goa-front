@@ -4,7 +4,7 @@
 <app-filter-input (enter)="search()" [(value)]="criteria.familyName" title="Family Name"></app-filter-input>
 <app-filter-input (enter)="search()" [(value)]="criteria.email" title="Email"></app-filter-input>
 
-<app-crud (create)="create()" (publicLink)="link($event)" (read)="read($event)" (searchAll)="search()"
+<app-crud (create)="create()" (link)="link($event)" (read)="read($event)" (searchAll)="search()"
           (update)="update($event)"
-          [data]="users" [hiddenFields]="['id']" [item]="user" [publicLinkAction]="true" [title]="title">
+          [data]="users" [hiddenFields]="['id']" [item]="user" [linkAction]="true" [title]="title">
 </app-crud>

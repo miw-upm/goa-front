@@ -16,11 +16,11 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
-import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
-import {FormSelectComponent} from '@shared/ui/inputs/forms/select.component';
+import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
+import {FormSelectComponent} from '@shared/ui/inputs/forms/form-select.component';
 import {SharedUserService} from '@features/shared/services/shared-user.service';
 import {EngagementLetterService} from '../../engagement-letter/engagement-letter.service';
-import {EngagementLetterCriteria} from '../../engagement-letter/models/engagement-letter-criteria.model';
+import {EngagementLetterFindCriteria} from '../../engagement-letter/models/engagement-letter-find-criteria.model';
 import {IncomeService} from '../income.service';
 import {Income} from '../models/income.model';
 
@@ -74,7 +74,7 @@ export class IncomeCreationDialogComponent {
         };
         this.incomeDate = data?.date;
 
-        const criteria: EngagementLetterCriteria = {
+        const criteria: EngagementLetterFindCriteria = {
             opened: true,
             client: '',
             legalProcedureTitle: ''

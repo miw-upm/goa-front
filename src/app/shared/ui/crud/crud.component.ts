@@ -50,7 +50,7 @@ export class CrudComponent {
     @Input() alertsAction = false;
     @Input() notificationsAction = false;
     @Input() commentsAction = false;
-    @Input() publicLinkAction = false;
+    @Input() linkAction = false;
     @Input() searchAction = true;
     @Input() deleteInline = false;
     @Input() commentsInline = false;
@@ -72,7 +72,7 @@ export class CrudComponent {
     @Output() alerts = new EventEmitter<any>();
     @Output() notifications = new EventEmitter<any>();
     @Output() comments = new EventEmitter<any>();
-    @Output() publicLink = new EventEmitter<any>();
+    @Output() link = new EventEmitter<any>();
     @Output() searchAll = new EventEmitter<any>();
 
     dataSource = new MatTableDataSource<any>([]);
@@ -218,7 +218,7 @@ export class CrudComponent {
     }
 
     onPublicLink(item: any): void {
-        this.publicLink.emit(item);
+        this.link.emit(item);
     }
 
     onSearch() {

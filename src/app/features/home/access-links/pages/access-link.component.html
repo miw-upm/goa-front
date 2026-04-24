@@ -2,8 +2,8 @@
 <app-filter-input (enter)="search()" [(value)]="criteria.client" title="Cliente"></app-filter-input>
 <app-filter-input (enter)="search()" [(value)]="criteria.scope" title="Alcance del link"></app-filter-input>
 
-<app-crud (delete)="delete($event)" (publicLink)="viewLink($event)" (read)=read($event) (searchAll)="search()"
+<app-crud (delete)="delete($event)" (link)="viewLink($event)" (read)=read($event) (searchAll)="search()"
           [createAction]="false" [data]="accessLinks" [deleteAction]=visible
           [hiddenFields]="['id','document','createdAt']"
-          [item]="accessLink" [publicLinkAction]="true" [secureDelete]="true" [title]="title" [updateAction]="false"
+          [item]="accessLink" [linkAction]="true" [secureDelete]="true" [title]="title" [updateAction]="false"
           typeToDelete="mobile"></app-crud>

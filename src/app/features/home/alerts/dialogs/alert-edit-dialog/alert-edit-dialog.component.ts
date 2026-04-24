@@ -4,7 +4,7 @@ import {AlertService} from '../../alert.service';
 import {AlertDetail, AlertEdit} from '../../models/alert.model';
 import {CommonModule, DatePipe} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
-import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
+import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 
 interface EditAlertData {
