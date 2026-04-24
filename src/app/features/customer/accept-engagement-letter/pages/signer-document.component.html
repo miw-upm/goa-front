@@ -10,12 +10,26 @@
         <div class="instructions">
             <strong>A la atención de {{ title }}:</strong>
             <p>Para poder continuar con el proceso, es necesario que visualice el documento y lo lea.</p>
-            <p>Una vez leído y comprendido, deberá firmar y aceptar el mismo.</p>
-            <p>Firme dentro del recuadro con la yema del dedo.</p>
+            <p>Una vez leído y comprendido, deberá firmar y aceptar el mismo. Firme dentro del recuadro con la yema del dedo, gracias.</p>
+        </div>
+
+        <!-- DESCARGA DEL DOCUMENTO -->
+        <div class="download-wrapper">
+            <button mat-raised-button color="primary" type="button" (click)="downloadDocument()">
+                <mat-icon>download</mat-icon>
+                Descargar documento
+            </button>
+            <span class="download-hint" *ngIf="!documentDownloaded">
+                Debe descargar y leer el documento antes de continuar.
+            </span>
+            <span class="download-done" *ngIf="documentDownloaded">
+                <mat-icon>check_circle</mat-icon>
+                Documento descargado
+            </span>
         </div>
 
         <!-- RECUADRO DE FIRMA -->
-        <div class="signature-wrapper">
+        <div class="signature-wrapper" [class.disabled]="!documentDownloaded">
             <canvas #signaturePad
                     class="signature-pad"
                     (pointerdown)="startDrawing($event)"
@@ -25,7 +39,9 @@
                     (pointercancel)="stopDrawing()">
             </canvas>
             <div class="signature-actions">
-                <button mat-stroked-button type="button" (click)="clearSignature()" [disabled]="isEmpty">
+                <button mat-stroked-button type="button"
+                        (click)="clearSignature()"
+                        [disabled]="isEmpty || !documentDownloaded">
                     <mat-icon>refresh</mat-icon>
                     Borrar firma
                 </button>
@@ -33,7 +49,10 @@
         </div>
 
         <!-- CHECKBOX OBLIGATORIO -->
-        <mat-checkbox [(ngModel)]="signerDocument.documentAccepted" name="documentAccepted" required>
+        <mat-checkbox [(ngModel)]="signerDocument.documentAccepted"
+                      [ngModelOptions]="{standalone: true}"
+                      [disabled]="!documentDownloaded"
+                      required>
             He revisado mis datos y acepto su tratamiento conforme a la
             <a href="https://ocanabogados.es/politicas-de-privacidad/" target="_blank">Política de Privacidad</a>.
         </mat-checkbox>
@@ -41,7 +60,7 @@
 
     <mat-dialog-actions align="center">
         <button (click)="update()"
-                [disabled]="!signerDocument.documentAccepted || isEmpty"
+                [disabled]="!documentDownloaded || !signerDocument.documentAccepted || isEmpty"
                 class="btn-update"
                 color="primary"
                 mat-raised-button>

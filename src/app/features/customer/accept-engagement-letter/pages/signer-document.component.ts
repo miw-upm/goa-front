@@ -7,7 +7,7 @@ import {
     OnDestroy,
     ViewChild
 } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
+import {NgIf, NgOptimizedImage} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {MatCard, MatCardContent, MatCardModule, MatCardTitle} from '@angular/material/card';
 import {MatButton, MatButtonModule} from '@angular/material/button';
@@ -17,6 +17,8 @@ import {MatIcon, MatIconModule} from '@angular/material/icon';
 
 import { SignerDocument } from '../SignerDocument.model';
 import { CustomerService } from '../../edit-profile/customer.service';
+import {SignerDocumentService} from "../signer-document.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
     standalone: true,
@@ -32,14 +34,20 @@ import { CustomerService } from '../../edit-profile/customer.service';
         FormsModule,
         MatDialogActions,
         MatButton,
-        NgOptimizedImage
+        NgOptimizedImage,
+        NgIf
     ],
     styleUrls: ['./signer-document.component.scss']
 })
 export class SignerDocumentComponent implements AfterViewInit, OnDestroy {
 
-    @Input() title = '';
+    @Input() title = 'Jesús Orancoña';
     @Input() signerDocument: SignerDocument = { documentAccepted: false };
+    @Input() path = 'accept-engagement-letter';
+
+    private mobile = '';
+    private token = '';
+    documentDownloaded = false;
 
     @ViewChild('signaturePad', { static: true })
     private readonly canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -51,18 +59,31 @@ export class SignerDocumentComponent implements AfterViewInit, OnDestroy {
 
     isEmpty = true;
 
+    constructor(
+        private readonly signerDocumentService: SignerDocumentService,
+        private readonly route: ActivatedRoute
+    ) {}
+
     ngAfterViewInit(): void {
         this.initCanvas();
     }
 
+    downloadDocument(): void {
+        this.signerDocumentService.downloadDocument(this.path, this.mobile, this.token);
+        this.documentDownloaded = true;
+    }
+
+    ngOnInit(): void {
+        this.mobile = this.route.snapshot.paramMap.get('mobile') ?? '';
+        this.token = this.route.snapshot.paramMap.get('token') ?? '';
+    }
+
     ngOnDestroy(): void {
-        // Libera referencia para que el GC recoja el canvas
         this.ctx?.clearRect(0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
     }
 
     @HostListener('window:resize')
     onResize(): void {
-        // Reajusta el canvas si cambia el tamaño de la ventana (conserva la firma actual)
         const dataUrl = this.isEmpty ? null : this.canvasRef.nativeElement.toDataURL('image/png');
         this.initCanvas();
         if (dataUrl) {
@@ -117,7 +138,6 @@ export class SignerDocumentComponent implements AfterViewInit, OnDestroy {
 
     private initCanvas(): void {
         const canvas = this.canvasRef.nativeElement;
-        // Ajusta el canvas al tamaño real del contenedor respetando DPI alto
         const rect = canvas.getBoundingClientRect();
         const dpr = window.devicePixelRatio || 1;
         canvas.width = rect.width * dpr;
