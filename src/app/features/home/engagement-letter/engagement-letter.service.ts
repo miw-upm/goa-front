@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, tap} from 'rxjs';
 
-import {environment} from '@env';
 import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
 import {EngagementLetter} from './models/engagement-letter.model';
@@ -59,14 +58,8 @@ export class EngagementLetterService {
         });
     }
 
-    private createPublicLink(publicUrl: string): string {
-        if (!publicUrl) {
-            return '';
-        }
-        if (publicUrl.startsWith('http://') || publicUrl.startsWith('https://')) {
-            return publicUrl;
-        }
-        const normalizedPath = publicUrl.startsWith('/') ? publicUrl : `/${publicUrl}`;
-        return `${environment.FRONT_END}${normalizedPath}`;
+    pendingSigners(engagement: EngagementLetter): Observable<User[]> {
+        return this.httpService.request()
+            .get<User[]>(ENDPOINTS.engagementLetters.pendingSigners(engagement.id));
     }
 }

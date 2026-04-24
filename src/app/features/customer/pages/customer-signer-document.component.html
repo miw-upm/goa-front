@@ -1,0 +1,22 @@
+<mat-card>
+    <mat-card-title class="title-container">
+        <div class="profile-header">
+            <img alt="logo" height="48" ngSrc="../../../../assets/oa-s.png" width="48"/>
+            <h4 class="mat-headline-5">Aceptación y firma de documentos</h4>
+        </div>
+    </mat-card-title>
+    <mat-card-content>
+        <div>
+            <strong>A la atención de {{signer}}:</strong><br/>
+            <p>Para poder continuar con el proceso, es necesario que visualice el documento y lo lea.</p>
+            <p>Una vez leido y comprendido, deberá firmar y aceptar el mismo.</p>
+            <p>Firme dentro del recuadro con la llema del dedo</p>
+
+            <P> aaaqui estaria el recuadro </P>
+
+       <!-- CHECKBOX OBLIGATORIO -->
+        <mat-checkbox [(ngModel)]="dataProcessingConsentCreation.dataProcessingAccepted"
+                      name="dataProcessingAccepted" required>
+            He revisado mis datos y acepto su tratamiento conforme a la
+            <a href="https://ocanabogados.es/politicas-de-privacidad/" target="_blank">Política de Privacidad</a>.
+        </mat-checkbox>

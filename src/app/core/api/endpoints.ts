@@ -38,7 +38,7 @@ export const ENDPOINTS = {
     engagementLetters: {
         root: ENGAGEMENT_LETTER_ROOT,
         byId: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}`,
-        publicAccessToken: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/public-access-token`,
+        pendingSigners: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/pending-signers`,
         print: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/print-view`,
     },
 
