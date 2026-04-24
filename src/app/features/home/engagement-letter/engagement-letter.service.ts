@@ -1,17 +1,20 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
 
 import {environment} from '@env';
 import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
 import {EngagementLetter} from './models/engagement-letter.model';
 import {EngagementLetterFindCriteria} from './models/engagement-letter-find-criteria.model';
-import {PublicAccessToken} from './models/public-access-token.model';
+import {User} from "@features/shared/models/user.model";
+import {SharedAccessLinkService} from "@features/shared/services/shared-access-link.service";
 
 @Injectable()
 export class EngagementLetterService {
-    constructor(private readonly httpService: HttpService) {
+    private readonly ACCEPT_ENGAGEMENT_LETTER_SCOPE = 'accept-engagement-letter';
+
+    constructor(private readonly httpService: HttpService,
+                private readonly sharedAccessLinkService: SharedAccessLinkService) {
     }
 
     create(engagement: EngagementLetter): Observable<EngagementLetter> {
@@ -48,15 +51,12 @@ export class EngagementLetterService {
             .delete(ENDPOINTS.engagementLetters.byId(id));
     }
 
-    createAccessLink(id: string): Observable<PublicAccessToken> {
-        return this.httpService.request()
-            .post<PublicAccessToken>(ENDPOINTS.engagementLetters.publicAccessToken(id), {})
-            .pipe(
-                map(publicAccessToken => ({
-                    ...publicAccessToken,
-                    publicUrl: this.createPublicLink(publicAccessToken.publicUrl)
-                }))
-            );
+    createAccessLink(engagement: EngagementLetter, user: User): Observable<string> {
+        return this.sharedAccessLinkService.createAccessLink({
+            mobile: user.mobile,
+            scope: this.ACCEPT_ENGAGEMENT_LETTER_SCOPE,
+            document: engagement.id
+        });
     }
 
     private createPublicLink(publicUrl: string): string {

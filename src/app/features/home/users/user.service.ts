@@ -5,12 +5,14 @@ import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
 import {User} from '@features/shared/models/user.model';
 import {UserFindCriteria} from './user-find-criteria.model';
-import {AccessLink} from "@features/shared/models/acces-link.model";
 import {switchMap} from "rxjs/operators";
 import {SharedAccessLinkService} from "@features/shared/services/shared-access-link.service";
+import {Role} from "@core/auth/models/role.model";
 
 @Injectable({providedIn: 'root'})
 export class UserService {
+    private readonly EDIT_PROFILE_SCOPE = 'edit-profile';
+
     constructor(private readonly httpService: HttpService,
                 private readonly sharedAccessLinkService: SharedAccessLinkService) {
     }
@@ -40,14 +42,13 @@ export class UserService {
     createAccessLink(user: User): Observable<string> {
         return this.read(user.mobile)
             .pipe(
-                switchMap(userFull => {
-                    if (userFull.role !== 'CUSTOMER') {
+                switchMap(retrievedUser => {
+                    if (retrievedUser.role !== Role.CUSTOMER) {
                         return throwError(() => new Error('Sólo se puede crear links a los clientes'));
                     }
                     return this.sharedAccessLinkService.createAccessLink({
-                        mobile: userFull.mobile,
-                        scope: 'edit-profile',
-                        document: user.mobile
+                        mobile: retrievedUser.mobile,
+                        scope: this.EDIT_PROFILE_SCOPE
                     });
                 })
             );

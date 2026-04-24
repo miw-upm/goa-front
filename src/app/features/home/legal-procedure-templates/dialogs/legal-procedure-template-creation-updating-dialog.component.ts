@@ -15,9 +15,9 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import {MatNativeDateModule} from '@angular/material/core';
 
-import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
+import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
 import {InputData} from '@shared/ui/inputs/input-data.component';
-import {FormListComponent} from '@shared/ui/inputs/forms/list.component';
+import {FormListComponent} from '@shared/ui/inputs/forms/form-list.component';
 import {SharedLegalTaskService} from '@features/shared/services/shared-legal-task.service';
 import {SearchByLegalTaskComponent} from '@features/shared/ui/search-by-legal-task.component';
 import {LegalProcedureTemplate} from '../models/legal-procedure-template.model';

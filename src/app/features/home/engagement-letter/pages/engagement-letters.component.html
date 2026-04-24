@@ -17,8 +17,8 @@
 
 <app-crud (alerts)="navigateToAlerts($event)" (assistant)="openAssistant($event)" (create)="create()"
           (delete)="delete($event)"
-          (events)="navigateToEvents($event)" (print)="print($event)"
-          (link)="link($event)"
+          (events)="navigateToEvents($event)" (link)="link($event)"
+          (print)="print($event)"
           (read)="read($event)"
           (searchAll)="search()"
           (update)="update($event)"
@@ -28,7 +28,7 @@
           [deleteAction]=deleteVisibility
           [eventsAction]="true"
           [hiddenFields]="['id','discount','attachments','paymentMethods','legalClause']"
-          [item]="engagementLetter" [printAction]="true"
-          [linkAction]="true" [secureDelete]="true"
+          [item]="engagementLetter" [linkAction]="true"
+          [printAction]="true" [secureDelete]="true"
           [title]="title">
 </app-crud>

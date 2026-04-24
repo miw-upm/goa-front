@@ -15,6 +15,9 @@ import {EngagementLetterService} from '../engagement-letter.service';
 import {EngagementLetterFindCriteria} from '../models/engagement-letter-find-criteria.model';
 import {EngagementLetter} from '../models/engagement-letter.model';
 import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
+import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
+import {User} from '@features/shared/models/user.model';
+import {SelectLetterLinkDialogComponent} from "../dialogs/select-letter-link.dialog.component";
 
 @Component({
     standalone: true,
@@ -115,15 +118,29 @@ export class EngagementLettersComponent implements OnInit {
     }
 
     link(engagement: EngagementLetter): void {
-        if (!engagement?.id) return;
-        this.engagementLettersService.createAccessLink(engagement.id).subscribe(token =>
-            this.dialog.open(ClipboardToastDialogComponent, {
-                data: {
-                    message: 'Enlace público copiado al portapapeles',
-                    clipboard: token.publicUrl
+        const users: User[] = [engagement.owner, ...(engagement.attachments ?? [])];
+        this.dialog.open(SelectLetterLinkDialogComponent, {
+            data: {users}
+        }).afterClosed().subscribe((user?: User) => {
+            if (!user) return;
+
+            this.engagementLettersService.createAccessLink(engagement, user).subscribe({
+                next: link => {
+                    navigator.clipboard.writeText(link);
+                    this.dialog.open(ClipboardToastDialogComponent, {
+                        data: 'Access link created and copied'
+                    });
+                },
+                error: error => {
+                    this.dialog.open(WarningDialogComponent, {
+                        data: {
+                            title: 'Warning',
+                            message: error.message
+                        }
+                    });
                 }
-            })
-        );
+            });
+        });
     }
 
     private parseBoolean(value: string | undefined, defaultValue: boolean | null): boolean | null {

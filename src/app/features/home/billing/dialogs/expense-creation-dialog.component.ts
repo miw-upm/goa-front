@@ -16,7 +16,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
-import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
+import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
 import {EngagementLetterService} from '../../engagement-letter/engagement-letter.service';
 import {EngagementLetterFindCriteria} from '../../engagement-letter/models/engagement-letter-find-criteria.model';
 import {ExpenseService} from '../expense.service';

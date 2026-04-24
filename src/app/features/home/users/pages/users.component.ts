@@ -60,23 +60,20 @@ export class UsersComponent {
     }
 
     link(user: User): void {
-        this.userService.read(user.mobile).subscribe(userFull => {
-            if (userFull.role !== 'CUSTOMER') {
+        this.userService.createAccessLink(user).subscribe({
+            next: link => {
+                navigator.clipboard.writeText(link);
+                this.dialog.open(ClipboardToastDialogComponent, {
+                    data: 'Access link created and copied'
+                });
+            },
+            error: error => {
                 this.dialog.open(WarningDialogComponent, {
                     data: {
                         title: 'Warning',
-                        message: 'Sólo se puede crear links a los clientes'
+                        message: error.message
                     }
                 });
-            } else {
-                this.sharedAccessLinkService
-                    .createAccessLink({mobile: userFull.mobile, scope: "edit-profile"})
-                    .subscribe(link => {
-                        navigator.clipboard.writeText(link);
-                        this.dialog.open(ClipboardToastDialogComponent, {
-                            data: 'Link de acceso creado y copiado'
-                        });
-                    });
             }
         });
     }

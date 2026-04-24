@@ -16,8 +16,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSelectModule} from "@angular/material/select";
 
 import {AuthService} from '@core/auth/auth.service';
-import {FormSelectComponent} from '@shared/ui/inputs/forms/select.component';
-import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
+import {FormSelectComponent} from '@shared/ui/inputs/forms/form-select.component';
+import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {SharedUserService} from '@features/shared/services/shared-user.service';
 import {UserDocumentType} from '@features/shared/models/UserDocumentType';
