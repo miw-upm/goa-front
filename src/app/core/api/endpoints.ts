@@ -40,7 +40,7 @@ export const ENDPOINTS = {
         byId: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}`,
         pendingSigners: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/pending-signers`,
         print: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/print-view`,
-        signerDocument: (mobile: string, token: string) =>`${ENGAGEMENT_LETTER_ROOT}/accept-engagement-letter/${enc(mobile)}/${enc(token)}`,
+        signerDocument: (path:string, mobile: string, token: string) =>`${ENGAGEMENT_LETTER_ROOT}/${path}/${enc(mobile)}/${enc(token)}`,
     },
 
     legalProcedureTemplates: {
