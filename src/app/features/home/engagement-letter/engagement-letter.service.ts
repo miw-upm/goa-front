@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, tap} from 'rxjs';
 
-import {environment} from '@env';
 import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
 import {EngagementLetter} from './models/engagement-letter.model';
@@ -11,7 +10,7 @@ import {SharedAccessLinkService} from "@features/shared/services/shared-access-l
 
 @Injectable()
 export class EngagementLetterService {
-    private readonly ACCEPT_ENGAGEMENT_LETTER_SCOPE = 'accept-engagement-letter';
+    private readonly SIGN_ENGAGEMENT_LETTER_SCOPE = 'sign-engagement-letter';
 
     constructor(private readonly httpService: HttpService,
                 private readonly sharedAccessLinkService: SharedAccessLinkService) {
@@ -54,19 +53,13 @@ export class EngagementLetterService {
     createAccessLink(engagement: EngagementLetter, user: User): Observable<string> {
         return this.sharedAccessLinkService.createAccessLink({
             mobile: user.mobile,
-            scope: this.ACCEPT_ENGAGEMENT_LETTER_SCOPE,
+            scope: this.SIGN_ENGAGEMENT_LETTER_SCOPE,
             document: engagement.id
         });
     }
 
-    private createPublicLink(publicUrl: string): string {
-        if (!publicUrl) {
-            return '';
-        }
-        if (publicUrl.startsWith('http://') || publicUrl.startsWith('https://')) {
-            return publicUrl;
-        }
-        const normalizedPath = publicUrl.startsWith('/') ? publicUrl : `/${publicUrl}`;
-        return `${environment.FRONT_END}${normalizedPath}`;
+    pendingSigners(engagement: EngagementLetter): Observable<User[]> {
+        return this.httpService.request()
+            .get<User[]>(ENDPOINTS.engagementLetters.pendingSigners(engagement.id));
     }
 }

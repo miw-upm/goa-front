@@ -38,14 +38,10 @@ export const ENDPOINTS = {
     engagementLetters: {
         root: ENGAGEMENT_LETTER_ROOT,
         byId: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}`,
-        publicAccessToken: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/public-access-token`,
+        pendingSigners: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/pending-signers`,
         print: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/print-view`,
-    },
-
-    publicEngagementLetters: {
-        root: PUBLIC_ENGAGEMENT_LETTER_ROOT,
-        access: () => `${PUBLIC_ENGAGEMENT_LETTER_ROOT}/access`,
-        accept: () => `${PUBLIC_ENGAGEMENT_LETTER_ROOT}/accept`,
+        documentView: (mobile: string, token: string) =>`${ENGAGEMENT_LETTER_ROOT}/view/${enc(mobile)}/${enc(token)}`,
+        signerDocument: (path: string, mobile: string, token: string) =>`${ENGAGEMENT_LETTER_ROOT}/${path}/${enc(mobile)}/${enc(token)}`,
     },
 
     legalProcedureTemplates: {
@@ -56,6 +52,12 @@ export const ENDPOINTS = {
     legalTasks: {
         root: LEGAL_TASK_ROOT,
         byId: (id: string) => `${LEGAL_TASK_ROOT}/${enc(id)}`,
+    },
+
+    publicEngagementLetters: {
+        root: PUBLIC_ENGAGEMENT_LETTER_ROOT,
+        access: () => `${PUBLIC_ENGAGEMENT_LETTER_ROOT}/access`,
+        accept: () => `${PUBLIC_ENGAGEMENT_LETTER_ROOT}/accept`,
     },
 
     events: {

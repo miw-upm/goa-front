@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {Observable, of} from 'rxjs';
+import {filter, Observable, of, tap} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
@@ -18,6 +18,7 @@ import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
 import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
 import {User} from '@features/shared/models/user.model';
 import {SelectLetterLinkDialogComponent} from "../dialogs/select-letter-link.dialog.component";
+import {switchMap} from "rxjs/operators";
 
 @Component({
     standalone: true,
@@ -118,28 +119,24 @@ export class EngagementLettersComponent implements OnInit {
     }
 
     link(engagement: EngagementLetter): void {
-        const users: User[] = [engagement.owner, ...(engagement.attachments ?? [])];
-        this.dialog.open(SelectLetterLinkDialogComponent, {
-            data: {users}
-        }).afterClosed().subscribe((user?: User) => {
-            if (!user) return;
-
-            this.engagementLettersService.createAccessLink(engagement, user).subscribe({
-                next: link => {
-                    navigator.clipboard.writeText(link);
-                    this.dialog.open(ClipboardToastDialogComponent, {
-                        data: 'Access link created and copied'
-                    });
-                },
-                error: error => {
-                    this.dialog.open(WarningDialogComponent, {
-                        data: {
-                            title: 'Warning',
-                            message: error.message
-                        }
-                    });
-                }
-            });
+        this.engagementLettersService.pendingSigners(engagement).pipe(
+            switchMap(users => this.dialog.open(SelectLetterLinkDialogComponent, {
+                data: { users }
+            }).afterClosed()),
+            filter((user): user is User => !!user),
+            switchMap(user => this.engagementLettersService.createAccessLink(engagement, user))
+        ).subscribe({
+            next: link => {
+                navigator.clipboard.writeText(link);
+                this.dialog.open(ClipboardToastDialogComponent, {
+                    data: 'Access link created and copied'
+                });
+            },
+            error: error => {
+                this.dialog.open(WarningDialogComponent, {
+                    data: { title: 'Warning', message: error.message }
+                });
+            }
         });
     }
 

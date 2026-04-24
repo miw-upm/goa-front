@@ -18,7 +18,7 @@ import {User} from "@features/shared/models/user.model";
 import {UserDocumentType} from "@features/shared/models/UserDocumentType";
 import {SharedUserService} from "@features/shared/services/shared-user.service";
 import {CustomerService} from "../customer.service";
-import {DataProcessingConsentCreation} from "./ProcessingConsentCreation.model";
+import {DataProcessingConsentCreation} from "../ProcessingConsentCreation.model";
 
 @Component({
     standalone: true,
