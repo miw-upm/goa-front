@@ -8,7 +8,7 @@ export const routes: Routes = [
         component: CustomerEditProfileComponent
     },
     {
-        path: 'customer/accept-engagement-letter/:mobile/:token',
+        path: 'customer/sign-engagement-letter/:mobile/:token',
         component: SignerDocumentComponent
     },
 ];

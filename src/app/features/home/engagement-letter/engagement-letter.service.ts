@@ -10,7 +10,7 @@ import {SharedAccessLinkService} from "@features/shared/services/shared-access-l
 
 @Injectable()
 export class EngagementLetterService {
-    private readonly ACCEPT_ENGAGEMENT_LETTER_SCOPE = 'accept-engagement-letter';
+    private readonly SIGN_ENGAGEMENT_LETTER_SCOPE = 'sign-engagement-letter';
 
     constructor(private readonly httpService: HttpService,
                 private readonly sharedAccessLinkService: SharedAccessLinkService) {
@@ -53,7 +53,7 @@ export class EngagementLetterService {
     createAccessLink(engagement: EngagementLetter, user: User): Observable<string> {
         return this.sharedAccessLinkService.createAccessLink({
             mobile: user.mobile,
-            scope: this.ACCEPT_ENGAGEMENT_LETTER_SCOPE,
+            scope: this.SIGN_ENGAGEMENT_LETTER_SCOPE,
             document: engagement.id
         });
     }

@@ -10,14 +10,15 @@ export class SignerDocumentService {
     constructor(private readonly httpService: HttpService) {
     }
 
-    downloadDocument(path: string, mobile: string, token: string) : Observable<void> {
+    downloadDocument(scope: string, mobile: string, token: string) : Observable<void> {
         return this.httpService.request()
-            .openPdf(ENDPOINTS.engagementLetters.signerDocument(path, mobile, token));
+            .param("scope", scope)
+            .openPdf(ENDPOINTS.engagementLetters.documentView(mobile, token));
     }
 
-    acceptDocument(path: string, mobile: string, token: string, signerDocument: SignerDocument) :Observable<void> {
+    signDocument(path: string, mobile: string, token: string, signerDocument: SignerDocument) :Observable<void> {
         return this.httpService.request()
-            .success("DOCUMENTO FIRMADO!!!")
-            .put(ENDPOINTS.engagementLetters.signerDocument(path, mobile, token), signerDocument);
+            .success("Documento firmado")
+            .patch(ENDPOINTS.engagementLetters.signerDocument(path, mobile, token), signerDocument);
     }
 }

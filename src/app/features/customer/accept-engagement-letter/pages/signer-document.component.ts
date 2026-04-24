@@ -49,6 +49,7 @@ export class SignerDocumentComponent implements OnInit, AfterViewInit, OnDestroy
     private mobile = '';
     private token = '';
     documentDownloaded = false;
+    signed = false;
 
     @ViewChild('signaturePad', { static: true })
     private readonly canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -67,7 +68,7 @@ export class SignerDocumentComponent implements OnInit, AfterViewInit, OnDestroy
 
     ngOnInit(): void {
         const segments = this.route.snapshot.url; // UrlSegment[]
-        this.path = segments[0]?.path ?? '';       // 'accept-engagement-letter'
+        this.path = segments[1]?.path ?? '';       // 'sing-engagement-letter'
         this.mobile = this.route.snapshot.paramMap.get('mobile') ?? '';
         this.token = this.route.snapshot.paramMap.get('token') ?? '';
     }
@@ -80,12 +81,12 @@ export class SignerDocumentComponent implements OnInit, AfterViewInit, OnDestroy
     update(): void {
         if (!this.signerDocument.documentAccepted || this.isEmpty) return;
         this.saveSignature();
-        this.signerDocumentService.acceptDocument(this.path, this.mobile, this.token, this.signerDocument )
-            .subscribe();
+        this.signerDocumentService.signDocument(this.path, this.mobile, this.token, this.signerDocument )
+            .subscribe(() => this.signed = true);
     }
 
     startDrawing(event: PointerEvent): void {
-        if (!this.documentDownloaded) return;
+        if (!this.documentDownloaded || this.signed) return;
         event.preventDefault();
         this.drawing = true;
         const { x, y } = this.getPosition(event);
