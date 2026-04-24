@@ -6,7 +6,7 @@ import {environment} from '@env';
 import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
 import {EngagementLetter} from './models/engagement-letter.model';
-import {EngagementLetterCriteria} from './models/engagement-letter-criteria.model';
+import {EngagementLetterFindCriteria} from './models/engagement-letter-find-criteria.model';
 import {PublicAccessToken} from './models/public-access-token.model';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class EngagementLetterService {
             .put(ENDPOINTS.engagementLetters.byId(id), engagement);
     }
 
-    search(criteria: EngagementLetterCriteria): Observable<EngagementLetter[]> {
+    search(criteria: EngagementLetterFindCriteria): Observable<EngagementLetter[]> {
         return this.httpService.request()
             .paramsFrom(criteria)
             .get(ENDPOINTS.engagementLetters.root);
@@ -48,7 +48,7 @@ export class EngagementLetterService {
             .delete(ENDPOINTS.engagementLetters.byId(id));
     }
 
-    createPublicAccessToken(id: string): Observable<PublicAccessToken> {
+    createAccessLink(id: string): Observable<PublicAccessToken> {
         return this.httpService.request()
             .post<PublicAccessToken>(ENDPOINTS.engagementLetters.publicAccessToken(id), {})
             .pipe(

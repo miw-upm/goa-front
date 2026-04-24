@@ -1,14 +1,18 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 
 import {HttpService} from '@core/http/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
 import {User} from '@features/shared/models/user.model';
-import {UserSearch} from './user-search.model';
+import {UserFindCriteria} from './user-find-criteria.model';
+import {AccessLink} from "@features/shared/models/acces-link.model";
+import {switchMap} from "rxjs/operators";
+import {SharedAccessLinkService} from "@features/shared/services/shared-access-link.service";
 
 @Injectable({providedIn: 'root'})
 export class UserService {
-    constructor(private readonly httpService: HttpService) {
+    constructor(private readonly httpService: HttpService,
+                private readonly sharedAccessLinkService: SharedAccessLinkService) {
     }
 
     create(user: User): Observable<User> {
@@ -27,10 +31,26 @@ export class UserService {
             .put(ENDPOINTS.users.byMobile(oldMobile), user);
     }
 
-    search(criteria: UserSearch): Observable<User[]> {
+    search(criteria: UserFindCriteria): Observable<User[]> {
         return this.httpService.request()
             .paramsFrom(criteria)
             .get(ENDPOINTS.users.root);
+    }
+
+    createAccessLink(user: User): Observable<string> {
+        return this.read(user.mobile)
+            .pipe(
+                switchMap(userFull => {
+                    if (userFull.role !== 'CUSTOMER') {
+                        return throwError(() => new Error('Sólo se puede crear links a los clientes'));
+                    }
+                    return this.sharedAccessLinkService.createAccessLink({
+                        mobile: userFull.mobile,
+                        scope: 'edit-profile',
+                        document: user.mobile
+                    });
+                })
+            );
     }
 
 }

@@ -18,7 +18,7 @@
 <app-crud (alerts)="navigateToAlerts($event)" (assistant)="openAssistant($event)" (create)="create()"
           (delete)="delete($event)"
           (events)="navigateToEvents($event)" (print)="print($event)"
-          (publicLink)="generatePublicLink($event)"
+          (link)="link($event)"
           (read)="read($event)"
           (searchAll)="search()"
           (update)="update($event)"
@@ -29,6 +29,6 @@
           [eventsAction]="true"
           [hiddenFields]="['id','discount','attachments','paymentMethods','legalClause']"
           [item]="engagementLetter" [printAction]="true"
-          [publicLinkAction]="true" [secureDelete]="true"
+          [linkAction]="true" [secureDelete]="true"
           [title]="title">
 </app-crud>

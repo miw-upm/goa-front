@@ -18,7 +18,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
 import {EngagementLetterService} from '../../engagement-letter/engagement-letter.service';
-import {EngagementLetterCriteria} from '../../engagement-letter/models/engagement-letter-criteria.model';
+import {EngagementLetterFindCriteria} from '../../engagement-letter/models/engagement-letter-find-criteria.model';
 import {ExpenseService} from '../expense.service';
 import {Expense} from '../models/expense.model';
 
@@ -69,7 +69,7 @@ export class ExpenseCreationDialogComponent {
         };
         this.expenseDate = data?.date;
 
-        const criteria: EngagementLetterCriteria = {
+        const criteria: EngagementLetterFindCriteria = {
             opened: true,
             client: '',
             legalProcedureTitle: ''

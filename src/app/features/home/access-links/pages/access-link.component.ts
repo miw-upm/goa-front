@@ -9,7 +9,7 @@ import {AccessLink} from "@features/shared/models/acces-link.model";
 import {AuthService} from "@core/auth/auth.service";
 import {ClipboardToastDialogComponent} from "@shared/ui/dialogs/clipboard-toast-dialog.component";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
-import {AccessLinkSearch} from "./access-link-search.model";
+import {AccessLinkFindCriteria} from "./access-link-find-criteria.model";
 import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
 import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
 
@@ -22,7 +22,7 @@ import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.com
 export class AccessLinkComponent {
     visible: boolean = true;
     title = 'Access Links';
-    criteria: AccessLinkSearch;
+    criteria: AccessLinkFindCriteria;
 
     accessLinks: Observable<AccessLink[]> = of([]);
     accessLink: Observable<any>;

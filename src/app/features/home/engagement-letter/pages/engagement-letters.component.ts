@@ -12,7 +12,7 @@ import {ClipboardToastDialogComponent} from '@shared/ui/dialogs/clipboard-toast-
 import {AuthService} from '@core/auth/auth.service';
 
 import {EngagementLetterService} from '../engagement-letter.service';
-import {EngagementLetterCriteria} from '../models/engagement-letter-criteria.model';
+import {EngagementLetterFindCriteria} from '../models/engagement-letter-find-criteria.model';
 import {EngagementLetter} from '../models/engagement-letter.model';
 import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
 
@@ -27,7 +27,7 @@ export class EngagementLettersComponent implements OnInit {
     title = 'Hojas de Encargo';
     engagementLetters: Observable<EngagementLetter[]> = of([]);
     engagementLetter: Observable<EngagementLetter>;
-    criteria: EngagementLetterCriteria = {opened: true};
+    criteria: EngagementLetterFindCriteria = {opened: true};
     changeFields = ['owner:firstName.familyName.mobile'];
 
     constructor(
@@ -114,9 +114,9 @@ export class EngagementLettersComponent implements OnInit {
         this.router.navigate(['/home/engagement-letters', engagement.id, 'alerts']);
     }
 
-    generatePublicLink(engagement: EngagementLetter): void {
+    link(engagement: EngagementLetter): void {
         if (!engagement?.id) return;
-        this.engagementLettersService.createPublicAccessToken(engagement.id).subscribe(token =>
+        this.engagementLettersService.createAccessLink(engagement.id).subscribe(token =>
             this.dialog.open(ClipboardToastDialogComponent, {
                 data: {
                     message: 'Enlace público copiado al portapapeles',
