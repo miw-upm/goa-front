@@ -21,11 +21,7 @@ export class SharedAccessLinkService {
     }
 
     buildAccessUrl(accessLink: AccessLink): string {
-        let link = `${environment.FRONT_END}/customer/${accessLink.scope}/${accessLink.mobile}/${accessLink.id}`;
-        if (accessLink.document) {
-            link += `/${accessLink.document}`;
-        }
-        return link;
+       return `${environment.FRONT_END}/customer/${accessLink.scope}/${accessLink.mobile}/${accessLink.id}`;
     }
 
 }
