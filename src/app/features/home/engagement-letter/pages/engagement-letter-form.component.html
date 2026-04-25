@@ -77,6 +77,11 @@
                 <textarea [(ngModel)]="engagementLetter.legalClause" matInput rows="5"></textarea>
             </mat-form-field>
         </fieldset>
+        <fieldset class="owner-fieldset" *ngIf="engagementLetter.acceptanceEngagements?.length">
+            <legend>Firmantes</legend>
+            <app-form-list [(items)]="engagementLetter.acceptanceEngagements" [secure]='true'
+                           [keyView]="['mobile','signerFullName','signatureAt']"></app-form-list>
+        </fieldset>
     </mat-card-content>
 
     <mat-card-actions align="end">

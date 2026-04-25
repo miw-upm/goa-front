@@ -4,6 +4,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatDialog} from "@angular/material/dialog";
 import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
+import {TypeToConfirmDialogComponent} from "@shared/ui/dialogs/type-to-confirm-dialog.component";
 
 @Component({
     standalone: true,
@@ -38,6 +39,7 @@ import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.com
 export class FormListComponent {
     @Input() items: any[] = [];
     @Input() title = 'List';
+    @Input() secure = false;
     @Input() keyView: string[];
     @Input() actionIcon: string;
     @Output() itemsChange = new EventEmitter<any[]>();
@@ -52,17 +54,32 @@ export class FormListComponent {
     }
 
     removeItem(index: number): void {
-        this.dialog.open(CancelYesDialogComponent, {
-            data: {
-                title: 'Eliminar elemento',
-                message: '¿Estás seguro de eliminar este elemento?'
-            }
-        }).afterClosed().subscribe(result => {
-            if (result) {
-                this.items.splice(index, 1);
-                this.itemsChange.emit([...this.items]);
-            }
-        });
+        if (this.secure) {
+            this.dialog.open(TypeToConfirmDialogComponent, {
+                data: {
+                    title: 'Eliminar peligroso',
+                    message: 'Eliminar las firmas no tendrán forma de recuperarse, ¿Estás seguro?',
+                    expectedText: "Estoy Seguro"
+                }
+            }).afterClosed().subscribe(result => {
+                if (result) {
+                    this.items.splice(index, 1);
+                    this.itemsChange.emit([...this.items]);
+                }
+            });
+        } else {
+            this.dialog.open(CancelYesDialogComponent, {
+                data: {
+                    title: 'Eliminar elemento',
+                    message: '¿Estás seguro de eliminar este elemento?'
+                }
+            }).afterClosed().subscribe(result => {
+                if (result) {
+                    this.items.splice(index, 1);
+                    this.itemsChange.emit([...this.items]);
+                }
+            });
+        }
     }
 
     onAction(item: any): void {
