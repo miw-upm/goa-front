@@ -39,7 +39,7 @@ export const ENDPOINTS = {
         root: ENGAGEMENT_LETTER_ROOT,
         byId: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}`,
         pendingSigners: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/pending-signers`,
-        print: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/print-view`,
+        view: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/view`,
         documentView: (mobile: string, token: string) =>`${ENGAGEMENT_LETTER_ROOT}/view/${enc(mobile)}/${enc(token)}`,
         signerDocument: (path: string, mobile: string, token: string) =>`${ENGAGEMENT_LETTER_ROOT}/${path}/${enc(mobile)}/${enc(token)}`,
     },
