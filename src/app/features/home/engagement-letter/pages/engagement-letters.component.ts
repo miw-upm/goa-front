@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {filter, Observable, of, tap} from 'rxjs';
+import {filter, Observable, of} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
@@ -121,7 +121,7 @@ export class EngagementLettersComponent implements OnInit {
     link(engagement: EngagementLetter): void {
         this.engagementLettersService.pendingSigners(engagement).pipe(
             switchMap(users => this.dialog.open(SelectLetterLinkDialogComponent, {
-                data: { users }
+                data: {users}
             }).afterClosed()),
             filter((user): user is User => !!user),
             switchMap(user => this.engagementLettersService.createAccessLink(engagement, user))
@@ -134,7 +134,7 @@ export class EngagementLettersComponent implements OnInit {
             },
             error: error => {
                 this.dialog.open(WarningDialogComponent, {
-                    data: { title: 'Warning', message: error.message }
+                    data: {title: 'Warning', message: error.message}
                 });
             }
         });

@@ -1,7 +1,7 @@
 import {Role} from "@core/auth/models/role.model";
 
 export interface User {
-    id?:string
+    id?: string
     mobile: string;
     firstName: string;
     familyName?: string;

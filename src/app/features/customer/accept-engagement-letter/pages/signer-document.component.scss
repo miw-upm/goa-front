@@ -23,11 +23,11 @@
 
 .signature-pad {
   width: 100%;
-  height: 240px;             // recuadro grande para firma con dedo
+  height: 240px; // recuadro grande para firma con dedo
   border: 2px dashed #888;
   border-radius: 8px;
   background: #fafafa;
-  touch-action: none;        // evita el scroll al firmar en móvil
+  touch-action: none; // evita el scroll al firmar en móvil
   cursor: crosshair;
   display: block;
 }

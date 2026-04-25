@@ -26,6 +26,7 @@ import {EngagementLetter} from '../models/engagement-letter.model';
 import {LegalProcedure} from '../models/legal-procedure.model';
 import {LegalProcedureEditDialogComponent} from '../dialogs/legal-procedure-edit-dialog.component';
 import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
+import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
 
 @Component({
     standalone: true,
@@ -83,8 +84,14 @@ export class EngagementLetterFormComponent implements OnInit {
                     lastUpdatedDate: data.lastUpdatedDate ? new Date(data.lastUpdatedDate) : undefined,
                     closingDate: data.closingDate ? new Date(data.closingDate) : undefined
                 };
+                if ((this.engagementLetter.acceptanceEngagements != null && this.engagementLetter.acceptanceEngagements.length > 0)) {
+                    this.dialog.open(WarningDialogComponent, {
+                        data: {title: 'Warning', message: 'Existen firmas en esta Hoja de Encargo'}
+                    });
+                }
             });
         }
+
     }
 
     save(): void {

@@ -21,33 +21,33 @@
 
         <!-- DESCARGA DEL DOCUMENTO -->
         <div class="download-wrapper">
-            <button mat-raised-button color="primary" type="button" (click)="downloadDocument()" [disabled]="signed">
+            <button (click)="downloadDocument()" [disabled]="signed" color="primary" mat-raised-button type="button">
                 <mat-icon>download</mat-icon>
                 Descargar documento
             </button>
-            <span class="download-hint" *ngIf="!documentDownloaded">
+            <span *ngIf="!documentDownloaded" class="download-hint">
                 Es necesario descargar y leer el documento antes de poder firmarlo.
             </span>
-            <span class="download-done" *ngIf="documentDownloaded">
+            <span *ngIf="documentDownloaded" class="download-done">
                 <mat-icon>check_circle</mat-icon>
                 Documento descargado correctamente
             </span>
         </div>
 
         <!-- RECUADRO DE FIRMA -->
-        <div class="signature-wrapper" [class.disabled]="!documentDownloaded || signed">
+        <div [class.disabled]="!documentDownloaded || signed" class="signature-wrapper">
             <canvas #signaturePad
-                    class="signature-pad"
+                    (pointercancel)="stopDrawing()"
                     (pointerdown)="startDrawing($event)"
+                    (pointerleave)="stopDrawing()"
                     (pointermove)="draw($event)"
                     (pointerup)="stopDrawing()"
-                    (pointerleave)="stopDrawing()"
-                    (pointercancel)="stopDrawing()">
+                    class="signature-pad">
             </canvas>
             <div class="signature-actions">
-                <button mat-stroked-button type="button"
-                        (click)="clearSignature()"
-                        [disabled]="isEmpty || !documentDownloaded || signed">
+                <button (click)="clearSignature()" [disabled]="isEmpty || !documentDownloaded || signed"
+                        mat-stroked-button
+                        type="button">
                     <mat-icon>refresh</mat-icon>
                     Repetir firma
                 </button>
@@ -56,8 +56,8 @@
 
         <!-- CHECKBOX OBLIGATORIO -->
         <mat-checkbox [(ngModel)]="signerDocument.documentAccepted"
-                      [ngModelOptions]="{standalone: true}"
                       [disabled]="!documentDownloaded || signed"
+                      [ngModelOptions]="{standalone: true}"
                       required>
             He leído el documento y manifiesto mi conformidad con su contenido.
         </mat-checkbox>
@@ -73,7 +73,7 @@
     </mat-dialog-actions>
 
     <!-- CONFIRMACIÓN POST-FIRMA -->
-    <div class="signed-confirmation" *ngIf="signed">
+    <div *ngIf="signed" class="signed-confirmation">
         <p class="signed-message">
             Su firma ha sido registrada correctamente. Le agradecemos la confianza depositada
             en nuestro despacho. Una vez suscrito el documento por la totalidad de los
@@ -85,7 +85,7 @@
             Paseo de la Castellana, 93-2ª · 28046 Madrid<br/>
             Tel.: +34 644 993 593 ·
             <a href="mailto:nuria@ocanabogados.es">nuria&#64;ocanabogados.es</a> ·
-            <a href="https://www.ocanabogados.es" target="_blank" rel="noopener">www.ocanabogados.es</a>
+            <a href="https://www.ocanabogados.es" rel="noopener" target="_blank">www.ocanabogados.es</a>
         </div>
     </div>
 </mat-card>
