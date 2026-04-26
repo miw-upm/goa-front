@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { Observable, tap, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {HttpRequestBuilder} from "@core/http/http-request-builder";
+import {BackendError, isBackendError} from "@core/http/backend-error";
+import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 export class HttpViewBuilder {
     static readonly CONNECTION_REFUSE = 0;
@@ -14,11 +17,14 @@ export class HttpViewBuilder {
     private successNotification: string | undefined;
     private errorNotification: string | undefined;
     private readonly builder: HttpRequestBuilder;
+    private debugMode = false;
+    private warningMode = false;
 
     constructor(
         http: HttpClient,
         private readonly snackBar: MatSnackBar,
-        private readonly router: Router
+        private readonly router: Router,
+        private readonly dialog: MatDialog
     ) {
         this.builder = new HttpRequestBuilder(http);
     }
@@ -96,6 +102,16 @@ export class HttpViewBuilder {
             );
     }
 
+    debug(): this {
+        this.debugMode = true;
+        return this;
+    }
+
+    warning(): this {
+        this.warningMode = true;
+        return this;
+    }
+
     private notifySuccess(): void {
         if (!this.successNotification) return;
         this.snackBar.open(this.successNotification, '', {
@@ -106,10 +122,17 @@ export class HttpViewBuilder {
 
     private showError(notification: string): void {
         const message = this.errorNotification || notification;
-        this.snackBar.open(message, 'Error', {
-            duration: HttpViewBuilder.SNACK_ERROR_DURATION
-        });
+        if (this.warningMode) {
+            this.dialog.open(WarningDialogComponent, {
+                data: { title: 'Warning', message }
+            });
+        } else {
+            this.snackBar.open(message, 'Error', {
+                duration: HttpViewBuilder.SNACK_ERROR_DURATION
+            });
+        }
         this.errorNotification = undefined;
+        this.warningMode = false;
     }
 
     private handleError(response: HttpErrorResponse): Observable<never> {
@@ -117,17 +140,25 @@ export class HttpViewBuilder {
             this.showError('Unauthorized');
             void this.router.navigate(['']);
             return throwError(() => response);
-        } else if (response.status === HttpViewBuilder.CONNECTION_REFUSE) {
+        }
+        if (response.status === HttpViewBuilder.CONNECTION_REFUSE) {
             this.showError('Network error');
             return throwError(() => response);
-        } else {
-            const error = response.error;
-            if (error?.error && error?.message) {
-                this.showError(`${error.error} (${response.status}): ${error.message}`);
-                return throwError(() => error);
-            }
-            this.showError('No response from server');
+        }
+        if (isBackendError(response.error)) {
+            this.showError(this.formatBackendError(response));
             return throwError(() => response.error);
         }
+        this.showError('No response from server');
+        return throwError(() => response.error);
+    }
+
+    private formatBackendError(response: HttpErrorResponse): string {
+        const err = response.error as BackendError;
+        const base = `${err.error} (${response.status}): ${err.message}`;
+        if (this.debugMode && err.cause) {
+            return `${base} — ${err.cause}`;
+        }
+        return base;
     }
 }
