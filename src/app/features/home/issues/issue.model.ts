@@ -1,5 +1,5 @@
 import {Role} from '@core/auth/models/role.model';
-import {UserDocumentType} from '@features/shared/models/UserDocumentType';
+import {UserDocumentType} from '@features/shared/models/user-document-type';
 
 export enum IssueType {
     BUG = 'BUG',

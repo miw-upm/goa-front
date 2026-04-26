@@ -5,7 +5,7 @@ import {map} from "rxjs/operators";
 import {environment} from "@env";
 import {HttpService} from "@shared/ui/api/http.service";
 import {ENDPOINTS} from "@core/api/endpoints";
-import {AccessLink} from "@features/shared/models/acces-link.model";
+import {AccessLink} from "@features/shared/models/access-link.model";
 
 @Injectable({providedIn: 'root'})
 export class SharedAccessLinkService {

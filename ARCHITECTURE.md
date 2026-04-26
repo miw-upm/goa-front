@@ -342,7 +342,7 @@ src/app/
 │   │   └── endpoints.ts
 │   ├── auth/
 │   │   ├── auth.service.ts
-│   │   ├── role-guard.service.ts
+│   │   ├── role.guard.ts
 │   │   └── models/role.model.ts
 │   ├── http/
 │   │   ├── backend-error.ts

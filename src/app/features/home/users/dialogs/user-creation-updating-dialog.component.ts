@@ -20,7 +20,7 @@ import {FormSelectComponent} from '@shared/ui/inputs/forms/form-select.component
 import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {SharedUserService} from '@features/shared/services/shared-user.service';
-import {UserDocumentType} from '@features/shared/models/UserDocumentType';
+import {UserDocumentType} from '@features/shared/models/user-document-type';
 import {User} from '@features/shared/models/user.model';
 import {UserService} from '../user.service';
 

@@ -5,7 +5,7 @@ import {MatDialog} from "@angular/material/dialog";
 
 import {CrudComponent} from "@shared/ui/crud/crud.component";
 import {AccessLinkService} from "../access-link.service";
-import {AccessLink} from "@features/shared/models/acces-link.model";
+import {AccessLink} from "@features/shared/models/access-link.model";
 import {AuthService} from "@core/auth/auth.service";
 import {ClipboardToastDialogComponent} from "@shared/ui/dialogs/clipboard-toast-dialog.component";
 import {MatSlideToggle} from "@angular/material/slide-toggle";

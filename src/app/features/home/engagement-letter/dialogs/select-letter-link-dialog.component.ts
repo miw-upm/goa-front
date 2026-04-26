@@ -15,7 +15,7 @@ import {FormsModule} from "@angular/forms";
         FormsModule,
         FormSelectComponent
     ],
-    templateUrl: './select-letter-link.dialog.component.html'
+    templateUrl: './select-letter-link-dialog.component.html'
 })
 export class SelectLetterLinkDialogComponent {
 

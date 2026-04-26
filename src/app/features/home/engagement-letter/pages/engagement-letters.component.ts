@@ -17,7 +17,7 @@ import {EngagementLetter} from '../models/engagement-letter.model';
 import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
 import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
 import {User} from '@features/shared/models/user.model';
-import {SelectLetterLinkDialogComponent} from "../dialogs/select-letter-link.dialog.component";
+import {SelectLetterLinkDialogComponent} from "../dialogs/select-letter-link-dialog.component";
 import {switchMap} from "rxjs/operators";
 
 @Component({
