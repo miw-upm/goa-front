@@ -142,6 +142,15 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         this.message = '';
     }
 
+    handleMessageKeydown(event: KeyboardEvent): void {
+        if (event.key !== 'Enter' || event.shiftKey || event.isComposing) {
+            return;
+        }
+
+        event.preventDefault();
+        this.send();
+    }
+
     close(): void {
         this.dialogRef?.close();
     }

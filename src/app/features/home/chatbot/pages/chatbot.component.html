@@ -61,6 +61,7 @@
                     <div class="composer-box">
                         <textarea
                                 [(ngModel)]="message"
+                                (keydown)="handleMessageKeydown($event)"
                                 cdkTextareaAutosize
                                 cdkAutosizeMinRows="1"
                                 cdkAutosizeMaxRows="6"
