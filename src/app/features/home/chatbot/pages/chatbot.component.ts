@@ -7,6 +7,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {RouterLink} from "@angular/router";
 import {AuthService} from "@core/auth/auth.service";
 import {CHATBOT_SCOPE_RESTRICTED_REPLIES, CHATBOT_SCOPE_UI} from "../support/chatbot-scope-ui";
 
@@ -31,7 +32,8 @@ import {TextFieldModule} from "@angular/cdk/text-field";
         MatFormFieldModule,
         MatIconModule,
         MatProgressSpinnerModule,
-        TextFieldModule
+        TextFieldModule,
+        RouterLink
     ],
     templateUrl: "./chatbot.component.html",
     styleUrls: ["./chatbot.component.css"]
