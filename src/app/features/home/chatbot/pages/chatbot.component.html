@@ -21,11 +21,19 @@
                 }
             </div>
 
-            @if (isDialogMode()) {
-                <button mat-icon-button type="button" aria-label="Cerrar" (click)="close()">
-                    <mat-icon>close</mat-icon>
-                </button>
-            }
+            <div class="header-actions">
+                @if (!isDialogMode()) {
+                    <button mat-stroked-button type="button" routerLink="/home/chatbot/history">
+                        Ver histórico
+                    </button>
+                }
+
+                @if (isDialogMode()) {
+                    <button mat-icon-button type="button" aria-label="Cerrar" (click)="close()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                }
+            </div>
         </div>
 
         @if (initializing) {
