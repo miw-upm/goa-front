@@ -4,12 +4,8 @@ const USERS_ROOT = `${environment.REST_USER}/users`;
 const ACCESS_LINK_ROOT = `${environment.REST_USER}/access-link`;
 const CONSENTS_ROOT = `${environment.REST_USER}/consents`;
 const ENGAGEMENT_LETTER_ROOT = `${environment.REST_ENGAGEMENT}/engagement-letters`;
-const PUBLIC_ENGAGEMENT_LETTER_ROOT = `${environment.REST_ENGAGEMENT}/public/engagement-letters`;
 const LEGAL_PROCEDURE_TEMPLATE_ROOT = `${environment.REST_ENGAGEMENT}/legal-procedure-templates`;
 const LEGAL_TASK_ROOT = `${environment.REST_ENGAGEMENT}/legal-tasks`;
-const EVENT_ROOT = `${environment.REST_ENGAGEMENT}/events`;
-const ALERT_ROOT = `${environment.REST_ENGAGEMENT}/alerts`;
-const ALERT_NOTIFICATION_ROOT = `${environment.REST_ENGAGEMENT}/alert-notifications`;
 const ISSUE_ROOT = `${environment.REST_SUPPORT}/issues`;
 const EXPENSE_ROOT = `${environment.REST_BILLING}/expenses`;
 const INCOME_ROOT = `${environment.REST_BILLING}/incomes`;
@@ -52,37 +48,6 @@ export const ENDPOINTS = {
     legalTasks: {
         root: LEGAL_TASK_ROOT,
         byId: (id: string) => `${LEGAL_TASK_ROOT}/${enc(id)}`,
-    },
-
-    publicEngagementLetters: {
-        root: PUBLIC_ENGAGEMENT_LETTER_ROOT,
-        access: () => `${PUBLIC_ENGAGEMENT_LETTER_ROOT}/access`,
-        accept: () => `${PUBLIC_ENGAGEMENT_LETTER_ROOT}/accept`,
-    },
-
-    events: {
-        root: EVENT_ROOT,
-        byId: (id: string) => `${EVENT_ROOT}/${enc(id)}`,
-        byEngagementLetterId: (engagementLetterId: string) =>
-            `${EVENT_ROOT}/engagement-letter/${enc(engagementLetterId)}`,
-        commentsByEventId: (eventId: string) => `${EVENT_ROOT}/${enc(eventId)}/comments`,
-        timelineByEngagementLetterId: (engagementLetterId: string) =>
-            `${EVENT_ROOT}/engagement-letter/${enc(engagementLetterId)}/timeline-events`,
-    },
-
-    alerts: {
-        root: ALERT_ROOT,
-        byId: (id: string) => `${ALERT_ROOT}/${enc(id)}`,
-        byEngagementLetterId: (engagementLetterId: string) =>
-            `${ALERT_ROOT}?engagementLetterId=${enc(engagementLetterId)}`,
-        notifications: (id: string) => `${ALERT_ROOT}/${enc(id)}/notifications`,
-        cancel: (alertId: string) => `${ALERT_ROOT}/${enc(alertId)}/cancel`,
-    },
-
-    alertNotifications: {
-        root: ALERT_NOTIFICATION_ROOT,
-        pending: () => `${ALERT_NOTIFICATION_ROOT}/pending`,
-        shown: (notificationId: string) => `${ALERT_NOTIFICATION_ROOT}/${enc(notificationId)}/shown`,
     },
 
     issues: {

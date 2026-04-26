@@ -79,7 +79,8 @@
         </fieldset>
         <fieldset *ngIf="engagementLetter.acceptanceEngagements?.length" class="owner-fieldset">
             <legend>Firmantes</legend>
-            <app-form-list [(items)]="engagementLetter.acceptanceEngagements" [keyView]="['mobile','signerFullName','signatureAt']"
+            <app-form-list [(items)]="engagementLetter.acceptanceEngagements"
+                           [keyView]="['mobile','signerFullName','signatureAt']"
                            [secure]='true'></app-form-list>
         </fieldset>
     </mat-card-content>
