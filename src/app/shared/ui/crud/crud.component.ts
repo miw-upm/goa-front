@@ -226,7 +226,6 @@ export class CrudComponent {
     }
 
     onTimeline(item: any): void {
-        console.log('CLICK timeline', item);
         this.timeline.emit(item);
     }
 

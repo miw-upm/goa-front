@@ -11,10 +11,6 @@ export class AccessLinkService {
     constructor(private readonly httpService: HttpService, private readonly sharedAccessLinkService: SharedAccessLinkService) {
     }
 
-    createAccessLink(accessLink: AccessLink): Observable<string> {
-        return this.sharedAccessLinkService.createAccessLink(accessLink);
-    }
-
     buildAccessUrl(accessLink: AccessLink) {
         return this.sharedAccessLinkService.buildAccessUrl(accessLink);
     }
@@ -32,6 +28,5 @@ export class AccessLinkService {
     read(id) {
         return this.httpService.request().get(ENDPOINTS.accessLink.byId(id));
     }
-
 
 }

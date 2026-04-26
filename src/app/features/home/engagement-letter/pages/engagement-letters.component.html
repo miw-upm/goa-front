@@ -15,20 +15,18 @@
                   title="Titulo del Procedimiento"></app-filter-input>
 <app-filter-input (enter)="search()" [(value)]="criteria.taskTitle" title="Tarea"></app-filter-input>
 
-<app-crud (alerts)="navigateToAlerts($event)" (assistant)="openAssistant($event)" (create)="create()"
-          (delete)="delete($event)"
-          (events)="navigateToEvents($event)" (link)="link($event)"
-          (print)="print($event)"
+<app-crud (create)="create()"
           (read)="read($event)"
-          (searchAll)="search()"
           (update)="update($event)"
-          [alertsAction]="true"
-          [assistantAction]="true" [changeFields]="changeFields"
+          [deleteAction]=deleteVisibility  [secureDelete]="true" (delete)="delete($event)"
+          [linkAction]="true" (link)="link($event)"
+          [printAction]="true" (print)="print($event)"
+          (searchAll)="search()"
+          [assistantAction]="true" (assistant)="openAssistant($event)"
+
+          [title]="title"
           [data]="engagementLetters"
-          [deleteAction]=deleteVisibility
-          [eventsAction]="true"
-          [hiddenFields]="['id','discount','attachments','paymentMethods','legalClause']"
-          [item]="engagementLetter" [linkAction]="true"
-          [printAction]="true" [secureDelete]="true"
-          [title]="title">
+          [hiddenFields]="hiddenFields"
+          [item]="engagementLetter"
+          [changeFields]="changeFields" >
 </app-crud>

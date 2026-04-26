@@ -12,7 +12,6 @@ export class HttpRequestBuilder {
 
     private successNotification: string | undefined;
     private errorNotification: string | undefined;
-
     private params: HttpParams = new HttpParams();
 
     constructor(
