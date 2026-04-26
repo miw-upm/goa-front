@@ -7,7 +7,7 @@ import {MatCheckbox} from '@angular/material/checkbox';
 import {MatDialogActions} from '@angular/material/dialog';
 import {MatIcon} from '@angular/material/icon';
 
-import {SignerDocument} from '../SignerDocument.model';
+import {SignerDocument} from '../signer-document.model';
 import {CustomerService} from '../../edit-profile/customer.service';
 import {SignerDocumentService} from "../signer-document.service";
 import {ActivatedRoute} from "@angular/router";

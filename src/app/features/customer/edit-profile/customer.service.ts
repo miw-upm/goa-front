@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {HttpService} from '@shared/ui/api/http.service';
 import {ENDPOINTS} from "@core/api/endpoints";
 import {User} from "@features/shared/models/user.model";
-import {DataProcessingConsentCreation} from "./ProcessingConsentCreation.model";
+import {DataProcessingConsentCreation} from "./processing-consent-creation.model";
 
 @Injectable({providedIn: 'root'})
 export class CustomerService {
