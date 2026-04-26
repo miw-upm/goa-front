@@ -247,7 +247,7 @@ Style Guide.
 ```
 ✓ engagement-letter.service.ts
 ✓ signer-document.component.ts
-✗ HttpViewBuilder.ts            (debería ser http-view-builder.ts)
+✗ http-view-builder.ts            (debería ser http-view-builder.ts)
 ✗ signer-document.model.ts       (debería ser signer-document.model.ts)
 ```
 

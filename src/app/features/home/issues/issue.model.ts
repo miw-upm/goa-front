@@ -1,5 +1,5 @@
 import {Role} from '@core/auth/models/role.model';
-import {UserDocumentType} from '@features/shared/models/user-document-type';
+import {UserDocumentTypeModel} from '@features/shared/models/user-document-type.model';
 
 export enum IssueType {
     BUG = 'BUG',
@@ -29,7 +29,7 @@ export interface IssueCreatedByUser {
     city?: string;
     postalCode?: string;
     province?: string;
-    documentType?: UserDocumentType;
+    documentType?: UserDocumentTypeModel;
     identity?: string;
     role?: Role;
 }
