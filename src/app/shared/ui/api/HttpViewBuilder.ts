@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import {Observable, tap, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 
-export class HttpRequestBuilder {
+export class HttpViewBuilder {
     static readonly CONNECTION_REFUSE = 0;
     static readonly UNAUTHORIZED = 401;
     private static readonly SNACK_SUCCESS_DURATION = 7000;
@@ -132,7 +132,7 @@ export class HttpRequestBuilder {
     private notifySuccess(): void {
         if (!this.successNotification) return;
         this.snackBar.open(this.successNotification, '', {
-            duration: HttpRequestBuilder.SNACK_SUCCESS_DURATION
+            duration: HttpViewBuilder.SNACK_SUCCESS_DURATION
         });
         this.successNotification = undefined;
     }
@@ -140,17 +140,17 @@ export class HttpRequestBuilder {
     private showError(notification: string): void {
         const message = this.errorNotification || notification;
         this.snackBar.open(message, 'Error', {
-            duration: HttpRequestBuilder.SNACK_ERROR_DURATION
+            duration: HttpViewBuilder.SNACK_ERROR_DURATION
         });
         this.errorNotification = undefined;
     }
 
     private handleError(response: HttpErrorResponse): Observable<never> {
-        if (response.status === HttpRequestBuilder.UNAUTHORIZED) {
+        if (response.status === HttpViewBuilder.UNAUTHORIZED) {
             this.showError('Unauthorized');
             void this.router.navigate(['']);
             return throwError(() => response);
-        } else if (response.status === HttpRequestBuilder.CONNECTION_REFUSE) {
+        } else if (response.status === HttpViewBuilder.CONNECTION_REFUSE) {
             this.showError('Network error');
             return throwError(() => response);
         } else {

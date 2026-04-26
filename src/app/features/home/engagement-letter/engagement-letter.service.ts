@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 
-import {HttpService} from '@core/http/http.service';
+import {HttpService} from '@shared/ui/api/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
 import {EngagementLetter} from './models/engagement-letter.model';
 import {EngagementLetterFindCriteria} from './models/engagement-letter-find-criteria.model';
