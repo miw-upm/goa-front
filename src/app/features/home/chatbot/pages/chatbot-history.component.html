@@ -1,12 +1,24 @@
 <section class="chatbot-history-shell">
     <div class="chatbot-history-card">
         <div class="chatbot-history-header">
-            <div class="chatbot-history-title-block">
-                <h2>Histórico de conversaciones</h2>
-                <div class="scope-banner">
-                    <strong>Consulta conversaciones anteriores</strong>
-                    <span>Selecciona una conversación en la columna izquierda para revisar su intercambio de mensajes.</span>
+            <div class="header-top-row">
+                <h2>Hist&oacute;rico de conversaciones</h2>
+
+                <div class="header-actions">
+                    <button
+                            mat-icon-button
+                            type="button"
+                            routerLink="/home/chatbot"
+                            aria-label="Ir al asistente"
+                            matTooltip="Ir al asistente">
+                        <mat-icon>chat</mat-icon>
+                    </button>
                 </div>
+            </div>
+
+            <div class="scope-banner">
+                <strong>Consulta conversaciones anteriores</strong>
+                <span>Selecciona una conversaci&oacute;n en la columna izquierda para revisar su intercambio de mensajes.</span>
             </div>
         </div>
 
@@ -65,7 +77,7 @@
                 @if (!selectedConversation && !loadingConversations) {
                     <div class="chat-state empty-state">
                         <mat-icon>chat</mat-icon>
-                        <p>Selecciona una conversación para ver sus mensajes.</p>
+                        <p>Selecciona una conversaci&oacute;n para ver sus mensajes.</p>
                     </div>
                 } @else if (loadingMessages) {
                     <div class="chat-state loading-state">
@@ -97,7 +109,7 @@
                             @if (!messages.length) {
                                 <div class="chat-state empty-state inline-empty-state">
                                     <mat-icon>speaker_notes_off</mat-icon>
-                                    <p>Esta conversación no tiene mensajes.</p>
+                                    <p>Esta conversaci&oacute;n no tiene mensajes.</p>
                                 </div>
                             }
                         </div>

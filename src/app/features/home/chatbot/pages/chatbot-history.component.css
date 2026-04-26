@@ -25,21 +25,31 @@
 
 .chatbot-history-header {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: stretch;
     gap: 16px;
 }
 
-.chatbot-history-title-block {
+.header-top-row {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
     min-width: 0;
-    flex: 1;
 }
 
-.chatbot-history-title-block h2 {
+.header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex: 0 0 auto;
+}
+
+.header-top-row h2 {
     margin: 0;
+    min-width: 0;
+    flex: 1 1 auto;
     font-size: 1.9rem;
     line-height: 1.15;
     font-weight: 700;
@@ -47,10 +57,10 @@
 }
 
 .scope-banner {
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
+    align-self: stretch;
     gap: 4px;
-    max-width: calc(100% - 12px);
     padding: 10px 14px;
     border-radius: 12px;
     background: #fff8e8;
@@ -58,6 +68,7 @@
     color: #4b5563;
     font-size: 0.95rem;
     line-height: 1.35;
+    box-sizing: border-box;
 }
 
 .history-layout {
@@ -286,8 +297,17 @@
         max-height: none;
     }
 
-    .chatbot-history-title-block h2 {
+    .header-top-row {
+        flex-wrap: wrap;
+    }
+
+    .header-top-row h2 {
         font-size: 1.5rem;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: flex-start;
     }
 
     .history-layout {
