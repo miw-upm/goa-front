@@ -1,7 +1,10 @@
 import {CommonModule} from "@angular/common";
 import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
+import {RouterLink} from "@angular/router";
+import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 import {ChatbotService} from "../chatbot.service";
 import {ChatbotConversationSummary, ChatbotMessageView} from "../models/chatbot.model";
@@ -11,8 +14,11 @@ import {ChatbotConversationSummary, ChatbotMessageView} from "../models/chatbot.
     selector: "app-chatbot-history",
     imports: [
         CommonModule,
+        MatButtonModule,
         MatIconModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatTooltipModule,
+        RouterLink
     ],
     templateUrl: "./chatbot-history.component.html",
     styleUrls: ["./chatbot-history.component.css"]
