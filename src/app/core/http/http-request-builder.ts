@@ -5,26 +5,31 @@ import { map } from 'rxjs/operators';
 export class HttpRequestBuilder {
     private params: HttpParams = new HttpParams();
 
-    constructor(private readonly http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {
+    }
 
     param(key: string, value: string): this {
-        if (value != null) this.params = this.params.append(key, value);
+        if (value != null) {
+            this.params = this.params.append(key, value);
+        }
         return this;
     }
 
     paramsFrom(dto: object): this {
         Object.entries(dto).forEach(([key, value]) => {
-            if (value !== null && value !== undefined) this.param(key, String(value));
+            if (value !== null && value !== undefined) {
+                this.param(key, String(value));
+            }
         });
         return this;
     }
 
-    get<T>(endpoint: string): Observable<T> {
-        return this.http.get<T>(endpoint, this.jsonOptions());
-    }
-
     post<T>(endpoint: string, body?: object): Observable<T> {
         return this.http.post<T>(endpoint, body, this.jsonOptions());
+    }
+
+    get<T>(endpoint: string): Observable<T> {
+        return this.http.get<T>(endpoint, this.jsonOptions());
     }
 
     put<T>(endpoint: string, body?: object): Observable<T> {
@@ -36,7 +41,8 @@ export class HttpRequestBuilder {
     }
 
     delete(endpoint: string): Observable<void> {
-        return this.http.delete<void>(endpoint, this.jsonOptions()).pipe(map(() => void 0));
+        return this.http.delete<void>(endpoint, this.jsonOptions())
+            .pipe(map(() => void 0));
     }
 
     getBlob(endpoint: string): Observable<Blob> {
@@ -44,18 +50,24 @@ export class HttpRequestBuilder {
     }
 
     private jsonOptions() {
-        return {
-            headers: new HttpHeaders().set('Accept', 'application/json'),
+        const headers = new HttpHeaders().set('Accept', 'application/json');
+        const options = {
+            headers,
             params: this.params,
             responseType: 'json' as const,
         };
+        this.params = new HttpParams();
+        return options;
     }
 
     private blobOptions() {
-        return {
-            headers: new HttpHeaders().set('Accept', 'application/pdf, application/json'),
+        const headers = new HttpHeaders().set('Accept', 'application/pdf, application/json');
+        const options = {
+            headers,
             params: this.params,
             responseType: 'blob' as const,
         };
+        this.params = new HttpParams();
+        return options;
     }
 }

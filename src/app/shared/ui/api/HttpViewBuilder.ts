@@ -1,8 +1,9 @@
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {Router} from '@angular/router';
-import {Observable, tap, throwError} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { Observable, tap, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import {HttpRequestBuilder} from "@core/http/http-request-builder";
 
 export class HttpViewBuilder {
     static readonly CONNECTION_REFUSE = 0;
@@ -12,28 +13,23 @@ export class HttpViewBuilder {
 
     private successNotification: string | undefined;
     private errorNotification: string | undefined;
-    private params: HttpParams = new HttpParams();
+    private readonly builder: HttpRequestBuilder;
 
     constructor(
-        private readonly http: HttpClient,
+        http: HttpClient,
         private readonly snackBar: MatSnackBar,
         private readonly router: Router
     ) {
+        this.builder = new HttpRequestBuilder(http);
     }
 
     param(key: string, value: string): this {
-        if (value != null) {
-            this.params = this.params.append(key, value);
-        }
+        this.builder.param(key, value);
         return this;
     }
 
     paramsFrom(dto: object): this {
-        Object.entries(dto).forEach(([key, value]) => {
-            if (value !== null && value !== undefined) {
-                this.param(key, String(value));
-            }
-        });
+        this.builder.paramsFrom(dto);
         return this;
     }
 
@@ -48,8 +44,7 @@ export class HttpViewBuilder {
     }
 
     post<T>(endpoint: string, body?: object): Observable<T> {
-        return this.http
-            .post<T>(endpoint, body, this.jsonOptions())
+        return this.builder.post<T>(endpoint, body)
             .pipe(
                 tap(() => this.notifySuccess()),
                 catchError(error => this.handleError(error))
@@ -57,8 +52,7 @@ export class HttpViewBuilder {
     }
 
     get<T>(endpoint: string): Observable<T> {
-        return this.http
-            .get<T>(endpoint, this.jsonOptions())
+        return this.builder.get<T>(endpoint)
             .pipe(
                 tap(() => this.notifySuccess()),
                 catchError(error => this.handleError(error))
@@ -66,8 +60,7 @@ export class HttpViewBuilder {
     }
 
     put<T>(endpoint: string, body?: object): Observable<T> {
-        return this.http
-            .put<T>(endpoint, body, this.jsonOptions())
+        return this.builder.put<T>(endpoint, body)
             .pipe(
                 tap(() => this.notifySuccess()),
                 catchError(error => this.handleError(error))
@@ -75,8 +68,7 @@ export class HttpViewBuilder {
     }
 
     patch<T>(endpoint: string, body?: object): Observable<T> {
-        return this.http
-            .patch<T>(endpoint, body, this.jsonOptions())
+        return this.builder.patch<T>(endpoint, body)
             .pipe(
                 tap(() => this.notifySuccess()),
                 catchError(error => this.handleError(error))
@@ -84,49 +76,24 @@ export class HttpViewBuilder {
     }
 
     delete(endpoint: string): Observable<void> {
-        return this.http
-            .delete<void>(endpoint, this.jsonOptions())
+        return this.builder.delete(endpoint)
             .pipe(
                 tap(() => this.notifySuccess()),
-                map(() => void 0),
                 catchError(error => this.handleError(error))
             );
     }
 
     openPdf(endpoint: string): Observable<void> {
-        return this.http
-            .get(endpoint, this.blobOptions())
+        return this.builder.getBlob(endpoint)
             .pipe(
                 tap(() => this.notifySuccess()),
                 map((blob: Blob) => {
-                    const safeBlob = blob ?? new Blob([], {type: 'application/pdf'});
+                    const safeBlob = blob ?? new Blob([], { type: 'application/pdf' });
                     window.open(window.URL.createObjectURL(safeBlob));
                     return void 0;
                 }),
                 catchError(err => this.handleError(err))
             );
-    }
-
-    private jsonOptions() {
-        const headers = new HttpHeaders().set('Accept', 'application/json');
-        const options = {
-            headers,
-            params: this.params,
-            responseType: 'json' as const,
-        };
-        this.params = new HttpParams();
-        return options;
-    }
-
-    private blobOptions() {
-        const headers = new HttpHeaders().set('Accept', 'application/pdf, application/json');
-        const options = {
-            headers,
-            params: this.params,
-            responseType: 'blob' as const,
-        };
-        this.params = new HttpParams();
-        return options;
     }
 
     private notifySuccess(): void {
