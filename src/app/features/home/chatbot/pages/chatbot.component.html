@@ -1,39 +1,39 @@
 <section class="chatbot-shell" [class.dialog-mode]="isDialogMode()">
     <div class="chatbot-card">
         <div class="chatbot-header">
-            <div class="chatbot-title-block">
+            <div class="header-top-row">
                 <h2>Asistente conversacional</h2>
 
-                <div class="conversation-mode-banner">
-                    <strong>{{ conversationModeLabel() }}</strong>
-                    <span>{{ conversationModeDescription() }}</span>
-                </div>
-                <div class="scope-banner">
-                    <strong>{{ scopeTitle() }}</strong>
-                    <span>{{ scopeDescription() }}</span>
-                </div>
+                <div class="header-actions">
+                    @if (!isDialogMode()) {
+                        <button mat-stroked-button type="button" routerLink="/home/chatbot/history">
+                            Ver hist&oacute;rico
+                        </button>
+                    }
 
-                @if (dialogData?.engagementLetterId) {
-                    <div class="context-banner">
-                        <strong>Contexto activo:</strong>
-                        Hoja de encargo {{ dialogData?.engagementLetterId }}
-                    </div>
-                }
+                    @if (isDialogMode()) {
+                        <button mat-icon-button type="button" aria-label="Cerrar" (click)="close()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    }
+                </div>
             </div>
 
-            <div class="header-actions">
-                @if (!isDialogMode()) {
-                    <button mat-stroked-button type="button" routerLink="/home/chatbot/history">
-                        Ver histórico
-                    </button>
-                }
-
-                @if (isDialogMode()) {
-                    <button mat-icon-button type="button" aria-label="Cerrar" (click)="close()">
-                        <mat-icon>close</mat-icon>
-                    </button>
-                }
+            <div class="conversation-mode-banner">
+                <strong>{{ conversationModeLabel() }}</strong>
+                <span>{{ conversationModeDescription() }}</span>
             </div>
+            <div class="scope-banner">
+                <strong>{{ scopeTitle() }}</strong>
+                <span>{{ scopeDescription() }}</span>
+            </div>
+
+            @if (dialogData?.engagementLetterId) {
+                <div class="context-banner">
+                    <strong>Contexto activo:</strong>
+                    Hoja de encargo {{ dialogData?.engagementLetterId }}
+                </div>
+            }
         </div>
 
         @if (initializing) {
