@@ -6,8 +6,13 @@
 
                 <div class="header-actions">
                     @if (!isDialogMode()) {
-                        <button mat-stroked-button type="button" routerLink="/home/chatbot/history">
-                            Ver hist&oacute;rico
+                        <button
+                                mat-icon-button
+                                type="button"
+                                routerLink="/home/chatbot/history"
+                                aria-label="Ver histórico"
+                                matTooltip="Ver histórico">
+                            <mat-icon>history</mat-icon>
                         </button>
                     }
 
