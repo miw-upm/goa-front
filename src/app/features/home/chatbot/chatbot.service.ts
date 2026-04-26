@@ -49,17 +49,27 @@ export class ChatbotService {
             .error('No se pudieron cargar los mensajes de la conversación')
             .get<ChatbotConversationMessageResponse[]>(ENDPOINTS.chatbot.readMessagesOneConversation(conversationId))
             .pipe(
-                map(messages => messages.map(message => ({
-                    sender: message.sender === 'USER' ? 'USER' : 'ASSISTANT',
-                    content: message.content ?? message.message ?? '',
-                    createdAt: message.createdAt,
-                    restricted: !!message.restricted
-                })))
+                map((messages: ChatbotConversationMessageResponse[]) =>
+                    messages.map((message: ChatbotConversationMessageResponse) => this.toChatbotMessageView(message))
+                )
             );
     }
 
     closeConversation(conversationId: string): Observable<void> {
         return this.httpService.request()
             .patch<void>(ENDPOINTS.chatbot.closeConversation(conversationId), {});
+    }
+
+    private toChatbotMessageView(message: ChatbotConversationMessageResponse): ChatbotMessageView {
+        return {
+            sender: this.toSenderType(message.senderType),
+            content: message.content ?? '',
+            createdAt: message.createdAt,
+            restricted: Boolean(message.restricted)
+        };
+    }
+
+    private toSenderType(senderType?: string): 'USER' | 'ASSISTANT' {
+        return senderType === 'USER' ? 'USER' : 'ASSISTANT';
     }
 }
