@@ -50,7 +50,7 @@ export class ChatbotService {
             .get<ChatbotConversationMessageResponse[]>(ENDPOINTS.chatbot.readMessagesOneConversation(conversationId))
             .pipe(
                 map(messages => messages.map(message => ({
-                    sender: message.sender === 'USER' ? 'USER' : 'ASSISTANT',
+                    sender: this.normalizeSender(message.sender),
                     content: message.content ?? message.message ?? '',
                     createdAt: message.createdAt,
                     restricted: !!message.restricted
@@ -61,5 +61,29 @@ export class ChatbotService {
     closeConversation(conversationId: string): Observable<void> {
         return this.httpService.request()
             .patch<void>(ENDPOINTS.chatbot.closeConversation(conversationId), {});
+    }
+
+    private normalizeSender(sender: string | undefined): 'USER' | 'ASSISTANT' {
+        const normalizedSender = sender?.trim().toUpperCase();
+
+        if (!normalizedSender) {
+            return 'ASSISTANT';
+        }
+
+        if (['USER', 'CLIENT', 'CLIENTE', 'CUSTOMER', 'HUMAN', 'USUARIO'].includes(normalizedSender)) {
+            return 'USER';
+        }
+
+        if (['ASSISTANT', 'ASISTENTE', 'BOT', 'CHATBOT', 'AI', 'MODEL', 'SYSTEM'].includes(normalizedSender)) {
+            return 'ASSISTANT';
+        }
+
+        return normalizedSender.includes('USER')
+            || normalizedSender.includes('CLIENT')
+            || normalizedSender.includes('CUSTOMER')
+            || normalizedSender.includes('HUMAN')
+            || normalizedSender.includes('USUARIO')
+            ? 'USER'
+            : 'ASSISTANT';
     }
 }
