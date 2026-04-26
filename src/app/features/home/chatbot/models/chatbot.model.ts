@@ -33,9 +33,9 @@ export interface ChatbotConversationSummary {
 
 export interface ChatbotConversationMessageResponse {
     conversationId?: string;
-    sender?: 'USER' | 'ASSISTANT' | string;
+    senderType?: string;
+    messageType?: string;
     content?: string;
-    message?: string;
     createdAt?: string;
     restricted?: boolean;
 }

@@ -49,12 +49,9 @@ export class ChatbotService {
             .error('No se pudieron cargar los mensajes de la conversación')
             .get<ChatbotConversationMessageResponse[]>(ENDPOINTS.chatbot.readMessagesOneConversation(conversationId))
             .pipe(
-                map(messages => messages.map(message => ({
-                    sender: this.normalizeSender(message.sender),
-                    content: message.content ?? message.message ?? '',
-                    createdAt: message.createdAt,
-                    restricted: !!message.restricted
-                })))
+                map((messages: ChatbotConversationMessageResponse[]) =>
+                    messages.map((message: ChatbotConversationMessageResponse) => this.toChatbotMessageView(message))
+                )
             );
     }
 
@@ -63,27 +60,16 @@ export class ChatbotService {
             .patch<void>(ENDPOINTS.chatbot.closeConversation(conversationId), {});
     }
 
-    private normalizeSender(sender: string | undefined): 'USER' | 'ASSISTANT' {
-        const normalizedSender = sender?.trim().toUpperCase();
+    private toChatbotMessageView(message: ChatbotConversationMessageResponse): ChatbotMessageView {
+        return {
+            sender: this.toSenderType(message.senderType),
+            content: message.content ?? '',
+            createdAt: message.createdAt,
+            restricted: Boolean(message.restricted)
+        };
+    }
 
-        if (!normalizedSender) {
-            return 'ASSISTANT';
-        }
-
-        if (['USER', 'CLIENT', 'CLIENTE', 'CUSTOMER', 'HUMAN', 'USUARIO'].includes(normalizedSender)) {
-            return 'USER';
-        }
-
-        if (['ASSISTANT', 'ASISTENTE', 'BOT', 'CHATBOT', 'AI', 'MODEL', 'SYSTEM'].includes(normalizedSender)) {
-            return 'ASSISTANT';
-        }
-
-        return normalizedSender.includes('USER')
-            || normalizedSender.includes('CLIENT')
-            || normalizedSender.includes('CUSTOMER')
-            || normalizedSender.includes('HUMAN')
-            || normalizedSender.includes('USUARIO')
-            ? 'USER'
-            : 'ASSISTANT';
+    private toSenderType(senderType?: string): 'USER' | 'ASSISTANT' {
+        return senderType === 'USER' ? 'USER' : 'ASSISTANT';
     }
 }
