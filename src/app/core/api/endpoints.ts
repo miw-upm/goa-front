@@ -131,6 +131,10 @@ export const ENDPOINTS = {
             `${CHATBOT_ROOT}/conversations/contextual`,
         generalConversation: () =>
             `${CHATBOT_ROOT}/conversations/general`,
+        readAllConversations: () =>
+            `${CHATBOT_ROOT}/conversations`,
+        readMessagesOneConversation: (conversationId: string) =>
+            `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/messages`,
         closeConversation: (conversationId: string) =>
             `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/close`,
         messages: () =>

@@ -22,6 +22,7 @@ import {InvoiceService} from "./billing/invoice.service";
 import {IncomeService} from "./billing/income.service";
 import {ExpenseService} from "./billing/expense.service";
 import {ChatbotComponent} from "./chatbot/pages/chatbot.component";
+import {ChatbotHistoryComponent} from "./chatbot/pages/chatbot-history.component";
 import {EventsComponent} from "./events/pages/events.component";
 import {EventService} from "./events/event.service";
 import {AlertsComponent} from "./alerts/pages/alerts.component";
@@ -133,6 +134,12 @@ export const routes: Routes = [
                 canActivate: [RoleGuardService],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [ExpenseService],
+            },
+            {
+                path: 'chatbot/history',
+                component: ChatbotHistoryComponent,
+                canActivate: [RoleGuardService],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR, Role.CUSTOMER]},
             },
             {
                 path: 'chatbot',

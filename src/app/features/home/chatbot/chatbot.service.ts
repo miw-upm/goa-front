@@ -1,12 +1,15 @@
 import {Injectable} from "@angular/core";
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 import {HttpService} from "@core/http/http.service";
 import {ENDPOINTS} from "@core/api/endpoints";
 import {
+    ChatbotConversationMessageResponse,
+    ChatbotConversationSummary,
     ChatbotContextualConversationRequest,
     ChatbotContextualConversationResponse,
     ChatbotMessageRequest,
-    ChatbotMessageResponse
+    ChatbotMessageResponse,
+    ChatbotMessageView
 } from "./models/chatbot.model";
 
 @Injectable({ providedIn: 'root' })
@@ -33,6 +36,26 @@ export class ChatbotService {
         return this.httpService.request()
             .error('No se pudo obtener respuesta del asistente')
             .post(ENDPOINTS.chatbot.generalConversation(), request);
+    }
+
+    readAllConversations(): Observable<ChatbotConversationSummary[]> {
+        return this.httpService.request()
+            .error('No se pudo cargar el histórico de conversaciones')
+            .get<ChatbotConversationSummary[]>(ENDPOINTS.chatbot.readAllConversations());
+    }
+
+    readMessagesOneConversation(conversationId: string): Observable<ChatbotMessageView[]> {
+        return this.httpService.request()
+            .error('No se pudieron cargar los mensajes de la conversación')
+            .get<ChatbotConversationMessageResponse[]>(ENDPOINTS.chatbot.readMessagesOneConversation(conversationId))
+            .pipe(
+                map(messages => messages.map(message => ({
+                    sender: message.sender === 'USER' ? 'USER' : 'ASSISTANT',
+                    content: message.content ?? message.message ?? '',
+                    createdAt: message.createdAt,
+                    restricted: !!message.restricted
+                })))
+            );
     }
 
     closeConversation(conversationId: string): Observable<void> {

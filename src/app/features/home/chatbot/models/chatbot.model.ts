@@ -21,6 +21,25 @@ export interface ChatbotMessageResponse {
     createdAt?: string;
 }
 
+export interface ChatbotConversationSummary {
+    conversationId: string;
+    title?: string;
+    preview?: string;
+    engagementLetterId?: string;
+    createdAt?: string;
+    updatedAt?: string;
+    closedAt?: string;
+}
+
+export interface ChatbotConversationMessageResponse {
+    conversationId?: string;
+    sender?: 'USER' | 'ASSISTANT' | string;
+    content?: string;
+    message?: string;
+    createdAt?: string;
+    restricted?: boolean;
+}
+
 export interface ChatbotMessageView {
     sender: 'USER' | 'ASSISTANT';
     content: string;
