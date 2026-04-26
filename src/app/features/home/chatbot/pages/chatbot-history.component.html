@@ -1,0 +1,109 @@
+<section class="chatbot-history-shell">
+    <div class="chatbot-history-card">
+        <div class="chatbot-history-header">
+            <div class="chatbot-history-title-block">
+                <h2>Histórico de conversaciones</h2>
+                <div class="scope-banner">
+                    <strong>Consulta conversaciones anteriores</strong>
+                    <span>Selecciona una conversación en la columna izquierda para revisar su intercambio de mensajes.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="history-layout">
+            <aside class="conversations-panel">
+                <div class="panel-header">
+                    <h3>Conversaciones</h3>
+                </div>
+
+                @if (loadingConversations) {
+                    <div class="chat-state loading-state">
+                        <mat-spinner diameter="32"></mat-spinner>
+                        <p>Cargando conversaciones...</p>
+                    </div>
+                } @else if (conversationsError) {
+                    <div class="chat-state empty-state">
+                        <mat-icon>error_outline</mat-icon>
+                        <p>{{ conversationsError }}</p>
+                    </div>
+                } @else if (!conversations.length) {
+                    <div class="chat-state empty-state">
+                        <mat-icon>forum</mat-icon>
+                        <p>No hay conversaciones disponibles.</p>
+                    </div>
+                } @else {
+                    <div class="conversations-list">
+                        <button
+                                *ngFor="let conversation of conversations; let index = index; trackBy: trackConversation"
+                                type="button"
+                                class="conversation-item"
+                                [class.active]="selectedConversation?.conversationId === conversation.conversationId"
+                                (click)="selectConversation(conversation)">
+                            <div class="conversation-item-top">
+                                <strong>{{ conversationTitle(conversation, index) }}</strong>
+                                @if (conversationTimestamp(conversation); as timestamp) {
+                                    <span>{{ timestamp | date:'dd/MM/yyyy HH:mm' }}</span>
+                                }
+                            </div>
+
+                            <p>{{ conversationPreview(conversation) }}</p>
+                        </button>
+                    </div>
+                }
+            </aside>
+
+            <section class="messages-stage">
+                <div class="panel-header messages-header">
+                    <div>
+                        <h3>{{ selectedConversationTitle() }}</h3>
+                        @if (selectedConversation?.engagementLetterId) {
+                            <span>Hoja de encargo {{ selectedConversation?.engagementLetterId }}</span>
+                        }
+                    </div>
+                </div>
+
+                @if (!selectedConversation && !loadingConversations) {
+                    <div class="chat-state empty-state">
+                        <mat-icon>chat</mat-icon>
+                        <p>Selecciona una conversación para ver sus mensajes.</p>
+                    </div>
+                } @else if (loadingMessages) {
+                    <div class="chat-state loading-state">
+                        <mat-spinner diameter="36"></mat-spinner>
+                        <p>Cargando mensajes...</p>
+                    </div>
+                } @else if (messagesError) {
+                    <div class="chat-state empty-state">
+                        <mat-icon>error_outline</mat-icon>
+                        <p>{{ messagesError }}</p>
+                    </div>
+                } @else {
+                    <div class="messages-panel">
+                        <div #messagesContainer class="messages-container">
+                            <div *ngFor="let item of messages; trackBy: trackMessage"
+                                 class="message"
+                                 [ngClass]="{
+                                     'user': item.sender === 'USER',
+                                     'assistant': item.sender === 'ASSISTANT',
+                                     'restricted': !!item.restricted
+                                 }">
+                                <strong>{{ senderLabel(item) }}</strong>
+                                <p>{{ item.content }}</p>
+                                @if (item.createdAt) {
+                                    <span class="message-timestamp">{{ item.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+                                }
+                            </div>
+
+                            @if (!messages.length) {
+                                <div class="chat-state empty-state inline-empty-state">
+                                    <mat-icon>speaker_notes_off</mat-icon>
+                                    <p>Esta conversación no tiene mensajes.</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </section>
+        </div>
+    </div>
+</section>
