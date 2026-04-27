@@ -5,14 +5,16 @@ import {HttpService} from '@shared/ui/api/http.service';
 import {ENDPOINTS} from "@core/api/endpoints";
 import {User} from "@features/shared/models/user.model";
 import {DataProcessingConsentCreation} from "./processing-consent-creation.model";
+import {SharedCustomerService} from "@features/shared/services/shared-customer.service";
 
 @Injectable({providedIn: 'root'})
 export class CustomerService {
-    constructor(private readonly httpService: HttpService) {
+    constructor(private readonly httpService: HttpService,
+                private readonly sharedCustomerService: SharedCustomerService,) {
     }
 
     readWithToken(mobile: string, token: string): Observable<User> {
-        return this.httpService.request().get(ENDPOINTS.users.byMobileAndToken(mobile, token));
+        return this.sharedCustomerService.readWithToken(mobile, token);
     }
 
     updateWithToken(oldMobile: string, user: User, dataProcessingConsentCreation: DataProcessingConsentCreation,

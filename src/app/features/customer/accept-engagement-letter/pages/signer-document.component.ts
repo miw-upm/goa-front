@@ -10,6 +10,8 @@ import {MatCheckbox} from "@angular/material/checkbox";
 import {MatDialogActions} from "@angular/material/dialog";
 import {MatCard, MatCardContent, MatCardTitle} from "@angular/material/card";
 import {FormsModule} from "@angular/forms";
+import {SharedUserService} from "@features/shared/services/shared-user.service";
+import {SharedCustomerService} from "@features/shared/services/shared-customer.service";
 
 @Component({
     standalone: true,
@@ -24,20 +26,23 @@ import {FormsModule} from "@angular/forms";
 export class SignerDocumentComponent implements OnInit {
     @ViewChild(DocumentAcceptanceComponent) acceptance!: DocumentAcceptanceComponent;
 
-    customerName = '';
+    customerName = 'Cliente';
     private path = '';
     private mobile = '';
     private token = '';
 
     constructor(
         private readonly signerDocumentService: SignerDocumentService,
-        private readonly route: ActivatedRoute
+        private readonly route: ActivatedRoute,
+        private readonly sharedCustomerService: SharedCustomerService
     ) {}
 
     ngOnInit(): void {
         this.path = this.route.snapshot.url[1]?.path ?? '';
         this.mobile = this.route.snapshot.paramMap.get('mobile') ?? '';
         this.token = this.route.snapshot.paramMap.get('token') ?? '';
+        this.sharedCustomerService.readWithToken(this.mobile, this.token)
+            .subscribe(user => this.customerName = user.firstName);
     }
 
     onDownload(): void {
