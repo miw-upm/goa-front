@@ -118,12 +118,13 @@ export class EngagementLettersComponent implements OnInit {
                 this.dialog.open(ClipboardToastDialogComponent, {
                     data: 'Enlace copiado al portapapeles'
                 });
-            },
-            error: error => {
-                this.dialog.open(WarningDialogComponent, {
-                    data: {title: 'Warning', message: error.message}
-                });
             }
+            // ,
+            // error: error => {
+            //     this.dialog.open(WarningDialogComponent, {
+            //         data: {title: 'Warning', message: error.message}
+            //     });
+            // }
         });
     }
 

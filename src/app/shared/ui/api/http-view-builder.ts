@@ -146,19 +146,35 @@ export class HttpViewBuilder {
             return throwError(() => response);
         }
         if (isBackendError(response.error)) {
-            this.showError(this.formatBackendError(response));
+            this.showBackendError(response.error, response.status);
             return throwError(() => response.error);
         }
         this.showError('No response from server');
         return throwError(() => response.error);
     }
 
-    private formatBackendError(response: HttpErrorResponse): string {
-        const err = response.error as BackendError;
-        const base = `${err.error} (${response.status}): ${err.message}`;
-        if (this.debugMode && err.cause) {
-            return `${base} — ${err.cause}`;
+    private showBackendError(error: BackendError, status: number): void {
+        if (this.debugMode) {
+            this.snackBar.open(
+                `${error.error} (${status}): ${error.message} — ${error.cause}`,
+                'Error',
+                { duration: HttpViewBuilder.SNACK_ERROR_DURATION }
+            );
         }
-        return base;
+        if (this.warningMode) {
+            this.dialog.open(WarningDialogComponent, {
+                data: { title: 'Warning', message: error.message }
+            });
+        }
+        if (!this.debugMode && !this.warningMode) {
+            this.snackBar.open(
+                `${error.error} (${status}): ${error.message}`,
+                'Error',
+                { duration: HttpViewBuilder.SNACK_ERROR_DURATION }
+            );
+        }
+        this.errorNotification = undefined;
+        this.warningMode = false;
+        this.debugMode = false;
     }
 }

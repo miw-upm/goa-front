@@ -60,6 +60,7 @@ export class EngagementLetterService {
 
     pendingSigners(engagement: EngagementLetter): Observable<User[]> {
         return this.httpService.request()
+            .warning()
             .get<User[]>(ENDPOINTS.engagementLetters.pendingSigners(engagement.id));
     }
 }
