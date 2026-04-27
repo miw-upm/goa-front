@@ -83,8 +83,10 @@
     </mat-dialog-actions>
 
     <!-- CONFIRMACIÓN POST-ENVÍO -->
-    <div *ngIf="completedFlag && confirmationMessage" class="signed-confirmation">
-        <p class="signed-message">{{ confirmationMessage }}</p>
+    <div *ngIf="completedFlag" class="signed-confirmation">
+        <p class="signed-message">
+            Su firma ha sido registrada correctamente. Le agradecemos la confianza en Ocaña Abogados.
+        </p>
         <div class="company-info" *ngIf="showCompanyInfo">
             <strong>Ocaña Abogados</strong><br/>
             Paseo de la Castellana, 93-2ª · 28046 Madrid<br/>

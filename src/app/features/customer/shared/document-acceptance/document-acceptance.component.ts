@@ -50,7 +50,6 @@ export class DocumentAcceptanceComponent implements AfterViewInit, OnDestroy {
     @Input() downloadLabel = 'Descargar documento';
     @Input() downloadHint = 'Es necesario descargar y leer el documento antes de poder continuar.';
     @Input() downloadDoneLabel = 'Documento descargado correctamente';
-    @Input() confirmationMessage = '';
     @Input() showCompanyInfo = true;
 
     @Output() downloadRequested = new EventEmitter<void>();
