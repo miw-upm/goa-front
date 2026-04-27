@@ -1,0 +1,91 @@
+<mat-card>
+    <mat-card-title class="title-container">
+        <div class="profile-header">
+            <img alt="logo" height="48" ngSrc="../../../../../assets/oa-s.png" width="48"/>
+            <h4 class="mat-headline-5">{{ title }}</h4>
+        </div>
+    </mat-card-title>
+
+    <mat-card-content>
+        <div class="instructions" *ngIf="greeting || introText || instructionsText">
+            <strong *ngIf="greeting">{{ greeting }}</strong>
+            <p *ngIf="introText">{{ introText }}</p>
+            <p *ngIf="instructionsText">{{ instructionsText }}</p>
+        </div>
+
+        <!-- DESCARGA (si flag activo) -->
+        <div class="download-wrapper" *ngIf="downloadEnabled">
+            <button (click)="onDownloadClick()"
+                    [disabled]="completedFlag"
+                    color="primary"
+                    mat-raised-button
+                    type="button">
+                <mat-icon>download</mat-icon>
+                {{ downloadLabel }}
+            </button>
+            <span *ngIf="!documentDownloaded" class="download-hint">
+                {{ downloadHint }}
+            </span>
+            <span *ngIf="documentDownloaded" class="download-done">
+                <mat-icon>check_circle</mat-icon>
+                {{ downloadDoneLabel }}
+            </span>
+        </div>
+
+        <!-- FIRMA MANUSCRITA (si flag activo) -->
+        <div *ngIf="signatureEnabled"
+             [class.disabled]="!isSignatureUnlocked() || completedFlag"
+             class="signature-wrapper">
+            <canvas #signaturePad
+                    (pointercancel)="stopDrawing()"
+                    (pointerdown)="startDrawing($event)"
+                    (pointerleave)="stopDrawing()"
+                    (pointermove)="draw($event)"
+                    (pointerup)="stopDrawing()"
+                    class="signature-pad">
+            </canvas>
+            <div class="signature-actions">
+                <button (click)="clearSignature()"
+                        [disabled]="isEmpty || !isSignatureUnlocked() || completedFlag"
+                        mat-stroked-button
+                        type="button">
+                    <mat-icon>refresh</mat-icon>
+                    Repetir firma
+                </button>
+            </div>
+        </div>
+
+        <!-- CHECKBOX DE ACEPTACIÓN (si flag activo) -->
+        <mat-checkbox *ngIf="acceptanceEnabled"
+                      [(ngModel)]="accepted"
+                      [disabled]="!isAcceptanceUnlocked() || completedFlag"
+                      [ngModelOptions]="{standalone: true}"
+                      required>
+            {{ acceptanceLabel }}
+        </mat-checkbox>
+    </mat-card-content>
+
+    <!-- BOTÓN ENVIAR (si hay algo que enviar) -->
+    <mat-dialog-actions align="center" *ngIf="hasSubmittableContent()">
+        <button (click)="update()"
+                [disabled]="!canSubmit() || completedFlag"
+                class="btn-update"
+                color="primary"
+                mat-raised-button
+                type="button">
+            {{ submitLabel }}
+        </button>
+    </mat-dialog-actions>
+
+    <!-- CONFIRMACIÓN POST-ENVÍO -->
+    <div *ngIf="completedFlag && confirmationMessage" class="signed-confirmation">
+        <p class="signed-message">{{ confirmationMessage }}</p>
+        <div class="company-info" *ngIf="showCompanyInfo">
+            <strong>Ocaña Abogados</strong><br/>
+            Paseo de la Castellana, 93-2ª · 28046 Madrid<br/>
+            Tel.: +34 644 993 593 ·
+            <a href="mailto:nuria@ocanabogados.es">nuria&#64;ocanabogados.es</a> ·
+            <a href="https://www.ocanabogados.es" rel="noopener" target="_blank">www.ocanabogados.es</a>
+        </div>
+    </div>
+</mat-card>

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {filter, Observable, of, tap} from 'rxjs';
+import {filter, Observable, of} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
@@ -17,7 +17,7 @@ import {EngagementLetter} from '../models/engagement-letter.model';
 import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
 import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
 import {User} from '@features/shared/models/user.model';
-import {SelectLetterLinkDialogComponent} from "../dialogs/select-letter-link.dialog.component";
+import {SelectLetterLinkDialogComponent} from "../dialogs/select-letter-link-dialog.component";
 import {switchMap} from "rxjs/operators";
 
 @Component({
@@ -27,20 +27,17 @@ import {switchMap} from "rxjs/operators";
     templateUrl: 'engagement-letters.component.html'
 })
 export class EngagementLettersComponent implements OnInit {
-    deleteVisibility = false;
     title = 'Hojas de Encargo';
     engagementLetters: Observable<EngagementLetter[]> = of([]);
     engagementLetter: Observable<EngagementLetter>;
-    criteria: EngagementLetterFindCriteria = {opened: true};
+    hiddenFields = ['id', 'discount', 'attachments', 'paymentMethods', 'legalClause']
     changeFields = ['owner:firstName.familyName.mobile'];
 
-    constructor(
-        private readonly dialog: MatDialog,
-        private readonly engagementLettersService: EngagementLetterService,
-        private readonly router: Router,
-        private readonly route: ActivatedRoute,
-        auth: AuthService
-    ) {
+    deleteVisibility = false;
+    criteria: EngagementLetterFindCriteria = {opened: true};
+
+    constructor(private readonly dialog: MatDialog, private readonly engagementLettersService: EngagementLetterService,
+                private readonly router: Router, private readonly route: ActivatedRoute, auth: AuthService) {
         this.deleteVisibility = auth.isAdmin();
     }
 
@@ -80,7 +77,7 @@ export class EngagementLettersComponent implements OnInit {
         this.dialog.open(CancelYesDialogComponent, {
             data: {
                 title: 'Opción peligrosa!!!',
-                message: '¿Estás seguro de eliminar esta hoja de encargo?\n\nSi es una Hoja antigua, podrían quedar conexiones rotas!!!'
+                message: '¿Estás seguro de eliminar esta Hoja de Encargo?\n\nSi es una Hoja antigua, podrían quedar conexiones rotas!!!'
             }
         }).afterClosed().subscribe(result => {
             if (result) {
@@ -108,20 +105,10 @@ export class EngagementLettersComponent implements OnInit {
         });
     }
 
-    navigateToEvents(engagement: EngagementLetter): void {
-        if (!engagement?.id) return;
-        this.router.navigate(['/home/engagement-letters', engagement.id, 'events']);
-    }
-
-    navigateToAlerts(engagement: EngagementLetter): void {
-        if (!engagement?.id) return;
-        this.router.navigate(['/home/engagement-letters', engagement.id, 'alerts']);
-    }
-
     link(engagement: EngagementLetter): void {
         this.engagementLettersService.pendingSigners(engagement).pipe(
             switchMap(users => this.dialog.open(SelectLetterLinkDialogComponent, {
-                data: { users }
+                data: {users}
             }).afterClosed()),
             filter((user): user is User => !!user),
             switchMap(user => this.engagementLettersService.createAccessLink(engagement, user))
@@ -129,14 +116,15 @@ export class EngagementLettersComponent implements OnInit {
             next: link => {
                 navigator.clipboard.writeText(link);
                 this.dialog.open(ClipboardToastDialogComponent, {
-                    data: 'Access link created and copied'
-                });
-            },
-            error: error => {
-                this.dialog.open(WarningDialogComponent, {
-                    data: { title: 'Warning', message: error.message }
+                    data: 'Enlace copiado al portapapeles'
                 });
             }
+            // ,
+            // error: error => {
+            //     this.dialog.open(WarningDialogComponent, {
+            //         data: {title: 'Warning', message: error.message}
+            //     });
+            // }
         });
     }
 

@@ -10,7 +10,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatMenuModule} from '@angular/material/menu';
 
 import {DataCellComponent} from '@shared/ui/crud/data-cell.component';
-import {ReadDetailDialogComponent} from '@shared/ui/crud/read-detail.dialog.component';
+import {ReadDetailDialogComponent} from '@shared/ui/crud/read-detail-dialog.component';
 import {UppercaseWordsPipe} from '@shared/pipes/uppercase-words.pipe';
 import {CancelYesDialogComponent} from '@shared/ui/dialogs/cancel-yes-dialog.component';
 import {TypeToConfirmDialogComponent} from '@shared/ui/dialogs/type-to-confirm-dialog.component';
@@ -226,7 +226,6 @@ export class CrudComponent {
     }
 
     onTimeline(item: any): void {
-        console.log('CLICK timeline', item);
         this.timeline.emit(item);
     }
 

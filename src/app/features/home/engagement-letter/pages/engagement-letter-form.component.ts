@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {DatePipe} from '@angular/common';
+import {DatePipe, NgIf} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -26,6 +26,7 @@ import {EngagementLetter} from '../models/engagement-letter.model';
 import {LegalProcedure} from '../models/legal-procedure.model';
 import {LegalProcedureEditDialogComponent} from '../dialogs/legal-procedure-edit-dialog.component';
 import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
+import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
 
 @Component({
     standalone: true,
@@ -45,7 +46,8 @@ import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.com
         SearchByUserComponent,
         SearchByLegalProcedureTemplateComponent,
         AppDateFieldComponent,
-        FormListComponent
+        FormListComponent,
+        NgIf
     ],
 })
 export class EngagementLetterFormComponent implements OnInit {
@@ -82,8 +84,14 @@ export class EngagementLetterFormComponent implements OnInit {
                     lastUpdatedDate: data.lastUpdatedDate ? new Date(data.lastUpdatedDate) : undefined,
                     closingDate: data.closingDate ? new Date(data.closingDate) : undefined
                 };
+                if ((this.engagementLetter.acceptanceEngagements != null && this.engagementLetter.acceptanceEngagements.length > 0)) {
+                    this.dialog.open(WarningDialogComponent, {
+                        data: {title: 'Warning', message: 'Existen firmas en esta Hoja de Encargo'}
+                    });
+                }
             });
         }
+
     }
 
     save(): void {
@@ -110,7 +118,8 @@ export class EngagementLetterFormComponent implements OnInit {
 
     invalid(): boolean {
         return this.checkInvalid(this.engagementLetter.owner?.mobile) ||
-            this.checkInvalid(this.engagementLetter.legalProcedures);
+            this.checkInvalid(this.engagementLetter.legalProcedures) ||
+            (this.engagementLetter.acceptanceEngagements != null && this.engagementLetter.acceptanceEngagements.length > 0);
     }
 
     addAttachment(user: User): void {

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
 
-import {HttpService} from '@core/http/http.service';
+import {HttpService} from '@shared/ui/api/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
 import {User} from '@features/shared/models/user.model';
 import {UserFindCriteria} from './user-find-criteria.model';

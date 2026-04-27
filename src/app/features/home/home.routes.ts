@@ -1,7 +1,7 @@
 import {Routes} from '@angular/router';
 import {HomeComponent} from "./pages/home.component";
 import {UsersComponent} from "./users/pages/users.component";
-import {RoleGuardService} from "@core/auth/role-guard.service";
+import {RoleGuard} from "@core/auth/role.guard";
 import {Role} from "@core/auth/models/role.model";
 import {UserService} from "./users/user.service";
 import {AccessLinkComponent} from "./access-links/pages/access-link.component";
@@ -22,12 +22,6 @@ import {InvoiceService} from "./billing/invoice.service";
 import {IncomeService} from "./billing/income.service";
 import {ExpenseService} from "./billing/expense.service";
 import {ChatbotComponent} from "./chatbot/pages/chatbot.component";
-import {EventsComponent} from "./events/pages/events.component";
-import {EventService} from "./events/event.service";
-import {AlertsComponent} from "./alerts/pages/alerts.component";
-import {AlertService} from "./alerts/alert.service";
-import {TimelinePageComponent} from './timeline/pages/timeline-page.component';
-import {TimelineService} from "./timeline/services/timeline.service";
 import {EngagementLetterFormComponent} from "./engagement-letter/pages/engagement-letter-form.component";
 import {ConsentsComponent} from "./consents/pages/consents.component";
 import {ConsentService} from "./consents/consent.service";
@@ -40,42 +34,42 @@ export const routes: Routes = [
             {
                 path: 'users',
                 component: UsersComponent,
-                canActivate: [RoleGuardService],
+                canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [UserService],
             },
             {
                 path: 'consents',
                 component: ConsentsComponent,
-                canActivate: [RoleGuardService],
+                canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [ConsentService],
             },
             {
                 path: 'access-links',
                 component: AccessLinkComponent,
-                canActivate: [RoleGuardService],
+                canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [AccessLinkService],
             },
             {
                 path: 'legal-tasks',
                 component: LegalTasksComponent,
-                canActivate: [RoleGuardService],
+                canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [LegalTaskService],
             },
             {
                 path: 'legal-procedures',
                 component: LegalProcedureTemplatesComponent,
-                canActivate: [RoleGuardService],
+                canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [LegalProcedureTemplateService],
             },
             {
                 path: 'engagement-letters',
                 component: EngagementLettersComponent,
-                canActivate: [RoleGuardService],
+                canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [EngagementLetterService],
                 pathMatch: 'full',
@@ -83,78 +77,57 @@ export const routes: Routes = [
             {
                 path: 'engagement-letters/new',
                 component: EngagementLetterFormComponent,
-                canActivate: [RoleGuardService],
+                canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [EngagementLetterService],
             },
             {
                 path: 'engagement-letters/:id/edit',
                 component: EngagementLetterFormComponent,
-                canActivate: [RoleGuardService],
+                canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [EngagementLetterService],
             },
             {
-                path: 'engagement-letters/:id/events',
-                component: EventsComponent,
-                canActivate: [RoleGuardService],
-                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
-                providers: [EventService],
-            },
-            {
-                path: 'engagement-letters/:id/alerts',
-                component: AlertsComponent,
-                canActivate: [RoleGuardService],
-                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
-                providers: [AlertService],
-            },
-            {
                 path: 'issues',
                 component: IssuesComponent,
-                canActivate: [RoleGuardService],
+                canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [IssueService],
             },
             {
                 path: 'issues/:id',
                 component: IssueDetailComponent,
-                canActivate: [RoleGuardService],
+                canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [IssueService],
             },
             {
                 path: 'invoices',
                 component: InvoicesComponent,
-                canActivate: [RoleGuardService],
+                canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [InvoiceService],
             },
             {
                 path: 'incomes',
                 component: IncomesComponent,
-                canActivate: [RoleGuardService],
+                canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [IncomeService],
             },
             {
                 path: 'expenses',
                 component: ExpensesComponent,
-                canActivate: [RoleGuardService],
+                canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [ExpenseService],
             },
             {
                 path: 'chatbot',
                 component: ChatbotComponent,
-                canActivate: [RoleGuardService],
+                canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR, Role.CUSTOMER]},
-            },
-            {
-                path: 'engagement-letters/:id/timeline',
-                component: TimelinePageComponent,
-                canActivate: [RoleGuardService],
-                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR, Role.CUSTOMER]},
-                providers: [TimelineService]
             },
         ],
     },

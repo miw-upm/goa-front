@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Observable, tap} from 'rxjs';
+import {Observable} from 'rxjs';
 
-import {HttpService} from '@core/http/http.service';
+import {HttpService} from '@shared/ui/api/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
 import {EngagementLetter} from './models/engagement-letter.model';
 import {EngagementLetterFindCriteria} from './models/engagement-letter-find-criteria.model';
@@ -41,7 +41,7 @@ export class EngagementLetterService {
     print(id: string): Observable<void> {
         return this.httpService
             .request()
-            .openPdf(ENDPOINTS.engagementLetters.print(id));
+            .openPdf(ENDPOINTS.engagementLetters.view(id));
     }
 
     delete(id: string): Observable<void> {
@@ -60,6 +60,7 @@ export class EngagementLetterService {
 
     pendingSigners(engagement: EngagementLetter): Observable<User[]> {
         return this.httpService.request()
+            .warning()
             .get<User[]>(ENDPOINTS.engagementLetters.pendingSigners(engagement.id));
     }
 }

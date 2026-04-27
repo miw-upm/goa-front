@@ -3,9 +3,9 @@ import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 
 import {environment} from "@env";
-import {HttpService} from "@core/http/http.service";
+import {HttpService} from "@shared/ui/api/http.service";
 import {ENDPOINTS} from "@core/api/endpoints";
-import {AccessLink} from "@features/shared/models/acces-link.model";
+import {AccessLink} from "@features/shared/models/access-link.model";
 
 @Injectable({providedIn: 'root'})
 export class SharedAccessLinkService {
@@ -21,11 +21,7 @@ export class SharedAccessLinkService {
     }
 
     buildAccessUrl(accessLink: AccessLink): string {
-        let link = `${environment.FRONT_END}/customer/${accessLink.scope}/${accessLink.mobile}/${accessLink.id}`;
-        if (accessLink.document) {
-            link += `/${accessLink.document}`;
-        }
-        return link;
+        return `${environment.FRONT_END}/customer/${accessLink.scope}/${accessLink.mobile}/${accessLink.id}`;
     }
 
 }

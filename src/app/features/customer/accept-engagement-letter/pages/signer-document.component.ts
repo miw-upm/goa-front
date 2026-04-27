@@ -1,22 +1,14 @@
-import {
-    AfterViewInit,
-    Component,
-    ElementRef,
-    HostListener,
-    Input,
-    OnDestroy, OnInit,
-    ViewChild
-} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {NgIf, NgOptimizedImage} from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {FormsModule} from '@angular/forms';
 import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
 import {MatButton} from '@angular/material/button';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatDialogActions} from '@angular/material/dialog';
 import {MatIcon} from '@angular/material/icon';
 
-import { SignerDocument } from '../SignerDocument.model';
-import { CustomerService } from '../../edit-profile/customer.service';
+import {SignerDocument} from '../signer-document.model';
+import {CustomerService} from '../../edit-profile/customer.service';
 import {SignerDocumentService} from "../signer-document.service";
 import {ActivatedRoute} from "@angular/router";
 
@@ -42,29 +34,25 @@ import {ActivatedRoute} from "@angular/router";
 export class SignerDocumentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @Input() title = '';
-    @Input() signerDocument: SignerDocument = { documentAccepted: false };
-
-
+    @Input() signerDocument: SignerDocument = {documentAccepted: false};
+    documentDownloaded = false;
+    signed = false;
+    isEmpty = true;
     private path = '';
     private mobile = '';
     private token = '';
-    documentDownloaded = false;
-    signed = false;
-
-    @ViewChild('signaturePad', { static: true })
+    @ViewChild('signaturePad', {static: true})
     private readonly canvasRef!: ElementRef<HTMLCanvasElement>;
-
     private ctx!: CanvasRenderingContext2D;
     private drawing = false;
     private lastX = 0;
     private lastY = 0;
 
-    isEmpty = true;
-
     constructor(
         private readonly signerDocumentService: SignerDocumentService,
         private readonly route: ActivatedRoute
-    ) {}
+    ) {
+    }
 
     ngOnInit(): void {
         const segments = this.route.snapshot.url; // UrlSegment[]
@@ -75,13 +63,13 @@ export class SignerDocumentComponent implements OnInit, AfterViewInit, OnDestroy
 
     downloadDocument(): void {
         this.signerDocumentService.downloadDocument(this.path, this.mobile, this.token)
-            .subscribe( ()=> this.documentDownloaded = true);
+            .subscribe(() => this.documentDownloaded = true);
     }
 
     update(): void {
         if (!this.signerDocument.documentAccepted || this.isEmpty) return;
         this.saveSignature();
-        this.signerDocumentService.signDocument(this.path, this.mobile, this.token, this.signerDocument )
+        this.signerDocumentService.signDocument(this.path, this.mobile, this.token, this.signerDocument)
             .subscribe(() => this.signed = true);
     }
 
@@ -89,7 +77,7 @@ export class SignerDocumentComponent implements OnInit, AfterViewInit, OnDestroy
         if (!this.documentDownloaded || this.signed) return;
         event.preventDefault();
         this.drawing = true;
-        const { x, y } = this.getPosition(event);
+        const {x, y} = this.getPosition(event);
         this.lastX = x;
         this.lastY = y;
     }
@@ -116,7 +104,7 @@ export class SignerDocumentComponent implements OnInit, AfterViewInit, OnDestroy
     draw(event: PointerEvent): void {
         if (!this.drawing) return;
         event.preventDefault();
-        const { x, y } = this.getPosition(event);
+        const {x, y} = this.getPosition(event);
 
         this.ctx.beginPath();
         this.ctx.moveTo(this.lastX, this.lastY);
@@ -126,6 +114,21 @@ export class SignerDocumentComponent implements OnInit, AfterViewInit, OnDestroy
         this.lastX = x;
         this.lastY = y;
         this.isEmpty = false;
+    }
+
+    @HostListener('window:resize')
+    onResize(): void {
+        const dataUrl = this.isEmpty ? null : this.canvasRef.nativeElement.toDataURL('image/png');
+        this.initCanvas();
+        if (dataUrl) {
+            const img = new Image();
+            img.onload = () => this.ctx.drawImage(img, 0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
+            img.src = dataUrl;
+        }
+    }
+
+    ngOnDestroy(): void {
+        this.ctx?.clearRect(0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
     }
 
     private initCanvas(): void {
@@ -159,20 +162,5 @@ export class SignerDocumentComponent implements OnInit, AfterViewInit, OnDestroy
             return;
         }
         this.signerDocument.signature = this.canvasRef.nativeElement.toDataURL('image/png');
-    }
-
-    @HostListener('window:resize')
-    onResize(): void {
-        const dataUrl = this.isEmpty ? null : this.canvasRef.nativeElement.toDataURL('image/png');
-        this.initCanvas();
-        if (dataUrl) {
-            const img = new Image();
-            img.onload = () => this.ctx.drawImage(img, 0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
-            img.src = dataUrl;
-        }
-    }
-
-    ngOnDestroy(): void {
-        this.ctx?.clearRect(0, 0, this.canvasRef.nativeElement.width, this.canvasRef.nativeElement.height);
     }
 }

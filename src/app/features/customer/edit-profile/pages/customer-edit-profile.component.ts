@@ -15,10 +15,10 @@ import {MatCheckbox} from "@angular/material/checkbox";
 import {FormFieldComponent} from "@shared/ui/inputs/forms/form-field.component";
 import {FormSelectComponent} from "@shared/ui/inputs/forms/form-select.component";
 import {User} from "@features/shared/models/user.model";
-import {UserDocumentType} from "@features/shared/models/UserDocumentType";
+import {UserDocumentTypeModel} from "@features/shared/models/user-document-type.model";
 import {SharedUserService} from "@features/shared/services/shared-user.service";
 import {CustomerService} from "../customer.service";
-import {DataProcessingConsentCreation} from "../ProcessingConsentCreation.model";
+import {DataProcessingConsentCreation} from "../processing-consent-creation.model";
 
 @Component({
     standalone: true,
@@ -47,7 +47,7 @@ export class CustomerEditProfileComponent {
     oldMobile: string;
     token: string;
     provinces: Observable<string[]>;
-    userDocumentTypes: Observable<string[]> = of(Object.values(UserDocumentType));
+    userDocumentTypes: Observable<string[]> = of(Object.values(UserDocumentTypeModel));
 
     constructor(private readonly customerService: CustomerService, private readonly sharedUserService: SharedUserService,
                 private readonly route: ActivatedRoute, private readonly dialog: MatDialog) {

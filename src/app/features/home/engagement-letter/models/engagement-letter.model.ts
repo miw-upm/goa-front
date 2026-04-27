@@ -1,7 +1,7 @@
 import {User} from "../../../shared/models/user.model";
 import {LegalProcedure} from "./legal-procedure.model";
 import {PaymentMethod} from "./payment-method.model";
-import {AcceptanceDocument} from "./acceptance-document.model";
+import {AcceptanceEngagement} from "./acceptance-engagement.model";
 
 export interface EngagementLetter {
     id?: string;
@@ -14,5 +14,5 @@ export interface EngagementLetter {
     legalProcedures?: LegalProcedure[];
     paymentMethods?: PaymentMethod[];
     legalClause?: string;
-    acceptanceDocuments?: AcceptanceDocument[];
+    acceptanceEngagements?: AcceptanceEngagement[];
 }
