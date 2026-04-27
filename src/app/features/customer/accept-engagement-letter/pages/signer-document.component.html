@@ -1,91 +1,12 @@
-<mat-card>
-    <mat-card-title class="title-container">
-        <div class="profile-header">
-            <img alt="logo" height="48" ngSrc="../../../../../assets/oa-s.png" width="48"/>
-            <h4 class="mat-headline-5">Aceptación y firma del documento</h4>
-        </div>
-    </mat-card-title>
-
-    <mat-card-content>
-        <div class="instructions">
-            <strong>Estimado/a {{ title }}:</strong>
-            <p>
-                A continuación podrá acceder al documento que requiere su conformidad.
-                Le rogamos que lo descargue y lo lea con detenimiento.
-            </p>
-            <p>
-                Una vez comprendido su contenido, proceda a firmarlo dentro del recuadro habilitado
-                al efecto, bien con el dedo sobre pantalla táctil, bien con el ratón o lápiz digital.
-            </p>
-        </div>
-
-        <!-- DESCARGA DEL DOCUMENTO -->
-        <div class="download-wrapper">
-            <button (click)="downloadDocument()" [disabled]="signed" color="primary" mat-raised-button type="button">
-                <mat-icon>download</mat-icon>
-                Descargar documento
-            </button>
-            <span *ngIf="!documentDownloaded" class="download-hint">
-                Es necesario descargar y leer el documento antes de poder firmarlo.
-            </span>
-            <span *ngIf="documentDownloaded" class="download-done">
-                <mat-icon>check_circle</mat-icon>
-                Documento descargado correctamente
-            </span>
-        </div>
-
-        <!-- RECUADRO DE FIRMA -->
-        <div [class.disabled]="!documentDownloaded || signed" class="signature-wrapper">
-            <canvas #signaturePad
-                    (pointercancel)="stopDrawing()"
-                    (pointerdown)="startDrawing($event)"
-                    (pointerleave)="stopDrawing()"
-                    (pointermove)="draw($event)"
-                    (pointerup)="stopDrawing()"
-                    class="signature-pad">
-            </canvas>
-            <div class="signature-actions">
-                <button (click)="clearSignature()" [disabled]="isEmpty || !documentDownloaded || signed"
-                        mat-stroked-button
-                        type="button">
-                    <mat-icon>refresh</mat-icon>
-                    Repetir firma
-                </button>
-            </div>
-        </div>
-
-        <!-- CHECKBOX OBLIGATORIO -->
-        <mat-checkbox [(ngModel)]="signerDocument.documentAccepted"
-                      [disabled]="!documentDownloaded || signed"
-                      [ngModelOptions]="{standalone: true}"
-                      required>
-            He leído el documento y manifiesto mi conformidad con su contenido.
-        </mat-checkbox>
-    </mat-card-content>
-
-    <mat-dialog-actions align="center">
-        <button (click)="update()"
-                [disabled]="!documentDownloaded || !signerDocument.documentAccepted || isEmpty || signed"
-                class="btn-update"
-                color="primary" mat-raised-button>
-            FIRMAR Y ENVIAR
-        </button>
-    </mat-dialog-actions>
-
-    <!-- CONFIRMACIÓN POST-FIRMA -->
-    <div *ngIf="signed" class="signed-confirmation">
-        <p class="signed-message">
-            Su firma ha sido registrada correctamente. Le agradecemos la confianza depositada
-            en nuestro despacho. Una vez suscrito el documento por la totalidad de los
-            intervinientes, recibirá una copia íntegra en la dirección de correo electrónico
-            facilitada.
-        </p>
-        <div class="company-info">
-            <strong>Ocaña Abogados</strong><br/>
-            Paseo de la Castellana, 93-2ª · 28046 Madrid<br/>
-            Tel.: +34 644 993 593 ·
-            <a href="mailto:nuria@ocanabogados.es">nuria&#64;ocanabogados.es</a> ·
-            <a href="https://www.ocanabogados.es" rel="noopener" target="_blank">www.ocanabogados.es</a>
-        </div>
-    </div>
-</mat-card>
+<app-document-acceptance
+        [downloadEnabled]="true"
+        [acceptanceEnabled]="true"
+        [signatureEnabled]="false"
+        [title]="'Aceptación y firma del documento'"
+        [greeting]="'Estimado/a ' + customerName + ':'"
+        [introText]="'A continuación podrá acceder al documento que requiere su conformidad. Le rogamos que lo descargue y lo lea con detenimiento.'"
+        [instructionsText]="'Una vez comprendido su contenido, proceda a firmarlo dentro del recuadro habilitado al efecto, bien con el dedo sobre pantalla táctil, bien con el ratón o lápiz digital.'"
+        [confirmationMessage]="'Su firma ha sido registrada correctamente. Le agradecemos la confianza...'"
+        (downloadRequested)="onDownload()"
+        (submitted)="onSubmit($event)">
+</app-document-acceptance>
