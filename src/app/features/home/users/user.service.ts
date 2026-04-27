@@ -8,13 +8,15 @@ import {UserFindCriteria} from './user-find-criteria.model';
 import {switchMap} from "rxjs/operators";
 import {SharedAccessLinkService} from "@features/shared/services/shared-access-link.service";
 import {Role} from "@core/auth/models/role.model";
+import {SharedUserService} from "@features/shared/services/shared-user.service";
 
 @Injectable({providedIn: 'root'})
 export class UserService {
     private readonly EDIT_PROFILE_SCOPE = 'edit-profile';
 
     constructor(private readonly httpService: HttpService,
-                private readonly sharedAccessLinkService: SharedAccessLinkService) {
+                private readonly sharedAccessLinkService: SharedAccessLinkService,
+                private readonly sharedUserService: SharedUserService) {
     }
 
     create(user: User): Observable<User> {

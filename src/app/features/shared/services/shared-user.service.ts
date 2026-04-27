@@ -11,6 +11,11 @@ export class SharedUserService {
     constructor(private readonly httpService: HttpService) {
     }
 
+    read(mobile: string): Observable<User> {
+        return this.httpService.request()
+            .get(ENDPOINTS.users.byMobile(mobile));
+    }
+
     searchUsers(attribute: string): Observable<User[]> {
         return this.httpService.request()
             .param('attribute', attribute ?? '')
