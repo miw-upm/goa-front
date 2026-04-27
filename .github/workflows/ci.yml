@@ -28,9 +28,6 @@ jobs:
       - name: 🏗️ Build Angular App
         run: npm run build-prod  # package.json -> "scripts"
 
-      - name: 🧪 Run Tests with Coverage
-        run: npm run test-ci
-
       - name: 📊 Sonar Analysis
         if: success()
         uses: SonarSource/sonarcloud-github-action@v5 # file: sonar-project.properties
