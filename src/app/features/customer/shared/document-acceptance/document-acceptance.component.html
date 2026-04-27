@@ -7,14 +7,12 @@
     </mat-card-title>
 
     <mat-card-content>
-        <div class="instructions" *ngIf="greeting || introText || instructionsText">
-            <strong *ngIf="greeting">{{ greeting }}</strong>
-            <p *ngIf="introText">{{ introText }}</p>
-            <p *ngIf="instructionsText">{{ instructionsText }}</p>
-        </div>
-
         <!-- DESCARGA (si flag activo) -->
         <div class="download-wrapper" *ngIf="downloadEnabled">
+            <p class="download-instructions">
+                A continuación podrá bajarse el documento. Le rogamos que lo descargue y lo lea con
+                detenimiento. Es un documento con el formato *.PDF.
+            </p>
             <button (click)="onDownloadClick()"
                     [disabled]="completedFlag"
                     color="primary"
@@ -36,6 +34,10 @@
         <div *ngIf="signatureEnabled"
              [class.disabled]="!isSignatureUnlocked() || completedFlag"
              class="signature-wrapper">
+            <p class="signature-instructions">
+                Firme dentro del recuadro habilitado al efecto, bien con el dedo sobre pantalla táctil,
+                bien con el ratón o lápiz digital.
+            </p>
             <canvas #signaturePad
                     (pointercancel)="stopDrawing()"
                     (pointerdown)="startDrawing($event)"

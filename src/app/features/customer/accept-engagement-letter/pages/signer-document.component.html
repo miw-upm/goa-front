@@ -2,10 +2,8 @@
         [downloadEnabled]="true"
         [acceptanceEnabled]="true"
         [signatureEnabled]="false"
-        [title]="'Aceptación y firma del documento'"
+        [title]="'Descarga, aceptación y firma de la Hoja de Encargo Profesional'"
         [greeting]="'Estimado/a ' + customerName + ':'"
-        [introText]="'A continuación podrá acceder al documento que requiere su conformidad. Le rogamos que lo descargue y lo lea con detenimiento.'"
-        [instructionsText]="'Una vez comprendido su contenido, proceda a firmarlo dentro del recuadro habilitado al efecto, bien con el dedo sobre pantalla táctil, bien con el ratón o lápiz digital.'"
         [confirmationMessage]="'Su firma ha sido registrada correctamente. Le agradecemos la confianza...'"
         (downloadRequested)="onDownload()"
         (submitted)="onSubmit($event)">

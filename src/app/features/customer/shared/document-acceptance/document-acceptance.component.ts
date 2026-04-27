@@ -45,8 +45,6 @@ export class DocumentAcceptanceComponent implements AfterViewInit, OnDestroy {
 
     @Input() title = '';
     @Input() greeting = '';
-    @Input() introText = '';
-    @Input() instructionsText = '';
     @Input() acceptanceLabel = 'He leído el documento y manifiesto mi conformidad con su contenido.';
     @Input() submitLabel = 'FIRMAR Y ENVIAR';
     @Input() downloadLabel = 'Descargar documento';
