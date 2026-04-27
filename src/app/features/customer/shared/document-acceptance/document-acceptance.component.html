@@ -22,14 +22,13 @@
                     mat-raised-button
                     type="button">
                 <mat-icon>download</mat-icon>
-                {{ downloadLabel }}
+                Descargar documento
             </button>
             <span *ngIf="!documentDownloaded" class="download-hint">
-                {{ downloadHint }}
+                Es necesario descargar y leer el documento antes de poder continuar.
             </span>
             <span *ngIf="documentDownloaded" class="download-done">
-                <mat-icon>check_circle</mat-icon>
-                {{ downloadDoneLabel }}
+                <mat-icon>check_circle</mat-icon> Documento descargado correctamente
             </span>
         </div>
 
@@ -66,7 +65,7 @@
                       [disabled]="!isAcceptanceUnlocked() || completedFlag"
                       [ngModelOptions]="{standalone: true}"
                       required>
-            {{ acceptanceLabel }}
+            He leído el documento y manifiesto mi conformidad con su contenido.
         </mat-checkbox>
     </mat-card-content>
 
@@ -78,7 +77,7 @@
                 color="primary"
                 mat-raised-button
                 type="button">
-            {{ submitLabel }}
+            FIRMAR Y ENVIAR
         </button>
     </mat-dialog-actions>
 

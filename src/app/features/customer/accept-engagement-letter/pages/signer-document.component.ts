@@ -41,8 +41,6 @@ export class SignerDocumentComponent implements OnInit {
         this.path = this.route.snapshot.url[1]?.path ?? '';
         this.mobile = this.route.snapshot.paramMap.get('mobile') ?? '';
         this.token = this.route.snapshot.paramMap.get('token') ?? '';
-        this.sharedCustomerService.readWithToken(this.mobile, this.token)
-            .subscribe(user => this.customerName = user.firstName);
     }
 
     onDownload(): void {

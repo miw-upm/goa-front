@@ -5,7 +5,7 @@ import {
     EventEmitter,
     HostListener,
     Input,
-    OnDestroy,
+    OnDestroy, OnInit,
     Output,
     ViewChild
 } from '@angular/core';
@@ -18,6 +18,8 @@ import { MatDialogActions } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 
 import { DocumentAcceptanceResult } from './document-acceptance-result.model';
+import {ActivatedRoute} from "@angular/router";
+import {SharedCustomerService} from "@features/shared/services/shared-customer.service";
 
 @Component({
     standalone: true,
@@ -37,19 +39,13 @@ import { DocumentAcceptanceResult } from './document-acceptance-result.model';
         MatIcon
     ]
 })
-export class DocumentAcceptanceComponent implements AfterViewInit, OnDestroy {
+export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @Input() downloadEnabled = false;
     @Input() acceptanceEnabled = false;
     @Input() signatureEnabled = false;
 
-    @Input() title = '';
-    @Input() customerName = '';
-    @Input() acceptanceLabel = 'He leído el documento y manifiesto mi conformidad con su contenido.';
-    @Input() submitLabel = 'FIRMAR Y ENVIAR';
-    @Input() downloadLabel = 'Descargar documento';
-    @Input() downloadHint = 'Es necesario descargar y leer el documento antes de poder continuar.';
-    @Input() downloadDoneLabel = 'Documento descargado correctamente';
+    @Input() title = 'Aceptación de Documento';
     @Input() showCompanyInfo = true;
 
     @Output() downloadRequested = new EventEmitter<void>();
@@ -60,6 +56,9 @@ export class DocumentAcceptanceComponent implements AfterViewInit, OnDestroy {
     completedFlag = false;
     accepted = false;
     isEmpty = true;
+    customerName = '';
+    private mobile = '';
+    private token = '';
 
     @ViewChild('signaturePad', { static: false })
     private readonly canvasRef?: ElementRef<HTMLCanvasElement>;
@@ -68,6 +67,18 @@ export class DocumentAcceptanceComponent implements AfterViewInit, OnDestroy {
     private drawing = false;
     private lastX = 0;
     private lastY = 0;
+
+    constructor(
+        private readonly route: ActivatedRoute,
+        private readonly sharedCustomerService: SharedCustomerService
+    ) {}
+
+    ngOnInit(): void {
+        this.mobile = this.route.snapshot.paramMap.get('mobile') ?? '';
+        this.token = this.route.snapshot.paramMap.get('token') ?? '';
+        this.sharedCustomerService.readWithToken(this.mobile, this.token)
+            .subscribe(user => this.customerName = user.firstName);
+    }
 
     ngAfterViewInit(): void {
         if (this.signatureEnabled) {

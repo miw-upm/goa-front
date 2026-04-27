@@ -1,9 +1,8 @@
 <app-document-acceptance
-        [downloadEnabled]="true"
-        [acceptanceEnabled]="true"
-        [signatureEnabled]="false"
         [title]="'Descarga, aceptación y firma de la Hoja de Encargo Profesional'"
-        [customerName]="customerName"
+        [downloadEnabled]="true"
+        [signatureEnabled]="false"
+        [acceptanceEnabled]="true"
         (downloadRequested)="onDownload()"
         (submitted)="onSubmit($event)">
 </app-document-acceptance>
