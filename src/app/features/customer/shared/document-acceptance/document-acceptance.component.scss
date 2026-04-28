@@ -57,10 +57,11 @@
 
   .company-info {
     display: block;
-    text-align: center !important;
-    padding: 16px;
-    color: rgba(0, 0, 0, 0.6);
-    font-size: 0.875rem;
-    line-height: 1.6;
+    text-align: center;
+
+    p {
+      text-align: center;
+      margin: 4px 0;
+    }
   }
 }

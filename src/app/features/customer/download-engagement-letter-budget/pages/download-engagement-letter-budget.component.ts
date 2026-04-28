@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { DocumentAcceptanceComponent } from '../../shared/document-acceptance/document-acceptance.component';
-import { DownloadEngagementLetterBudgetService } from '../download-engagement-letter-budget.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {FormsModule} from '@angular/forms';
+import {DocumentAcceptanceComponent} from '../../shared/document-acceptance/document-acceptance.component';
+import {DownloadEngagementLetterBudgetService} from '../download-engagement-letter-budget.service';
 
 @Component({
     standalone: true,

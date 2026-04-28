@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {filter, Observable} from 'rxjs';
 
 import {HttpService} from '@shared/ui/api/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
@@ -7,14 +7,18 @@ import {EngagementLetter} from './models/engagement-letter.model';
 import {EngagementLetterFindCriteria} from './models/engagement-letter-find-criteria.model';
 import {User} from "@features/shared/models/user.model";
 import {SharedAccessLinkService} from "@features/shared/services/shared-access-link.service";
+import {switchMap} from "rxjs/operators";
+import {SelectLetterLinkDialogComponent} from "./dialogs/select-letter-link-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Injectable()
 export class EngagementLetterService {
     private readonly SIGN_ENGAGEMENT_LETTER_SCOPE = 'sign-engagement-letter';
-    private readonly ENGAGEMENT_LETTER_BUDGET_SCOPE = 'engagement-letter-budget';
+    private readonly ENGAGEMENT_LETTER_BUDGET_SCOPE = 'read-engagement-letter';
 
     constructor(private readonly httpService: HttpService,
-                private readonly sharedAccessLinkService: SharedAccessLinkService) {
+                private readonly sharedAccessLinkService: SharedAccessLinkService,
+                private readonly dialog: MatDialog) {
     }
 
     create(engagement: EngagementLetter): Observable<EngagementLetter> {
@@ -71,5 +75,22 @@ export class EngagementLetterService {
             scope: this.ENGAGEMENT_LETTER_BUDGET_SCOPE,
             document: engagement.id
         });
+    }
+
+    createAccessLink(engagement: EngagementLetter): Observable<string> {
+        if (engagement.budgetOnly) {
+            return this.createBudgetAccessLink(engagement);
+        }
+        return this.pendingSigners(engagement).pipe(
+            switchMap(users => this.askSignerSelection(users)),
+            filter((user): user is User => !!user),
+            switchMap(user => this.createLetterAccessLink(engagement, user))
+        );
+    }
+
+    private askSignerSelection(users: User[]): Observable<User | undefined> {
+        return this.dialog.open(SelectLetterLinkDialogComponent, {
+            data: {users}
+        }).afterClosed();
     }
 }

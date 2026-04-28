@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {filter, Observable, of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
@@ -15,9 +15,6 @@ import {EngagementLetterService} from '../engagement-letter.service';
 import {EngagementLetterFindCriteria} from '../models/engagement-letter-find-criteria.model';
 import {EngagementLetter} from '../models/engagement-letter.model';
 import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
-import {User} from '@features/shared/models/user.model';
-import {SelectLetterLinkDialogComponent} from "../dialogs/select-letter-link-dialog.component";
-import {switchMap} from "rxjs/operators";
 
 @Component({
     standalone: true,
@@ -105,32 +102,15 @@ export class EngagementLettersComponent implements OnInit {
     }
 
     link(engagement: EngagementLetter): void {
-        if (engagement.budgetOnly) {
-            this.engagementLettersService.createBudgetAccessLink(engagement)
-                .subscribe({
-                    next: link => {
-                        navigator.clipboard.writeText(link);
-                        this.dialog.open(ClipboardToastDialogComponent, {
-                            data: 'Enlace copiado al portapapeles'
-                        });
-                    }
-                });
-        } else {
-            this.engagementLettersService.pendingSigners(engagement).pipe(
-                switchMap(users => this.dialog.open(SelectLetterLinkDialogComponent, {
-                    data: {users}
-                }).afterClosed()),
-                filter((user): user is User => !!user),
-                switchMap(user => this.engagementLettersService.createLetterAccessLink(engagement, user))
-            ).subscribe({
-                next: link => {
-                    navigator.clipboard.writeText(link);
-                    this.dialog.open(ClipboardToastDialogComponent, {
-                        data: 'Enlace copiado al portapapeles'
-                    });
-                }
-            });
-        }
+        this.engagementLettersService.createAccessLink(engagement)
+            .subscribe(link => this.copyAndNotify(link));
+    }
+
+    private copyAndNotify(link: string): void {
+        navigator.clipboard.writeText(link);
+        this.dialog.open(ClipboardToastDialogComponent, {
+            data: 'Enlace copiado al portapapeles'
+        });
     }
 
     private parseBoolean(value: string | undefined, defaultValue: boolean | null): boolean | null {

@@ -15,7 +15,7 @@ export const routes: Routes = [
         component: SignerDocumentComponent
     },
     {
-        path: 'customer/engagement-letter-budget/:mobile/:token',
+        path: 'customer/read-engagement-letter/:mobile/:token',
         component: DownloadEngagementLetterBudgetComponent
     },
 ];

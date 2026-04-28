@@ -12,13 +12,12 @@ export class SignerDocumentService {
 
     downloadDocument(scope: string, mobile: string, token: string): Observable<void> {
         return this.httpService.request()
-            .param("scope", scope)
-            .openPdf(ENDPOINTS.engagementLetters.documentView(mobile, token));
+            .openPdf(ENDPOINTS.engagementLetters.readDocument(scope, mobile, token));
     }
 
-    signDocument(path: string, mobile: string, token: string, signerDocument: SignerDocument): Observable<void> {
+    signDocument(scope: string, mobile: string, token: string, signerDocument: SignerDocument): Observable<void> {
         return this.httpService.request()
             .success("Documento firmado")
-            .patch(ENDPOINTS.engagementLetters.signerDocument(path, mobile, token), signerDocument);
+            .patch(ENDPOINTS.engagementLetters.signerDocument(scope, mobile, token), signerDocument);
     }
 }

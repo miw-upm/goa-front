@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import {NgIf, NgOptimizedImage} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {MatCard, MatCardActions, MatCardContent, MatCardFooter, MatCardTitle} from '@angular/material/card';
+import {MatCard, MatCardContent, MatCardFooter, MatCardTitle} from '@angular/material/card';
 import {MatButton} from '@angular/material/button';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatDialogActions} from '@angular/material/dialog';
