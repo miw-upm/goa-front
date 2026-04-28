@@ -5,21 +5,23 @@ import {
     EventEmitter,
     HostListener,
     Input,
-    OnDestroy, OnInit,
+    OnDestroy,
+    OnInit,
     Output,
     ViewChild
 } from '@angular/core';
-import { NgIf, NgOptimizedImage } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
-import { MatButton } from '@angular/material/button';
-import { MatCheckbox } from '@angular/material/checkbox';
-import { MatDialogActions } from '@angular/material/dialog';
-import { MatIcon } from '@angular/material/icon';
+import {NgIf, NgOptimizedImage} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {MatCard, MatCardContent, MatCardFooter, MatCardTitle} from '@angular/material/card';
+import {MatButton} from '@angular/material/button';
+import {MatCheckbox} from '@angular/material/checkbox';
+import {MatDialogActions} from '@angular/material/dialog';
+import {MatIcon} from '@angular/material/icon';
 
-import { DocumentAcceptanceResult } from './document-acceptance-result.model';
+import {DocumentAcceptanceResult} from './document-acceptance-result.model';
 import {ActivatedRoute} from "@angular/router";
 import {SharedCustomerService} from "@features/shared/services/shared-customer.service";
+import {MatDivider} from "@angular/material/divider";
 
 @Component({
     standalone: true,
@@ -36,7 +38,9 @@ import {SharedCustomerService} from "@features/shared/services/shared-customer.s
         MatButton,
         MatCheckbox,
         MatDialogActions,
-        MatIcon
+        MatIcon,
+        MatDivider,
+        MatCardFooter,
     ]
 })
 export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -60,7 +64,7 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
     private mobile = '';
     private token = '';
 
-    @ViewChild('signaturePad', { static: false })
+    @ViewChild('signaturePad', {static: false})
     private readonly canvasRef?: ElementRef<HTMLCanvasElement>;
 
     private ctx?: CanvasRenderingContext2D;
@@ -71,7 +75,8 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
     constructor(
         private readonly route: ActivatedRoute,
         private readonly sharedCustomerService: SharedCustomerService
-    ) {}
+    ) {
+    }
 
     ngOnInit(): void {
         this.mobile = this.route.snapshot.paramMap.get('mobile') ?? '';
@@ -127,7 +132,7 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
         if (!this.isSignatureUnlocked() || this.completedFlag) return;
         event.preventDefault();
         this.drawing = true;
-        const { x, y } = this.getPosition(event);
+        const {x, y} = this.getPosition(event);
         this.lastX = x;
         this.lastY = y;
     }
@@ -135,7 +140,7 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
     draw(event: PointerEvent): void {
         if (!this.drawing || !this.ctx) return;
         event.preventDefault();
-        const { x, y } = this.getPosition(event);
+        const {x, y} = this.getPosition(event);
 
         this.ctx.beginPath();
         this.ctx.moveTo(this.lastX, this.lastY);
@@ -198,7 +203,7 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
     }
 
     private getPosition(event: PointerEvent): { x: number, y: number } {
-        if (!this.canvasRef) return { x: 0, y: 0 };
+        if (!this.canvasRef) return {x: 0, y: 0};
         const rect = this.canvasRef.nativeElement.getBoundingClientRect();
         return {
             x: event.clientX - rect.left,

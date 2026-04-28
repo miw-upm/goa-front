@@ -56,17 +56,12 @@
   }
 
   .company-info {
-    font-size: 0.9rem;
-    color: #333;
-    line-height: 1.6;
+    display: block;
+    text-align: center;
 
-    a {
-      color: #1976d2;
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
+    p {
+      text-align: center;
+      margin: 4px 0;
     }
   }
 }

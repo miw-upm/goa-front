@@ -1,8 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { Observable, tap, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {Router} from '@angular/router';
+import {Observable, tap, throwError} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
 import {HttpRequestBuilder} from "@core/http/http-request-builder";
 import {BackendError, isBackendError} from "@core/http/backend-error";
 import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
@@ -94,7 +94,7 @@ export class HttpViewBuilder {
             .pipe(
                 tap(() => this.notifySuccess()),
                 map((blob: Blob) => {
-                    const safeBlob = blob ?? new Blob([], { type: 'application/pdf' });
+                    const safeBlob = blob ?? new Blob([], {type: 'application/pdf'});
                     window.open(window.URL.createObjectURL(safeBlob));
                     return void 0;
                 }),
@@ -124,7 +124,7 @@ export class HttpViewBuilder {
         const message = this.errorNotification || notification;
         if (this.warningMode) {
             this.dialog.open(WarningDialogComponent, {
-                data: { title: 'Warning', message }
+                data: {title: 'Warning', message}
             });
         } else {
             this.snackBar.open(message, 'Error', {
@@ -158,19 +158,19 @@ export class HttpViewBuilder {
             this.snackBar.open(
                 `${error.error} (${status}): ${error.message} — ${error.cause}`,
                 'Error',
-                { duration: HttpViewBuilder.SNACK_ERROR_DURATION }
+                {duration: HttpViewBuilder.SNACK_ERROR_DURATION}
             );
         }
         if (this.warningMode) {
             this.dialog.open(WarningDialogComponent, {
-                data: { title: 'Warning', message: error.message }
+                data: {title: 'Warning', message: error.message}
             });
         }
         if (!this.debugMode && !this.warningMode) {
             this.snackBar.open(
                 `${error.error} (${status}): ${error.message}`,
                 'Error',
-                { duration: HttpViewBuilder.SNACK_ERROR_DURATION }
+                {duration: HttpViewBuilder.SNACK_ERROR_DURATION}
             );
         }
         this.errorNotification = undefined;

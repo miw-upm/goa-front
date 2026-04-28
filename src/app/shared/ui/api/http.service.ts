@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { HttpViewBuilder } from "@shared/ui/api/http-view-builder";
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {HttpViewBuilder} from "@shared/ui/api/http-view-builder";
 import {MatDialog} from "@angular/material/dialog";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class HttpService {
     constructor(
         private readonly http: HttpClient,

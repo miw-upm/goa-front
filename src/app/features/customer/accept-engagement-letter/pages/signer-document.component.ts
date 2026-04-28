@@ -3,14 +3,7 @@ import {ActivatedRoute} from "@angular/router";
 import {SignerDocumentService} from "../signer-document.service";
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {DocumentAcceptanceComponent} from "../../shared/document-acceptance/document-acceptance.component";
-import {NgIf, NgOptimizedImage} from "@angular/common";
-import {MatButton} from "@angular/material/button";
-import {MatIcon} from "@angular/material/icon";
-import {MatCheckbox} from "@angular/material/checkbox";
-import {MatDialogActions} from "@angular/material/dialog";
-import {MatCard, MatCardContent, MatCardTitle} from "@angular/material/card";
 import {FormsModule} from "@angular/forms";
-import {SharedUserService} from "@features/shared/services/shared-user.service";
 import {SharedCustomerService} from "@features/shared/services/shared-customer.service";
 
 @Component({
@@ -35,7 +28,8 @@ export class SignerDocumentComponent implements OnInit {
         private readonly signerDocumentService: SignerDocumentService,
         private readonly route: ActivatedRoute,
         private readonly sharedCustomerService: SharedCustomerService
-    ) {}
+    ) {
+    }
 
     ngOnInit(): void {
         this.path = this.route.snapshot.url[1]?.path ?? '';

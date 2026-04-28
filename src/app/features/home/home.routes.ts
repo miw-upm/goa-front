@@ -25,6 +25,8 @@ import {ChatbotComponent} from "./chatbot/pages/chatbot.component";
 import {EngagementLetterFormComponent} from "./engagement-letter/pages/engagement-letter-form.component";
 import {ConsentsComponent} from "./consents/pages/consents.component";
 import {ConsentService} from "./consents/consent.service";
+import {CustomerFileDownloadComponent} from "./customer-file-download/pages/customer-file-download.component";
+import {CustomerFileDownloadService} from "./customer-file-download/customer-file-download.service";
 
 export const routes: Routes = [
     {
@@ -88,6 +90,14 @@ export const routes: Routes = [
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [EngagementLetterService],
             },
+            {
+                path: 'customer-file-downloads',
+                component: CustomerFileDownloadComponent,
+                canActivate: [RoleGuard],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [CustomerFileDownloadService],
+            },
+
             {
                 path: 'issues',
                 component: IssuesComponent,

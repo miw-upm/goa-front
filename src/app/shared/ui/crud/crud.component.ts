@@ -133,7 +133,7 @@ export class CrudComponent {
         if (!fieldsPart) return [];
 
         return fieldsPart
-            .split('.')
+            .split(',')
             .map(x => x.trim())
             .filter(Boolean);
     }
