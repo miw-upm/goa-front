@@ -12,10 +12,7 @@ import {RouterLink} from "@angular/router";
 import {AuthService} from "@core/auth/auth.service";
 import {CHATBOT_SCOPE_RESTRICTED_REPLIES, CHATBOT_SCOPE_UI} from "../support/chatbot-scope-ui";
 
-import {
-    ChatbotMessageView,
-    ContextualChatbotDialogData
-} from "../models/chatbot.model";
+import {ChatbotMessageView, ContextualChatbotDialogData} from "../models/chatbot.model";
 import {ChatbotService} from "../chatbot.service";
 import {TextFieldModule} from "@angular/cdk/text-field";
 
@@ -42,14 +39,13 @@ import {TextFieldModule} from "@angular/cdk/text-field";
 })
 
 export class ChatbotComponent implements OnInit, OnDestroy {
-    @ViewChild('messagesContainer') private messagesContainer?: ElementRef<HTMLDivElement>;
-
     message = '';
     conversationId?: string;
     loading = false;
     initializing = false;
     error = '';
     messages: ChatbotMessageView[] = [];
+    @ViewChild('messagesContainer') private messagesContainer?: ElementRef<HTMLDivElement>;
     private conversationClosed = false;
 
     constructor(
@@ -167,18 +163,6 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         return !!this.dialogData?.engagementLetterId;
     }
 
-    private scrollToBottom(): void {
-        setTimeout(() => {
-            const container = this.messagesContainer?.nativeElement;
-
-            if (!container) {
-                return;
-            }
-
-            container.scrollTop = container.scrollHeight;
-        });
-    }
-
     conversationModeLabel(): string {
         return this.authService.isCustomer() ? 'Modo cliente' : 'Modo profesional';
     }
@@ -213,6 +197,18 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         }
 
         return CHATBOT_SCOPE_RESTRICTED_REPLIES.includes(message as typeof CHATBOT_SCOPE_RESTRICTED_REPLIES[number]);
+    }
+
+    private scrollToBottom(): void {
+        setTimeout(() => {
+            const container = this.messagesContainer?.nativeElement;
+
+            if (!container) {
+                return;
+            }
+
+            container.scrollTop = container.scrollHeight;
+        });
     }
 
     private closeConversationOnExit(): void {

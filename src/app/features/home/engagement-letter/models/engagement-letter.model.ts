@@ -1,18 +1,18 @@
 import {User} from "../../../shared/models/user.model";
 import {LegalProcedure} from "./legal-procedure.model";
 import {PaymentMethod} from "./payment-method.model";
-import {AcceptanceDocument} from "./acceptance-document.model";
+import {AcceptanceEngagement} from "./acceptance-engagement.model";
 
 export interface EngagementLetter {
     id?: string;
     budgetOnly?: boolean;
     discount?: number;
-    creationDate?: Date | string;
+    lastUpdatedDate?: Date | string;
     closingDate?: Date | string;
     owner?: User;
     attachments?: User[];
     legalProcedures?: LegalProcedure[];
     paymentMethods?: PaymentMethod[];
     legalClause?: string;
-    acceptanceDocuments?: AcceptanceDocument[];
+    acceptanceEngagements?: AcceptanceEngagement[];
 }

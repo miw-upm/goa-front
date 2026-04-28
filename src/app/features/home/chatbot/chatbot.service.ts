@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {map, Observable} from "rxjs";
-import {HttpService} from "@core/http/http.service";
+import {HttpService} from "@shared/ui/api/http.service";
 import {ENDPOINTS} from "@core/api/endpoints";
 import {
     ChatbotConversationMessageResponse,
@@ -12,7 +12,7 @@ import {
     ChatbotMessageView
 } from "./models/chatbot.model";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class ChatbotService {
 
     constructor(private readonly httpService: HttpService) {

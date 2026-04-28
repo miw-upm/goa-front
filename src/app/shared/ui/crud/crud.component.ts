@@ -10,7 +10,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatMenuModule} from '@angular/material/menu';
 
 import {DataCellComponent} from '@shared/ui/crud/data-cell.component';
-import {ReadDetailDialogComponent} from '@shared/ui/crud/read-detail.dialog.component';
+import {ReadDetailDialogComponent} from '@shared/ui/crud/read-detail-dialog.component';
 import {UppercaseWordsPipe} from '@shared/pipes/uppercase-words.pipe';
 import {CancelYesDialogComponent} from '@shared/ui/dialogs/cancel-yes-dialog.component';
 import {TypeToConfirmDialogComponent} from '@shared/ui/dialogs/type-to-confirm-dialog.component';
@@ -50,12 +50,13 @@ export class CrudComponent {
     @Input() alertsAction = false;
     @Input() notificationsAction = false;
     @Input() commentsAction = false;
-    @Input() publicLinkAction = false;
+    @Input() linkAction = false;
     @Input() searchAction = true;
     @Input() deleteInline = false;
     @Input() commentsInline = false;
 
     @Input() hiddenFields: string[] = [];
+    @Input() changeFields: string[] = [];
     @Input() columnOrder: string[] = [];
 
     @Output() create = new EventEmitter<any>();
@@ -71,7 +72,7 @@ export class CrudComponent {
     @Output() alerts = new EventEmitter<any>();
     @Output() notifications = new EventEmitter<any>();
     @Output() comments = new EventEmitter<any>();
-    @Output() publicLink = new EventEmitter<any>();
+    @Output() link = new EventEmitter<any>();
     @Output() searchAll = new EventEmitter<any>();
 
     dataSource = new MatTableDataSource<any>([]);
@@ -124,6 +125,19 @@ export class CrudComponent {
         return this.columns.filter(col => !hidden.includes(col));
     }
 
+    getChangeFields(column: string): string[] {
+        const rule = this.changeFields.find(item => item.startsWith(column + ':'));
+        if (!rule) return [];
+
+        const [, fieldsPart] = rule.split(':');
+        if (!fieldsPart) return [];
+
+        return fieldsPart
+            .split(',')
+            .map(x => x.trim())
+            .filter(Boolean);
+    }
+
     hasMoreActions(): boolean {
         const deleteInMenu = this.deleteAction && !this.deleteInline;
         const commentsInMenu = this.commentsAction && !this.commentsInline;
@@ -160,7 +174,7 @@ export class CrudComponent {
                 }
             });
         } else {
-            const confirmationText:string = this.typeToDelete ? item[this.typeToDelete] : 'Delete';
+            const confirmationText: string = this.typeToDelete ? item[this.typeToDelete] : 'Delete';
             this.dialog.open(TypeToConfirmDialogComponent, {
                 disableClose: true,
                 data: {
@@ -204,7 +218,7 @@ export class CrudComponent {
     }
 
     onPublicLink(item: any): void {
-        this.publicLink.emit(item);
+        this.link.emit(item);
     }
 
     onSearch() {
@@ -212,12 +226,11 @@ export class CrudComponent {
     }
 
     onTimeline(item: any): void {
-        console.log('CLICK timeline', item);
         this.timeline.emit(item);
     }
 
     onCancel(item: any): void {
-        this.cancel.emit(item);  
+        this.cancel.emit(item);
     }
 
 }

@@ -7,7 +7,7 @@ import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
 import {User} from '@features/shared/models/user.model';
 import {UserCreationUpdatingDialogComponent} from '../dialogs/user-creation-updating-dialog.component';
-import {UserSearch} from '../user-search.model';
+import {UserFindCriteria} from '../user-find-criteria.model';
 import {UserService} from '../user.service';
 import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
 import {ClipboardToastDialogComponent} from "@shared/ui/dialogs/clipboard-toast-dialog.component";
@@ -19,7 +19,7 @@ import {SharedAccessLinkService} from "@features/shared/services/shared-access-l
     templateUrl: 'users.component.html'
 })
 export class UsersComponent {
-    criteria: UserSearch;
+    criteria: UserFindCriteria;
     title = "Users";
     users = of([]);
     user: Observable<any>;
@@ -60,23 +60,20 @@ export class UsersComponent {
     }
 
     link(user: User): void {
-        this.userService.read(user.mobile).subscribe(userFull => {
-            if (userFull.role !== 'CUSTOMER') {
+        this.userService.createAccessLink(user).subscribe({
+            next: link => {
+                navigator.clipboard.writeText(link);
+                this.dialog.open(ClipboardToastDialogComponent, {
+                    data: 'Access link created and copied'
+                });
+            },
+            error: error => {
                 this.dialog.open(WarningDialogComponent, {
                     data: {
                         title: 'Warning',
-                        message: 'Sólo se puede crear links a los clientes'
+                        message: error.message
                     }
                 });
-            } else {
-                this.sharedAccessLinkService
-                    .createAccessLink({mobile: userFull.mobile, scope: "edit-profile"})
-                    .subscribe(link => {
-                        navigator.clipboard.writeText(link);
-                        this.dialog.open(ClipboardToastDialogComponent, {
-                            data: 'Link de acceso creado y copiado'
-                        });
-                    });
             }
         });
     }

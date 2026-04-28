@@ -6,9 +6,9 @@ import {MatButton} from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatListModule} from '@angular/material/list';
 
-import {FormListComponent} from '@shared/ui/inputs/forms/list.component';
+import {FormListComponent} from '@shared/ui/inputs/forms/form-list.component';
 import {InputData} from '@shared/ui/inputs/input-data.component';
-import {FormFieldComponent} from '@shared/ui/inputs/forms/field.component';
+import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {SharedLegalTaskService} from '@features/shared/services/shared-legal-task.service';
 import {SearchByLegalTaskComponent} from '@features/shared/ui/search-by-legal-task.component';

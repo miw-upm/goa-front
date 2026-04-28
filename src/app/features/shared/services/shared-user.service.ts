@@ -2,13 +2,18 @@ import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 
-import {HttpService} from '@core/http/http.service';
+import {HttpService} from '@shared/ui/api/http.service';
 import {ENDPOINTS} from "@core/api/endpoints";
 import {User} from "../models/user.model";
 
 @Injectable({providedIn: 'root'})
 export class SharedUserService {
     constructor(private readonly httpService: HttpService) {
+    }
+
+    read(mobile: string): Observable<User> {
+        return this.httpService.request()
+            .get(ENDPOINTS.users.byMobile(mobile));
     }
 
     searchUsers(attribute: string): Observable<User[]> {

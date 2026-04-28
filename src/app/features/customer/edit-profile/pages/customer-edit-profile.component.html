@@ -1,0 +1,67 @@
+<mat-card>
+    <mat-card-title class="title-container">
+        <div class="profile-header">
+            <img alt="logo" height="48" ngSrc="../../../../../assets/oa-s.png" width="48"/>
+            <h4 class="mat-headline-5">Editar Perfil</h4>
+        </div>
+    </mat-card-title>
+    <mat-card-content>
+        <mat-dialog-content>
+            <app-form-field
+                #mobile
+                [(value)]="user.mobile"
+                [maxlength]="9"
+                [required]="true"
+                errorMessage="Obligatorio, 9 dígitos"
+                label="Móvil"
+                pattern="^[0-9]{9}$"
+                type="tel"
+            />
+            <app-form-field #name [(value)]="user.firstName" [required]="true" errorMessage="Obligatorio"
+                            label="Nombre"/>
+            <app-form-field [(value)]="user.familyName" [required]="true" errorMessage="Obligatorio" label="Apellidos"/>
+            <app-form-field [(value)]="user.address" [required]="true" errorMessage="Obligatorio" label="Dirección"/>
+            <app-form-field [(value)]="user.city" [required]="true" errorMessage="Obligatorio" label="Población"/>
+            <app-form-select [(selected)]="user.province" [capitalize]="true" [required]="true" [values]="provinces"
+                             label="Provincia"/>
+            <app-form-field
+                #postalCode
+                [(value)]="user.postalCode"
+                [maxlength]="5"
+                [required]="true"
+                errorMessage="5 dígitos"
+                label="Código postal"
+                pattern="^[0-9]{5}$"
+            />
+            <app-form-field [(value)]="user.identity" [required]="true" label="N.I.F. (DNI, CIF O NIE)"/>
+            <app-form-field [(value)]="user.email" [required]="true" label="Email (no)"/>
+            <div class="privacy-text">
+                <strong>Protección de datos personales:</strong><br/>
+                <p> Los datos proporcionados serán tratados por <em>Nuria Ocaña Pérez (DNI.46882956D)</em> con la
+                    finalidad de gestionar la relación comercial, incluida la emisión de facturas. El tratamiento está
+                    basado en la ejecución de un contrato y el cumplimiento de obligaciones legales.</p>
+                <p>Puede ejercer sus derechos enviando un correo a <a href="mailto:derecho@ocanabogados.es">
+                    derecho&#64;ocanabogados.es</a>.
+                    Más información en nuestra <a href="https://ocanabogados.es/politicas-de-privacidad/"
+                                                  target="_blank">Política de Privacidad</a>.</p>
+            </div>
+            <!-- CHECKBOX OBLIGATORIO DE ACEPTACIÓN LOPD -->
+            <mat-checkbox [(ngModel)]="dataProcessingConsentCreation.dataProcessingAccepted"
+                          name="dataProcessingAccepted" required>
+                He revisado mis datos y acepto su tratamiento conforme a la
+                <a href="https://ocanabogados.es/politicas-de-privacidad/" target="_blank">Política de Privacidad</a>.
+            </mat-checkbox>
+            <!-- CHECKBOX OPCIONAL DE PROMOCIONES -->
+            <mat-checkbox [(ngModel)]="dataProcessingConsentCreation.promotionsAccepted" name="promotionsAccepted">
+                Acepto recibir comunicaciones comerciales y promociones de Nuria Ocaña Pérez (DNI.46882956D)
+                por medios electrónicos.
+            </mat-checkbox>
+        </mat-dialog-content>
+    </mat-card-content>
+    <mat-dialog-actions align="center">
+        <button (click)="update()" [disabled]="formInvalid(mobile.ngModel, postalCode.ngModel)
+         || !dataProcessingConsentCreation.dataProcessingAccepted" class="btn-update"
+                color="primary" mat-raised-button>ENVIAR
+        </button>
+    </mat-dialog-actions>
+</mat-card>

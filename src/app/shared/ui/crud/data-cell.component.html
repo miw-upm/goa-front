@@ -6,7 +6,11 @@
             {{ value[0] }}...({{ value[0].length }})
         }
     } @else if (isObject(value)) {
-        {{ getFirstKey(value) }}: {{ getFirstValue(value) }}...({{ Object.entries(value).length }})
+        @if (changeFields.length > 0) {
+            {{ buildChangedFieldsText(value) }}
+        } @else {
+            {{ getFirstKey(value) }}: {{ getFirstValue(value) }}...({{ Object.entries(value).length }})
+        }
     } @else if (isDate(value)) {
         {{ value | date: 'dd/MM/yyyy HH:mm:ss' }}
     } @else if (value === null || value === undefined) {

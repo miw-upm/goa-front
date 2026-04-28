@@ -5,11 +5,11 @@ import {MatDialog} from "@angular/material/dialog";
 
 import {CrudComponent} from "@shared/ui/crud/crud.component";
 import {AccessLinkService} from "../access-link.service";
-import {AccessLink} from "@features/shared/models/acces-link.model";
+import {AccessLink} from "@features/shared/models/access-link.model";
 import {AuthService} from "@core/auth/auth.service";
 import {ClipboardToastDialogComponent} from "@shared/ui/dialogs/clipboard-toast-dialog.component";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
-import {AccessLinkSearch} from "./access-link-search.model";
+import {AccessLinkFindCriteria} from "./access-link-find-criteria.model";
 import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
 import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
 
@@ -22,18 +22,18 @@ import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.com
 export class AccessLinkComponent {
     visible: boolean = true;
     title = 'Access Links';
-    criteria: AccessLinkSearch;
+    criteria: AccessLinkFindCriteria;
 
     accessLinks: Observable<AccessLink[]> = of([]);
     accessLink: Observable<any>;
 
-    constructor(private readonly dialog: MatDialog, private readonly accessLinkService: AccessLinkService, private readonly auth:AuthService) {
+    constructor(private readonly dialog: MatDialog, private readonly accessLinkService: AccessLinkService, private readonly auth: AuthService) {
         this.visible = auth.isAdmin();
         this.resetSearch();
     }
 
     resetSearch(): void {
-        this.criteria = {expired: false, mobile: undefined, scope: undefined};
+        this.criteria = {expired: false, client: undefined, scope: undefined};
     }
 
     search(): void {

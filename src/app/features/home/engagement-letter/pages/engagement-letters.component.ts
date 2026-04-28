@@ -12,7 +12,7 @@ import {ClipboardToastDialogComponent} from '@shared/ui/dialogs/clipboard-toast-
 import {AuthService} from '@core/auth/auth.service';
 
 import {EngagementLetterService} from '../engagement-letter.service';
-import {EngagementLetterCriteria} from '../models/engagement-letter-criteria.model';
+import {EngagementLetterFindCriteria} from '../models/engagement-letter-find-criteria.model';
 import {EngagementLetter} from '../models/engagement-letter.model';
 import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
 
@@ -23,19 +23,17 @@ import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
     templateUrl: 'engagement-letters.component.html'
 })
 export class EngagementLettersComponent implements OnInit {
-    deleteVisibility = false;
     title = 'Hojas de Encargo';
     engagementLetters: Observable<EngagementLetter[]> = of([]);
     engagementLetter: Observable<EngagementLetter>;
-    criteria: EngagementLetterCriteria = { opened: true };
+    hiddenFields = ['id', 'discount', 'attachments', 'paymentMethods', 'legalClause']
+    changeFields = ['owner:firstName,familyName,mobile'];
 
-    constructor(
-        private readonly dialog: MatDialog,
-        private readonly engagementLettersService: EngagementLetterService,
-        private readonly router: Router,
-        private readonly route: ActivatedRoute,
-        auth: AuthService
-    ) {
+    deleteVisibility = false;
+    criteria: EngagementLetterFindCriteria = {opened: true};
+
+    constructor(private readonly dialog: MatDialog, private readonly engagementLettersService: EngagementLetterService,
+                private readonly router: Router, private readonly route: ActivatedRoute, auth: AuthService) {
         this.deleteVisibility = auth.isAdmin();
     }
 
@@ -49,15 +47,10 @@ export class EngagementLettersComponent implements OnInit {
                 legalProcedureTitle: params['legalProcedureTitle'] ?? undefined,
                 taskTitle: params['taskTitle'] ?? undefined
             };
-            this.search();
+            if (hasParams) {
+                this.search();
+            }
         });
-    }
-
-    private parseBoolean(value: string | undefined, defaultValue: boolean | null): boolean | null {
-        if (value === 'true') return true;
-        if (value === 'false') return false;
-        if (value === 'null') return null;
-        return defaultValue;
     }
 
     search(): void {
@@ -76,21 +69,11 @@ export class EngagementLettersComponent implements OnInit {
         });
     }
 
-    private buildQueryParams(): object {
-        return {
-            opened: this.criteria.opened,
-            budgetOnly: this.criteria.budgetOnly,
-            client: this.criteria.client ?? null,
-            legalProcedureTitle: this.criteria.legalProcedureTitle ?? null,
-            taskTitle: this.criteria.taskTitle ?? null
-        };
-    }
-
     delete(engagement: EngagementLetter): void {
         this.dialog.open(CancelYesDialogComponent, {
             data: {
                 title: 'Opción peligrosa!!!',
-                message: '¿Estás seguro de eliminar esta hoja de encargo?\n\nSi es una Hoja antigua, podrían quedar conexiones rotas!!!'
+                message: '¿Estás seguro de eliminar esta Hoja de Encargo?\n\nSi es una Hoja antigua, podrían quedar conexiones rotas!!!'
             }
         }).afterClosed().subscribe(result => {
             if (result) {
@@ -118,25 +101,32 @@ export class EngagementLettersComponent implements OnInit {
         });
     }
 
-    navigateToEvents(engagement: EngagementLetter): void {
-        if (!engagement?.id) return;
-        this.router.navigate(['/home/engagement-letters', engagement.id, 'events']);
+    link(engagement: EngagementLetter): void {
+        this.engagementLettersService.createAccessLink(engagement)
+            .subscribe(link => this.copyAndNotify(link));
     }
 
-    navigateToAlerts(engagement: EngagementLetter): void {
-        if (!engagement?.id) return;
-        this.router.navigate(['/home/engagement-letters', engagement.id, 'alerts']);
+    private copyAndNotify(link: string): void {
+        navigator.clipboard.writeText(link);
+        this.dialog.open(ClipboardToastDialogComponent, {
+            data: 'Enlace copiado al portapapeles'
+        });
     }
 
-    generatePublicLink(engagement: EngagementLetter): void {
-        if (!engagement?.id) return;
-        this.engagementLettersService.createPublicAccessToken(engagement.id).subscribe(token =>
-            this.dialog.open(ClipboardToastDialogComponent, {
-                data: {
-                    message: 'Enlace público copiado al portapapeles',
-                    clipboard: token.publicUrl
-                }
-            })
-        );
+    private parseBoolean(value: string | undefined, defaultValue: boolean | null): boolean | null {
+        if (value === 'true') return true;
+        if (value === 'false') return false;
+        if (value === 'null') return null;
+        return defaultValue;
+    }
+
+    private buildQueryParams(): object {
+        return {
+            opened: this.criteria.opened,
+            budgetOnly: this.criteria.budgetOnly,
+            client: this.criteria.client ?? null,
+            legalProcedureTitle: this.criteria.legalProcedureTitle ?? null,
+            taskTitle: this.criteria.taskTitle ?? null
+        };
     }
 }

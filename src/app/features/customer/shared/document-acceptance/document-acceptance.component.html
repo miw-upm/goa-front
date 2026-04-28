@@ -1,0 +1,101 @@
+<mat-card>
+    <mat-card-title class="title-container">
+        <div class="profile-header">
+            <img alt="logo" height="48" ngSrc="../../../../../assets/oa-s.png" width="48"/>
+            <h4 class="mat-headline-5">{{ title }}</h4>
+        </div>
+    </mat-card-title>
+
+    <mat-card-content>
+        <div class="instructions">
+            <strong>Estimado/a {{ customerName }}:</strong>
+        </div>
+        <!-- DESCARGA (si flag activo) -->
+        <div *ngIf="downloadEnabled" class="download-wrapper">
+            <p class="download-instructions">
+                A continuación podrá bajarse el documento. Le rogamos que lo descargue y lo lea con
+                detenimiento. Es un documento con el formato *.PDF.</p>
+            <P>No dude en comunicarse con el despacho si le surge cualquier duda.</P>
+            <button (click)="onDownloadClick()"
+                    [disabled]="completedFlag"
+                    color="primary"
+                    mat-raised-button
+                    type="button">
+                <mat-icon>download</mat-icon>
+                Descargar documento
+            </button>
+            <span *ngIf="!documentDownloaded" class="download-hint">
+                Pulse el botón para continuar.
+            </span>
+            <span *ngIf="documentDownloaded" class="download-done">
+                <mat-icon>check_circle</mat-icon> Documento descargado correctamente
+            </span>
+        </div>
+        <br>
+
+        <!-- FIRMA MANUSCRITA (si flag activo) -->
+        <div *ngIf="signatureEnabled"
+             [class.disabled]="!isSignatureUnlocked() || completedFlag"
+             class="signature-wrapper">
+            <p class="signature-instructions">
+                Firme dentro del recuadro habilitado al efecto, bien con el dedo sobre pantalla táctil,
+                bien con el ratón o lápiz digital.
+            </p>
+            <canvas #signaturePad
+                    (pointercancel)="stopDrawing()"
+                    (pointerdown)="startDrawing($event)"
+                    (pointerleave)="stopDrawing()"
+                    (pointermove)="draw($event)"
+                    (pointerup)="stopDrawing()"
+                    class="signature-pad">
+            </canvas>
+            <div class="signature-actions">
+                <button (click)="clearSignature()"
+                        [disabled]="isEmpty || !isSignatureUnlocked() || completedFlag"
+                        mat-stroked-button
+                        type="button">
+                    <mat-icon>refresh</mat-icon>
+                    Repetir firma
+                </button>
+            </div>
+        </div>
+
+        <!-- CHECKBOX DE ACEPTACIÓN (si flag activo) -->
+        <mat-checkbox *ngIf="acceptanceEnabled"
+                      [(ngModel)]="accepted"
+                      [disabled]="!isAcceptanceUnlocked() || completedFlag"
+                      [ngModelOptions]="{standalone: true}"
+                      required>
+            He leído el documento y manifiesto mi conformidad con su contenido.
+        </mat-checkbox>
+    </mat-card-content>
+
+    <!-- BOTÓN ENVIAR (si hay algo que enviar) -->
+    <mat-dialog-actions *ngIf="hasSubmittableContent()" align="center">
+        <button (click)="update()"
+                [disabled]="!canSubmit() || completedFlag"
+                class="btn-update"
+                color="primary"
+                mat-raised-button
+                type="button">
+            FIRMAR Y ENVIAR
+        </button>
+    </mat-dialog-actions>
+
+    <!-- CONFIRMACIÓN POST-ENVÍO -->
+    <div *ngIf="completedFlag" class="signed-confirmation">
+        <p class="signed-message">
+            Su firma ha sido registrada correctamente. Le agradecemos la confianza en Ocaña Abogados.
+        </p>
+    </div>
+    <!-- INFO DE LA EMPRESA (siempre visible) -->
+    <mat-divider></mat-divider>
+    <mat-card-footer class="company-info">
+        <mat-card-content class="company-info">
+            <p style="text-align: center;"><strong>Ocaña Abogados</strong><br>
+                Paseo de la Castellana, 93-2ª · 28046 Madrid<br>
+                Tel.: +34 644 993 593 <br><a href="mailto:nuria@ocanabogados.es">nuria&#64;ocanabogados.es</a>
+            </p>
+        </mat-card-content>
+    </mat-card-footer>
+</mat-card>

@@ -9,7 +9,7 @@
                 <ng-container [matColumnDef]="def">
                     <mat-header-cell *matHeaderCellDef>{{ def | uppercaseWords }}</mat-header-cell>
                     <mat-cell *matCellDef="let row" class="cell-small-text">
-                        <app-data-cell [value]="row[def]"></app-data-cell>
+                        <app-data-cell [value]="row[def]" [changeFields]="getChangeFields(def)"></app-data-cell>
                     </mat-cell>
                 </ng-container>
             }
@@ -43,8 +43,9 @@
                             <mat-icon color="warn">print</mat-icon>
                         </button>
                     }
-                    @if (publicLinkAction) {
-                        <button mat-icon-button matSuffix (click)="onPublicLink(item)" aria-label="Generar enlace público">
+                    @if (linkAction) {
+                        <button mat-icon-button matSuffix (click)="onPublicLink(item)"
+                                aria-label="Generar enlace público">
                             <mat-icon color="primary">link</mat-icon>
                         </button>
                     }

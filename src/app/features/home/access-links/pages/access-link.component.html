@@ -1,8 +1,9 @@
-<mat-slide-toggle [(ngModel)]="criteria.expired" (change)="search()">Expirado sin uso</mat-slide-toggle>
-<app-filter-input [(value)]="criteria.mobile" title="Móvil" (enter)="search()"></app-filter-input>
-<app-filter-input [(value)]="criteria.scope" title="Alcance del link" (enter)="search()"></app-filter-input>
+<mat-slide-toggle (change)="search()" [(ngModel)]="criteria.expired">Expirado sin uso</mat-slide-toggle>
+<app-filter-input (enter)="search()" [(value)]="criteria.client" title="Cliente"></app-filter-input>
+<app-filter-input (enter)="search()" [(value)]="criteria.scope" title="Alcance del link"></app-filter-input>
 
-<app-crud (delete)="delete($event)" (read)=read($event) (publicLink)="viewLink($event)" (searchAll)="search()"
-          [createAction]="false" [data]="accessLinks" [deleteAction]=visible [item]="accessLink"
-          [publicLinkAction]="true" [title]="title" [updateAction]="false" [secureDelete]="true" typeToDelete="mobile"
-          [hiddenFields]="['id','document','createdAt']" ></app-crud>
+<app-crud (delete)="delete($event)" (link)="viewLink($event)" (read)=read($event) (searchAll)="search()"
+          [createAction]="false" [data]="accessLinks" [deleteAction]=visible
+          [hiddenFields]="['id','document','createdAt']"
+          [item]="accessLink" [linkAction]="true" [secureDelete]="true" [title]="title" [updateAction]="false"
+          typeToDelete="mobile"></app-crud>

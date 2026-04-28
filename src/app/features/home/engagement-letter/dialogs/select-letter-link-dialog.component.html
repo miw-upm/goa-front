@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>Select user</h2>
+
+<mat-dialog-content>
+    <app-form-select
+            [(selected)]="selectedUserLabel"
+            [required]="true"
+            [values]="userLabels$"
+            label="User">
+    </app-form-select>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button (click)="accept()" [disabled]="!selectedUserLabel"
+            color="primary"
+            mat-raised-button>
+        Accept
+    </button>
+</mat-dialog-actions>

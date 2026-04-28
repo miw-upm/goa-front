@@ -17,7 +17,7 @@ import {map} from 'rxjs/operators';
 
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {EngagementLetterService} from '../../engagement-letter/engagement-letter.service';
-import {EngagementLetterCriteria} from '../../engagement-letter/models/engagement-letter-criteria.model';
+import {EngagementLetterFindCriteria} from '../../engagement-letter/models/engagement-letter-find-criteria.model';
 import {ExpenseService} from '../expense.service';
 import {IncomeService} from '../income.service';
 import {InvoiceService} from '../invoice.service';
@@ -63,25 +63,14 @@ export class InvoiceCreationDialogComponent {
     engagementIds: Observable<string[]>;
     availableExpenses: Observable<InvoiceSelectableExpense[]> = of([]);
     availableIncomes: Observable<InvoiceSelectableIncome[]> = of([]);
-    private invoiceDateValue: Date | null = null;
-    private readonly currentInvoiceId?: string;
-
     invoice: InvoiceCreateRequest = {
         engagementId: undefined,
         date: undefined,
         expenseIds: [],
         incomeIds: []
     };
-
-    get invoiceDate(): Date | null {
-        return this.invoiceDateValue;
-    }
-
-    set invoiceDate(value: Date | string | null | undefined) {
-        const parsedDate = value instanceof Date ? value : this.parseDate(value);
-        this.invoiceDateValue = parsedDate;
-        this.invoice.date = parsedDate ? this.formatDate(parsedDate) : undefined;
-    }
+    private invoiceDateValue: Date | null = null;
+    private readonly currentInvoiceId?: string;
 
     constructor(
         private readonly invoiceService: InvoiceService,
@@ -105,7 +94,7 @@ export class InvoiceCreationDialogComponent {
         };
         this.invoiceDate = data?.date;
 
-        const criteria: EngagementLetterCriteria = {
+        const criteria: EngagementLetterFindCriteria = {
             opened: true,
             client: '',
             legalProcedureTitle: ''
@@ -119,6 +108,16 @@ export class InvoiceCreationDialogComponent {
         if (this.invoice.engagementId) {
             this.loadAvailableItems(this.invoice.engagementId);
         }
+    }
+
+    get invoiceDate(): Date | null {
+        return this.invoiceDateValue;
+    }
+
+    set invoiceDate(value: Date | string | null | undefined) {
+        const parsedDate = value instanceof Date ? value : this.parseDate(value);
+        this.invoiceDateValue = parsedDate;
+        this.invoice.date = parsedDate ? this.formatDate(parsedDate) : undefined;
     }
 
     onEngagementChange(engagementId: string | undefined): void {
@@ -203,7 +202,10 @@ export class InvoiceCreationDialogComponent {
             .pipe(map(([incomes, invoices]) => this.filterAvailableIncomes(incomes, invoices)));
     }
 
-    private filterAvailableExpenses(expenses: Expense[], invoices: Array<{ id?: string; expenses: Array<{ id?: string }> }>): InvoiceSelectableExpense[] {
+    private filterAvailableExpenses(expenses: Expense[], invoices: Array<{
+        id?: string;
+        expenses: Array<{ id?: string }>
+    }>): InvoiceSelectableExpense[] {
         const assignedExpenseIds = new Set(
             invoices
                 .filter(invoice => invoice.id !== this.currentInvoiceId)
@@ -215,7 +217,10 @@ export class InvoiceCreationDialogComponent {
         return expenses.filter((expense): expense is InvoiceSelectableExpense => !!expense.id && !assignedExpenseIds.has(expense.id));
     }
 
-    private filterAvailableIncomes(incomes: Income[], invoices: Array<{ id?: string; incomes: Array<{ id?: string }> }>): InvoiceSelectableIncome[] {
+    private filterAvailableIncomes(incomes: Income[], invoices: Array<{
+        id?: string;
+        incomes: Array<{ id?: string }>
+    }>): InvoiceSelectableIncome[] {
         const assignedIncomeIds = new Set(
             invoices
                 .filter(invoice => invoice.id !== this.currentInvoiceId)

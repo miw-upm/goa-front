@@ -10,9 +10,9 @@
     </mat-form-field>
 
     <app-form-select
-        [(selected)]="income.userId"
-        [values]="userIds"
-        label="Id de Usuario"/>
+            [(selected)]="income.userId"
+            [values]="userIds"
+            label="Id de Usuario"/>
 
     <app-form-field
         #amountNg
@@ -25,25 +25,25 @@
         type="number"/>
 
     <app-form-date
-        [(value)]="incomeDate"
-        label="Fecha"/>
+            [(value)]="incomeDate"
+            label="Fecha"/>
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Close</button>
     @if (isCreate()) {
         <button
-            (click)="create()"
-            [disabled]="!canSubmit() || formInvalid(amountNg.ngModel)"
-            color="primary"
-            mat-raised-button>
+                (click)="create()"
+                [disabled]="!canSubmit() || formInvalid(amountNg.ngModel)"
+                color="primary"
+                mat-raised-button>
             Create
         </button>
     } @else {
         <button
-            (click)="update()"
-            [disabled]="!canSubmit() || formInvalid(amountNg.ngModel)"
-            color="primary"
-            mat-raised-button>
+                (click)="update()"
+                [disabled]="!canSubmit() || formInvalid(amountNg.ngModel)"
+                color="primary"
+                mat-raised-button>
             Update
         </button>
     }

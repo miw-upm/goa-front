@@ -1,7 +1,7 @@
 <mat-form-field appearance="outline">
     <mat-label>{{ title }}</mat-label>
-    <input (ngModelChange)="valueChange.emit($event)"
-           (keyup.enter)="enter.emit()"
+    <input (keyup.enter)="enter.emit()"
+           (ngModelChange)="valueChange.emit($event)"
            [(ngModel)]="value"
            [type]="type"
            matInput>
