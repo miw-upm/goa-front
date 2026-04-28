@@ -1,11 +1,11 @@
 export const CHATBOT_SCOPE_UI = {
     general: {
         title: 'Ámbito general',
-        description: 'Este chat ofrece orientación general y ayuda de uso de la plataforma. No responde como si conociera un encargo concreto.',
+        description: 'Este chat ofrece orientación general sobre el uso de la plataforma y dudas no ligadas a un caso concreto.',
     },
     contextual: {
         title: 'Ámbito del encargo activo',
-        description: 'Este chat está limitado a la hoja de encargo activa y no sustituye asesoramiento legal vinculante.',
+        description: 'Este chat está asociado a la hoja de encargo activa y puede responder usando datos internos autorizados del caso, como información del encargo, hitos y documentación visible para el usuario.',
     }
 } as const;
 
