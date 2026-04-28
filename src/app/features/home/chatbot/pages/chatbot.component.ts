@@ -172,6 +172,12 @@ export class ChatbotComponent implements OnInit, OnDestroy {
             : 'Escribe tu consulta operativa o técnica';
     }
 
+    roleContextHint(): string {
+        return this.authService.isCustomer()
+            ? 'El asistente priorizará explicaciones más claras y guiadas.'
+            : 'El asistente priorizará respuestas más técnicas y operativas.';
+    }
+
     scopeTitle(): string {
         return this.requiresConversation()
             ? CHATBOT_SCOPE_UI.contextual.title
