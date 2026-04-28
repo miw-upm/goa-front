@@ -15,18 +15,18 @@
                   title="Titulo del Procedimiento"></app-filter-input>
 <app-filter-input (enter)="search()" [(value)]="criteria.taskTitle" title="Tarea"></app-filter-input>
 
-<app-crud (create)="create()"
-          (read)="read($event)"
-          (update)="update($event)"
-          [deleteAction]=deleteVisibility  [secureDelete]="true" (delete)="delete($event)"
-          [linkAction]="true" (link)="link($event)"
-          [printAction]="true" (print)="print($event)"
-          (searchAll)="search()"
-          [assistantAction]="true" (assistant)="openAssistant($event)"
-
-          [title]="title"
+<app-crud (assistant)="openAssistant($event)"
+          (create)="create()"
+          (delete)="delete($event)"
+          (link)="link($event)" (print)="print($event)" (read)="read($event)"
+          (searchAll)="search()" (update)="update($event)"
+          [assistantAction]="true" [changeFields]="changeFields"
           [data]="engagementLetters"
-          [hiddenFields]="hiddenFields"
+          [deleteAction]=deleteVisibility [hiddenFields]="hiddenFields"
+
           [item]="engagementLetter"
-          [changeFields]="changeFields" >
+          [linkAction]="true"
+          [printAction]="true"
+          [secureDelete]="true"
+          [title]="title">
 </app-crud>

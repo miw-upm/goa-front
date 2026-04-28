@@ -1,0 +1,10 @@
+<app-filter-input (enter)="search()" [(value)]="criteria.customer" title="Cliente"></app-filter-input>
+<app-filter-input (enter)="search()" [(value)]="criteria.documentType" title="Tipo de documento"></app-filter-input>
+
+<app-crud (read)="read($event)" (searchAll)="search()"
+          [changeFields]="changeFields" [createAction]="false"
+          [data]="customerFileDownloads"
+          [deleteAction]="false"
+          [hiddenFields]="['id','documentId','downloadToken']"
+          [item]="customerFileDownload" [title]="title" [updateAction]="false">
+</app-crud>

@@ -11,6 +11,7 @@ const EXPENSE_ROOT = `${environment.REST_BILLING}/expenses`;
 const INCOME_ROOT = `${environment.REST_BILLING}/incomes`;
 const INVOICE_ROOT = `${environment.REST_BILLING}/invoices`;
 const CHATBOT_ROOT = `${environment.REST_CHATBOT}/chatbot`;
+const CUSTOMER_FILE_DOWNLOAD_ROOT = `${environment.REST_ENGAGEMENT}/customer-file-downloads`;
 
 const enc = encodeURIComponent;
 
@@ -70,6 +71,11 @@ export const ENDPOINTS = {
         root: INVOICE_ROOT,
         byId: (id: string) => `${INVOICE_ROOT}/${enc(id)}`,
         breakdown: (id: string) => `${INVOICE_ROOT}/${enc(id)}/breakdown`,
+    },
+
+    customerFileDownload: {
+        root: CUSTOMER_FILE_DOWNLOAD_ROOT,
+        byId: (id: string) => `${CUSTOMER_FILE_DOWNLOAD_ROOT}/${enc(id)}`,
     },
 
     chatbot: {

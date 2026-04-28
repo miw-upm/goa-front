@@ -11,7 +11,7 @@
             <strong>Estimado/a {{ customerName }}:</strong>
         </div>
         <!-- DESCARGA (si flag activo) -->
-        <div class="download-wrapper" *ngIf="downloadEnabled">
+        <div *ngIf="downloadEnabled" class="download-wrapper">
             <p class="download-instructions">
                 A continuación podrá bajarse el documento. Le rogamos que lo descargue y lo lea con
                 detenimiento. Es un documento con el formato *.PDF.
@@ -70,7 +70,7 @@
     </mat-card-content>
 
     <!-- BOTÓN ENVIAR (si hay algo que enviar) -->
-    <mat-dialog-actions align="center" *ngIf="hasSubmittableContent()">
+    <mat-dialog-actions *ngIf="hasSubmittableContent()" align="center">
         <button (click)="update()"
                 [disabled]="!canSubmit() || completedFlag"
                 class="btn-update"
@@ -86,7 +86,7 @@
         <p class="signed-message">
             Su firma ha sido registrada correctamente. Le agradecemos la confianza en Ocaña Abogados.
         </p>
-        <div class="company-info" *ngIf="showCompanyInfo">
+        <div *ngIf="showCompanyInfo" class="company-info">
             <strong>Ocaña Abogados</strong><br/>
             Paseo de la Castellana, 93-2ª · 28046 Madrid<br/>
             Tel.: +34 644 993 593 ·

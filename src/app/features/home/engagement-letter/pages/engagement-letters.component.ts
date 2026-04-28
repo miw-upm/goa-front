@@ -15,7 +15,6 @@ import {EngagementLetterService} from '../engagement-letter.service';
 import {EngagementLetterFindCriteria} from '../models/engagement-letter-find-criteria.model';
 import {EngagementLetter} from '../models/engagement-letter.model';
 import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
-import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
 import {User} from '@features/shared/models/user.model';
 import {SelectLetterLinkDialogComponent} from "../dialogs/select-letter-link-dialog.component";
 import {switchMap} from "rxjs/operators";
@@ -31,7 +30,7 @@ export class EngagementLettersComponent implements OnInit {
     engagementLetters: Observable<EngagementLetter[]> = of([]);
     engagementLetter: Observable<EngagementLetter>;
     hiddenFields = ['id', 'discount', 'attachments', 'paymentMethods', 'legalClause']
-    changeFields = ['owner:firstName.familyName.mobile'];
+    changeFields = ['owner:firstName,familyName,mobile'];
 
     deleteVisibility = false;
     criteria: EngagementLetterFindCriteria = {opened: true};
