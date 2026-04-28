@@ -6,7 +6,6 @@ export interface User {
     firstName: string;
     familyName?: string;
     email?: string;
-    documentType?: string;
     identity?: string;
     address?: string;
     city?: string;

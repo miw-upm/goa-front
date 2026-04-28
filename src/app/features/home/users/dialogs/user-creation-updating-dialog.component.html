@@ -23,8 +23,7 @@
         label="Código postal"
         pattern="^[0-9]{5}$"
     />
-    <app-form-select [(selected)]="user.documentType" [values]="userDocumentTypes" label="Tipo de Documento"/>
-    <app-form-field [(value)]="user.identity" label="Nº Identificación"/>
+    <app-form-field [(value)]="user.identity" label="N.I.F. (DNI, CIF O NIE)"/>
     <app-form-field [(value)]="user.email" label="Email"/>
     <mat-slide-toggle [(ngModel)]="enablePasswordChange">Nueva Contraseña</mat-slide-toggle>
     <app-form-field [(value)]="user.password" [disabled]="!enablePasswordChange" label="Contraseña" type="password"/>
