@@ -105,26 +105,32 @@ export class EngagementLettersComponent implements OnInit {
     }
 
     link(engagement: EngagementLetter): void {
-        this.engagementLettersService.pendingSigners(engagement).pipe(
-            switchMap(users => this.dialog.open(SelectLetterLinkDialogComponent, {
-                data: {users}
-            }).afterClosed()),
-            filter((user): user is User => !!user),
-            switchMap(user => this.engagementLettersService.createAccessLink(engagement, user))
-        ).subscribe({
-            next: link => {
-                navigator.clipboard.writeText(link);
-                this.dialog.open(ClipboardToastDialogComponent, {
-                    data: 'Enlace copiado al portapapeles'
+        if (engagement.budgetOnly) {
+            this.engagementLettersService.createBudgetAccessLink(engagement)
+                .subscribe({
+                    next: link => {
+                        navigator.clipboard.writeText(link);
+                        this.dialog.open(ClipboardToastDialogComponent, {
+                            data: 'Enlace copiado al portapapeles'
+                        });
+                    }
                 });
-            }
-            // ,
-            // error: error => {
-            //     this.dialog.open(WarningDialogComponent, {
-            //         data: {title: 'Warning', message: error.message}
-            //     });
-            // }
-        });
+        } else {
+            this.engagementLettersService.pendingSigners(engagement).pipe(
+                switchMap(users => this.dialog.open(SelectLetterLinkDialogComponent, {
+                    data: {users}
+                }).afterClosed()),
+                filter((user): user is User => !!user),
+                switchMap(user => this.engagementLettersService.createLetterAccessLink(engagement, user))
+            ).subscribe({
+                next: link => {
+                    navigator.clipboard.writeText(link);
+                    this.dialog.open(ClipboardToastDialogComponent, {
+                        data: 'Enlace copiado al portapapeles'
+                    });
+                }
+            });
+        }
     }
 
     private parseBoolean(value: string | undefined, defaultValue: boolean | null): boolean | null {

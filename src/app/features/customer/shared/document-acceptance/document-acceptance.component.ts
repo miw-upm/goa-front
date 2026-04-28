@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import {NgIf, NgOptimizedImage} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
+import {MatCard, MatCardActions, MatCardContent, MatCardFooter, MatCardTitle} from '@angular/material/card';
 import {MatButton} from '@angular/material/button';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatDialogActions} from '@angular/material/dialog';
@@ -21,6 +21,7 @@ import {MatIcon} from '@angular/material/icon';
 import {DocumentAcceptanceResult} from './document-acceptance-result.model';
 import {ActivatedRoute} from "@angular/router";
 import {SharedCustomerService} from "@features/shared/services/shared-customer.service";
+import {MatDivider} from "@angular/material/divider";
 
 @Component({
     standalone: true,
@@ -37,7 +38,9 @@ import {SharedCustomerService} from "@features/shared/services/shared-customer.s
         MatButton,
         MatCheckbox,
         MatDialogActions,
-        MatIcon
+        MatIcon,
+        MatDivider,
+        MatCardFooter,
     ]
 })
 export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDestroy {

@@ -11,6 +11,7 @@ import {SharedAccessLinkService} from "@features/shared/services/shared-access-l
 @Injectable()
 export class EngagementLetterService {
     private readonly SIGN_ENGAGEMENT_LETTER_SCOPE = 'sign-engagement-letter';
+    private readonly ENGAGEMENT_LETTER_BUDGET_SCOPE = 'engagement-letter-budget';
 
     constructor(private readonly httpService: HttpService,
                 private readonly sharedAccessLinkService: SharedAccessLinkService) {
@@ -50,7 +51,7 @@ export class EngagementLetterService {
             .delete(ENDPOINTS.engagementLetters.byId(id));
     }
 
-    createAccessLink(engagement: EngagementLetter, user: User): Observable<string> {
+    createLetterAccessLink(engagement: EngagementLetter, user: User): Observable<string> {
         return this.sharedAccessLinkService.createAccessLink({
             mobile: user.mobile,
             scope: this.SIGN_ENGAGEMENT_LETTER_SCOPE,
@@ -62,5 +63,13 @@ export class EngagementLetterService {
         return this.httpService.request()
             .warning()
             .get<User[]>(ENDPOINTS.engagementLetters.pendingSigners(engagement.id));
+    }
+
+    createBudgetAccessLink(engagement: EngagementLetter) {
+        return this.sharedAccessLinkService.createAccessLink({
+            mobile: engagement.owner.mobile,
+            scope: this.ENGAGEMENT_LETTER_BUDGET_SCOPE,
+            document: engagement.id
+        });
     }
 }

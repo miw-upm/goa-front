@@ -14,8 +14,8 @@
         <div *ngIf="downloadEnabled" class="download-wrapper">
             <p class="download-instructions">
                 A continuación podrá bajarse el documento. Le rogamos que lo descargue y lo lea con
-                detenimiento. Es un documento con el formato *.PDF.
-            </p>
+                detenimiento. Es un documento con el formato *.PDF.</p>
+            <P>No dude en comunicarse con el despacho si le surge cualquier duda.</P>
             <button (click)="onDownloadClick()"
                     [disabled]="completedFlag"
                     color="primary"
@@ -86,12 +86,14 @@
         <p class="signed-message">
             Su firma ha sido registrada correctamente. Le agradecemos la confianza en Ocaña Abogados.
         </p>
-        <div *ngIf="showCompanyInfo" class="company-info">
-            <strong>Ocaña Abogados</strong><br/>
-            Paseo de la Castellana, 93-2ª · 28046 Madrid<br/>
-            Tel.: +34 644 993 593 ·
-            <a href="mailto:nuria@ocanabogados.es">nuria&#64;ocanabogados.es</a> ·
-            <a href="https://www.ocanabogados.es" rel="noopener" target="_blank">www.ocanabogados.es</a>
-        </div>
     </div>
+    <!-- INFO DE LA EMPRESA (siempre visible) -->
+    <mat-divider></mat-divider>
+    <mat-card-footer class="company-info">
+        <strong>Ocaña Abogados</strong><br/>
+        Paseo de la Castellana, 93-2ª · 28046 Madrid<br/>
+        Tel.: +34 644 993 593 ·
+        <a href="mailto:nuria@ocanabogados.es">nuria&#64;ocanabogados.es</a> ·
+        <a href="https://www.ocanabogados.es" rel="noopener" target="_blank">www.ocanabogados.es</a>
+    </mat-card-footer>
 </mat-card>
