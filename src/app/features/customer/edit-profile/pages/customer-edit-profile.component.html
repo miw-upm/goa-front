@@ -33,9 +33,7 @@
                 label="Código postal"
                 pattern="^[0-9]{5}$"
             />
-            <app-form-select [(selected)]="user.documentType" [required]="true" [values]="userDocumentTypes"
-                             label="Tipo de Documento"/>
-            <app-form-field [(value)]="user.identity" [required]="true" label="Nº Identificación"/>
+            <app-form-field [(value)]="user.identity" [required]="true" label="N.I.F. (DNI, CIF O NIE)"/>
             <app-form-field [(value)]="user.email" [required]="true" label="Email (no)"/>
             <div class="privacy-text">
                 <strong>Protección de datos personales:</strong><br/>

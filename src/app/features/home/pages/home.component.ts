@@ -11,7 +11,6 @@ import {AuthService} from "@core/auth/auth.service";
 import {FooterComponent} from '@core/layout/footer/footer.component';
 import {UserService} from "../users/user.service";
 import {UserCreationUpdatingDialogComponent} from "../users/dialogs/user-creation-updating-dialog.component";
-import {IssueCreationDialogComponent} from "app/features/home/issues/dialogs/issue-creation-dialog.component";
 
 @Component({
     standalone: true,
@@ -61,7 +60,4 @@ export class HomeComponent {
         return this.authService.name;
     }
 
-    createIssue(): void {
-        this.dialog.open(IssueCreationDialogComponent);
-    }
 }
