@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {NgOptimizedImage} from "@angular/common";
 import {FormsModule, NgModel} from "@angular/forms";
-import {Observable, of} from "rxjs";
+import {Observable} from "rxjs";
 import {MatCardModule} from "@angular/material/card";
 import {MatOptionModule} from "@angular/material/core";
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";

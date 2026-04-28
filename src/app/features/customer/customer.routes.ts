@@ -1,9 +1,7 @@
 import {Routes} from '@angular/router';
 import {CustomerEditProfileComponent} from "./edit-profile/pages/customer-edit-profile.component";
-import {SignerDocumentComponent} from "./accept-engagement-letter/pages/signer-document.component";
-import {
-    DownloadEngagementLetterBudgetComponent
-} from "./download-engagement-letter-budget/pages/download-engagement-letter-budget.component";
+import {ReadEngagementLetterComponent} from "./engagement-letter/read/pages/read-engagement-letter.component";
+import {SignDocumentComponent} from "./engagement-letter/sign/pages/sign-document.component";
 
 export const routes: Routes = [
     {
@@ -12,10 +10,10 @@ export const routes: Routes = [
     },
     {
         path: 'customer/sign-engagement-letter/:mobile/:token',
-        component: SignerDocumentComponent
+        component: SignDocumentComponent
     },
     {
         path: 'customer/read-engagement-letter/:mobile/:token',
-        component: DownloadEngagementLetterBudgetComponent
+        component: ReadEngagementLetterComponent
     },
 ];

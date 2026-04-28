@@ -4,7 +4,7 @@ import {HttpService} from '@shared/ui/api/http.service';
 import {ENDPOINTS} from '@core/api/endpoints';
 
 @Injectable({providedIn: 'root'})
-export class DownloadEngagementLetterBudgetService {
+export class ReadEngagementLetterService {
 
     constructor(private readonly httpService: HttpService) {
     }
