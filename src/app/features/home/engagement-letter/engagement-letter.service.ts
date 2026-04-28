@@ -26,10 +26,21 @@ export class EngagementLetterService {
             .post(ENDPOINTS.engagementLetters.root, engagement);
     }
 
+    read(id: string): Observable<EngagementLetter> {
+        return this.httpService.request()
+            .get(ENDPOINTS.engagementLetters.byId(id));
+    }
+
     update(id: string, engagement: EngagementLetter): Observable<void> {
         return this.httpService.request()
             .success()
             .put(ENDPOINTS.engagementLetters.byId(id), engagement);
+    }
+
+    delete(id: string): Observable<void> {
+        return this.httpService.request()
+            .success()
+            .delete(ENDPOINTS.engagementLetters.byId(id));
     }
 
     search(criteria: EngagementLetterFindCriteria): Observable<EngagementLetter[]> {
@@ -38,21 +49,21 @@ export class EngagementLetterService {
             .get(ENDPOINTS.engagementLetters.root);
     }
 
-    read(id: string): Observable<EngagementLetter> {
-        return this.httpService.request()
-            .get(ENDPOINTS.engagementLetters.byId(id));
-    }
-
     print(id: string): Observable<void> {
         return this.httpService
             .request()
             .openPdf(ENDPOINTS.engagementLetters.view(id));
     }
 
-    delete(id: string): Observable<void> {
-        return this.httpService.request()
-            .success()
-            .delete(ENDPOINTS.engagementLetters.byId(id));
+    createAccessLink(engagement: EngagementLetter): Observable<string> {
+        if (engagement.budgetOnly) {
+            return this.createBudgetAccessLink(engagement);
+        }
+        return this.pendingSigners(engagement).pipe(
+            switchMap(users => this.askSignerSelection(users)),
+            filter((user): user is User => !!user),
+            switchMap(user => this.createLetterAccessLink(engagement, user))
+        );
     }
 
     createLetterAccessLink(engagement: EngagementLetter, user: User): Observable<string> {
@@ -75,17 +86,6 @@ export class EngagementLetterService {
             scope: this.ENGAGEMENT_LETTER_BUDGET_SCOPE,
             document: engagement.id
         });
-    }
-
-    createAccessLink(engagement: EngagementLetter): Observable<string> {
-        if (engagement.budgetOnly) {
-            return this.createBudgetAccessLink(engagement);
-        }
-        return this.pendingSigners(engagement).pipe(
-            switchMap(users => this.askSignerSelection(users)),
-            filter((user): user is User => !!user),
-            switchMap(user => this.createLetterAccessLink(engagement, user))
-        );
     }
 
     private askSignerSelection(users: User[]): Observable<User | undefined> {

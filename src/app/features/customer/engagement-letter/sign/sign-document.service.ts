@@ -2,10 +2,10 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpService} from "@shared/ui/api/http.service";
 import {ENDPOINTS} from "@core/api/endpoints";
-import {SignerDocument} from "./signer-document.model";
+import {SignerDocument} from "./sign-document.model";
 
 @Injectable({providedIn: 'root'})
-export class SignerDocumentService {
+export class SignDocumentService {
 
     constructor(private readonly httpService: HttpService) {
     }
