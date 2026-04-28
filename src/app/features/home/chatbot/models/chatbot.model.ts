@@ -19,6 +19,9 @@ export interface ChatbotMessageResponse {
     message?: string;
     error?: string;
     createdAt?: string;
+    responseMode?: 'GENERAL' | 'CONTEXTUAL_PLATFORM_DATA' | 'CONTEXTUAL_RESTRICTED';
+    usedPlatformData?: boolean;
+    sourcesSummary?: string[];
 }
 
 export interface ChatbotConversationSummary {
@@ -45,6 +48,8 @@ export interface ChatbotMessageView {
     content: string;
     createdAt?: string;
     restricted?: boolean;
+    usedPlatformData?: boolean;
+    sourcesSummary?: string[];
 }
 
 export interface ContextualChatbotDialogData {

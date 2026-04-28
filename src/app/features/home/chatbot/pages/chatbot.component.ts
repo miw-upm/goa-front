@@ -11,8 +11,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {RouterLink} from "@angular/router";
 import {AuthService} from "@core/auth/auth.service";
 import {CHATBOT_SCOPE_RESTRICTED_REPLIES, CHATBOT_SCOPE_UI} from "../support/chatbot-scope-ui";
-
-import {ChatbotMessageView, ContextualChatbotDialogData} from "../models/chatbot.model";
+import {ChatbotMessageResponse,ChatbotMessageView, ContextualChatbotDialogData} from "../models/chatbot.model";
 import {ChatbotService} from "../chatbot.service";
 import {TextFieldModule} from "@angular/cdk/text-field";
 
@@ -83,7 +82,6 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         this.closeConversationOnExit();
     }
 
-
     send(): void {
         const normalizedMessage = this.message?.trim();
 
@@ -116,12 +114,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
                 this.conversationId = response.conversationId;
 
                 if (response.message) {
-                    this.messages.push({
-                        sender: 'ASSISTANT',
-                        content: response.message,
-                        createdAt: response.createdAt,
-                        restricted: this.isRestrictedAssistantReply(response.message)
-                    });
+                    this.messages.push(this.mapAssistantMessage(response));
                     this.scrollToBottom();
                 }
 
@@ -179,6 +172,12 @@ export class ChatbotComponent implements OnInit, OnDestroy {
             : 'Escribe tu consulta operativa o técnica';
     }
 
+    roleContextHint(): string {
+        return this.authService.isCustomer()
+            ? 'El asistente priorizará explicaciones más claras y guiadas.'
+            : 'El asistente priorizará respuestas más técnicas y operativas.';
+    }
+
     scopeTitle(): string {
         return this.requiresConversation()
             ? CHATBOT_SCOPE_UI.contextual.title
@@ -197,6 +196,17 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         }
 
         return CHATBOT_SCOPE_RESTRICTED_REPLIES.includes(message as typeof CHATBOT_SCOPE_RESTRICTED_REPLIES[number]);
+    }
+
+    private mapAssistantMessage(response: ChatbotMessageResponse): ChatbotMessageView {
+        return {
+            sender: 'ASSISTANT',
+            content: response.message ?? '',
+            createdAt: response.createdAt,
+            restricted: this.isRestrictedAssistantReply(response.message),
+            usedPlatformData: response.usedPlatformData ?? false,
+            sourcesSummary: response.sourcesSummary ?? []
+        };
     }
 
     private scrollToBottom(): void {

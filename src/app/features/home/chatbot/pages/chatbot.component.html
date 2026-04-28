@@ -38,6 +38,16 @@
                     <strong>Contexto activo:</strong>
                     Hoja de encargo {{ dialogData?.engagementLetterId }}
                 </div>
+
+                <div class="platform-data-banner">
+                    <strong>Respuestas contextualizadas:</strong>
+                    El asistente puede apoyarse en datos del encargo, hitos y documentación autorizada visible para este caso.
+                </div>
+
+                <div class="role-context-banner">
+                    <strong>Respuesta adaptada al perfil:</strong>
+                    {{ roleContextHint() }}
+                </div>
             }
         </div>
 
@@ -58,6 +68,18 @@
                                  'restricted': !!item.restricted
                              }">
                             <strong>{{ item.sender === 'USER' ? 'Tú' : 'Asistente' }}</strong>
+
+                            <div *ngIf="item.sender === 'ASSISTANT' && item.usedPlatformData" class="assistant-context-chip">
+                                Respuesta apoyada en datos del caso
+                            </div>
+
+                            <div *ngIf="item.sender === 'ASSISTANT' && item.sourcesSummary?.length" class="assistant-sources-block">
+                                <strong class="assistant-sources-title">Contexto usado</strong>
+                                <ul class="assistant-sources-preview">
+                                    <li *ngFor="let source of item.sourcesSummary">{{ source }}</li>
+                                </ul>
+                            </div>
+
                             <p>{{ item.content }}</p>
                         </div>
 
