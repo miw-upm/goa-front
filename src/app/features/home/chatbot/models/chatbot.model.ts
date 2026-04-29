@@ -50,6 +50,7 @@ export interface ChatbotMessageView {
     restricted?: boolean;
     usedPlatformData?: boolean;
     sourcesSummary?: string[];
+    responseMode?: 'GENERAL' | 'CONTEXTUAL_PLATFORM_DATA' | 'CONTEXTUAL_RESTRICTED';
 }
 
 export interface ContextualChatbotDialogData {

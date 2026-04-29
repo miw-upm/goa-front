@@ -37,7 +37,7 @@ import {TextFieldModule} from "@angular/cdk/text-field";
     styleUrls: ["./chatbot.component.css"]
 })
 
-export class ChatbotComponent implements OnInit, OnDestroy {
+export class ChatbotComponent implements OnInit, OnDestroy{
     message = '';
     conversationId?: string;
     loading = false;
@@ -178,6 +178,72 @@ export class ChatbotComponent implements OnInit, OnDestroy {
             : 'El asistente priorizará respuestas más técnicas y operativas.';
     }
 
+    hasMessages(): boolean {
+        return this.messages.length > 0;
+    }
+
+    suggestedQuestions(): string[] {
+        if (this.requiresConversation()) {
+            return this.authService.isCustomer()
+                ? [
+                    '¿Cuál es el estado de mi encargo?',
+                    '¿Qué pasos siguen ahora?',
+                    '¿Hay hitos recientes en mi caso?'
+                ]
+                : [
+                    'Necesito conocer el estado del encargo',
+                    '¿Qué hitos recientes tiene este caso?',
+                    '¿Cuáles son los próximos pasos visibles?'
+                ];
+        }
+
+        return this.authService.isCustomer()
+            ? [
+                '¿Qué tipo de dudas puedes resolver?',
+                '¿Cómo puedo consultar el estado de mi encargo?',
+                '¿Cómo sé cuáles son los próximos pasos?'
+            ]
+            : [
+                '¿Qué consultas frecuentes puedes resolver?',
+                '¿Cómo obtengo el estado de un encargo?',
+                '¿Cómo consultar próximos pasos de un caso?'
+            ];
+    }
+
+    applySuggestedQuestion(question: string): void {
+        if (this.loading || this.initializing) {
+            return;
+        }
+
+        this.message = question;
+    }
+
+    onKeydown(event: KeyboardEvent): void {
+        if (event.key !== 'Enter' || event.shiftKey) {
+            return;
+        }
+
+        event.preventDefault();
+        this.send();
+    }
+
+    assistantModeLabel(item: ChatbotMessageView): string | null {
+        if (item.sender !== 'ASSISTANT') {
+            return null;
+        }
+
+        switch (item.responseMode) {
+            case 'GENERAL':
+                return 'Respuesta general';
+            case 'CONTEXTUAL_PLATFORM_DATA':
+                return 'Respuesta contextual';
+            case 'CONTEXTUAL_RESTRICTED':
+                return 'Respuesta restringida';
+            default:
+                return null;
+        }
+    }
+
     scopeTitle(): string {
         return this.requiresConversation()
             ? CHATBOT_SCOPE_UI.contextual.title
@@ -205,7 +271,8 @@ export class ChatbotComponent implements OnInit, OnDestroy {
             createdAt: response.createdAt,
             restricted: this.isRestrictedAssistantReply(response.message),
             usedPlatformData: response.usedPlatformData ?? false,
-            sourcesSummary: response.sourcesSummary ?? []
+            sourcesSummary: response.sourcesSummary ?? [],
+            responseMode: response.responseMode
         };
     }
 

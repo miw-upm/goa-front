@@ -60,6 +60,33 @@
             <div class="conversation-stage">
                 <div class="messages-panel">
                     <div #messagesContainer class="messages-container">
+                        @if (!hasMessages() && !loading) {
+                            <div class="empty-chat-state">
+                                <div class="empty-chat-card">
+                                    <strong>Empieza con una consulta frecuente</strong>
+                                    <p>
+                                        {{
+                                            requiresConversation()
+                                                ? 'Puedes preguntar por el estado del encargo, hitos recientes o próximos pasos.'
+                                                : 'Puedes hacer preguntas frecuentes sobre el asistente, el estado de un encargo o cómo consultar próximos pasos.'
+                                        }}
+                                    </p>
+
+                                    <div class="suggested-questions">
+                                        <button
+                                                *ngFor="let question of suggestedQuestions()"
+                                                type="button"
+                                                class="suggestion-chip"
+                                                (click)="applySuggestedQuestion(question)"
+                                                [disabled]="loading || initializing">
+                                            {{ question }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+
                         <div *ngFor="let item of messages"
                              class="message"
                              [ngClass]="{
@@ -69,8 +96,14 @@
                              }">
                             <strong>{{ item.sender === 'USER' ? 'Tú' : 'Asistente' }}</strong>
 
-                            <div *ngIf="item.sender === 'ASSISTANT' && item.usedPlatformData" class="assistant-context-chip">
-                                Respuesta apoyada en datos del caso
+                            <div *ngIf="item.sender === 'ASSISTANT'" class="assistant-meta-row">
+                                <div *ngIf="assistantModeLabel(item)" class="assistant-mode-chip">
+                                    {{ assistantModeLabel(item) }}
+                                </div>
+
+                                <div *ngIf="item.usedPlatformData" class="assistant-context-chip">
+                                    Respuesta apoyada en datos del caso
+                                </div>
                             </div>
 
                             <div *ngIf="item.sender === 'ASSISTANT' && item.sourcesSummary?.length" class="assistant-sources-block">
@@ -85,6 +118,9 @@
 
                         <div *ngIf="loading" class="message assistant">
                             <strong>Asistente</strong>
+                            <div class="assistant-meta-row">
+                                <div class="assistant-mode-chip">Generando respuesta</div>
+                            </div>
                             <p>Escribiendo...</p>
                         </div>
                     </div>
@@ -96,16 +132,18 @@
                     <div class="composer-box">
                         <textarea
                                 [(ngModel)]="message"
-                                (keydown)="handleMessageKeydown($event)"
                                 cdkTextareaAutosize
                                 cdkAutosizeMinRows="1"
                                 cdkAutosizeMaxRows="6"
                                 class="composer-textarea"
                                 [placeholder]="composerPlaceholder()"
-                                [disabled]="loading || initializing || (requiresConversation() && !conversationId)">
+                                [disabled]="loading || initializing || (requiresConversation() && !conversationId)"
+                                (keydown)="onKeydown($event)">
                         </textarea>
 
                         <div class="composer-actions">
+                            <span class="composer-hint">Enter para enviar · Shift+Enter para salto</span>
+
                             <button
                                     mat-flat-button
                                     color="primary"
