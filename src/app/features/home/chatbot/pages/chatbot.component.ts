@@ -6,11 +6,12 @@ import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatTooltipModule} from "@angular/material/tooltip";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {RouterLink} from "@angular/router";
 import {AuthService} from "@core/auth/auth.service";
 import {CHATBOT_SCOPE_RESTRICTED_REPLIES, CHATBOT_SCOPE_UI} from "../support/chatbot-scope-ui";
-
-import {ChatbotMessageView, ContextualChatbotDialogData} from "../models/chatbot.model";
+import {ChatbotMessageResponse,ChatbotMessageView, ContextualChatbotDialogData} from "../models/chatbot.model";
 import {ChatbotService} from "../chatbot.service";
 import {TextFieldModule} from "@angular/cdk/text-field";
 
@@ -28,7 +29,9 @@ import {TextFieldModule} from "@angular/cdk/text-field";
         MatFormFieldModule,
         MatIconModule,
         MatProgressSpinnerModule,
-        TextFieldModule
+        MatTooltipModule,
+        TextFieldModule,
+        RouterLink
     ],
     templateUrl: "./chatbot.component.html",
     styleUrls: ["./chatbot.component.css"]
@@ -79,7 +82,6 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         this.closeConversationOnExit();
     }
 
-
     send(): void {
         const normalizedMessage = this.message?.trim();
 
@@ -112,12 +114,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
                 this.conversationId = response.conversationId;
 
                 if (response.message) {
-                    this.messages.push({
-                        sender: 'ASSISTANT',
-                        content: response.message,
-                        createdAt: response.createdAt,
-                        restricted: this.isRestrictedAssistantReply(response.message)
-                    });
+                    this.messages.push(this.mapAssistantMessage(response));
                     this.scrollToBottom();
                 }
 
@@ -136,6 +133,15 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         });
 
         this.message = '';
+    }
+
+    handleMessageKeydown(event: KeyboardEvent): void {
+        if (event.key !== 'Enter' || event.shiftKey || event.isComposing) {
+            return;
+        }
+
+        event.preventDefault();
+        this.send();
     }
 
     close(): void {
@@ -166,6 +172,12 @@ export class ChatbotComponent implements OnInit, OnDestroy {
             : 'Escribe tu consulta operativa o técnica';
     }
 
+    roleContextHint(): string {
+        return this.authService.isCustomer()
+            ? 'El asistente priorizará explicaciones más claras y guiadas.'
+            : 'El asistente priorizará respuestas más técnicas y operativas.';
+    }
+
     scopeTitle(): string {
         return this.requiresConversation()
             ? CHATBOT_SCOPE_UI.contextual.title
@@ -184,6 +196,17 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         }
 
         return CHATBOT_SCOPE_RESTRICTED_REPLIES.includes(message as typeof CHATBOT_SCOPE_RESTRICTED_REPLIES[number]);
+    }
+
+    private mapAssistantMessage(response: ChatbotMessageResponse): ChatbotMessageView {
+        return {
+            sender: 'ASSISTANT',
+            content: response.message ?? '',
+            createdAt: response.createdAt,
+            restricted: this.isRestrictedAssistantReply(response.message),
+            usedPlatformData: response.usedPlatformData ?? false,
+            sourcesSummary: response.sourcesSummary ?? []
+        };
     }
 
     private scrollToBottom(): void {

@@ -1,30 +1,53 @@
 <section [class.dialog-mode]="isDialogMode()" class="chatbot-shell">
     <div class="chatbot-card">
         <div class="chatbot-header">
-            <div class="chatbot-title-block">
+            <div class="header-top-row">
                 <h2>Asistente conversacional</h2>
 
-                <div class="conversation-mode-banner">
-                    <strong>{{ conversationModeLabel() }}</strong>
-                    <span>{{ conversationModeDescription() }}</span>
-                </div>
-                <div class="scope-banner">
-                    <strong>{{ scopeTitle() }}</strong>
-                    <span>{{ scopeDescription() }}</span>
-                </div>
+                <div class="header-actions">
+                    @if (!isDialogMode()) {
+                        <button
+                                mat-icon-button
+                                type="button"
+                                routerLink="/home/chatbot/history"
+                                aria-label="Ver histórico"
+                                matTooltip="Ver histórico">
+                            <mat-icon>history</mat-icon>
+                        </button>
+                    }
 
-                @if (dialogData?.engagementLetterId) {
-                    <div class="context-banner">
-                        <strong>Contexto activo:</strong>
-                        Hoja de encargo {{ dialogData?.engagementLetterId }}
-                    </div>
-                }
+                    @if (isDialogMode()) {
+                        <button mat-icon-button type="button" aria-label="Cerrar" (click)="close()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    }
+                </div>
             </div>
 
-            @if (isDialogMode()) {
-                <button mat-icon-button type="button" aria-label="Cerrar" (click)="close()">
-                    <mat-icon>close</mat-icon>
-                </button>
+            <div class="conversation-mode-banner">
+                <strong>{{ conversationModeLabel() }}</strong>
+                <span>{{ conversationModeDescription() }}</span>
+            </div>
+            <div class="scope-banner">
+                <strong>{{ scopeTitle() }}</strong>
+                <span>{{ scopeDescription() }}</span>
+            </div>
+
+            @if (dialogData?.engagementLetterId) {
+                <div class="context-banner">
+                    <strong>Contexto activo:</strong>
+                    Hoja de encargo {{ dialogData?.engagementLetterId }}
+                </div>
+
+                <div class="platform-data-banner">
+                    <strong>Respuestas contextualizadas:</strong>
+                    El asistente puede apoyarse en datos del encargo, hitos y documentación autorizada visible para este caso.
+                </div>
+
+                <div class="role-context-banner">
+                    <strong>Respuesta adaptada al perfil:</strong>
+                    {{ roleContextHint() }}
+                </div>
             }
         </div>
 
@@ -45,6 +68,18 @@
                                  'restricted': !!item.restricted
                              }">
                             <strong>{{ item.sender === 'USER' ? 'Tú' : 'Asistente' }}</strong>
+
+                            <div *ngIf="item.sender === 'ASSISTANT' && item.usedPlatformData" class="assistant-context-chip">
+                                Respuesta apoyada en datos del caso
+                            </div>
+
+                            <div *ngIf="item.sender === 'ASSISTANT' && item.sourcesSummary?.length" class="assistant-sources-block">
+                                <strong class="assistant-sources-title">Contexto usado</strong>
+                                <ul class="assistant-sources-preview">
+                                    <li *ngFor="let source of item.sourcesSummary">{{ source }}</li>
+                                </ul>
+                            </div>
+
                             <p>{{ item.content }}</p>
                         </div>
 
@@ -61,6 +96,7 @@
                     <div class="composer-box">
                         <textarea
                                 [(ngModel)]="message"
+                                (keydown)="handleMessageKeydown($event)"
                                 cdkTextareaAutosize
                                 cdkAutosizeMinRows="1"
                                 cdkAutosizeMaxRows="6"
