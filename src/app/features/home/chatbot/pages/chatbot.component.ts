@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, OnInit, Optional, ViewChild} from "@angular/core";
+import {Component, ElementRef, Inject, OnInit, Optional, ViewChild, OnDestroy} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
@@ -21,6 +21,7 @@ import {
 } from "../models/chatbot.model";
 import {ChatbotService} from "../chatbot.service";
 import {TextFieldModule} from "@angular/cdk/text-field";
+import {Subscription} from "rxjs";
 
 @Component({
     standalone: true,
@@ -43,11 +44,12 @@ import {TextFieldModule} from "@angular/cdk/text-field";
     styleUrls: ["./chatbot.component.css"]
 })
 
-export class ChatbotComponent implements OnInit{
+export class ChatbotComponent implements OnInit, OnDestroy {
     message = '';
     conversationId?: string;
     loading = false;
     initializing = false;
+    closingConversation = false;
     error = '';
     sideBarOpened = false;
     messages: ChatbotMessageView[] = [];
@@ -57,6 +59,10 @@ export class ChatbotComponent implements OnInit{
     selectedConversationId?: string;
     private toastIdSequence = 0;
     private shownToastKeys = new Set<string>();
+    private backdropClickSubscription?: Subscription;
+    private closingFromDestroy = false;
+    private conversationCloseRequested = false;
+    conversationStatus: 'ACTIVE' | 'CLOSED' | 'ARCHIVED' = 'ACTIVE';
     @ViewChild('messagesContainer') private messagesContainer?: ElementRef<HTMLDivElement>;
 
     constructor(
@@ -69,6 +75,12 @@ export class ChatbotComponent implements OnInit{
 
     ngOnInit(): void {
         this.loadHistoryList();
+
+        if (this.dialogRef) {
+            this.backdropClickSubscription = this.dialogRef.backdropClick().subscribe(() => {
+                this.closeFromModalInteraction();
+            });
+        }
 
         if (!this.dialogData?.engagementLetterId) {
             return;
@@ -92,6 +104,14 @@ export class ChatbotComponent implements OnInit{
                 this.initializing = false;
             }
         });
+    }
+
+    ngOnDestroy(): void {
+        this.backdropClickSubscription?.unsubscribe();
+
+        if (this.conversationId && !this.conversationCloseRequested) {
+            this.closeActiveConversationSilently(true);
+        }
     }
 
     send(): void {
@@ -124,6 +144,7 @@ export class ChatbotComponent implements OnInit{
         request$.subscribe({
             next: response => {
                 this.conversationId = response.conversationId;
+                this.conversationCloseRequested = false;
                 this.selectedConversationId = response.conversationId;
 
                 if (response.message) {
@@ -151,7 +172,7 @@ export class ChatbotComponent implements OnInit{
     }
 
     close(): void {
-        this.dialogRef?.close();
+        this.closeFromModalInteraction();
     }
 
     toggleSidebar(): void {
@@ -163,40 +184,74 @@ export class ChatbotComponent implements OnInit{
     }
 
     startNewConversation(): void {
-        if (this.loading || this.initializing) {
+        if (this.loading || this.initializing || this.closingConversation) {
             return;
         }
 
         this.error = '';
         this.message = '';
-        this.messages = [];
-        this.conversationId = undefined;
-        this.selectedConversationId = undefined;
 
         if (this.requiresConversation()) {
-            this.initializing = true;
+            if (!this.conversationId) {
+                this.messages = [];
+                this.selectedConversationId = undefined;
+                this.conversationStatus = 'ACTIVE';
+                this.initializeNewContextualConversation();
+                return;
+            }
 
-            this.chatbotService.startContextualConversation({
-                engagementLetterId: this.dialogData!.engagementLetterId
-            }).subscribe({
-                next: response => {
-                    this.conversationId = response.conversationId;
-                    this.selectedConversationId = response.conversationId;
-                    this.error = response.error ?? '';
-                    this.initializing = false;
-                    this.loadHistoryList();
-                    this.closeSidebar();
+            this.closingConversation = true;
+            this.conversationCloseRequested = true;
+
+            this.chatbotService.closeConversation(this.conversationId).subscribe({
+                next: () => {
+                    this.closingConversation = false;
+                    this.messages = [];
+                    this.conversationId = undefined;
+                    this.selectedConversationId = undefined;
+                    this.conversationStatus = 'ACTIVE';
+                    this.conversationCloseRequested = false;
+                    this.initializeNewContextualConversation();
                 },
                 error: () => {
-                    this.error = 'No se pudo iniciar una nueva conversación contextual.';
-                    this.initializing = false;
+                    this.error = 'No se pudo cerrar la conversación actual antes de crear una nueva.';
+                    this.closingConversation = false;
+                    this.conversationCloseRequested = false;
                 }
             });
 
             return;
         }
 
-        this.closeSidebar();
+        if (!this.conversationId) {
+            this.messages = [];
+            this.selectedConversationId = undefined;
+            this.conversationStatus = 'ACTIVE';
+            this.closeSidebar();
+            return;
+        }
+
+        this.closingConversation = true;
+        this.conversationCloseRequested = true;
+
+        this.chatbotService.closeConversation(this.conversationId).subscribe({
+            next: () => {
+                this.closingConversation = false;
+                this.messages = [];
+                this.conversationId = undefined;
+                this.selectedConversationId = undefined;
+                this.conversationStatus = 'ACTIVE';
+                this.conversationCloseRequested = false;
+                this.loadHistoryList();
+                this.closeSidebar();
+                this.scrollToBottom();
+            },
+            error: () => {
+                this.error = 'No se pudo cerrar la conversación actual antes de crear una nueva.';
+                this.closingConversation = false;
+                this.conversationCloseRequested = false;
+            }
+        });
     }
 
     selectConversation(item: ChatbotConversationSummary): void {
@@ -318,6 +373,82 @@ export class ChatbotComponent implements OnInit{
         return `Hoja de encargo ${this.dialogData.engagementLetterId}`;
     }
 
+    closeToast(toastId: number): void {
+        this.toasts = this.toasts.filter(toast => toast.id !== toastId);
+    }
+
+    private initializeNewContextualConversation(): void {
+        this.initializing = true;
+
+        this.chatbotService.startContextualConversation({
+            engagementLetterId: this.dialogData!.engagementLetterId
+        }).subscribe({
+            next: response => {
+                this.conversationId = response.conversationId;
+                this.selectedConversationId = response.conversationId;
+                this.error = response.error ?? '';
+                this.initializing = false;
+                this.loadHistoryList();
+                this.closeSidebar();
+                this.scrollToBottom();
+            },
+            error: () => {
+                this.error = 'No se pudo iniciar una nueva conversación contextual.';
+                this.initializing = false;
+            }
+        });
+    }
+
+    private closeFromModalInteraction(): void {
+        if (!this.dialogRef) {
+            return;
+        }
+
+        if (!this.requiresConversation() || !this.conversationId || this.closingConversation) {
+            this.dialogRef.close();
+            return;
+        }
+
+        this.closingConversation = true;
+        this.conversationCloseRequested = true;
+
+        this.chatbotService.closeConversation(this.conversationId).subscribe({
+            next: () => {
+                this.closingConversation = false;
+                this.dialogRef?.close();
+            },
+            error: () => {
+                this.closingConversation = false;
+                this.dialogRef?.close();
+            }
+        });
+    }
+
+    private closeActiveConversationSilently(fromDestroy = false): void {
+        if (
+            !this.conversationId ||
+            this.closingConversation ||
+            this.conversationCloseRequested
+        ) {
+            return;
+        }
+
+        this.closingConversation = true;
+        this.closingFromDestroy = fromDestroy;
+        this.conversationCloseRequested = true;
+
+        this.chatbotService.closeConversation(this.conversationId).subscribe({
+            next: () => {
+                this.closingConversation = false;
+                this.closingFromDestroy = false;
+            },
+            error: () => {
+                this.closingConversation = false;
+                this.closingFromDestroy = false;
+            }
+        });
+    }
+
     private pushToastOnce(
         key: string,
         kind: 'info' | 'success' | 'warning',
@@ -331,10 +462,6 @@ export class ChatbotComponent implements OnInit{
 
         this.shownToastKeys.add(key);
         this.pushToast(kind, title, message, durationMs);
-    }
-
-    closeToast(toastId: number): void {
-        this.toasts = this.toasts.filter(toast => toast.id !== toastId);
     }
 
     private pushToast(
