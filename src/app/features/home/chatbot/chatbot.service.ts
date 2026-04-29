@@ -13,7 +13,6 @@ import {
 
 @Injectable({providedIn: 'root'})
 export class ChatbotService {
-
     constructor(private readonly httpService: HttpService) {
     }
 
@@ -32,6 +31,12 @@ export class ChatbotService {
         return request.get(ENDPOINTS.chatbot.conversations());
     }
 
+    startGeneralConversation(request: ChatbotMessageRequest): Observable<ChatbotMessageResponse> {
+        return this.httpService.request()
+            .error('No se pudo iniciar la conversación general')
+            .post(ENDPOINTS.chatbot.generalConversation(), request);
+    }
+
     startContextualConversation(
         request: ChatbotContextualConversationRequest
     ): Observable<ChatbotContextualConversationResponse> {
@@ -40,26 +45,25 @@ export class ChatbotService {
             .post(ENDPOINTS.chatbot.contextualConversation(), request);
     }
 
+    closeConversation(conversationId: string): Observable<void> {
+        return this.httpService.request()
+            .patch<void>(ENDPOINTS.chatbot.closeConversation(conversationId), {});
+    }
+
     readConversationHistory(conversationId: string): Observable<ChatbotConversationHistoryResponse> {
         return this.httpService.request()
             .error('No se pudo recuperar el historial conversacional')
             .get(ENDPOINTS.chatbot.history(conversationId));
     }
 
+    reopenConversation(conversationId: string): Observable<void> {
+        return this.httpService.request()
+            .patch<void>(ENDPOINTS.chatbot.reopenConversation(conversationId), {});
+    }
+
     sendMessage(request: ChatbotMessageRequest): Observable<ChatbotMessageResponse> {
         return this.httpService.request()
             .error('No se pudo obtener respuesta del asistente')
             .post(ENDPOINTS.chatbot.messages(), request);
-    }
-
-    startGeneralConversation(request: ChatbotMessageRequest): Observable<ChatbotMessageResponse> {
-        return this.httpService.request()
-            .error('No se pudo iniciar la conversación general')
-            .post(ENDPOINTS.chatbot.generalConversation(), request);
-    }
-
-    closeConversation(conversationId: string): Observable<void> {
-        return this.httpService.request()
-            .patch<void>(ENDPOINTS.chatbot.closeConversation(conversationId), {});
     }
 }

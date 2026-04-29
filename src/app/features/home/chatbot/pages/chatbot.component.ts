@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, OnInit, Optional, ViewChild, OnDestroy} from "@angular/core";
+import {Component, ElementRef, Inject, OnInit, Optional, ViewChild, OnDestroy, HostListener} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
@@ -21,7 +21,8 @@ import {
 } from "../models/chatbot.model";
 import {ChatbotService} from "../chatbot.service";
 import {TextFieldModule} from "@angular/cdk/text-field";
-import {Subscription} from "rxjs";
+import {forkJoin, of, Subscription} from "rxjs";
+import {catchError} from "rxjs/operators";
 
 @Component({
     standalone: true,
@@ -81,43 +82,22 @@ export class ChatbotComponent implements OnInit, OnDestroy {
                 this.closeFromModalInteraction();
             });
         }
-
-        if (!this.dialogData?.engagementLetterId) {
-            return;
-        }
-
-        this.initializing = true;
-        this.error = '';
-
-        this.chatbotService.startContextualConversation({
-            engagementLetterId: this.dialogData.engagementLetterId
-        }).subscribe({
-            next: response => {
-                this.conversationId = response.conversationId;
-                this.selectedConversationId = response.conversationId;
-                this.error = response.error ?? '';
-                this.initializing = false;
-                this.loadHistoryList();
-            },
-            error: () => {
-                this.error = 'No se pudo iniciar la conversación contextual.';
-                this.initializing = false;
-            }
-        });
     }
 
     ngOnDestroy(): void {
         this.backdropClickSubscription?.unsubscribe();
+        this.closeAllActiveConversationsSilently(true);
+    }
 
-        if (this.conversationId && !this.conversationCloseRequested) {
-            this.closeActiveConversationSilently(true);
-        }
+    @HostListener('window:beforeunload')
+    onBeforeUnload(): void {
+        this.closeAllActiveConversationsSilently(true);
     }
 
     send(): void {
         const normalizedMessage = this.message?.trim();
 
-        if (!normalizedMessage || this.loading || this.initializing || (this.requiresConversation() && !this.conversationId)) {
+        if (!normalizedMessage || this.loading || this.initializing) {
             return;
         }
 
@@ -132,41 +112,67 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.scrollToBottom();
 
-        const request$ = this.conversationId
-            ? this.chatbotService.sendMessage({
-                conversationId: this.conversationId,
-                message: normalizedMessage
-            })
-            : this.chatbotService.startGeneralConversation({
-                message: normalizedMessage
-            });
+        const handleResponse = (response: ChatbotMessageResponse): void => {
+            this.conversationId = response.conversationId;
+            this.conversationCloseRequested = false;
+            this.selectedConversationId = response.conversationId;
 
-        request$.subscribe({
-            next: response => {
-                this.conversationId = response.conversationId;
-                this.conversationCloseRequested = false;
-                this.selectedConversationId = response.conversationId;
-
-                if (response.message) {
-                    this.messages.push(this.mapAssistantMessage(response));
-                    this.notifyResponseToast(response);
-                    this.scrollToBottom();
-                }
-
-                if (response.error) {
-                    this.error = response.error;
-                }
-
-                this.loading = false;
-                this.loadHistoryList();
-                this.scrollToBottom();
-            },
-            error: () => {
-                this.error = 'No se pudo obtener respuesta del asistente.';
-                this.loading = false;
+            if (response.message) {
+                this.messages.push(this.mapAssistantMessage(response));
+                this.notifyResponseToast(response);
                 this.scrollToBottom();
             }
-        });
+
+            if (response.error) {
+                this.error = response.error;
+            }
+
+            this.loading = false;
+            this.loadHistoryList();
+            this.scrollToBottom();
+        };
+
+        const handleError = (errorMessage: string): void => {
+            this.error = errorMessage;
+            this.loading = false;
+            this.scrollToBottom();
+        };
+
+        if (this.conversationId) {
+            this.chatbotService.sendMessage({
+                conversationId: this.conversationId,
+                message: normalizedMessage
+            }).subscribe({
+                next: handleResponse,
+                error: () => handleError('No se pudo obtener respuesta del asistente.')
+            });
+        } else if (this.requiresConversation()) {
+            this.chatbotService.startContextualConversation({
+                engagementLetterId: this.dialogData!.engagementLetterId
+            }).subscribe({
+                next: response => {
+                    this.conversationId = response.conversationId;
+                    this.selectedConversationId = response.conversationId;
+                    this.error = response.error ?? '';
+
+                    this.chatbotService.sendMessage({
+                        conversationId: response.conversationId,
+                        message: normalizedMessage
+                    }).subscribe({
+                        next: handleResponse,
+                        error: () => handleError('No se pudo obtener respuesta del asistente.')
+                    });
+                },
+                error: () => handleError('No se pudo iniciar la conversación contextual.')
+            });
+        } else {
+            this.chatbotService.startGeneralConversation({
+                message: normalizedMessage
+            }).subscribe({
+                next: handleResponse,
+                error: () => handleError('No se pudo obtener respuesta del asistente.')
+            });
+        }
 
         this.message = '';
     }
@@ -196,7 +202,8 @@ export class ChatbotComponent implements OnInit, OnDestroy {
                 this.messages = [];
                 this.selectedConversationId = undefined;
                 this.conversationStatus = 'ACTIVE';
-                this.initializeNewContextualConversation();
+                this.closeSidebar();
+                this.scrollToBottom();
                 return;
             }
 
@@ -211,7 +218,9 @@ export class ChatbotComponent implements OnInit, OnDestroy {
                     this.selectedConversationId = undefined;
                     this.conversationStatus = 'ACTIVE';
                     this.conversationCloseRequested = false;
-                    this.initializeNewContextualConversation();
+                    this.loadHistoryList();
+                    this.closeSidebar();
+                    this.scrollToBottom();
                 },
                 error: () => {
                     this.error = 'No se pudo cerrar la conversación actual antes de crear una nueva.';
@@ -255,25 +264,71 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     }
 
     selectConversation(item: ChatbotConversationSummary): void {
-        if (this.loading || this.initializing) {
+        if (this.loading || this.initializing || this.closingConversation) {
             return;
         }
 
-        this.initializing = true;
-        this.error = '';
-        this.conversationId = item.conversationId;
-        this.selectedConversationId = item.conversationId;
+        const previousConversationId = this.conversationId;
+        const hasPreviousActiveConversation = !!previousConversationId
+            && previousConversationId !== item.conversationId
+            && this.historyItems.some(historyItem =>
+                historyItem.conversationId === previousConversationId && historyItem.status === 'ACTIVE'
+            );
 
-        this.chatbotService.readConversationHistory(item.conversationId).subscribe({
-            next: history => {
-                this.messages = this.mapHistoryMessages(history);
-                this.initializing = false;
-                this.closeSidebar();
-                this.scrollToBottom();
+        const openSelectedConversation = (): void => {
+            this.initializing = true;
+            this.error = '';
+            this.conversationId = item.conversationId;
+            this.selectedConversationId = item.conversationId;
+
+            const loadHistory = (): void => {
+                this.chatbotService.readConversationHistory(item.conversationId).subscribe({
+                    next: history => {
+                        this.messages = this.mapHistoryMessages(history);
+                        this.conversationStatus = history.status;
+                        this.initializing = false;
+                        this.closeSidebar();
+                        this.scrollToBottom();
+                        this.loadHistoryList();
+                    },
+                    error: () => {
+                        this.error = 'No se pudo recuperar la conversación seleccionada.';
+                        this.initializing = false;
+                    }
+                });
+            };
+
+            if (item.status === 'ACTIVE') {
+                loadHistory();
+                return;
+            }
+
+            this.chatbotService.reopenConversation(item.conversationId).subscribe({
+                next: () => {
+                    this.conversationStatus = 'ACTIVE';
+                    loadHistory();
+                },
+                error: () => {
+                    this.error = 'No se pudo reabrir la conversación seleccionada.';
+                    this.initializing = false;
+                }
+            });
+        };
+
+        if (!hasPreviousActiveConversation) {
+            openSelectedConversation();
+            return;
+        }
+
+        this.chatbotService.closeConversation(previousConversationId!).subscribe({
+            next: () => {
+                this.markConversationAsClosed(previousConversationId!);
+                this.conversationCloseRequested = false;
+                openSelectedConversation();
             },
             error: () => {
-                this.error = 'No se pudo recuperar la conversación seleccionada.';
-                this.initializing = false;
+                this.conversationCloseRequested = false;
+                openSelectedConversation();
             }
         });
     }
@@ -377,50 +432,21 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         this.toasts = this.toasts.filter(toast => toast.id !== toastId);
     }
 
-    private initializeNewContextualConversation(): void {
-        this.initializing = true;
-
-        this.chatbotService.startContextualConversation({
-            engagementLetterId: this.dialogData!.engagementLetterId
-        }).subscribe({
-            next: response => {
-                this.conversationId = response.conversationId;
-                this.selectedConversationId = response.conversationId;
-                this.error = response.error ?? '';
-                this.initializing = false;
-                this.loadHistoryList();
-                this.closeSidebar();
-                this.scrollToBottom();
-            },
-            error: () => {
-                this.error = 'No se pudo iniciar una nueva conversación contextual.';
-                this.initializing = false;
-            }
-        });
-    }
-
     private closeFromModalInteraction(): void {
         if (!this.dialogRef) {
             return;
         }
 
-        if (!this.requiresConversation() || !this.conversationId || this.closingConversation) {
+        if (this.closingConversation) {
             this.dialogRef.close();
             return;
         }
 
         this.closingConversation = true;
         this.conversationCloseRequested = true;
-
-        this.chatbotService.closeConversation(this.conversationId).subscribe({
-            next: () => {
-                this.closingConversation = false;
-                this.dialogRef?.close();
-            },
-            error: () => {
-                this.closingConversation = false;
-                this.dialogRef?.close();
-            }
+        this.closeConversationIdsSilently(this.getActiveConversationIds(), () => {
+            this.closingConversation = false;
+            this.dialogRef?.close();
         });
     }
 
@@ -447,6 +473,62 @@ export class ChatbotComponent implements OnInit, OnDestroy {
                 this.closingFromDestroy = false;
             }
         });
+    }
+
+    private closeAllActiveConversationsSilently(fromDestroy = false): void {
+        const activeIds = this.getActiveConversationIds();
+
+        if (!activeIds.length) {
+            return;
+        }
+
+        this.closingFromDestroy = fromDestroy;
+        this.closeConversationIdsSilently(activeIds, () => {
+            this.closingFromDestroy = false;
+        });
+    }
+
+    private getActiveConversationIds(): string[] {
+        const ids = new Set(
+            this.historyItems
+                .filter(item => item.status === 'ACTIVE')
+                .map(item => item.conversationId)
+        );
+
+        if (this.conversationId) {
+            ids.add(this.conversationId);
+        }
+
+        return Array.from(ids);
+    }
+
+    private closeConversationIdsSilently(ids: string[], onComplete?: () => void): void {
+        if (!ids.length) {
+            onComplete?.();
+            return;
+        }
+
+        forkJoin(
+            ids.map(id => this.chatbotService.closeConversation(id).pipe(
+                catchError(() => of(void 0))
+            ))
+        ).subscribe({
+            next: () => {
+                ids.forEach(id => this.markConversationAsClosed(id));
+                onComplete?.();
+            },
+            error: () => {
+                onComplete?.();
+            }
+        });
+    }
+
+    private markConversationAsClosed(conversationId: string): void {
+        this.historyItems = this.historyItems.map(item =>
+            item.conversationId === conversationId
+                ? {...item, status: 'CLOSED'}
+                : item
+        );
     }
 
     private pushToastOnce(

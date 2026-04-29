@@ -30,7 +30,7 @@
                             type="button"
                             class="sidebar-new-conversation-button"
                             (click)="startNewConversation()"
-                            [disabled]="loading || initializing || closingConversation">
+                            [disabled]="loading || initializing || closingConversation || !hasUserMessages()">
                         Nueva conversación
                     </button>
 
@@ -202,7 +202,7 @@
                                         cdkAutosizeMaxRows="6"
                                         class="composer-textarea"
                                         [placeholder]="composerPlaceholder()"
-                                        [disabled]="loading || initializing || closingConversation || (requiresConversation() && !conversationId)"
+                                        [disabled]="loading || initializing || closingConversation"
                                         (keydown)="onKeydown($event)">
                                 </textarea>
 
@@ -215,7 +215,7 @@
                                             type="button"
                                             class="send-button"
                                             (click)="send()"
-                                            [disabled]="!message?.trim() || loading || initializing || closingConversation || (requiresConversation() && !conversationId)">
+                                            [disabled]="!message?.trim() || loading || initializing || closingConversation">
                                         Enviar
                                     </button>
                                 </div>
