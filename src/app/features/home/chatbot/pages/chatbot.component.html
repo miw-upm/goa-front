@@ -1,55 +1,50 @@
 <section [class.dialog-mode]="isDialogMode()" class="chatbot-shell">
     <div class="chatbot-card">
         <div class="chatbot-header">
-            <div class="header-top-row">
+            <div class="chatbot-title-block">
                 <h2>Asistente conversacional</h2>
 
-                <div class="header-actions">
-                    @if (!isDialogMode()) {
-                        <button
-                                mat-icon-button
-                                type="button"
-                                routerLink="/home/chatbot/history"
-                                aria-label="Ver histórico"
-                                matTooltip="Ver histórico">
-                            <mat-icon>history</mat-icon>
-                        </button>
-                    }
-
-                    @if (isDialogMode()) {
-                        <button mat-icon-button type="button" aria-label="Cerrar" (click)="close()">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    }
+                <div class="conversation-mode-banner">
+                    <strong>{{ conversationModeLabel() }}</strong>
+                    <span>{{ conversationModeDescription() }}</span>
                 </div>
+
+                @if (contextActiveLabel()) {
+                    <div class="context-chip">
+                        <strong>Contexto activo:</strong>
+                        <span>{{ contextActiveLabel() }}</span>
+                    </div>
+                }
             </div>
 
-            <div class="conversation-mode-banner">
-                <strong>{{ conversationModeLabel() }}</strong>
-                <span>{{ conversationModeDescription() }}</span>
-            </div>
-            <div class="scope-banner">
-                <strong>{{ scopeTitle() }}</strong>
-                <span>{{ scopeDescription() }}</span>
-            </div>
-
-            @if (dialogData?.engagementLetterId) {
-                <div class="context-banner">
-                    <strong>Contexto activo:</strong>
-                    Hoja de encargo {{ dialogData?.engagementLetterId }}
-                </div>
-
-                <div class="platform-data-banner">
-                    <strong>Respuestas contextualizadas:</strong>
-                    El asistente puede apoyarse en datos del encargo, hitos y documentación autorizada visible para este caso.
-                </div>
-
-                <div class="role-context-banner">
-                    <strong>Respuesta adaptada al perfil:</strong>
-                    {{ roleContextHint() }}
-                </div>
+            @if (isDialogMode()) {
+                <button mat-icon-button type="button" aria-label="Cerrar" (click)="close()">
+                    <mat-icon>close</mat-icon>
+                </button>
             }
         </div>
+
+        @if (toasts.length) {
+            <div class="chat-toast-overlay">
+                <div *ngFor="let toast of toasts"
+                     class="chat-toast"
+                     [ngClass]="toast.kind">
+                    <div class="chat-toast-body">
+                        <strong>{{ toast.title }}</strong>
+                        <span>{{ toast.message }}</span>
+                    </div>
+
+                    <button
+                            type="button"
+                            class="chat-toast-close"
+                            aria-label="Cerrar aviso"
+                            (click)="closeToast(toast.id)">
+                        ×
+                    </button>
+                </div>
+            </div>
+        }
+
 
         @if (initializing) {
             <div class="chat-state loading-state">
@@ -60,6 +55,38 @@
             <div class="conversation-stage">
                 <div class="messages-panel">
                     <div #messagesContainer class="messages-container">
+                        @if (shouldShowIntroCard()) {
+                            <div class="empty-chat-state">
+                                <div class="empty-chat-card">
+                                    <strong>Empieza con una consulta frecuente</strong>
+
+                                    <div class="intro-scope-block">
+                                        <strong>{{ scopeTitle() }}</strong>
+                                        <span>{{ scopeDescription() }}</span>
+                                    </div>
+
+                                    <p>
+                                        {{
+                                            requiresConversation()
+                                                ? 'Puedes preguntar por el estado del encargo, hitos recientes o próximos pasos.'
+                                                : 'Puedes hacer preguntas frecuentes sobre el asistente, el estado de un encargo o cómo consultar próximos pasos.'
+                                        }}
+                                    </p>
+
+                                    <div class="suggested-questions">
+                                        <button
+                                                *ngFor="let question of suggestedQuestions()"
+                                                type="button"
+                                                class="suggestion-chip"
+                                                (click)="applySuggestedQuestion(question)"
+                                                [disabled]="loading || initializing">
+                                            {{ question }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
                         <div *ngFor="let item of messages"
                              class="message"
                              [ngClass]="{
@@ -69,8 +96,14 @@
                              }">
                             <strong>{{ item.sender === 'USER' ? 'Tú' : 'Asistente' }}</strong>
 
-                            <div *ngIf="item.sender === 'ASSISTANT' && item.usedPlatformData" class="assistant-context-chip">
-                                Respuesta apoyada en datos del caso
+                            <div *ngIf="item.sender === 'ASSISTANT'" class="assistant-meta-row">
+                                <div *ngIf="assistantModeLabel(item)" class="assistant-mode-chip">
+                                    {{ assistantModeLabel(item) }}
+                                </div>
+
+                                <div *ngIf="item.usedPlatformData" class="assistant-context-chip">
+                                    Respuesta apoyada en datos del caso
+                                </div>
                             </div>
 
                             <div *ngIf="item.sender === 'ASSISTANT' && item.sourcesSummary?.length" class="assistant-sources-block">
@@ -85,6 +118,9 @@
 
                         <div *ngIf="loading" class="message assistant">
                             <strong>Asistente</strong>
+                            <div class="assistant-meta-row">
+                                <div class="assistant-mode-chip">Generando respuesta</div>
+                            </div>
                             <p>Escribiendo...</p>
                         </div>
                     </div>
@@ -96,16 +132,18 @@
                     <div class="composer-box">
                         <textarea
                                 [(ngModel)]="message"
-                                (keydown)="handleMessageKeydown($event)"
                                 cdkTextareaAutosize
                                 cdkAutosizeMinRows="1"
                                 cdkAutosizeMaxRows="6"
                                 class="composer-textarea"
                                 [placeholder]="composerPlaceholder()"
-                                [disabled]="loading || initializing || (requiresConversation() && !conversationId)">
+                                [disabled]="loading || initializing || (requiresConversation() && !conversationId)"
+                                (keydown)="onKeydown($event)">
                         </textarea>
 
                         <div class="composer-actions">
+                            <span class="composer-hint">Enter para enviar · Shift+Enter para salto</span>
+
                             <button
                                     mat-flat-button
                                     color="primary"

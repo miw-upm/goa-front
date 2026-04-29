@@ -50,8 +50,16 @@ export interface ChatbotMessageView {
     restricted?: boolean;
     usedPlatformData?: boolean;
     sourcesSummary?: string[];
+    responseMode?: 'GENERAL' | 'CONTEXTUAL_PLATFORM_DATA' | 'CONTEXTUAL_RESTRICTED';
 }
 
 export interface ContextualChatbotDialogData {
     engagementLetterId: string;
+}
+
+export interface ChatbotToastView {
+    id: number;
+    kind: 'info' | 'success' | 'warning';
+    title: string;
+    message: string;
 }
