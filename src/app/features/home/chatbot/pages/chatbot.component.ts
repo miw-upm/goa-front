@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, OnDestroy, OnInit, Optional, ViewChild} from "@angular/core";
+import {Component, ElementRef, Inject, OnInit, Optional, ViewChild} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
@@ -6,12 +6,10 @@ import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {MatTooltipModule} from "@angular/material/tooltip";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {RouterLink} from "@angular/router";
 import {AuthService} from "@core/auth/auth.service";
 import {CHATBOT_SCOPE_RESTRICTED_REPLIES, CHATBOT_SCOPE_UI} from "../support/chatbot-scope-ui";
-import {ChatbotMessageResponse,ChatbotMessageView, ContextualChatbotDialogData} from "../models/chatbot.model";
+import {ChatbotMessageResponse,ChatbotMessageView, ChatbotToastView, ContextualChatbotDialogData} from "../models/chatbot.model";
 import {ChatbotService} from "../chatbot.service";
 import {TextFieldModule} from "@angular/cdk/text-field";
 
@@ -29,23 +27,23 @@ import {TextFieldModule} from "@angular/cdk/text-field";
         MatFormFieldModule,
         MatIconModule,
         MatProgressSpinnerModule,
-        MatTooltipModule,
-        TextFieldModule,
-        RouterLink
+        TextFieldModule
     ],
     templateUrl: "./chatbot.component.html",
     styleUrls: ["./chatbot.component.css"]
 })
 
-export class ChatbotComponent implements OnInit, OnDestroy{
+export class ChatbotComponent implements OnInit{
     message = '';
     conversationId?: string;
     loading = false;
     initializing = false;
     error = '';
     messages: ChatbotMessageView[] = [];
+    toasts: ChatbotToastView[] = [];
+    private toastIdSequence = 0;
+    private shownToastKeys = new Set<string>();
     @ViewChild('messagesContainer') private messagesContainer?: ElementRef<HTMLDivElement>;
-    private conversationClosed = false;
 
     constructor(
         private readonly chatbotService: ChatbotService,
@@ -76,10 +74,6 @@ export class ChatbotComponent implements OnInit, OnDestroy{
                 this.initializing = false;
             }
         });
-    }
-
-    ngOnDestroy(): void {
-        this.closeConversationOnExit();
     }
 
     send(): void {
@@ -115,6 +109,7 @@ export class ChatbotComponent implements OnInit, OnDestroy{
 
                 if (response.message) {
                     this.messages.push(this.mapAssistantMessage(response));
+                    this.notifyResponseToast(response);
                     this.scrollToBottom();
                 }
 
@@ -133,15 +128,6 @@ export class ChatbotComponent implements OnInit, OnDestroy{
         });
 
         this.message = '';
-    }
-
-    handleMessageKeydown(event: KeyboardEvent): void {
-        if (event.key !== 'Enter' || event.shiftKey || event.isComposing) {
-            return;
-        }
-
-        event.preventDefault();
-        this.send();
     }
 
     close(): void {
@@ -172,14 +158,79 @@ export class ChatbotComponent implements OnInit, OnDestroy{
             : 'Escribe tu consulta operativa o técnica';
     }
 
-    roleContextHint(): string {
-        return this.authService.isCustomer()
-            ? 'El asistente priorizará explicaciones más claras y guiadas.'
-            : 'El asistente priorizará respuestas más técnicas y operativas.';
+    hasUserMessages(): boolean {
+        return this.messages.some(message => message.sender === 'USER');
     }
 
-    hasMessages(): boolean {
-        return this.messages.length > 0;
+    shouldShowIntroCard(): boolean {
+        return !this.hasUserMessages() && !this.loading;
+    }
+
+    contextActiveLabel(): string | null {
+        if (!this.dialogData?.engagementLetterId) {
+            return null;
+        }
+
+        return `Hoja de encargo ${this.dialogData.engagementLetterId}`;
+    }
+
+    private pushToastOnce(
+        key: string,
+        kind: 'info' | 'success' | 'warning',
+        title: string,
+        message: string,
+        durationMs = 4500
+    ): void {
+        if (this.shownToastKeys.has(key)) {
+            return;
+        }
+
+        this.shownToastKeys.add(key);
+        this.pushToast(kind, title, message, durationMs);
+    }
+
+    closeToast(toastId: number): void {
+        this.toasts = this.toasts.filter(toast => toast.id !== toastId);
+    }
+
+    private pushToast(
+        kind: 'info' | 'success' | 'warning',
+        title: string,
+        message: string,
+        durationMs = 4500
+    ): void {
+        const id = ++this.toastIdSequence;
+
+        this.toasts = [
+            ...this.toasts,
+            {id, kind, title, message}
+        ];
+
+        window.setTimeout(() => {
+            this.closeToast(id);
+        }, durationMs);
+    }
+
+    private notifyResponseToast(response: ChatbotMessageResponse): void {
+        if (response.responseMode === 'CONTEXTUAL_PLATFORM_DATA') {
+            this.pushToastOnce(
+                'platform-data-response',
+                'success',
+                'Respuesta contextual',
+                'La respuesta se ha apoyado en datos autorizados del caso.'
+            );
+            return;
+        }
+
+        if (response.responseMode === 'CONTEXTUAL_RESTRICTED') {
+            this.pushToastOnce(
+                'restricted-response',
+                'warning',
+                'Respuesta restringida',
+                'La respuesta ha sido limitada para respetar el ámbito del encargo.',
+                5200
+            );
+        }
     }
 
     suggestedQuestions(): string[] {
@@ -285,18 +336,6 @@ export class ChatbotComponent implements OnInit, OnDestroy{
             }
 
             container.scrollTop = container.scrollHeight;
-        });
-    }
-
-    private closeConversationOnExit(): void {
-        if (!this.conversationId || this.conversationClosed) {
-            return;
-        }
-
-        this.conversationClosed = true;
-
-        this.chatbotService.closeConversation(this.conversationId).subscribe({
-            error: () => undefined
         });
     }
 }

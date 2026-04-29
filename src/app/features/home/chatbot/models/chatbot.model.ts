@@ -56,3 +56,10 @@ export interface ChatbotMessageView {
 export interface ContextualChatbotDialogData {
     engagementLetterId: string;
 }
+
+export interface ChatbotToastView {
+    id: number;
+    kind: 'info' | 'success' | 'warning';
+    title: string;
+    message: string;
+}
