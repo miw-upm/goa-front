@@ -50,8 +50,14 @@ export class ChatbotService {
             .patch<void>(ENDPOINTS.chatbot.closeConversation(conversationId), {});
     }
 
-    readConversationHistory(conversationId: string): Observable<ChatbotConversationHistoryResponse> {
+    readConversationHistory(
+        conversationId: string,
+        page = 0,
+        size = 10
+    ): Observable<ChatbotConversationHistoryResponse> {
         return this.httpService.request()
+            .param('page', String(page))
+            .param('size', String(size))
             .error('No se pudo recuperar el historial conversacional')
             .get(ENDPOINTS.chatbot.history(conversationId));
     }

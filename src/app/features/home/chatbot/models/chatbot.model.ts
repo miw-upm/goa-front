@@ -40,6 +40,10 @@ export interface ChatbotConversationHistoryResponse {
     engagementLetterId?: string;
     type: 'GENERAL' | 'CONTEXTUAL';
     status: 'ACTIVE' | 'CLOSED' | 'ARCHIVED';
+    page?: number;
+    size?: number;
+    hasMore?: boolean;
+    totalMessages?: number;
     messages: ChatbotHistoryMessage[];
 }
 

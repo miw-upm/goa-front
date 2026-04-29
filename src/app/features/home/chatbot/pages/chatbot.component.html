@@ -119,7 +119,7 @@
                 } @else {
                     <div class="conversation-stage">
                         <div class="messages-panel">
-                            <div #messagesContainer class="messages-container">
+                            <div #messagesContainer class="messages-container" (scroll)="onMessagesScroll()">
                                 @if (shouldShowIntroCard()) {
                                     <div class="empty-chat-state">
                                         <div class="empty-chat-card">
@@ -196,13 +196,14 @@
 
                             <div class="composer-box">
                                 <textarea
+                                        #composerTextarea
                                         [(ngModel)]="message"
                                         cdkTextareaAutosize
                                         cdkAutosizeMinRows="1"
                                         cdkAutosizeMaxRows="6"
                                         class="composer-textarea"
                                         [placeholder]="composerPlaceholder()"
-                                        [disabled]="loading || initializing || closingConversation"
+                                        [disabled]="initializing || closingConversation"
                                         (keydown)="onKeydown($event)">
                                 </textarea>
 

@@ -46,6 +46,7 @@ import {catchError} from "rxjs/operators";
 })
 
 export class ChatbotComponent implements OnInit, OnDestroy {
+    private static readonly HISTORY_PAGE_SIZE = 10;
     message = '';
     conversationId?: string;
     loading = false;
@@ -57,14 +58,20 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     toasts: ChatbotToastView[] = [];
     historyLoading = false;
     historyItems: ChatbotConversationSummary[] = [];
+    loadingOlderMessages = false;
+    hasMoreHistoryMessages = false;
+    currentHistoryPage = 0;
+    private allowHistoryIncrementalLoad = false;
     selectedConversationId?: string;
     private toastIdSequence = 0;
     private shownToastKeys = new Set<string>();
+    private autoScrollTimeouts: number[] = [];
     private backdropClickSubscription?: Subscription;
-    private closingFromDestroy = false;
     private conversationCloseRequested = false;
+    private modalCloseRequested = false;
     conversationStatus: 'ACTIVE' | 'CLOSED' | 'ARCHIVED' = 'ACTIVE';
     @ViewChild('messagesContainer') private messagesContainer?: ElementRef<HTMLDivElement>;
+    @ViewChild('composerTextarea') private composerTextarea?: ElementRef<HTMLTextAreaElement>;
 
     constructor(
         private readonly chatbotService: ChatbotService,
@@ -86,12 +93,15 @@ export class ChatbotComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.backdropClickSubscription?.unsubscribe();
-        this.closeAllActiveConversationsSilently(true);
+        if (this.modalCloseRequested) {
+            return;
+        }
+        this.closeAllActiveConversationsSilently();
     }
 
     @HostListener('window:beforeunload')
     onBeforeUnload(): void {
-        this.closeAllActiveConversationsSilently(true);
+        this.closeAllActiveConversationsSilently();
     }
 
     send(): void {
@@ -116,6 +126,8 @@ export class ChatbotComponent implements OnInit, OnDestroy {
             this.conversationId = response.conversationId;
             this.conversationCloseRequested = false;
             this.selectedConversationId = response.conversationId;
+            this.hasMoreHistoryMessages = false;
+            this.currentHistoryPage = 0;
 
             if (response.message) {
                 this.messages.push(this.mapAssistantMessage(response));
@@ -130,12 +142,14 @@ export class ChatbotComponent implements OnInit, OnDestroy {
             this.loading = false;
             this.loadHistoryList();
             this.scrollToBottom();
+            this.focusComposer();
         };
 
         const handleError = (errorMessage: string): void => {
             this.error = errorMessage;
             this.loading = false;
             this.scrollToBottom();
+            this.focusComposer();
         };
 
         if (this.conversationId) {
@@ -175,6 +189,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         }
 
         this.message = '';
+        this.focusComposer();
     }
 
     close(): void {
@@ -280,16 +295,29 @@ export class ChatbotComponent implements OnInit, OnDestroy {
             this.error = '';
             this.conversationId = item.conversationId;
             this.selectedConversationId = item.conversationId;
+            this.currentHistoryPage = 0;
+            this.hasMoreHistoryMessages = false;
+            this.allowHistoryIncrementalLoad = false;
 
             const loadHistory = (): void => {
-                this.chatbotService.readConversationHistory(item.conversationId).subscribe({
+                this.chatbotService.readConversationHistory(
+                    item.conversationId,
+                    0,
+                    ChatbotComponent.HISTORY_PAGE_SIZE
+                ).subscribe({
                     next: history => {
                         this.messages = this.mapHistoryMessages(history);
                         this.conversationStatus = history.status;
+                        this.currentHistoryPage = history.page ?? 0;
+                        this.hasMoreHistoryMessages = history.hasMore ?? false;
                         this.initializing = false;
                         this.closeSidebar();
                         this.scrollToBottom();
+                        setTimeout(() => {
+                            this.allowHistoryIncrementalLoad = true;
+                        }, 250);
                         this.loadHistoryList();
+                        this.focusComposer();
                     },
                     error: () => {
                         this.error = 'No se pudo recuperar la conversación seleccionada.';
@@ -331,6 +359,35 @@ export class ChatbotComponent implements OnInit, OnDestroy {
                 openSelectedConversation();
             }
         });
+    }
+
+    onMessagesScroll(): void {
+        const container = this.messagesContainer?.nativeElement;
+
+        if (container) {
+            const isAwayFromBottom = (container.scrollTop + container.clientHeight) < (container.scrollHeight - 40);
+            if (isAwayFromBottom) {
+                this.cancelPendingAutoScroll();
+            }
+        }
+
+        if (!this.allowHistoryIncrementalLoad) {
+            return;
+        }
+
+        if (!container || this.initializing || this.loading || this.loadingOlderMessages) {
+            return;
+        }
+
+        if (!this.conversationId || !this.hasMoreHistoryMessages) {
+            return;
+        }
+
+        if (container.scrollTop > 20) {
+            return;
+        }
+
+        this.loadOlderMessages();
     }
 
     historyTitle(): string {
@@ -437,6 +494,12 @@ export class ChatbotComponent implements OnInit, OnDestroy {
             return;
         }
 
+        if (this.modalCloseRequested) {
+            return;
+        }
+
+        this.modalCloseRequested = true;
+
         if (this.closingConversation) {
             this.dialogRef.close();
             return;
@@ -444,48 +507,29 @@ export class ChatbotComponent implements OnInit, OnDestroy {
 
         this.closingConversation = true;
         this.conversationCloseRequested = true;
-        this.closeConversationIdsSilently(this.getActiveConversationIds(), () => {
+        this.closeConversationIdsSilently(this.getDialogConversationIdsToClose(), () => {
             this.closingConversation = false;
             this.dialogRef?.close();
         });
     }
 
-    private closeActiveConversationSilently(fromDestroy = false): void {
-        if (
-            !this.conversationId ||
-            this.closingConversation ||
-            this.conversationCloseRequested
-        ) {
-            return;
-        }
-
-        this.closingConversation = true;
-        this.closingFromDestroy = fromDestroy;
-        this.conversationCloseRequested = true;
-
-        this.chatbotService.closeConversation(this.conversationId).subscribe({
-            next: () => {
-                this.closingConversation = false;
-                this.closingFromDestroy = false;
-            },
-            error: () => {
-                this.closingConversation = false;
-                this.closingFromDestroy = false;
-            }
-        });
-    }
-
-    private closeAllActiveConversationsSilently(fromDestroy = false): void {
-        const activeIds = this.getActiveConversationIds();
+    private closeAllActiveConversationsSilently(): void {
+        const activeIds = this.isDialogMode()
+            ? this.getDialogConversationIdsToClose()
+            : this.getActiveConversationIds();
 
         if (!activeIds.length) {
             return;
         }
 
-        this.closingFromDestroy = fromDestroy;
-        this.closeConversationIdsSilently(activeIds, () => {
-            this.closingFromDestroy = false;
-        });
+        this.closeConversationIdsSilently(activeIds);
+    }
+
+    private getDialogConversationIdsToClose(): string[] {
+        if (!this.conversationId || this.conversationStatus !== 'ACTIVE') {
+            return [];
+        }
+        return [this.conversationId];
     }
 
     private getActiveConversationIds(): string[] {
@@ -681,7 +725,9 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     }
 
     private scrollToBottom(): void {
-        setTimeout(() => {
+        this.cancelPendingAutoScroll();
+
+        const scroll = (): void => {
             const container = this.messagesContainer?.nativeElement;
 
             if (!container) {
@@ -689,6 +735,62 @@ export class ChatbotComponent implements OnInit, OnDestroy {
             }
 
             container.scrollTop = container.scrollHeight;
+        };
+
+        this.autoScrollTimeouts.push(window.setTimeout(scroll, 0));
+        this.autoScrollTimeouts.push(window.setTimeout(scroll, 80));
+        this.autoScrollTimeouts.push(window.setTimeout(scroll, 180));
+    }
+
+    private cancelPendingAutoScroll(): void {
+        this.autoScrollTimeouts.forEach(timeoutId => window.clearTimeout(timeoutId));
+        this.autoScrollTimeouts = [];
+    }
+
+    private loadOlderMessages(): void {
+        if (!this.conversationId || this.loadingOlderMessages || !this.hasMoreHistoryMessages) {
+            return;
+        }
+
+        const container = this.messagesContainer?.nativeElement;
+        const previousHeight = container?.scrollHeight ?? 0;
+        const nextPage = this.currentHistoryPage + 1;
+
+        this.loadingOlderMessages = true;
+
+        this.chatbotService.readConversationHistory(
+            this.conversationId,
+            nextPage,
+            ChatbotComponent.HISTORY_PAGE_SIZE
+        ).subscribe({
+            next: history => {
+                const olderMessages = this.mapHistoryMessages(history);
+                this.messages = [...olderMessages, ...this.messages];
+                this.currentHistoryPage = history.page ?? nextPage;
+                this.hasMoreHistoryMessages = history.hasMore ?? false;
+                this.loadingOlderMessages = false;
+
+                setTimeout(() => {
+                    const currentContainer = this.messagesContainer?.nativeElement;
+
+                    if (!currentContainer) {
+                        return;
+                    }
+
+                    const newHeight = currentContainer.scrollHeight;
+                    currentContainer.scrollTop = newHeight - previousHeight + currentContainer.scrollTop;
+                });
+            },
+            error: () => {
+                this.loadingOlderMessages = false;
+            }
         });
     }
+
+    private focusComposer(): void {
+        setTimeout(() => {
+            this.composerTextarea?.nativeElement?.focus();
+        });
+    }
+
 }
