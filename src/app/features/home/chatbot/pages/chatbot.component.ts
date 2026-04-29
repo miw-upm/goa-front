@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, OnInit, Optional, ViewChild} from "@angular/core";
+import {Component, ElementRef, Inject, OnInit, Optional, ViewChild, OnDestroy, HostListener} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
@@ -7,11 +7,23 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MatSidenavModule} from "@angular/material/sidenav";
 import {AuthService} from "@core/auth/auth.service";
 import {CHATBOT_SCOPE_RESTRICTED_REPLIES, CHATBOT_SCOPE_UI} from "../support/chatbot-scope-ui";
-import {ChatbotMessageResponse,ChatbotMessageView, ChatbotToastView, ContextualChatbotDialogData} from "../models/chatbot.model";
+import {
+    ChatbotConversationStatus,
+    ChatbotConversationHistoryResponse,
+    ChatbotConversationSummary,
+    ChatbotHistoryMessage,
+    ChatbotMessageResponse,
+    ChatbotMessageView,
+    ChatbotToastView,
+    ContextualChatbotDialogData
+} from "../models/chatbot.model";
 import {ChatbotService} from "../chatbot.service";
 import {TextFieldModule} from "@angular/cdk/text-field";
+import {forkJoin, of, Subscription} from "rxjs";
+import {catchError} from "rxjs/operators";
 
 @Component({
     standalone: true,
@@ -27,23 +39,40 @@ import {TextFieldModule} from "@angular/cdk/text-field";
         MatFormFieldModule,
         MatIconModule,
         MatProgressSpinnerModule,
+        MatSidenavModule,
         TextFieldModule
     ],
     templateUrl: "./chatbot.component.html",
     styleUrls: ["./chatbot.component.css"]
 })
 
-export class ChatbotComponent implements OnInit{
+export class ChatbotComponent implements OnInit, OnDestroy {
+    private static readonly HISTORY_PAGE_SIZE = 10;
     message = '';
     conversationId?: string;
     loading = false;
     initializing = false;
+    closingConversation = false;
     error = '';
+    sideBarOpened = false;
     messages: ChatbotMessageView[] = [];
     toasts: ChatbotToastView[] = [];
+    historyLoading = false;
+    historyError = '';
+    historyItems: ChatbotConversationSummary[] = [];
+    loadingOlderMessages = false;
+    hasMoreHistoryMessages = false;
+    currentHistoryPage = 0;
+    private allowHistoryIncrementalLoad = false;
+    selectedConversationId?: string;
     private toastIdSequence = 0;
     private shownToastKeys = new Set<string>();
+    private autoScrollTimeouts: number[] = [];
+    private backdropClickSubscription?: Subscription;
+    private modalCloseRequested = false;
+    conversationStatus: ChatbotConversationStatus = 'ACTIVE';
     @ViewChild('messagesContainer') private messagesContainer?: ElementRef<HTMLDivElement>;
+    @ViewChild('composerTextarea') private composerTextarea?: ElementRef<HTMLTextAreaElement>;
 
     constructor(
         private readonly chatbotService: ChatbotService,
@@ -54,32 +83,33 @@ export class ChatbotComponent implements OnInit{
     }
 
     ngOnInit(): void {
-        if (!this.dialogData?.engagementLetterId) {
+        this.loadHistoryList();
+
+        if (this.dialogRef) {
+            this.backdropClickSubscription = this.dialogRef.backdropClick().subscribe(() => {
+                this.closeFromModalInteraction();
+            });
+        }
+    }
+
+    ngOnDestroy(): void {
+        this.backdropClickSubscription?.unsubscribe();
+        this.cancelPendingAutoScroll();
+        if (this.modalCloseRequested) {
             return;
         }
+        this.closeAllActiveConversationsSilently();
+    }
 
-        this.initializing = true;
-        this.error = '';
-
-        this.chatbotService.startContextualConversation({
-            engagementLetterId: this.dialogData.engagementLetterId
-        }).subscribe({
-            next: response => {
-                this.conversationId = response.conversationId;
-                this.error = response.error ?? '';
-                this.initializing = false;
-            },
-            error: () => {
-                this.error = 'No se pudo iniciar la conversación contextual.';
-                this.initializing = false;
-            }
-        });
+    @HostListener('window:beforeunload')
+    onBeforeUnload(): void {
+        this.closeAllActiveConversationsSilently();
     }
 
     send(): void {
         const normalizedMessage = this.message?.trim();
 
-        if (!normalizedMessage || this.loading || this.initializing || (this.requiresConversation() && !this.conversationId)) {
+        if (!normalizedMessage || this.loading || this.initializing) {
             return;
         }
 
@@ -94,44 +124,306 @@ export class ChatbotComponent implements OnInit{
         this.loading = true;
         this.scrollToBottom();
 
-        const request$ = this.conversationId
-            ? this.chatbotService.sendMessage({
-                conversationId: this.conversationId,
-                message: normalizedMessage
-            })
-            : this.chatbotService.startGeneralConversation({
-                message: normalizedMessage
-            });
+        const handleResponse = (response: ChatbotMessageResponse): void => {
+            this.conversationId = response.conversationId;
+            this.selectedConversationId = response.conversationId;
+            this.hasMoreHistoryMessages = false;
+            this.currentHistoryPage = 0;
 
-        request$.subscribe({
-            next: response => {
-                this.conversationId = response.conversationId;
-
-                if (response.message) {
-                    this.messages.push(this.mapAssistantMessage(response));
-                    this.notifyResponseToast(response);
-                    this.scrollToBottom();
-                }
-
-                if (response.error) {
-                    this.error = response.error;
-                }
-
-                this.loading = false;
-                this.scrollToBottom();
-            },
-            error: () => {
-                this.error = 'No se pudo obtener respuesta del asistente.';
-                this.loading = false;
+            if (response.message) {
+                this.messages.push(this.mapAssistantMessage(response));
+                this.notifyResponseToast(response);
                 this.scrollToBottom();
             }
-        });
+
+            if (response.error) {
+                this.error = response.error;
+            }
+
+            this.loading = false;
+            this.loadHistoryList();
+            this.scrollToBottom();
+            this.focusComposer();
+        };
+
+        const handleError = (errorMessage: string): void => {
+            this.error = errorMessage;
+            this.loading = false;
+            this.scrollToBottom();
+            this.focusComposer();
+        };
+
+        if (this.conversationId) {
+            this.chatbotService.sendMessage({
+                conversationId: this.conversationId,
+                message: normalizedMessage
+            }).subscribe({
+                next: handleResponse,
+                error: () => handleError('No se pudo obtener respuesta del asistente.')
+            });
+        } else if (this.requiresConversation()) {
+            this.chatbotService.startContextualConversation({
+                engagementLetterId: this.dialogData!.engagementLetterId
+            }).subscribe({
+                next: response => {
+                    this.conversationId = response.conversationId;
+                    this.selectedConversationId = response.conversationId;
+                    this.error = response.error ?? '';
+
+                    this.chatbotService.sendMessage({
+                        conversationId: response.conversationId,
+                        message: normalizedMessage
+                    }).subscribe({
+                        next: handleResponse,
+                        error: () => handleError('No se pudo obtener respuesta del asistente.')
+                    });
+                },
+                error: () => handleError('No se pudo iniciar la conversación contextual.')
+            });
+        } else {
+            this.chatbotService.startGeneralConversation({
+                message: normalizedMessage
+            }).subscribe({
+                next: handleResponse,
+                error: () => handleError('No se pudo obtener respuesta del asistente.')
+            });
+        }
 
         this.message = '';
+        this.focusComposer();
     }
 
-    close(): void {
-        this.dialogRef?.close();
+    closeDialog(): void {
+        this.closeFromModalInteraction();
+    }
+
+    toggleSidebar(): void {
+        this.sideBarOpened = !this.sideBarOpened;
+    }
+
+    closeSidebar(): void {
+        this.sideBarOpened = false;
+    }
+
+    startNewConversation(): void {
+        if (this.loading || this.initializing || this.closingConversation) {
+            return;
+        }
+
+        this.error = '';
+        this.message = '';
+
+        if (!this.conversationId) {
+            this.resetConversationState(this.requiresConversation());
+            return;
+        }
+
+        this.closeCurrentConversationForReset();
+    }
+
+    private resetConversationState(scroll: boolean): void {
+        this.messages = [];
+        this.conversationId = undefined;
+        this.selectedConversationId = undefined;
+        this.conversationStatus = 'ACTIVE';
+        this.closeSidebar();
+
+        if (scroll) {
+            this.scrollToBottom();
+        }
+    }
+
+    private closeCurrentConversationForReset(): void {
+        const conversationId = this.conversationId;
+        if (!conversationId) {
+            return;
+        }
+
+        this.closingConversation = true;
+
+        this.chatbotService.closeConversation(conversationId).subscribe({
+            next: () => {
+                this.closingConversation = false;
+                this.resetConversationState(true);
+                this.loadHistoryList();
+            },
+            error: () => {
+                this.error = 'No se pudo cerrar la conversación actual antes de crear una nueva.';
+                this.closingConversation = false;
+            }
+        });
+    }
+
+    selectConversation(item: ChatbotConversationSummary): void {
+        if (this.loading || this.initializing || this.closingConversation) {
+            return;
+        }
+
+        const previousConversationId = this.conversationId;
+        const hasPreviousActiveConversation = !!previousConversationId
+            && previousConversationId !== item.conversationId
+            && this.historyItems.some(historyItem =>
+                historyItem.conversationId === previousConversationId && historyItem.status === 'ACTIVE'
+            );
+
+        const openSelectedConversation = (): void => {
+            this.initializing = true;
+            this.error = '';
+            this.conversationId = item.conversationId;
+            this.selectedConversationId = item.conversationId;
+            this.currentHistoryPage = 0;
+            this.hasMoreHistoryMessages = false;
+            this.allowHistoryIncrementalLoad = false;
+
+            const loadHistory = (): void => {
+                this.chatbotService.readConversationHistory(
+                    item.conversationId,
+                    0,
+                    ChatbotComponent.HISTORY_PAGE_SIZE
+                ).subscribe({
+                    next: history => {
+                        this.messages = this.mapHistoryMessages(history);
+                        this.conversationStatus = history.status;
+                        this.currentHistoryPage = history.page ?? 0;
+                        this.hasMoreHistoryMessages = history.hasMore ?? false;
+                        this.initializing = false;
+                        this.closeSidebar();
+                        this.scrollToBottom();
+                        setTimeout(() => {
+                            this.allowHistoryIncrementalLoad = true;
+                        }, 250);
+                        this.loadHistoryList();
+                        this.focusComposer();
+                    },
+                    error: () => {
+                        this.error = 'No se pudo recuperar la conversación seleccionada.';
+                        this.initializing = false;
+                    }
+                });
+            };
+
+            if (item.status === 'ACTIVE') {
+                loadHistory();
+                return;
+            }
+
+            this.chatbotService.reopenConversation(item.conversationId).subscribe({
+                next: () => {
+                    this.conversationStatus = 'ACTIVE';
+                    loadHistory();
+                },
+                error: () => {
+                    this.error = 'No se pudo reabrir la conversación seleccionada.';
+                    this.initializing = false;
+                }
+            });
+        };
+
+        if (!hasPreviousActiveConversation) {
+            openSelectedConversation();
+            return;
+        }
+
+        if (!previousConversationId) {
+            openSelectedConversation();
+            return;
+        }
+
+        this.chatbotService.closeConversation(previousConversationId).subscribe({
+            next: () => {
+                this.markConversationAsClosed(previousConversationId);
+                openSelectedConversation();
+            },
+            error: () => {
+                openSelectedConversation();
+            }
+        });
+    }
+
+    onMessagesScroll(): void {
+        const container = this.messagesContainer?.nativeElement;
+
+        if (container) {
+            const isAwayFromBottom = (container.scrollTop + container.clientHeight) < (container.scrollHeight - 40);
+            if (isAwayFromBottom) {
+                this.cancelPendingAutoScroll();
+            }
+        }
+
+        if (!this.allowHistoryIncrementalLoad) {
+            return;
+        }
+
+        if (!container || this.initializing || this.loading || this.loadingOlderMessages) {
+            return;
+        }
+
+        if (!this.conversationId || !this.hasMoreHistoryMessages) {
+            return;
+        }
+
+        if (container.scrollTop > 20) {
+            return;
+        }
+
+        this.loadOlderMessages();
+    }
+
+    historyTitle(): string {
+        return this.requiresConversation() ? 'Historial contextual' : 'Historial general';
+    }
+
+    historyEmptyLabel(): string {
+        return this.requiresConversation()
+            ? 'No hay conversaciones contextuales previas para este encargo.'
+            : 'No hay conversaciones generales previas.';
+    }
+
+    previewLabel(item: ChatbotConversationSummary): string {
+        return item.preview?.trim() || 'Sin mensajes todavía';
+    }
+
+    isSelectedConversation(item: ChatbotConversationSummary): boolean {
+        return this.selectedConversationId === item.conversationId;
+    }
+
+    private loadHistoryList(): void {
+        this.historyLoading = true;
+        this.historyError = '';
+
+        this.chatbotService.readConversations(
+            this.requiresConversation() ? 'CONTEXTUAL' : 'GENERAL',
+            this.dialogData?.engagementLetterId
+        ).subscribe({
+            next: items => {
+                this.historyItems = items;
+                this.historyLoading = false;
+            },
+            error: () => {
+                this.historyError = 'No se pudo cargar el historial de conversaciones.';
+                this.historyLoading = false;
+            }
+        });
+    }
+
+    private mapHistoryMessages(history: ChatbotConversationHistoryResponse): ChatbotMessageView[] {
+        return history.messages
+            .filter(message => message.senderType === 'USER' || message.senderType === 'ASSISTANT')
+            .map(message => this.mapHistoryMessage(message));
+    }
+
+    private mapHistoryMessage(message: ChatbotHistoryMessage): ChatbotMessageView {
+        return {
+            sender: message.senderType === 'USER' ? 'USER' : 'ASSISTANT',
+            content: message.content,
+            createdAt: message.timestamp,
+            restricted: message.senderType === 'ASSISTANT'
+                ? this.isRestrictedAssistantReply(message.content)
+                : false,
+            usedPlatformData: false,
+            sourcesSummary: [],
+            responseMode: undefined
+        };
     }
 
     isDialogMode(): boolean {
@@ -174,6 +466,95 @@ export class ChatbotComponent implements OnInit{
         return `Hoja de encargo ${this.dialogData.engagementLetterId}`;
     }
 
+    closeToast(toastId: number): void {
+        this.toasts = this.toasts.filter(toast => toast.id !== toastId);
+    }
+
+    private closeFromModalInteraction(): void {
+        if (!this.dialogRef) {
+            return;
+        }
+
+        if (this.modalCloseRequested) {
+            return;
+        }
+
+        this.modalCloseRequested = true;
+
+        if (this.closingConversation) {
+            this.dialogRef.close();
+            return;
+        }
+
+        this.closingConversation = true;
+        this.closeConversationIdsSilently(this.getDialogConversationIdsToClose(), () => {
+            this.closingConversation = false;
+            this.dialogRef?.close();
+        });
+    }
+
+    private closeAllActiveConversationsSilently(): void {
+        const activeIds = this.isDialogMode()
+            ? this.getDialogConversationIdsToClose()
+            : this.getActiveConversationIds();
+
+        if (!activeIds.length) {
+            return;
+        }
+
+        this.closeConversationIdsSilently(activeIds);
+    }
+
+    private getDialogConversationIdsToClose(): string[] {
+        if (!this.conversationId || this.conversationStatus !== 'ACTIVE') {
+            return [];
+        }
+        return [this.conversationId];
+    }
+
+    private getActiveConversationIds(): string[] {
+        const ids = new Set(
+            this.historyItems
+                .filter(item => item.status === 'ACTIVE')
+                .map(item => item.conversationId)
+        );
+
+        if (this.conversationId) {
+            ids.add(this.conversationId);
+        }
+
+        return Array.from(ids);
+    }
+
+    private closeConversationIdsSilently(ids: string[], onComplete?: () => void): void {
+        if (!ids.length) {
+            onComplete?.();
+            return;
+        }
+
+        forkJoin(
+            ids.map(id => this.chatbotService.closeConversation(id).pipe(
+                catchError(() => of(void 0))
+            ))
+        ).subscribe({
+            next: () => {
+                ids.forEach(id => this.markConversationAsClosed(id));
+                onComplete?.();
+            },
+            error: () => {
+                onComplete?.();
+            }
+        });
+    }
+
+    private markConversationAsClosed(conversationId: string): void {
+        this.historyItems = this.historyItems.map(item =>
+            item.conversationId === conversationId
+                ? {...item, status: 'CLOSED'}
+                : item
+        );
+    }
+
     private pushToastOnce(
         key: string,
         kind: 'info' | 'success' | 'warning',
@@ -187,10 +568,6 @@ export class ChatbotComponent implements OnInit{
 
         this.shownToastKeys.add(key);
         this.pushToast(kind, title, message, durationMs);
-    }
-
-    closeToast(toastId: number): void {
-        this.toasts = this.toasts.filter(toast => toast.id !== toastId);
     }
 
     private pushToast(
@@ -328,7 +705,9 @@ export class ChatbotComponent implements OnInit{
     }
 
     private scrollToBottom(): void {
-        setTimeout(() => {
+        this.cancelPendingAutoScroll();
+
+        const scroll = (): void => {
             const container = this.messagesContainer?.nativeElement;
 
             if (!container) {
@@ -336,6 +715,63 @@ export class ChatbotComponent implements OnInit{
             }
 
             container.scrollTop = container.scrollHeight;
+        };
+
+        this.autoScrollTimeouts.push(window.setTimeout(scroll, 0));
+        this.autoScrollTimeouts.push(window.setTimeout(scroll, 80));
+        this.autoScrollTimeouts.push(window.setTimeout(scroll, 180));
+    }
+
+    private cancelPendingAutoScroll(): void {
+        this.autoScrollTimeouts.forEach(timeoutId => window.clearTimeout(timeoutId));
+        this.autoScrollTimeouts = [];
+    }
+
+    private loadOlderMessages(): void {
+        if (!this.conversationId || this.loadingOlderMessages || !this.hasMoreHistoryMessages) {
+            return;
+        }
+
+        const container = this.messagesContainer?.nativeElement;
+        const previousHeight = container?.scrollHeight ?? 0;
+        const nextPage = this.currentHistoryPage + 1;
+
+        this.loadingOlderMessages = true;
+
+        this.chatbotService.readConversationHistory(
+            this.conversationId,
+            nextPage,
+            ChatbotComponent.HISTORY_PAGE_SIZE
+        ).subscribe({
+            next: history => {
+                const olderMessages = this.mapHistoryMessages(history);
+                this.messages = [...olderMessages, ...this.messages];
+                this.currentHistoryPage = history.page ?? nextPage;
+                this.hasMoreHistoryMessages = history.hasMore ?? false;
+                this.loadingOlderMessages = false;
+
+                setTimeout(() => {
+                    const currentContainer = this.messagesContainer?.nativeElement;
+
+                    if (!currentContainer) {
+                        return;
+                    }
+
+                    const newHeight = currentContainer.scrollHeight;
+                    currentContainer.scrollTop = newHeight - previousHeight + currentContainer.scrollTop;
+                });
+            },
+            error: () => {
+                this.error = 'No se pudieron cargar mensajes anteriores.';
+                this.loadingOlderMessages = false;
+            }
         });
     }
+
+    private focusComposer(): void {
+        setTimeout(() => {
+            this.composerTextarea?.nativeElement?.focus();
+        });
+    }
+
 }

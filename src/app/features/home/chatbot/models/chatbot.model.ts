@@ -1,3 +1,8 @@
+export type ChatbotConversationType = 'GENERAL' | 'CONTEXTUAL';
+export type ChatbotConversationStatus = 'ACTIVE' | 'CLOSED' | 'ARCHIVED';
+export type ChatbotResponseMode = 'GENERAL' | 'CONTEXTUAL_PLATFORM_DATA' | 'CONTEXTUAL_RESTRICTED';
+export type ChatbotSenderType = 'USER' | 'ASSISTANT';
+
 export interface ChatbotContextualConversationRequest {
     engagementLetterId: string;
 }
@@ -11,7 +16,7 @@ export interface ChatbotContextualConversationResponse {
 
 export interface ChatbotMessageRequest {
     conversationId?: string;
-    message: string | undefined;
+    message: string;
 }
 
 export interface ChatbotMessageResponse {
@@ -19,38 +24,52 @@ export interface ChatbotMessageResponse {
     message?: string;
     error?: string;
     createdAt?: string;
-    responseMode?: 'GENERAL' | 'CONTEXTUAL_PLATFORM_DATA' | 'CONTEXTUAL_RESTRICTED';
+    responseMode?: ChatbotResponseMode;
     usedPlatformData?: boolean;
     sourcesSummary?: string[];
 }
 
-export interface ChatbotConversationSummary {
+export interface ChatbotHistoryMessage {
+    id: string;
     conversationId: string;
-    title?: string;
-    preview?: string;
-    engagementLetterId?: string;
-    createdAt?: string;
-    updatedAt?: string;
-    closedAt?: string;
+    senderType: ChatbotSenderType | 'SYSTEM';
+    messageType: 'REQUEST' | 'RESPONSE' | 'INSTRUCTION';
+    content: string;
+    timestamp?: string;
+    sequenceNumber: number;
+    parentMessageId?: string;
 }
 
-export interface ChatbotConversationMessageResponse {
-    conversationId?: string;
-    senderType?: string;
-    messageType?: string;
-    content?: string;
-    createdAt?: string;
-    restricted?: boolean;
+export interface ChatbotConversationHistoryResponse {
+    conversationId: string;
+    engagementLetterId?: string;
+    type: ChatbotConversationType;
+    status: ChatbotConversationStatus;
+    page?: number;
+    size?: number;
+    hasMore?: boolean;
+    totalMessages?: number;
+    messages: ChatbotHistoryMessage[];
+}
+
+export interface ChatbotConversationSummary {
+    conversationId: string;
+    type: ChatbotConversationType;
+    status: ChatbotConversationStatus;
+    engagementLetterId?: string;
+    createdAt: string;
+    lastMessageAt?: string;
+    preview?: string;
 }
 
 export interface ChatbotMessageView {
-    sender: 'USER' | 'ASSISTANT';
+    sender: ChatbotSenderType;
     content: string;
     createdAt?: string;
     restricted?: boolean;
     usedPlatformData?: boolean;
     sourcesSummary?: string[];
-    responseMode?: 'GENERAL' | 'CONTEXTUAL_PLATFORM_DATA' | 'CONTEXTUAL_RESTRICTED';
+    responseMode?: ChatbotResponseMode;
 }
 
 export interface ContextualChatbotDialogData {
