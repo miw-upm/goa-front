@@ -1,21 +1,35 @@
 import {Injectable} from "@angular/core";
-import {map, Observable} from "rxjs";
+import {Observable} from "rxjs";
 import {HttpService} from "@shared/ui/api/http.service";
 import {ENDPOINTS} from "@core/api/endpoints";
 import {
-    ChatbotConversationMessageResponse,
-    ChatbotConversationSummary,
     ChatbotContextualConversationRequest,
     ChatbotContextualConversationResponse,
+    ChatbotConversationHistoryResponse,
+    ChatbotConversationSummary,
     ChatbotMessageRequest,
-    ChatbotMessageResponse,
-    ChatbotMessageView
+    ChatbotMessageResponse
 } from "./models/chatbot.model";
 
 @Injectable({providedIn: 'root'})
 export class ChatbotService {
 
     constructor(private readonly httpService: HttpService) {
+    }
+
+    readConversations(
+        type: 'GENERAL' | 'CONTEXTUAL',
+        engagementLetterId?: string
+    ): Observable<ChatbotConversationSummary[]> {
+        let request = this.httpService.request()
+            .param('type', type)
+            .error('No se pudo recuperar el historial de conversaciones');
+
+        if (engagementLetterId) {
+            request = request.param('engagementLetterId', engagementLetterId);
+        }
+
+        return request.get(ENDPOINTS.chatbot.conversations());
     }
 
     startContextualConversation(
@@ -26,6 +40,12 @@ export class ChatbotService {
             .post(ENDPOINTS.chatbot.contextualConversation(), request);
     }
 
+    readConversationHistory(conversationId: string): Observable<ChatbotConversationHistoryResponse> {
+        return this.httpService.request()
+            .error('No se pudo recuperar el historial conversacional')
+            .get(ENDPOINTS.chatbot.history(conversationId));
+    }
+
     sendMessage(request: ChatbotMessageRequest): Observable<ChatbotMessageResponse> {
         return this.httpService.request()
             .error('No se pudo obtener respuesta del asistente')
@@ -34,42 +54,12 @@ export class ChatbotService {
 
     startGeneralConversation(request: ChatbotMessageRequest): Observable<ChatbotMessageResponse> {
         return this.httpService.request()
-            .error('No se pudo obtener respuesta del asistente')
+            .error('No se pudo iniciar la conversación general')
             .post(ENDPOINTS.chatbot.generalConversation(), request);
-    }
-
-    readAllConversations(): Observable<ChatbotConversationSummary[]> {
-        return this.httpService.request()
-            .error('No se pudo cargar el histórico de conversaciones')
-            .get<ChatbotConversationSummary[]>(ENDPOINTS.chatbot.readAllConversations());
-    }
-
-    readMessagesOneConversation(conversationId: string): Observable<ChatbotMessageView[]> {
-        return this.httpService.request()
-            .error('No se pudieron cargar los mensajes de la conversación')
-            .get<ChatbotConversationMessageResponse[]>(ENDPOINTS.chatbot.readMessagesOneConversation(conversationId))
-            .pipe(
-                map((messages: ChatbotConversationMessageResponse[]) =>
-                    messages.map((message: ChatbotConversationMessageResponse) => this.toChatbotMessageView(message))
-                )
-            );
     }
 
     closeConversation(conversationId: string): Observable<void> {
         return this.httpService.request()
             .patch<void>(ENDPOINTS.chatbot.closeConversation(conversationId), {});
-    }
-
-    private toChatbotMessageView(message: ChatbotConversationMessageResponse): ChatbotMessageView {
-        return {
-            sender: this.toSenderType(message.senderType),
-            content: message.content ?? '',
-            createdAt: message.createdAt,
-            restricted: Boolean(message.restricted)
-        };
-    }
-
-    private toSenderType(senderType?: string): 'USER' | 'ASSISTANT' {
-        return senderType === 'USER' ? 'USER' : 'ASSISTANT';
     }
 }

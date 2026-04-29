@@ -7,9 +7,18 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MatSidenavModule} from "@angular/material/sidenav";
 import {AuthService} from "@core/auth/auth.service";
 import {CHATBOT_SCOPE_RESTRICTED_REPLIES, CHATBOT_SCOPE_UI} from "../support/chatbot-scope-ui";
-import {ChatbotMessageResponse,ChatbotMessageView, ChatbotToastView, ContextualChatbotDialogData} from "../models/chatbot.model";
+import {
+    ChatbotConversationHistoryResponse,
+    ChatbotConversationSummary,
+    ChatbotHistoryMessage,
+    ChatbotMessageResponse,
+    ChatbotMessageView,
+    ChatbotToastView,
+    ContextualChatbotDialogData
+} from "../models/chatbot.model";
 import {ChatbotService} from "../chatbot.service";
 import {TextFieldModule} from "@angular/cdk/text-field";
 
@@ -27,6 +36,7 @@ import {TextFieldModule} from "@angular/cdk/text-field";
         MatFormFieldModule,
         MatIconModule,
         MatProgressSpinnerModule,
+        MatSidenavModule,
         TextFieldModule
     ],
     templateUrl: "./chatbot.component.html",
@@ -39,8 +49,12 @@ export class ChatbotComponent implements OnInit{
     loading = false;
     initializing = false;
     error = '';
+    sideBarOpened = false;
     messages: ChatbotMessageView[] = [];
     toasts: ChatbotToastView[] = [];
+    historyLoading = false;
+    historyItems: ChatbotConversationSummary[] = [];
+    selectedConversationId?: string;
     private toastIdSequence = 0;
     private shownToastKeys = new Set<string>();
     @ViewChild('messagesContainer') private messagesContainer?: ElementRef<HTMLDivElement>;
@@ -54,6 +68,8 @@ export class ChatbotComponent implements OnInit{
     }
 
     ngOnInit(): void {
+        this.loadHistoryList();
+
         if (!this.dialogData?.engagementLetterId) {
             return;
         }
@@ -66,8 +82,10 @@ export class ChatbotComponent implements OnInit{
         }).subscribe({
             next: response => {
                 this.conversationId = response.conversationId;
+                this.selectedConversationId = response.conversationId;
                 this.error = response.error ?? '';
                 this.initializing = false;
+                this.loadHistoryList();
             },
             error: () => {
                 this.error = 'No se pudo iniciar la conversación contextual.';
@@ -106,6 +124,7 @@ export class ChatbotComponent implements OnInit{
         request$.subscribe({
             next: response => {
                 this.conversationId = response.conversationId;
+                this.selectedConversationId = response.conversationId;
 
                 if (response.message) {
                     this.messages.push(this.mapAssistantMessage(response));
@@ -118,6 +137,7 @@ export class ChatbotComponent implements OnInit{
                 }
 
                 this.loading = false;
+                this.loadHistoryList();
                 this.scrollToBottom();
             },
             error: () => {
@@ -132,6 +152,130 @@ export class ChatbotComponent implements OnInit{
 
     close(): void {
         this.dialogRef?.close();
+    }
+
+    toggleSidebar(): void {
+        this.sideBarOpened = !this.sideBarOpened;
+    }
+
+    closeSidebar(): void {
+        this.sideBarOpened = false;
+    }
+
+    startNewConversation(): void {
+        if (this.loading || this.initializing) {
+            return;
+        }
+
+        this.error = '';
+        this.message = '';
+        this.messages = [];
+        this.conversationId = undefined;
+        this.selectedConversationId = undefined;
+
+        if (this.requiresConversation()) {
+            this.initializing = true;
+
+            this.chatbotService.startContextualConversation({
+                engagementLetterId: this.dialogData!.engagementLetterId
+            }).subscribe({
+                next: response => {
+                    this.conversationId = response.conversationId;
+                    this.selectedConversationId = response.conversationId;
+                    this.error = response.error ?? '';
+                    this.initializing = false;
+                    this.loadHistoryList();
+                    this.closeSidebar();
+                },
+                error: () => {
+                    this.error = 'No se pudo iniciar una nueva conversación contextual.';
+                    this.initializing = false;
+                }
+            });
+
+            return;
+        }
+
+        this.closeSidebar();
+    }
+
+    selectConversation(item: ChatbotConversationSummary): void {
+        if (this.loading || this.initializing) {
+            return;
+        }
+
+        this.initializing = true;
+        this.error = '';
+        this.conversationId = item.conversationId;
+        this.selectedConversationId = item.conversationId;
+
+        this.chatbotService.readConversationHistory(item.conversationId).subscribe({
+            next: history => {
+                this.messages = this.mapHistoryMessages(history);
+                this.initializing = false;
+                this.closeSidebar();
+                this.scrollToBottom();
+            },
+            error: () => {
+                this.error = 'No se pudo recuperar la conversación seleccionada.';
+                this.initializing = false;
+            }
+        });
+    }
+
+    historyTitle(): string {
+        return this.requiresConversation() ? 'Historial contextual' : 'Historial general';
+    }
+
+    historyEmptyLabel(): string {
+        return this.requiresConversation()
+            ? 'No hay conversaciones contextuales previas para este encargo.'
+            : 'No hay conversaciones generales previas.';
+    }
+
+    previewLabel(item: ChatbotConversationSummary): string {
+        return item.preview?.trim() || 'Sin mensajes todavía';
+    }
+
+    isSelectedConversation(item: ChatbotConversationSummary): boolean {
+        return this.selectedConversationId === item.conversationId;
+    }
+
+    private loadHistoryList(): void {
+        this.historyLoading = true;
+
+        this.chatbotService.readConversations(
+            this.requiresConversation() ? 'CONTEXTUAL' : 'GENERAL',
+            this.dialogData?.engagementLetterId
+        ).subscribe({
+            next: items => {
+                this.historyItems = items;
+                this.historyLoading = false;
+            },
+            error: () => {
+                this.historyLoading = false;
+            }
+        });
+    }
+
+    private mapHistoryMessages(history: ChatbotConversationHistoryResponse): ChatbotMessageView[] {
+        return history.messages
+            .filter(message => message.senderType === 'USER' || message.senderType === 'ASSISTANT')
+            .map(message => this.mapHistoryMessage(message));
+    }
+
+    private mapHistoryMessage(message: ChatbotHistoryMessage): ChatbotMessageView {
+        return {
+            sender: message.senderType === 'USER' ? 'USER' : 'ASSISTANT',
+            content: message.content,
+            createdAt: message.timestamp,
+            restricted: message.senderType === 'ASSISTANT'
+                ? this.isRestrictedAssistantReply(message.content)
+                : false,
+            usedPlatformData: false,
+            sourcesSummary: [],
+            responseMode: undefined
+        };
     }
 
     isDialogMode(): boolean {

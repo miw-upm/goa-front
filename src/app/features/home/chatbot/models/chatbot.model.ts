@@ -24,23 +24,33 @@ export interface ChatbotMessageResponse {
     sourcesSummary?: string[];
 }
 
-export interface ChatbotConversationSummary {
+export interface ChatbotHistoryMessage {
+    id: string;
     conversationId: string;
-    title?: string;
-    preview?: string;
-    engagementLetterId?: string;
-    createdAt?: string;
-    updatedAt?: string;
-    closedAt?: string;
+    senderType: 'USER' | 'ASSISTANT' | 'SYSTEM';
+    messageType: 'REQUEST' | 'RESPONSE' | 'INSTRUCTION';
+    content: string;
+    timestamp?: string;
+    sequenceNumber: number;
+    parentMessageId?: string;
 }
 
-export interface ChatbotConversationMessageResponse {
-    conversationId?: string;
-    senderType?: string;
-    messageType?: string;
-    content?: string;
-    createdAt?: string;
-    restricted?: boolean;
+export interface ChatbotConversationHistoryResponse {
+    conversationId: string;
+    engagementLetterId?: string;
+    type: 'GENERAL' | 'CONTEXTUAL';
+    status: 'ACTIVE' | 'CLOSED' | 'ARCHIVED';
+    messages: ChatbotHistoryMessage[];
+}
+
+export interface ChatbotConversationSummary {
+    conversationId: string;
+    type: 'GENERAL' | 'CONTEXTUAL';
+    status: 'ACTIVE' | 'CLOSED' | 'ARCHIVED';
+    engagementLetterId?: string;
+    createdAt: string;
+    lastMessageAt?: string;
+    preview?: string;
 }
 
 export interface ChatbotMessageView {
