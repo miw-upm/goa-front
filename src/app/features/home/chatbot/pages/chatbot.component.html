@@ -46,6 +46,10 @@
                             <span>{{ historyEmptyLabel() }}</span>
                         </div>
 
+                        <div *ngIf="!historyLoading && historyError && !historyItems.length" class="chatbot-sidebar-history-state">
+                            <span>{{ historyError }}</span>
+                        </div>
+
                         <div *ngIf="!historyLoading && historyItems.length" class="chatbot-sidebar-history-list">
                             <button *ngFor="let item of historyItems"
                                     type="button"
@@ -77,7 +81,7 @@
                     </div>
 
                     @if (isDialogMode()) {
-                        <button mat-icon-button type="button" aria-label="Cerrar" (click)="close()" [disabled]="closingConversation">
+                        <button mat-icon-button type="button" aria-label="Cerrar" (click)="closeDialog()" [disabled]="closingConversation">
                             <mat-icon>close</mat-icon>
                         </button>
                     }
@@ -112,7 +116,7 @@
                 }
 
                 @if (initializing) {
-                    <div class="chat-state loading-state">
+                    <div class="chat-state">
                         <mat-spinner diameter="36"></mat-spinner>
                         <p>Cargando contexto del caso...</p>
                     </div>
@@ -162,9 +166,11 @@
                                     <strong>{{ item.sender === 'USER' ? 'Tú' : 'Asistente' }}</strong>
 
                                     <div *ngIf="item.sender === 'ASSISTANT'" class="assistant-meta-row">
-                                        <div *ngIf="assistantModeLabel(item)" class="assistant-mode-chip">
-                                            {{ assistantModeLabel(item) }}
-                                        </div>
+                                        @if (assistantModeLabel(item); as modeLabel) {
+                                            <div class="assistant-mode-chip">
+                                                {{ modeLabel }}
+                                            </div>
+                                        }
 
                                         <div *ngIf="item.usedPlatformData" class="assistant-context-chip">
                                             Respuesta apoyada en datos del caso

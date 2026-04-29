@@ -3,6 +3,7 @@ import {Observable} from "rxjs";
 import {HttpService} from "@shared/ui/api/http.service";
 import {ENDPOINTS} from "@core/api/endpoints";
 import {
+    ChatbotConversationType,
     ChatbotContextualConversationRequest,
     ChatbotContextualConversationResponse,
     ChatbotConversationHistoryResponse,
@@ -17,7 +18,7 @@ export class ChatbotService {
     }
 
     readConversations(
-        type: 'GENERAL' | 'CONTEXTUAL',
+        type: ChatbotConversationType,
         engagementLetterId?: string
     ): Observable<ChatbotConversationSummary[]> {
         let request = this.httpService.request()

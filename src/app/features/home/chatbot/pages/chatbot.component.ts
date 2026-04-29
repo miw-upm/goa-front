@@ -11,6 +11,7 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {AuthService} from "@core/auth/auth.service";
 import {CHATBOT_SCOPE_RESTRICTED_REPLIES, CHATBOT_SCOPE_UI} from "../support/chatbot-scope-ui";
 import {
+    ChatbotConversationStatus,
     ChatbotConversationHistoryResponse,
     ChatbotConversationSummary,
     ChatbotHistoryMessage,
@@ -57,6 +58,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     messages: ChatbotMessageView[] = [];
     toasts: ChatbotToastView[] = [];
     historyLoading = false;
+    historyError = '';
     historyItems: ChatbotConversationSummary[] = [];
     loadingOlderMessages = false;
     hasMoreHistoryMessages = false;
@@ -67,9 +69,8 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     private shownToastKeys = new Set<string>();
     private autoScrollTimeouts: number[] = [];
     private backdropClickSubscription?: Subscription;
-    private conversationCloseRequested = false;
     private modalCloseRequested = false;
-    conversationStatus: 'ACTIVE' | 'CLOSED' | 'ARCHIVED' = 'ACTIVE';
+    conversationStatus: ChatbotConversationStatus = 'ACTIVE';
     @ViewChild('messagesContainer') private messagesContainer?: ElementRef<HTMLDivElement>;
     @ViewChild('composerTextarea') private composerTextarea?: ElementRef<HTMLTextAreaElement>;
 
@@ -93,6 +94,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.backdropClickSubscription?.unsubscribe();
+        this.cancelPendingAutoScroll();
         if (this.modalCloseRequested) {
             return;
         }
@@ -124,7 +126,6 @@ export class ChatbotComponent implements OnInit, OnDestroy {
 
         const handleResponse = (response: ChatbotMessageResponse): void => {
             this.conversationId = response.conversationId;
-            this.conversationCloseRequested = false;
             this.selectedConversationId = response.conversationId;
             this.hasMoreHistoryMessages = false;
             this.currentHistoryPage = 0;
@@ -192,7 +193,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         this.focusComposer();
     }
 
-    close(): void {
+    closeDialog(): void {
         this.closeFromModalInteraction();
     }
 
@@ -212,68 +213,43 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         this.error = '';
         this.message = '';
 
-        if (this.requiresConversation()) {
-            if (!this.conversationId) {
-                this.messages = [];
-                this.selectedConversationId = undefined;
-                this.conversationStatus = 'ACTIVE';
-                this.closeSidebar();
-                this.scrollToBottom();
-                return;
-            }
-
-            this.closingConversation = true;
-            this.conversationCloseRequested = true;
-
-            this.chatbotService.closeConversation(this.conversationId).subscribe({
-                next: () => {
-                    this.closingConversation = false;
-                    this.messages = [];
-                    this.conversationId = undefined;
-                    this.selectedConversationId = undefined;
-                    this.conversationStatus = 'ACTIVE';
-                    this.conversationCloseRequested = false;
-                    this.loadHistoryList();
-                    this.closeSidebar();
-                    this.scrollToBottom();
-                },
-                error: () => {
-                    this.error = 'No se pudo cerrar la conversación actual antes de crear una nueva.';
-                    this.closingConversation = false;
-                    this.conversationCloseRequested = false;
-                }
-            });
-
+        if (!this.conversationId) {
+            this.resetConversationState(this.requiresConversation());
             return;
         }
 
-        if (!this.conversationId) {
-            this.messages = [];
-            this.selectedConversationId = undefined;
-            this.conversationStatus = 'ACTIVE';
-            this.closeSidebar();
+        this.closeCurrentConversationForReset();
+    }
+
+    private resetConversationState(scroll: boolean): void {
+        this.messages = [];
+        this.conversationId = undefined;
+        this.selectedConversationId = undefined;
+        this.conversationStatus = 'ACTIVE';
+        this.closeSidebar();
+
+        if (scroll) {
+            this.scrollToBottom();
+        }
+    }
+
+    private closeCurrentConversationForReset(): void {
+        const conversationId = this.conversationId;
+        if (!conversationId) {
             return;
         }
 
         this.closingConversation = true;
-        this.conversationCloseRequested = true;
 
-        this.chatbotService.closeConversation(this.conversationId).subscribe({
+        this.chatbotService.closeConversation(conversationId).subscribe({
             next: () => {
                 this.closingConversation = false;
-                this.messages = [];
-                this.conversationId = undefined;
-                this.selectedConversationId = undefined;
-                this.conversationStatus = 'ACTIVE';
-                this.conversationCloseRequested = false;
+                this.resetConversationState(true);
                 this.loadHistoryList();
-                this.closeSidebar();
-                this.scrollToBottom();
             },
             error: () => {
                 this.error = 'No se pudo cerrar la conversación actual antes de crear una nueva.';
                 this.closingConversation = false;
-                this.conversationCloseRequested = false;
             }
         });
     }
@@ -348,14 +324,17 @@ export class ChatbotComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.chatbotService.closeConversation(previousConversationId!).subscribe({
+        if (!previousConversationId) {
+            openSelectedConversation();
+            return;
+        }
+
+        this.chatbotService.closeConversation(previousConversationId).subscribe({
             next: () => {
-                this.markConversationAsClosed(previousConversationId!);
-                this.conversationCloseRequested = false;
+                this.markConversationAsClosed(previousConversationId);
                 openSelectedConversation();
             },
             error: () => {
-                this.conversationCloseRequested = false;
                 openSelectedConversation();
             }
         });
@@ -410,6 +389,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
 
     private loadHistoryList(): void {
         this.historyLoading = true;
+        this.historyError = '';
 
         this.chatbotService.readConversations(
             this.requiresConversation() ? 'CONTEXTUAL' : 'GENERAL',
@@ -420,6 +400,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
                 this.historyLoading = false;
             },
             error: () => {
+                this.historyError = 'No se pudo cargar el historial de conversaciones.';
                 this.historyLoading = false;
             }
         });
@@ -506,7 +487,6 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         }
 
         this.closingConversation = true;
-        this.conversationCloseRequested = true;
         this.closeConversationIdsSilently(this.getDialogConversationIdsToClose(), () => {
             this.closingConversation = false;
             this.dialogRef?.close();
@@ -782,6 +762,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
                 });
             },
             error: () => {
+                this.error = 'No se pudieron cargar mensajes anteriores.';
                 this.loadingOlderMessages = false;
             }
         });

@@ -1,3 +1,8 @@
+export type ChatbotConversationType = 'GENERAL' | 'CONTEXTUAL';
+export type ChatbotConversationStatus = 'ACTIVE' | 'CLOSED' | 'ARCHIVED';
+export type ChatbotResponseMode = 'GENERAL' | 'CONTEXTUAL_PLATFORM_DATA' | 'CONTEXTUAL_RESTRICTED';
+export type ChatbotSenderType = 'USER' | 'ASSISTANT';
+
 export interface ChatbotContextualConversationRequest {
     engagementLetterId: string;
 }
@@ -11,7 +16,7 @@ export interface ChatbotContextualConversationResponse {
 
 export interface ChatbotMessageRequest {
     conversationId?: string;
-    message: string | undefined;
+    message: string;
 }
 
 export interface ChatbotMessageResponse {
@@ -19,7 +24,7 @@ export interface ChatbotMessageResponse {
     message?: string;
     error?: string;
     createdAt?: string;
-    responseMode?: 'GENERAL' | 'CONTEXTUAL_PLATFORM_DATA' | 'CONTEXTUAL_RESTRICTED';
+    responseMode?: ChatbotResponseMode;
     usedPlatformData?: boolean;
     sourcesSummary?: string[];
 }
@@ -27,7 +32,7 @@ export interface ChatbotMessageResponse {
 export interface ChatbotHistoryMessage {
     id: string;
     conversationId: string;
-    senderType: 'USER' | 'ASSISTANT' | 'SYSTEM';
+    senderType: ChatbotSenderType | 'SYSTEM';
     messageType: 'REQUEST' | 'RESPONSE' | 'INSTRUCTION';
     content: string;
     timestamp?: string;
@@ -38,8 +43,8 @@ export interface ChatbotHistoryMessage {
 export interface ChatbotConversationHistoryResponse {
     conversationId: string;
     engagementLetterId?: string;
-    type: 'GENERAL' | 'CONTEXTUAL';
-    status: 'ACTIVE' | 'CLOSED' | 'ARCHIVED';
+    type: ChatbotConversationType;
+    status: ChatbotConversationStatus;
     page?: number;
     size?: number;
     hasMore?: boolean;
@@ -49,8 +54,8 @@ export interface ChatbotConversationHistoryResponse {
 
 export interface ChatbotConversationSummary {
     conversationId: string;
-    type: 'GENERAL' | 'CONTEXTUAL';
-    status: 'ACTIVE' | 'CLOSED' | 'ARCHIVED';
+    type: ChatbotConversationType;
+    status: ChatbotConversationStatus;
     engagementLetterId?: string;
     createdAt: string;
     lastMessageAt?: string;
@@ -58,13 +63,13 @@ export interface ChatbotConversationSummary {
 }
 
 export interface ChatbotMessageView {
-    sender: 'USER' | 'ASSISTANT';
+    sender: ChatbotSenderType;
     content: string;
     createdAt?: string;
     restricted?: boolean;
     usedPlatformData?: boolean;
     sourcesSummary?: string[];
-    responseMode?: 'GENERAL' | 'CONTEXTUAL_PLATFORM_DATA' | 'CONTEXTUAL_RESTRICTED';
+    responseMode?: ChatbotResponseMode;
 }
 
 export interface ContextualChatbotDialogData {
