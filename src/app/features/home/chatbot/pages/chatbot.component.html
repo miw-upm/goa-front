@@ -73,7 +73,7 @@
                                         type="button"
                                         class="chatbot-history-item-delete"
                                         aria-label="Borrar conversacion"
-                                        (click)="deleteConversation(item, $event)"
+                                        (click)="confirmDeleteConversation(item, $event)"
                                         [disabled]="loading || initializing || closingConversation || !!deletingConversationId">
                                     @if (isDeletingConversation(item)) {
                                         <mat-spinner diameter="18"></mat-spinner>

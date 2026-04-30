@@ -6,7 +6,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from "@angular/material/dialog";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {AuthService} from "@core/auth/auth.service";
 import {CHATBOT_SCOPE_RESTRICTED_REPLIES, CHATBOT_SCOPE_UI} from "../support/chatbot-scope-ui";
@@ -24,6 +24,7 @@ import {ChatbotService} from "../chatbot.service";
 import {TextFieldModule} from "@angular/cdk/text-field";
 import {forkJoin, of, Subscription} from "rxjs";
 import {catchError} from "rxjs/operators";
+import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
 
 @Component({
     standalone: true,
@@ -78,6 +79,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     constructor(
         private readonly chatbotService: ChatbotService,
         private readonly authService: AuthService,
+        private readonly dialog: MatDialog,
         @Optional() @Inject(MAT_DIALOG_DATA) public readonly dialogData: ContextualChatbotDialogData | null,
         @Optional() private readonly dialogRef: MatDialogRef<ChatbotComponent> | null
     ) {
@@ -392,9 +394,26 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         return this.deletingConversationId === item.conversationId;
     }
 
-    deleteConversation(item: ChatbotConversationSummary, event?: Event): void {
+    confirmDeleteConversation(item: ChatbotConversationSummary, event?: Event): void {
         event?.stopPropagation();
 
+        if (this.isBusy()) {
+            return;
+        }
+
+        this.dialog.open(CancelYesDialogComponent, {
+            data: {
+                title: 'Confirmar eliminacion',
+                message: 'Esta conversacion se eliminara del historial. ¿Desea continuar?'
+            }
+        }).afterClosed().subscribe(confirmed => {
+            if (confirmed === true) {
+                this.deleteConversation(item);
+            }
+        });
+    }
+
+    private deleteConversation(item: ChatbotConversationSummary): void {
         if (this.isBusy() || this.isDeletingConversation(item)) {
             return;
         }
