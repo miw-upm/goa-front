@@ -57,4 +57,7 @@ export class UserService {
             );
     }
 
+    searchAllJson() {
+        return this.httpService.request().openJson(ENDPOINTS.users.findAllJson());
+    }
 }

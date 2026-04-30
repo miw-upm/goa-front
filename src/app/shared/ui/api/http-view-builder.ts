@@ -102,6 +102,26 @@ export class HttpViewBuilder {
             );
     }
 
+    openJson(endpoint: string): Observable<void> {
+        return this.builder.get<unknown>(endpoint)
+            .pipe(
+                tap(() => this.notifySuccess()),
+                map((json: unknown) => {
+                    const content = JSON.stringify(json, null, 2);
+                    const url = window.URL.createObjectURL(
+                        new Blob([content], {type: 'application/json;charset=utf-8'})
+                    );
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'generico.json';
+                    link.click();
+                    window.URL.revokeObjectURL(url);
+                    return void 0;
+                }),
+                catchError(err => this.handleError(err))
+            );
+    }
+
     debug(): this {
         this.debugMode = true;
         return this;

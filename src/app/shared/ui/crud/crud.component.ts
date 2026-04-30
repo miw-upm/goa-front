@@ -40,18 +40,23 @@ export class CrudComponent {
     @Input() createAction = true;
     @Input() readAction = true;
     @Input() updateAction = true;
-    @Input() cancelAction = false;
     @Input() deleteAction = false;
+    @Input() searchAction = true;
+
     @Input() printAction = false;
+    @Input() linkAction = false;
     @Input() runAction = false;
+    @Input() jsonAction = false
+
+    @Input() cancelAction = false;
     @Input() assistantAction = false;
     @Input() eventsAction = false;
     @Input() timelineAction = false;
     @Input() alertsAction = false;
     @Input() notificationsAction = false;
     @Input() commentsAction = false;
-    @Input() linkAction = false;
-    @Input() searchAction = true;
+
+
     @Input() deleteInline = false;
     @Input() commentsInline = false;
 
@@ -62,18 +67,22 @@ export class CrudComponent {
     @Output() create = new EventEmitter<any>();
     @Output() read = new EventEmitter<any>();
     @Output() update = new EventEmitter<any>();
-    @Output() cancel = new EventEmitter<any>();
     @Output() delete = new EventEmitter<any>();
+    @Output() searchAll = new EventEmitter<any>();
+
     @Output() print = new EventEmitter<any>();
+    @Output() link = new EventEmitter<any>();
     @Output() run = new EventEmitter<any>();
+    @Output() json = new EventEmitter<any>();
+
+    @Output() cancel = new EventEmitter<any>();
     @Output() assistant = new EventEmitter<any>();
     @Output() events = new EventEmitter<any>();
     @Output() timeline = new EventEmitter<any>();
     @Output() alerts = new EventEmitter<any>();
     @Output() notifications = new EventEmitter<any>();
     @Output() comments = new EventEmitter<any>();
-    @Output() link = new EventEmitter<any>();
-    @Output() searchAll = new EventEmitter<any>();
+
 
     dataSource = new MatTableDataSource<any>([]);
     columns: string[] = [];
@@ -190,6 +199,10 @@ export class CrudComponent {
         }
     }
 
+    onSearch() {
+        this.searchAll.emit();
+    }
+
     onPrint(item: any): void {
         this.print.emit(item);
     }
@@ -197,6 +210,15 @@ export class CrudComponent {
     onRun(item: any): void {
         this.run.emit(item);
     }
+
+    onLink(item: any): void {
+        this.link.emit(item);
+    }
+
+    onJson(): void {
+        this.json.emit();
+    }
+
 
     onAssistant(item: any): void {
         this.assistant.emit(item);
@@ -216,14 +238,6 @@ export class CrudComponent {
 
     onComments(item: any): void {
         this.comments.emit(item);
-    }
-
-    onPublicLink(item: any): void {
-        this.link.emit(item);
-    }
-
-    onSearch() {
-        this.searchAll.emit();
     }
 
     onTimeline(item: any): void {

@@ -26,6 +26,11 @@
                             <mat-icon color="warn">search</mat-icon>
                         </button>
                     }
+                    @if (jsonAction) {
+                        <button (click)="onJson()" mat-icon-button matSuffix aria-label="Exportar JSON">
+                            <mat-icon color="warn">download</mat-icon>
+                        </button>
+                    }
                 </mat-header-cell>
                 <mat-cell *matCellDef="let item">
                     @if (readAction) {
@@ -44,7 +49,7 @@
                         </button>
                     }
                     @if (linkAction) {
-                        <button mat-icon-button matSuffix (click)="onPublicLink(item)"
+                        <button mat-icon-button matSuffix (click)="onLink(item)"
                                 aria-label="Generar enlace público">
                             <mat-icon color="primary">link</mat-icon>
                         </button>
