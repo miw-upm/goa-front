@@ -584,21 +584,27 @@
 
 .chatbot-history-item {
     display: flex;
-    flex-direction: column;
-    gap: 6px;
-    text-align: left;
-    width: 100%;
     padding: 12px;
     border-radius: 14px;
     border: 1px solid #dbe4f0;
     background: #ffffff;
-    cursor: pointer;
-    transition: border-color 0.18s ease, background 0.18s ease;
 }
 
 .chatbot-history-item.selected {
     border-color: #8eaee8;
     background: #eef4ff;
+}
+
+.chatbot-history-item-select {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+    padding: 0;
+    border: none;
+    background: transparent;
 }
 
 .chatbot-history-item-top {

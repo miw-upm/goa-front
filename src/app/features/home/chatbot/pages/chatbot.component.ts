@@ -6,7 +6,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from "@angular/material/dialog";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {AuthService} from "@core/auth/auth.service";
 import {CHATBOT_SCOPE_RESTRICTED_REPLIES, CHATBOT_SCOPE_UI} from "../support/chatbot-scope-ui";
@@ -24,6 +24,7 @@ import {ChatbotService} from "../chatbot.service";
 import {TextFieldModule} from "@angular/cdk/text-field";
 import {forkJoin, of, Subscription} from "rxjs";
 import {catchError} from "rxjs/operators";
+import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
 
 @Component({
     standalone: true,
@@ -60,6 +61,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     historyLoading = false;
     historyError = '';
     historyItems: ChatbotConversationSummary[] = [];
+    deletingConversationId?: string;
     loadingOlderMessages = false;
     hasMoreHistoryMessages = false;
     currentHistoryPage = 0;
@@ -77,6 +79,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     constructor(
         private readonly chatbotService: ChatbotService,
         private readonly authService: AuthService,
+        private readonly dialog: MatDialog,
         @Optional() @Inject(MAT_DIALOG_DATA) public readonly dialogData: ContextualChatbotDialogData | null,
         @Optional() private readonly dialogRef: MatDialogRef<ChatbotComponent> | null
     ) {
@@ -109,7 +112,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     send(): void {
         const normalizedMessage = this.message?.trim();
 
-        if (!normalizedMessage || this.loading || this.initializing) {
+        if (!normalizedMessage || this.loading || this.initializing || !!this.deletingConversationId) {
             return;
         }
 
@@ -206,7 +209,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     }
 
     startNewConversation(): void {
-        if (this.loading || this.initializing || this.closingConversation) {
+        if (this.isBusy()) {
             return;
         }
 
@@ -255,7 +258,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     }
 
     selectConversation(item: ChatbotConversationSummary): void {
-        if (this.loading || this.initializing || this.closingConversation) {
+        if (this.isBusy()) {
             return;
         }
 
@@ -385,6 +388,56 @@ export class ChatbotComponent implements OnInit, OnDestroy {
 
     isSelectedConversation(item: ChatbotConversationSummary): boolean {
         return this.selectedConversationId === item.conversationId;
+    }
+
+    isDeletingConversation(item: ChatbotConversationSummary): boolean {
+        return this.deletingConversationId === item.conversationId;
+    }
+
+    confirmDeleteConversation(item: ChatbotConversationSummary, event?: Event): void {
+        event?.stopPropagation();
+
+        if (this.isBusy()) {
+            return;
+        }
+
+        this.dialog.open(CancelYesDialogComponent, {
+            data: {
+                title: 'Confirmar eliminacion',
+                message: 'Esta conversacion se eliminara del historial. ¿Desea continuar?'
+            }
+        }).afterClosed().subscribe(confirmed => {
+            if (confirmed === true) {
+                this.deleteConversation(item);
+            }
+        });
+    }
+
+    private deleteConversation(item: ChatbotConversationSummary): void {
+        if (this.isBusy() || this.isDeletingConversation(item)) {
+            return;
+        }
+
+        this.error = '';
+        this.deletingConversationId = item.conversationId;
+
+        this.chatbotService.deleteConversation(item.conversationId).subscribe({
+            next: () => {
+                this.historyItems = this.historyItems.filter(historyItem =>
+                    historyItem.conversationId !== item.conversationId
+                );
+
+                if (this.conversationId === item.conversationId || this.selectedConversationId === item.conversationId) {
+                    this.resetConversationState(true);
+                }
+
+                this.deletingConversationId = undefined;
+            },
+            error: () => {
+                this.error = 'No se pudo borrar la conversacion seleccionada.';
+                this.deletingConversationId = undefined;
+            }
+        });
     }
 
     private loadHistoryList(): void {
@@ -639,7 +692,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     }
 
     applySuggestedQuestion(question: string): void {
-        if (this.loading || this.initializing) {
+        if (this.loading || this.initializing || !!this.deletingConversationId) {
             return;
         }
 
@@ -772,6 +825,10 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         setTimeout(() => {
             this.composerTextarea?.nativeElement?.focus();
         });
+    }
+
+    private isBusy(): boolean {
+        return this.loading || this.initializing || this.closingConversation || !!this.deletingConversationId;
     }
 
 }
