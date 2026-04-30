@@ -30,7 +30,7 @@
                             type="button"
                             class="sidebar-new-conversation-button"
                             (click)="startNewConversation()"
-                            [disabled]="loading || initializing || closingConversation || !hasUserMessages()">
+                            [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !hasUserMessages()">
                         Nueva conversación
                     </button>
 
@@ -51,19 +51,37 @@
                         </div>
 
                         <div *ngIf="!historyLoading && historyItems.length" class="chatbot-sidebar-history-list">
-                            <button *ngFor="let item of historyItems"
-                                    type="button"
-                                    class="chatbot-history-item"
-                                    [class.selected]="isSelectedConversation(item)"
-                                    (click)="selectConversation(item)">
-                                <div class="chatbot-history-item-top">
-                                    <strong>{{ item.type === 'CONTEXTUAL' ? 'Contextual' : 'General' }}</strong>
-                                    <span>{{ item.status }}</span>
-                                </div>
+                            <div *ngFor="let item of historyItems"
+                                 class="chatbot-history-item"
+                                 [class.selected]="isSelectedConversation(item)">
+                                <button
+                                        type="button"
+                                        class="chatbot-history-item-select"
+                                        (click)="selectConversation(item)"
+                                        [disabled]="loading || initializing || closingConversation || !!deletingConversationId">
+                                    <div class="chatbot-history-item-top">
+                                        <strong>{{ item.type === 'CONTEXTUAL' ? 'Contextual' : 'General' }}</strong>
+                                        <span>{{ item.status }}</span>
+                                    </div>
 
-                                <p>{{ previewLabel(item) }}</p>
-                                <small>{{ item.lastMessageAt || item.createdAt }}</small>
-                            </button>
+                                    <p>{{ previewLabel(item) }}</p>
+                                    <small>{{ item.lastMessageAt || item.createdAt }}</small>
+                                </button>
+
+                                <button
+                                        mat-icon-button
+                                        type="button"
+                                        class="chatbot-history-item-delete"
+                                        aria-label="Borrar conversacion"
+                                        (click)="deleteConversation(item, $event)"
+                                        [disabled]="loading || initializing || closingConversation || !!deletingConversationId">
+                                    @if (isDeletingConversation(item)) {
+                                        <mat-spinner diameter="18"></mat-spinner>
+                                    } @else {
+                                        <mat-icon>delete</mat-icon>
+                                    }
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -148,7 +166,7 @@
                                                         type="button"
                                                         class="suggestion-chip"
                                                         (click)="applySuggestedQuestion(question)"
-                                                        [disabled]="loading || initializing || closingConversation">
+                                                        [disabled]="loading || initializing || closingConversation || !!deletingConversationId">
                                                     {{ question }}
                                                 </button>
                                             </div>
@@ -209,7 +227,7 @@
                                         cdkAutosizeMaxRows="6"
                                         class="composer-textarea"
                                         [placeholder]="composerPlaceholder()"
-                                        [disabled]="initializing || closingConversation"
+                                        [disabled]="initializing || closingConversation || !!deletingConversationId"
                                         (keydown)="onKeydown($event)">
                                 </textarea>
 
@@ -222,7 +240,7 @@
                                             type="button"
                                             class="send-button"
                                             (click)="send()"
-                                            [disabled]="!message?.trim() || loading || initializing || closingConversation">
+                                            [disabled]="!message?.trim() || loading || initializing || closingConversation || !!deletingConversationId">
                                         Enviar
                                     </button>
                                 </div>
