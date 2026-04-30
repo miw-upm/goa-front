@@ -4,7 +4,7 @@ import {UsersComponent} from "./users/pages/users.component";
 import {RoleGuard} from "@core/auth/role.guard";
 import {Role} from "@core/auth/models/role.model";
 import {UserService} from "./users/user.service";
-import {AccessLinkComponent} from "./access-links/pages/access-link.component";
+import {AccessLinksComponent} from "./access-links/pages/access-links.component";
 import {AccessLinkService} from "./access-links/access-link.service";
 import {LegalTasksComponent} from "./legal-tasks/pages/legal-tasks.component";
 import {LegalTaskService} from "./legal-tasks/legal-task.service";
@@ -47,7 +47,7 @@ export const routes: Routes = [
             },
             {
                 path: 'access-links',
-                component: AccessLinkComponent,
+                component: AccessLinksComponent,
                 canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [AccessLinkService],

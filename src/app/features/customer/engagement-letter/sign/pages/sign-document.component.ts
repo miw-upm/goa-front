@@ -20,18 +20,18 @@ export class SignDocumentComponent {
     constructor(private readonly signDocumentService: SignDocumentService) {
     }
 
-    onDownload(ctx: { path: string; mobile: string; token: string }): void {
+    onDownload(ctx: { scope: string; urlId: string; token: string }): void {
         this.signDocumentService
-            .downloadDocument(ctx.path, ctx.mobile, ctx.token)
+            .downloadDocument(ctx.scope, ctx.urlId, ctx.token)
             .subscribe();
     }
 
     onSubmit(payload: {
-        context: { path: string; mobile: string; token: string };
+        context: { scope: string; urlId: string; token: string };
         result: DocumentAcceptanceResult
     }): void {
         this.signDocumentService
-            .signDocument(payload.context.path, payload.context.mobile, payload.context.token, {
+            .signDocument(payload.context.scope, payload.context.urlId, payload.context.token, {
                 documentAccepted: payload.result.accepted,
                 signature: payload.result.signature
             })

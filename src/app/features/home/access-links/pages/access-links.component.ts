@@ -9,17 +9,18 @@ import {AccessLink} from "@features/shared/models/access-link.model";
 import {AuthService} from "@core/auth/auth.service";
 import {ClipboardToastDialogComponent} from "@shared/ui/dialogs/clipboard-toast-dialog.component";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
-import {AccessLinkFindCriteria} from "./access-link-find-criteria.model";
+import {AccessLinkFindCriteria} from "../access-link-find-criteria.model";
 import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
 import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
+import {TypeToConfirmDialogComponent} from "@shared/ui/dialogs/type-to-confirm-dialog.component";
 
 @Component({
     standalone: true,
     providers: [AccessLinkService],
     imports: [FormsModule, CrudComponent, MatSlideToggle, FilterInputComponent],
-    templateUrl: 'access-link.component.html'
+    templateUrl: 'access-links.component.html'
 })
-export class AccessLinkComponent {
+export class AccessLinksComponent {
     visible: boolean = true;
     title = 'Access Links';
     criteria: AccessLinkFindCriteria;
@@ -41,11 +42,12 @@ export class AccessLinkComponent {
     }
 
     delete(accessLink: AccessLink) {
-        if (accessLink.lastUsedForUpdateAt) {
-            this.dialog.open(CancelYesDialogComponent, {
+        if (accessLink.lastUsedAt) {
+            this.dialog.open(TypeToConfirmDialogComponent, {
                 data: {
                     title: 'Confirmar eliminación',
-                    message: 'Este enlace está en uso. ¿Desea eliminarlo?'
+                    message: 'Este enlace ya ha sido usado. ¿Está seguro que desea eliminarlo?',
+                    expectedText:'Delete'
                 }
             }).afterClosed().subscribe(result => {
                 if (result) {
@@ -63,15 +65,6 @@ export class AccessLinkComponent {
 
     read(accessLink: AccessLink): void {
         this.accessLink = this.accessLinkService.read(accessLink.id);
-    }
-
-    viewLink(accessLink: AccessLink): void {
-        this.dialog.open(ClipboardToastDialogComponent, {
-            data: {
-                message: 'Enlace público copiado al portapapeles',
-                clipboard: this.accessLinkService.buildAccessUrl(accessLink)
-            }
-        });
     }
 
 }

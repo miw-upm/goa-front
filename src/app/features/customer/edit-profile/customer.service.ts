@@ -13,19 +13,18 @@ export class CustomerService {
                 private readonly sharedCustomerService: SharedCustomerService,) {
     }
 
-    readWithToken(mobile: string, token: string): Observable<User> {
-        return this.sharedCustomerService.readWithToken(mobile, token);
+    readWithToken(scope: string, urlId: string, token: string): Observable<User> {
+        return this.sharedCustomerService.readWithToken(scope, urlId, token);
     }
 
-    updateWithToken(oldMobile: string, user: User, dataProcessingConsentCreation: DataProcessingConsentCreation,
-                    token: string): Observable<User> {
+    updateWithToken(scope: string, urlId: string, token: string, user: User, dataProcessingConsentCreation: DataProcessingConsentCreation): Observable<User> {
         const body = {
             user: user,
             dataProcessingConsentCreation: dataProcessingConsentCreation
         };
         return this.httpService.request()
             .success(" PERFIL ACTUALIZADO!!! Si necesita cambiarlo, puede hacerlo, pero recuerde que el enlace caduca en 7 días.")
-            .put(ENDPOINTS.users.byMobileAndToken(oldMobile, token), body);
+            .put(ENDPOINTS.users.byToken(scope, urlId, token), body);
     }
 
 }

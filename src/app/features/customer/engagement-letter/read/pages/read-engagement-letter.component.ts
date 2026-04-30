@@ -18,9 +18,9 @@ export class ReadEngagementLetterComponent {
     constructor(private readonly readEngagementLetterService: ReadEngagementLetterService) {
     }
 
-    onDownload(ctx: { path: string; mobile: string; token: string }): void {
+    onDownload(ctx: { scope: string; urlId: string; token: string }): void {
         this.readEngagementLetterService
-            .downloadDocument(ctx.path, ctx.mobile, ctx.token)
+            .downloadDocument(ctx.scope, ctx.urlId, ctx.token)
             .subscribe();
     }
 }

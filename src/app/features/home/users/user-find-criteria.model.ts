@@ -2,8 +2,6 @@ export class UserFindCriteria {
     mobile?: string;
     firstName?: string;
     familyName?: string;
-    email?: string;
-    identity?: string;
+    customer?: string;
     projection?: boolean
-    attribute?: string;
 }

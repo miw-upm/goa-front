@@ -164,7 +164,8 @@ export class CrudComponent {
                 disableClose: true,
                 data: {
                     title: `Delete ${this.title}`,
-                    message: 'Are you sure you want to delete this item?'
+                    message: 'Are you sure you want to delete this item?',
+                    expectedText:`Delete`
                 }
             });
 

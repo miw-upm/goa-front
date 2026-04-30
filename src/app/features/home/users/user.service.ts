@@ -49,8 +49,9 @@ export class UserService {
                         return throwError(() => new Error('Sólo se puede crear links a los clientes'));
                     }
                     return this.sharedAccessLinkService.createAccessLink({
+                        scope: this.EDIT_PROFILE_SCOPE,
                         mobile: retrievedUser.mobile,
-                        scope: this.EDIT_PROFILE_SCOPE
+                        documentId: null
                     });
                 })
             );

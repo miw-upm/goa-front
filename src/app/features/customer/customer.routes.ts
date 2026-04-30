@@ -5,15 +5,15 @@ import {SignDocumentComponent} from "./engagement-letter/sign/pages/sign-documen
 
 export const routes: Routes = [
     {
-        path: 'customer/edit-profile/:mobile/:token',
+        path: 'customer/edit-profile/:urlId/:token',
         component: CustomerEditProfileComponent
     },
     {
-        path: 'customer/sign-engagement-letter/:mobile/:token',
+        path: 'customer/sign-engagement-letter/:urlId/:token',
         component: SignDocumentComponent
     },
     {
-        path: 'customer/read-engagement-letter/:mobile/:token',
+        path: 'customer/read-engagement-letter/:urlId/:token',
         component: ReadEngagementLetterComponent
     },
 ];
