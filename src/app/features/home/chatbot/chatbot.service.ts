@@ -51,6 +51,12 @@ export class ChatbotService {
             .patch<void>(ENDPOINTS.chatbot.closeConversation(conversationId), {});
     }
 
+    deleteConversation(conversationId: string): Observable<void> {
+        return this.httpService.request()
+            .error('No se pudo borrar la conversacion')
+            .delete(ENDPOINTS.chatbot.deleteConversation(conversationId));
+    }
+
     readConversationHistory(
         conversationId: string,
         page = 0,
