@@ -80,11 +80,12 @@ export const ENDPOINTS = {
 
     chatbot: {
         root: CHATBOT_ROOT,
-        contextualConversation: () => `${CHATBOT_ROOT}/conversations/contextual`,
+        conversations: () => `${CHATBOT_ROOT}/conversations`,
         generalConversation: () => `${CHATBOT_ROOT}/conversations/general`,
-        readAllConversations: () => `${CHATBOT_ROOT}/conversations`,
-        readMessagesOneConversation: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/messages`,
+        contextualConversation: () => `${CHATBOT_ROOT}/conversations/contextual`,
         closeConversation: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/close`,
+        history: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/messages`,
+        reopenConversation: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/reopen`,
         messages: () => `${CHATBOT_ROOT}/messages`,
     },
 } as const;
