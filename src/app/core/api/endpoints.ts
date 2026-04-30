@@ -38,8 +38,8 @@ export const ENDPOINTS = {
         byId: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}`,
         pendingSigners: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/pending-signers`,
         view: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/view`,
-        readDocument: (path: string, mobile: string, token: string) => `${ENGAGEMENT_LETTER_ROOT}/${path}/${enc(mobile)}/${enc(token)}`,
-        signerDocument: (path: string, mobile: string, token: string) => `${ENGAGEMENT_LETTER_ROOT}/${path}/${enc(mobile)}/${enc(token)}`,
+        readDocument: (scope: string, urlId: string, token: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(scope)}/${enc(urlId)}/${enc(token)}`,
+        signerDocument: (scope: string, urlId: string, token: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(scope)}/${enc(urlId)}/${enc(token)}`,
     },
 
     legalProcedureTemplates: {

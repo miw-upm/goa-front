@@ -58,7 +58,6 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
     @Input() title = 'Aceptación de Documento';
     @Input() showCompanyInfo = true;
 
-    @Output() contextReady = new EventEmitter<DocumentAcceptanceContext>();
     @Output() downloadRequested = new EventEmitter<DocumentAcceptanceContext>();
     @Output() submitted = new EventEmitter<{ context: DocumentAcceptanceContext; result: DocumentAcceptanceResult }>();
     @Output() completed = new EventEmitter<void>();
@@ -90,8 +89,6 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
             urlId: this.route.snapshot.paramMap.get('urlId') ?? '',
             token: this.route.snapshot.paramMap.get('token') ?? ''
         };
-        this.contextReady.emit(this.context);
-
         this.sharedCustomerService.readWithToken(this.context.scope, this.context.urlId, this.context.token)
             .subscribe(user => this.customerName = user.firstName);
     }

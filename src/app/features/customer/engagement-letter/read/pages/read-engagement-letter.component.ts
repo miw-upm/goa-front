@@ -19,6 +19,7 @@ export class ReadEngagementLetterComponent {
     }
 
     onDownload(ctx: { scope: string; urlId: string; token: string }): void {
+        console.log(ctx);
         this.readEngagementLetterService
             .downloadDocument(ctx.scope, ctx.urlId, ctx.token)
             .subscribe();
