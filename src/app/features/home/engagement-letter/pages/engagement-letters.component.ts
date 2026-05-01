@@ -97,7 +97,7 @@ export class EngagementLettersComponent implements OnInit {
             width: '960px',
             maxWidth: '96vw',
             height: '80vh',
-            panelClass: 'contextual-chatbot-dialog-panel'
+            disableClose: true
         });
     }
 
