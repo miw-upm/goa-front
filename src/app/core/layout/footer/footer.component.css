@@ -20,3 +20,15 @@
     font-size: 16px;
     vertical-align: middle;
 }
+
+.host {
+    color: white;
+    background: #555;
+    font-size: 15px;
+}
+
+.version {
+    color: white;
+    background: #44bb11;
+    font-size: 15px;
+}
