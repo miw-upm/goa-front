@@ -1,7 +1,7 @@
 import {environment} from "@env";
 
 const USERS_ROOT = `${environment.REST_USER}/users`;
-const ACCESS_LINK_ROOT = `${environment.REST_USER}/access-link`;
+const ACCESS_LINK_ROOT = `${environment.REST_USER}/access-links`;
 const CONSENTS_ROOT = `${environment.REST_USER}/consents`;
 const ENGAGEMENT_LETTER_ROOT = `${environment.REST_ENGAGEMENT}/engagement-letters`;
 const LEGAL_PROCEDURE_TEMPLATE_ROOT = `${environment.REST_ENGAGEMENT}/legal-procedure-templates`;
@@ -19,8 +19,9 @@ export const ENDPOINTS = {
     users: {
         root: USERS_ROOT,
         byMobile: (mobile: string) => `${USERS_ROOT}/${enc(mobile)}`,
-        byMobileAndToken: (mobile: string, token: string) => `${ENDPOINTS.users.byMobile(mobile)}/${enc(token)}`,
+        byToken: (scope:string, urlId: string, token: string) => `${USERS_ROOT}/${enc(scope)}/${enc(urlId)}/${enc(token)}`,
         provinces: () => `${USERS_ROOT}/provinces`,
+        findAllJson: () => `${USERS_ROOT}/full`,
     },
     consents: {
         root: CONSENTS_ROOT,
@@ -37,8 +38,8 @@ export const ENDPOINTS = {
         byId: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}`,
         pendingSigners: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/pending-signers`,
         view: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/view`,
-        readDocument: (path: string, mobile: string, token: string) => `${ENGAGEMENT_LETTER_ROOT}/${path}/${enc(mobile)}/${enc(token)}`,
-        signerDocument: (path: string, mobile: string, token: string) => `${ENGAGEMENT_LETTER_ROOT}/${path}/${enc(mobile)}/${enc(token)}`,
+        readDocument: (scope: string, urlId: string, token: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(scope)}/${enc(urlId)}/${enc(token)}`,
+        signerDocument: (scope: string, urlId: string, token: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(scope)}/${enc(urlId)}/${enc(token)}`,
     },
 
     legalProcedureTemplates: {

@@ -9,8 +9,8 @@ export class ReadEngagementLetterService {
     constructor(private readonly httpService: HttpService) {
     }
 
-    downloadDocument(scope: string, mobile: string, token: string): Observable<void> {
+    downloadDocument(scope: string, urlId: string, token: string): Observable<void> {
         return this.httpService.request()
-            .openPdf(ENDPOINTS.engagementLetters.readDocument(scope, mobile, token));
+            .openPdf(ENDPOINTS.engagementLetters.readDocument(scope, urlId, token));
     }
 }

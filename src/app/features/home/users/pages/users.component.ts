@@ -11,7 +11,7 @@ import {UserFindCriteria} from '../user-find-criteria.model';
 import {UserService} from '../user.service';
 import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
 import {ClipboardToastDialogComponent} from "@shared/ui/dialogs/clipboard-toast-dialog.component";
-import {SharedAccessLinkService} from "@features/shared/services/shared-access-link.service";
+import {AuthService} from "@core/auth/auth.service";
 
 @Component({
     standalone: true,
@@ -19,13 +19,14 @@ import {SharedAccessLinkService} from "@features/shared/services/shared-access-l
     templateUrl: 'users.component.html'
 })
 export class UsersComponent {
+    visible: boolean = true;
     criteria: UserFindCriteria;
     title = "Users";
     users = of([]);
     user: Observable<any>;
 
-    constructor(private readonly dialog: MatDialog, private readonly userService: UserService,
-                private readonly sharedAccessLinkService: SharedAccessLinkService) {
+    constructor(private readonly dialog: MatDialog, private readonly userService: UserService, auth: AuthService) {
+        this.visible = auth.isAdmin();
         this.resetSearch();
     }
 
@@ -78,4 +79,8 @@ export class UsersComponent {
         });
     }
 
+    json() {
+        this.userService.searchAllJson()
+            .subscribe();
+    }
 }

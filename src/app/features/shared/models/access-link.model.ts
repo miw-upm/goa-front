@@ -1,7 +1,12 @@
 export interface AccessLink {
     id?: string;
-    mobile: string;
+    urlId?: string;
+    token?: string;
+    fullName?: string;
+    createdAt?: Date;
+    lastUsedAt?: Date;
+    expiresAt?: Date;
+    remainingUses?: number
     scope: string;
-    lastUsedForUpdateAt?: Date;
-    document?: string;
+    documentId: string;
 }

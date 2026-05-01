@@ -24,8 +24,8 @@ import {SharedCustomerService} from "@features/shared/services/shared-customer.s
 import {MatDivider} from "@angular/material/divider";
 
 export interface DocumentAcceptanceContext {
-    path: string;
-    mobile: string;
+    scope: string;
+    urlId: string;
     token: string;
 }
 
@@ -58,7 +58,6 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
     @Input() title = 'Aceptación de Documento';
     @Input() showCompanyInfo = true;
 
-    @Output() contextReady = new EventEmitter<DocumentAcceptanceContext>();
     @Output() downloadRequested = new EventEmitter<DocumentAcceptanceContext>();
     @Output() submitted = new EventEmitter<{ context: DocumentAcceptanceContext; result: DocumentAcceptanceResult }>();
     @Output() completed = new EventEmitter<void>();
@@ -68,7 +67,7 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
     accepted = false;
     isEmpty = true;
     customerName = '';
-    private context: DocumentAcceptanceContext = {path: '', mobile: '', token: ''};
+    private context: DocumentAcceptanceContext = {scope: '', urlId: '', token: ''};
 
     @ViewChild('signaturePad', {static: false})
     private readonly canvasRef?: ElementRef<HTMLCanvasElement>;
@@ -86,13 +85,11 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
 
     ngOnInit(): void {
         this.context = {
-            path: this.route.snapshot.url[1]?.path ?? '',
-            mobile: this.route.snapshot.paramMap.get('mobile') ?? '',
+            scope: this.route.snapshot.url[1]?.path ?? '',
+            urlId: this.route.snapshot.paramMap.get('urlId') ?? '',
             token: this.route.snapshot.paramMap.get('token') ?? ''
         };
-        this.contextReady.emit(this.context);
-
-        this.sharedCustomerService.readWithToken(this.context.mobile, this.context.token)
+        this.sharedCustomerService.readWithToken(this.context.scope, this.context.urlId, this.context.token)
             .subscribe(user => this.customerName = user.firstName);
     }
 

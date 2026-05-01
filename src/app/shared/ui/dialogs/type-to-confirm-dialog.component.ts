@@ -15,7 +15,13 @@ import {MatInputModule} from '@angular/material/input';
 export type TypeToConfirmDialogData = {
     title?: string;
     message?: string;
-    expectedText: string;
+    expectedText?: string;
+};
+
+const DEFAULT_DIALOG_DATA: Required<TypeToConfirmDialogData> = {
+    title: 'Confirmar Acción',
+    message: 'Escribe el texto indicado para continuar',
+    expectedText: 'CONFIRMAR'
 };
 
 @Component({
@@ -40,6 +46,10 @@ export class TypeToConfirmDialogComponent {
         private readonly ref: MatDialogRef<TypeToConfirmDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: TypeToConfirmDialogData
     ) {
+        this.data = {
+            ...DEFAULT_DIALOG_DATA,
+            ...(data ?? {})
+        };
     }
 
     get canConfirm(): boolean {
