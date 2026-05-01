@@ -17,7 +17,7 @@ export class SharedAccessLinkService {
         return this.httpService.request()
             .post<AccessLink>(ENDPOINTS.accessLink.root, creation)
             .pipe(
-                map(response => this.buildAccessUrl(response))
+                map(accessLint => this.buildAccessUrl(accessLint))
             );
     }
 

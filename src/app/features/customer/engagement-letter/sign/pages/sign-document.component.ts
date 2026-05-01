@@ -35,6 +35,6 @@ export class SignDocumentComponent {
                 documentAccepted: payload.result.accepted,
                 signature: payload.result.signature
             })
-            .subscribe(() => this.acceptance.markCompleted());
+            .subscribe({complete: () => this.acceptance.markCompleted()});
     }
 }

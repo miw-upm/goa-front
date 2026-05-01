@@ -68,8 +68,8 @@ export class EngagementLetterService {
 
     createLetterAccessLink(engagement: EngagementLetter, user: User): Observable<string> {
         return this.sharedAccessLinkService.createAccessLink({
-            mobile: user.mobile,
             scope: this.SIGN_ENGAGEMENT_LETTER_SCOPE,
+            mobile: user.mobile,
             documentId: engagement.id
         });
     }
