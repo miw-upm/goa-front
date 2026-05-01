@@ -11,6 +11,7 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {AuthService} from "@core/auth/auth.service";
 import {CHATBOT_SCOPE_RESTRICTED_REPLIES, CHATBOT_SCOPE_UI} from "../support/chatbot-scope-ui";
 import {
+    ChatbotConfigurationStatus,
     ChatbotConversationStatus,
     ChatbotConversationHistoryResponse,
     ChatbotConversationSummary,
@@ -73,6 +74,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     private backdropClickSubscription?: Subscription;
     private modalCloseRequested = false;
     conversationStatus: ChatbotConversationStatus = 'ACTIVE';
+    configurationStatus?: ChatbotConfigurationStatus;
     @ViewChild('messagesContainer') private messagesContainer?: ElementRef<HTMLDivElement>;
     @ViewChild('composerTextarea') private composerTextarea?: ElementRef<HTMLTextAreaElement>;
 
@@ -86,6 +88,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.loadConfigurationStatus();
         this.loadHistoryList();
 
         if (this.dialogRef) {
@@ -829,6 +832,22 @@ export class ChatbotComponent implements OnInit, OnDestroy {
 
     private isBusy(): boolean {
         return this.loading || this.initializing || this.closingConversation || !!this.deletingConversationId;
+    }
+
+    private loadConfigurationStatus(): void {
+        this.chatbotService.readConfigurationStatus().subscribe({
+            next: status => this.configurationStatus = status,
+            error: () => this.configurationStatus = undefined
+        });
+    }
+
+    aiModelLabel(): string {
+        if (!this.configurationStatus?.model) {
+            return 'IA configurada por el sistema';
+        }
+
+        const provider = this.configurationStatus.provider || 'IA';
+        return `IA: ${provider} · ${this.configurationStatus.model}`;
     }
 
 }

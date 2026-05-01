@@ -219,6 +219,30 @@
     font-size: 0.82rem;
 }
 
+.composer-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    min-width: 0;
+    margin-right: auto;
+}
+
+.chatbot-model-info {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.35;
+    white-space: nowrap;
+}
+
 .message {
     max-width: min(78%, 720px);
     border-radius: 16px;
@@ -376,8 +400,23 @@
         align-items: stretch;
     }
 
-    .composer-hint {
+    .composer-info {
+        order: 3;
+        justify-content: center;
+        text-align: center;
+        margin-right: 0;
+    }
+
+    .chatbot-model-info {
+        order: 1;
+        align-self: center;
+    }
+
+    .send-button {
         order: 2;
+    }
+
+    .composer-hint {
         text-align: center;
     }
 

@@ -87,6 +87,7 @@ export const ENDPOINTS = {
         closeConversation: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/close`,
         history: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/messages`,
         reopenConversation: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/reopen`,
+        configurationStatus: () => `${CHATBOT_ROOT}/configuration/status`,
         messages: () => `${CHATBOT_ROOT}/messages`,
     },
 } as const;
