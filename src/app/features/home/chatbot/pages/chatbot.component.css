@@ -38,10 +38,24 @@
     overflow: hidden;
 }
 
+.chatbot-sidebar-content,
+.chatbot-title-block,
+.chat-toast-overlay,
+.messages-container,
+.composer-box,
+.conversation-mode-banner,
+.intro-scope-block,
+.chat-toast-body,
+.chatbot-sidebar-history,
+.chatbot-sidebar-history-list,
+.chatbot-history-item-select {
+    display: flex;
+    flex-direction: column;
+}
+
 .chatbot-layout {
     flex: 1;
     overflow: hidden;
-    background: transparent;
     border-radius: 16px;
 }
 
@@ -57,8 +71,6 @@
 
 .chatbot-sidebar-content {
     padding: 16px;
-    display: flex;
-    flex-direction: column;
     gap: 16px;
 }
 
@@ -90,8 +102,6 @@
 }
 
 .chatbot-title-block {
-    display: flex;
-    flex-direction: column;
     gap: 10px;
     min-width: 0;
     flex: 1;
@@ -117,8 +127,6 @@
     left: 14px;
     right: 14px;
     z-index: 20;
-    display: flex;
-    flex-direction: column;
     gap: 10px;
     pointer-events: none;
 }
@@ -142,8 +150,6 @@
     min-height: 0;
     overflow-y: auto;
     padding: 18px 18px 170px;
-    display: flex;
-    flex-direction: column;
     gap: 12px;
     box-sizing: border-box;
 }
@@ -298,9 +304,6 @@
 
 .composer-box {
     pointer-events: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
     gap: 10px;
     border: 1px solid #d9dee7;
     border-radius: 20px;
@@ -310,7 +313,6 @@
 }
 
 .composer-textarea {
-    display: block;
     width: 100%;
     min-height: 28px;
     max-height: 144px;
@@ -382,7 +384,6 @@
 
     .composer-primary-actions {
         width: 100%;
-        justify-content: stretch;
     }
 
     .escalate-button,
@@ -430,6 +431,7 @@
 }
 
 .conversation-mode-banner {
+    gap: 4px;
     max-width: calc(100% - 12px);
     padding: 10px 14px;
     border-radius: 12px;
@@ -489,14 +491,8 @@
     line-height: 1.35;
 }
 
-.conversation-mode-banner,
 .intro-scope-block {
-    display: flex;
-    flex-direction: column;
     gap: 4px;
-}
-
-.intro-scope-block {
     padding: 10px 12px;
     border-radius: 12px;
     background: #f8fafc;
@@ -543,8 +539,6 @@
 }
 
 .chat-toast-body {
-    display: flex;
-    flex-direction: column;
     gap: 3px;
 }
 
@@ -571,8 +565,6 @@
 }
 
 .chatbot-sidebar-history {
-    display: flex;
-    flex-direction: column;
     gap: 10px;
     min-height: 0;
     flex: 1;
@@ -592,8 +584,6 @@
 }
 
 .chatbot-sidebar-history-list {
-    display: flex;
-    flex-direction: column;
     gap: 10px;
     overflow-y: auto;
     min-height: 0;
@@ -614,10 +604,8 @@
 }
 
 .chatbot-history-item-select {
-    display: flex;
     flex: 1;
     min-width: 0;
-    flex-direction: column;
     gap: 6px;
     text-align: left;
     padding: 0;
@@ -645,6 +633,5 @@
 }
 
 .chatbot-history-item-actions-trigger {
-    flex: 0 0 auto;
     align-self: flex-start;
 }
