@@ -5,6 +5,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
+import {MatMenuModule} from "@angular/material/menu";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from "@angular/material/dialog";
 import {MatSidenavModule} from "@angular/material/sidenav";
@@ -39,6 +40,7 @@ import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.com
         MatInputModule,
         MatFormFieldModule,
         MatIconModule,
+        MatMenuModule,
         MatProgressSpinnerModule,
         MatSidenavModule,
         TextFieldModule
@@ -62,6 +64,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     historyError = '';
     historyItems: ChatbotConversationSummary[] = [];
     deletingConversationId?: string;
+    escalatingConversationId?: string;
     loadingOlderMessages = false;
     hasMoreHistoryMessages = false;
     currentHistoryPage = 0;
@@ -69,6 +72,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     selectedConversationId?: string;
     private toastIdSequence = 0;
     private shownToastKeys = new Set<string>();
+    private escalatedConversationIds = new Set<string>();
     private autoScrollTimeouts: number[] = [];
     private backdropClickSubscription?: Subscription;
     private modalCloseRequested = false;
@@ -112,7 +116,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     send(): void {
         const normalizedMessage = this.message?.trim();
 
-        if (!normalizedMessage || this.loading || this.initializing || !!this.deletingConversationId) {
+        if (!normalizedMessage || this.isComposerLocked() || !!this.deletingConversationId || !!this.escalatingConversationId) {
             return;
         }
 
@@ -305,7 +309,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
                 });
             };
 
-            if (item.status === 'ACTIVE') {
+            if (item.status === 'ACTIVE' || item.status === 'ARCHIVED') {
                 loadHistory();
                 return;
             }
@@ -394,6 +398,61 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         return this.deletingConversationId === item.conversationId;
     }
 
+    isEscalatingConversation(item: ChatbotConversationSummary): boolean {
+        return this.escalatingConversationId === item.conversationId;
+    }
+
+    isCurrentConversationEscalated(): boolean {
+        return !!this.conversationId && this.escalatedConversationIds.has(this.conversationId);
+    }
+
+    isCurrentConversationArchived(): boolean {
+        return this.conversationStatus === 'ARCHIVED';
+    }
+
+    isComposerLocked(): boolean {
+        return this.loading
+            || this.initializing
+            || this.closingConversation
+            || this.isCurrentConversationEscalated()
+            || this.isCurrentConversationArchived();
+    }
+
+    canEscalateCurrentConversation(): boolean {
+        return !!this.conversationId
+            && this.hasUserMessages()
+            && !this.isCurrentConversationEscalated()
+            && !this.isCurrentConversationArchived();
+    }
+
+    escalateConversation(): void {
+        if (this.isBusy() || !this.canEscalateCurrentConversation() || !this.conversationId) {
+            return;
+        }
+
+        this.error = '';
+        this.escalatingConversationId = this.conversationId;
+
+        this.chatbotService.escalateConversation(this.conversationId).subscribe({
+            next: () => {
+                this.escalatedConversationIds.add(this.conversationId!);
+                this.conversationStatus = 'ARCHIVED';
+                this.escalatingConversationId = undefined;
+                this.message = '';
+                this.loadHistoryList();
+                this.pushToast(
+                    'success',
+                    'Conversacion escalada',
+                    'La conversacion se ha marcado para su escalado.'
+                );
+            },
+            error: () => {
+                this.error = 'No se pudo escalar la conversacion seleccionada.';
+                this.escalatingConversationId = undefined;
+            }
+        });
+    }
+
     confirmDeleteConversation(item: ChatbotConversationSummary, event?: Event): void {
         event?.stopPropagation();
 
@@ -426,6 +485,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
                 this.historyItems = this.historyItems.filter(historyItem =>
                     historyItem.conversationId !== item.conversationId
                 );
+                this.escalatedConversationIds.delete(item.conversationId);
 
                 if (this.conversationId === item.conversationId || this.selectedConversationId === item.conversationId) {
                     this.resetConversationState(true);
@@ -692,7 +752,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     }
 
     applySuggestedQuestion(question: string): void {
-        if (this.loading || this.initializing || !!this.deletingConversationId) {
+        if (this.isComposerLocked() || !!this.deletingConversationId || !!this.escalatingConversationId) {
             return;
         }
 
@@ -700,6 +760,11 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     }
 
     onKeydown(event: KeyboardEvent): void {
+        if (this.isComposerLocked()) {
+            event.preventDefault();
+            return;
+        }
+
         if (event.key !== 'Enter' || event.shiftKey) {
             return;
         }
@@ -828,7 +893,11 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     }
 
     private isBusy(): boolean {
-        return this.loading || this.initializing || this.closingConversation || !!this.deletingConversationId;
+        return this.loading
+            || this.initializing
+            || this.closingConversation
+            || !!this.deletingConversationId
+            || !!this.escalatingConversationId;
     }
 
 }

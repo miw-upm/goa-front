@@ -328,6 +328,14 @@
     gap: 12px;
 }
 
+.composer-primary-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.escalate-button,
 .send-button {
     min-width: 92px;
     height: 40px;
@@ -363,7 +371,14 @@
         padding: 12px 12px 10px;
     }
 
+    .composer-primary-actions {
+        width: 100%;
+        justify-content: stretch;
+    }
+
+    .escalate-button,
     .send-button {
+        flex: 1 1 0;
         min-width: 84px;
     }
 
@@ -584,6 +599,7 @@
 
 .chatbot-history-item {
     display: flex;
+    gap: 8px;
     padding: 12px;
     border-radius: 14px;
     border: 1px solid #dbe4f0;
@@ -624,4 +640,9 @@
 
 .chatbot-history-item small {
     color: #64748b;
+}
+
+.chatbot-history-item-actions-trigger {
+    flex: 0 0 auto;
+    align-self: flex-start;
 }
