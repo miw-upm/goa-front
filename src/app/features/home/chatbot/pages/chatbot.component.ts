@@ -426,7 +426,24 @@ export class ChatbotComponent implements OnInit, OnDestroy {
             && !this.isCurrentConversationArchived();
     }
 
-    escalateConversation(): void {
+    confirmEscalateConversation(): void {
+        if (this.isBusy() || !this.canEscalateCurrentConversation()) {
+            return;
+        }
+
+        this.dialog.open(CancelYesDialogComponent, {
+            data: {
+                title: 'Confirmar escalado',
+                message: 'Esta conversación será escalada a un agente y no podrá ser modificada. ¿Desea continuar?'
+            }
+        }).afterClosed().subscribe(confirmed => {
+            if (confirmed === true) {
+                this.escalateConversation();
+            }
+        });
+    }
+
+    private escalateConversation(): void {
         if (this.isBusy() || !this.canEscalateCurrentConversation() || !this.conversationId) {
             return;
         }
