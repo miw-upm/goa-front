@@ -26,6 +26,7 @@ import {TextFieldModule} from "@angular/cdk/text-field";
 import {forkJoin, of, Subscription} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
+import {TypeToConfirmDialogComponent} from "@shared/ui/dialogs/type-to-confirm-dialog.component";
 
 @Component({
     standalone: true,
@@ -466,9 +467,20 @@ export class ChatbotComponent implements OnInit, OnDestroy {
                 message: 'Esta conversacion se eliminara del historial. ¿Desea continuar?'
             }
         }).afterClosed().subscribe(confirmed => {
-            if (confirmed === true) {
-                this.deleteConversation(item);
-            }
+            if (confirmed !== true) return;
+
+            this.dialog.open(TypeToConfirmDialogComponent, {
+                disableClose: true,
+                data: {
+                    title: 'Confirmar borrado',
+                    message: 'Para borrar la conversación, escribe "delete".',
+                    expectedText: 'delete'
+                }
+            }).afterClosed().subscribe(typedConfirmed => {
+                if (typedConfirmed === true) {
+                    this.deleteConversation(item);
+                }
+            });
         });
     }
 
