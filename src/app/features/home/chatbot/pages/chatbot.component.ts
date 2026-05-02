@@ -309,7 +309,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
                 });
             };
 
-            if (item.status === 'ACTIVE') {
+            if (item.status === 'ACTIVE' || item.status === 'ARCHIVED') {
                 loadHistory();
                 return;
             }
@@ -406,12 +406,23 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         return !!this.conversationId && this.escalatedConversationIds.has(this.conversationId);
     }
 
+    isCurrentConversationArchived(): boolean {
+        return this.conversationStatus === 'ARCHIVED';
+    }
+
     isComposerLocked(): boolean {
-        return this.loading || this.initializing || this.closingConversation || this.isCurrentConversationEscalated();
+        return this.loading
+            || this.initializing
+            || this.closingConversation
+            || this.isCurrentConversationEscalated()
+            || this.isCurrentConversationArchived();
     }
 
     canEscalateCurrentConversation(): boolean {
-        return !!this.conversationId && this.hasUserMessages() && !this.isCurrentConversationEscalated();
+        return !!this.conversationId
+            && this.hasUserMessages()
+            && !this.isCurrentConversationEscalated()
+            && !this.isCurrentConversationArchived();
     }
 
     escalateConversation(): void {
