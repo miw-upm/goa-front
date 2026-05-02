@@ -30,7 +30,7 @@
                             type="button"
                             class="sidebar-new-conversation-button"
                             (click)="startNewConversation()"
-                            [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !hasUserMessages()">
+                            [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId || !hasUserMessages()">
                         Nueva conversación
                     </button>
 
@@ -74,8 +74,8 @@
                                         class="chatbot-history-item-actions-trigger"
                                         aria-label="Acciones de conversacion"
                                         [matMenuTriggerFor]="conversationActionsMenu"
-                                        [disabled]="loading || initializing || closingConversation || !!deletingConversationId">
-                                    @if (isDeletingConversation(item)) {
+                                        [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId">
+                                    @if (isDeletingConversation(item) || isEscalatingConversation(item)) {
                                         <mat-spinner diameter="18"></mat-spinner>
                                     } @else {
                                         <mat-icon>more_vert</mat-icon>
@@ -86,8 +86,21 @@
                                     <button
                                             mat-menu-item
                                             type="button"
+                                            (click)="escalateConversation(item, $event)"
+                                            [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId">
+                                        @if (isEscalatingConversation(item)) {
+                                            <mat-spinner diameter="18"></mat-spinner>
+                                        } @else {
+                                            <mat-icon color="primary">support_agent</mat-icon>
+                                        }
+                                        <span>Escalar</span>
+                                    </button>
+
+                                    <button
+                                            mat-menu-item
+                                            type="button"
                                             (click)="confirmDeleteConversation(item, $event)"
-                                            [disabled]="loading || initializing || closingConversation || !!deletingConversationId">
+                                            [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId">
                                         @if (isDeletingConversation(item)) {
                                             <mat-spinner diameter="18"></mat-spinner>
                                         } @else {
@@ -181,7 +194,7 @@
                                                         type="button"
                                                         class="suggestion-chip"
                                                         (click)="applySuggestedQuestion(question)"
-                                                        [disabled]="loading || initializing || closingConversation || !!deletingConversationId">
+                                                        [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId">
                                                     {{ question }}
                                                 </button>
                                             </div>
@@ -242,7 +255,7 @@
                                         cdkAutosizeMaxRows="6"
                                         class="composer-textarea"
                                         [placeholder]="composerPlaceholder()"
-                                        [disabled]="initializing || closingConversation || !!deletingConversationId"
+                                        [disabled]="initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId"
                                         (keydown)="onKeydown($event)">
                                 </textarea>
 
@@ -255,7 +268,7 @@
                                             type="button"
                                             class="send-button"
                                             (click)="send()"
-                                            [disabled]="!message?.trim() || loading || initializing || closingConversation || !!deletingConversationId">
+                                            [disabled]="!message?.trim() || loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId">
                                         Enviar
                                     </button>
                                 </div>

@@ -64,6 +64,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     historyError = '';
     historyItems: ChatbotConversationSummary[] = [];
     deletingConversationId?: string;
+    escalatingConversationId?: string;
     loadingOlderMessages = false;
     hasMoreHistoryMessages = false;
     currentHistoryPage = 0;
@@ -114,7 +115,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     send(): void {
         const normalizedMessage = this.message?.trim();
 
-        if (!normalizedMessage || this.loading || this.initializing || !!this.deletingConversationId) {
+        if (!normalizedMessage || this.loading || this.initializing || !!this.deletingConversationId || !!this.escalatingConversationId) {
             return;
         }
 
@@ -394,6 +395,36 @@ export class ChatbotComponent implements OnInit, OnDestroy {
 
     isDeletingConversation(item: ChatbotConversationSummary): boolean {
         return this.deletingConversationId === item.conversationId;
+    }
+
+    isEscalatingConversation(item: ChatbotConversationSummary): boolean {
+        return this.escalatingConversationId === item.conversationId;
+    }
+
+    escalateConversation(item: ChatbotConversationSummary, event?: Event): void {
+        event?.stopPropagation();
+
+        if (this.isBusy() || this.isEscalatingConversation(item)) {
+            return;
+        }
+
+        this.error = '';
+        this.escalatingConversationId = item.conversationId;
+
+        this.chatbotService.escalateConversation(item.conversationId).subscribe({
+            next: () => {
+                this.escalatingConversationId = undefined;
+                this.pushToast(
+                    'success',
+                    'Conversacion escalada',
+                    'La conversacion se ha marcado para su escalado.'
+                );
+            },
+            error: () => {
+                this.error = 'No se pudo escalar la conversacion seleccionada.';
+                this.escalatingConversationId = undefined;
+            }
+        });
     }
 
     confirmDeleteConversation(item: ChatbotConversationSummary, event?: Event): void {
@@ -694,7 +725,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     }
 
     applySuggestedQuestion(question: string): void {
-        if (this.loading || this.initializing || !!this.deletingConversationId) {
+        if (this.loading || this.initializing || !!this.deletingConversationId || !!this.escalatingConversationId) {
             return;
         }
 
@@ -830,7 +861,11 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     }
 
     private isBusy(): boolean {
-        return this.loading || this.initializing || this.closingConversation || !!this.deletingConversationId;
+        return this.loading
+            || this.initializing
+            || this.closingConversation
+            || !!this.deletingConversationId
+            || !!this.escalatingConversationId;
     }
 
 }
