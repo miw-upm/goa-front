@@ -181,7 +181,7 @@
                                                         type="button"
                                                         class="suggestion-chip"
                                                         (click)="applySuggestedQuestion(question)"
-                                                        [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId">
+                                                        [disabled]="isComposerLocked() || !!deletingConversationId || !!escalatingConversationId">
                                                     {{ question }}
                                                 </button>
                                             </div>
@@ -241,8 +241,8 @@
                                         cdkAutosizeMinRows="1"
                                         cdkAutosizeMaxRows="6"
                                         class="composer-textarea"
-                                        [placeholder]="composerPlaceholder()"
-                                        [disabled]="initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId"
+                                        [placeholder]="isCurrentConversationEscalated() ? 'Conversación escalada. No se pueden enviar más mensajes.' : composerPlaceholder()"
+                                        [disabled]="isComposerLocked() || !!deletingConversationId || !!escalatingConversationId"
                                         (keydown)="onKeydown($event)">
                                 </textarea>
 
@@ -255,7 +255,7 @@
                                                 type="button"
                                                 class="escalate-button"
                                                 (click)="escalateConversation()"
-                                                [disabled]="!canEscalateCurrentConversation() || loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId">
+                                                [disabled]="!canEscalateCurrentConversation() || !!deletingConversationId || !!escalatingConversationId">
                                             @if (!!escalatingConversationId) {
                                                 <mat-spinner diameter="18"></mat-spinner>
                                             } @else {
@@ -270,7 +270,7 @@
                                                 type="button"
                                                 class="send-button"
                                                 (click)="send()"
-                                                [disabled]="!message?.trim() || loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId">
+                                                [disabled]="!message?.trim() || isComposerLocked() || !!deletingConversationId || !!escalatingConversationId">
                                             Enviar
                                         </button>
                                     </div>

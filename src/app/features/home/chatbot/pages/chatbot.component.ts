@@ -72,6 +72,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     selectedConversationId?: string;
     private toastIdSequence = 0;
     private shownToastKeys = new Set<string>();
+    private escalatedConversationIds = new Set<string>();
     private autoScrollTimeouts: number[] = [];
     private backdropClickSubscription?: Subscription;
     private modalCloseRequested = false;
@@ -115,7 +116,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     send(): void {
         const normalizedMessage = this.message?.trim();
 
-        if (!normalizedMessage || this.loading || this.initializing || !!this.deletingConversationId || !!this.escalatingConversationId) {
+        if (!normalizedMessage || this.isComposerLocked() || !!this.deletingConversationId || !!this.escalatingConversationId) {
             return;
         }
 
@@ -401,8 +402,16 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         return this.escalatingConversationId === item.conversationId;
     }
 
+    isCurrentConversationEscalated(): boolean {
+        return !!this.conversationId && this.escalatedConversationIds.has(this.conversationId);
+    }
+
+    isComposerLocked(): boolean {
+        return this.loading || this.initializing || this.closingConversation || this.isCurrentConversationEscalated();
+    }
+
     canEscalateCurrentConversation(): boolean {
-        return !!this.conversationId && this.hasUserMessages();
+        return !!this.conversationId && this.hasUserMessages() && !this.isCurrentConversationEscalated();
     }
 
     escalateConversation(): void {
@@ -415,7 +424,11 @@ export class ChatbotComponent implements OnInit, OnDestroy {
 
         this.chatbotService.escalateConversation(this.conversationId).subscribe({
             next: () => {
+                this.escalatedConversationIds.add(this.conversationId!);
+                this.conversationStatus = 'ARCHIVED';
                 this.escalatingConversationId = undefined;
+                this.message = '';
+                this.loadHistoryList();
                 this.pushToast(
                     'success',
                     'Conversacion escalada',
@@ -461,6 +474,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
                 this.historyItems = this.historyItems.filter(historyItem =>
                     historyItem.conversationId !== item.conversationId
                 );
+                this.escalatedConversationIds.delete(item.conversationId);
 
                 if (this.conversationId === item.conversationId || this.selectedConversationId === item.conversationId) {
                     this.resetConversationState(true);
@@ -727,7 +741,7 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     }
 
     applySuggestedQuestion(question: string): void {
-        if (this.loading || this.initializing || !!this.deletingConversationId || !!this.escalatingConversationId) {
+        if (this.isComposerLocked() || !!this.deletingConversationId || !!this.escalatingConversationId) {
             return;
         }
 
@@ -735,6 +749,11 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     }
 
     onKeydown(event: KeyboardEvent): void {
+        if (this.isComposerLocked()) {
+            event.preventDefault();
+            return;
+        }
+
         if (event.key !== 'Enter' || event.shiftKey) {
             return;
         }
