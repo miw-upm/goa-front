@@ -254,7 +254,7 @@
                                                 mat-stroked-button
                                                 type="button"
                                                 class="escalate-button"
-                                                (click)="escalateConversation()"
+                                                (click)="confirmEscalateConversation()"
                                                 [disabled]="!canEscalateCurrentConversation() || !!deletingConversationId || !!escalatingConversationId">
                                             @if (!!escalatingConversationId) {
                                                 <mat-spinner diameter="18"></mat-spinner>
