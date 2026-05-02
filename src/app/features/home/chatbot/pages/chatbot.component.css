@@ -123,12 +123,16 @@
     pointer-events: none;
 }
 
-.messages-panel {
-    height: 100%;
-    min-height: 0;
+.messages-panel,
+.chat-state {
     border: 1px solid #ececec;
     border-radius: 16px;
     background: #fafafa;
+}
+
+.messages-panel {
+    height: 100%;
+    min-height: 0;
     overflow: hidden;
     position: relative;
 }
@@ -151,11 +155,16 @@
     padding: 10px 0 6px;
 }
 
+.empty-chat-card,
+.message.assistant,
+.chatbot-history-item {
+    background: #ffffff;
+}
+
 .empty-chat-card {
     width: min(100%, 760px);
     padding: 18px;
     border-radius: 16px;
-    background: #ffffff;
     border: 1px solid #e5e7eb;
     box-sizing: border-box;
 }
@@ -202,16 +211,20 @@
     margin-bottom: 8px;
 }
 
-.assistant-mode-chip {
+.assistant-mode-chip,
+.assistant-context-chip {
     display: inline-flex;
     align-items: center;
     padding: 4px 10px;
     border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.assistant-mode-chip {
     background: #f4f7fb;
     border: 1px solid #dde6f3;
     color: #41516a;
-    font-size: 0.78rem;
-    font-weight: 600;
 }
 
 .composer-hint {
@@ -235,7 +248,6 @@
 
 .message.assistant {
     align-self: flex-start;
-    background: #ffffff;
     border: 1px solid #ececec;
 }
 
@@ -261,9 +273,6 @@
     align-items: center;
     justify-content: center;
     gap: 14px;
-    border: 1px solid #ececec;
-    border-radius: 16px;
-    background: #fafafa;
     padding: 20px;
     box-sizing: border-box;
 }
@@ -406,7 +415,6 @@
     }
 
     .context-chip {
-        max-width: 100%;
         border-radius: 12px;
     }
 
@@ -422,9 +430,6 @@
 }
 
 .conversation-mode-banner {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
     max-width: calc(100% - 12px);
     padding: 10px 14px;
     border-radius: 12px;
@@ -437,16 +442,10 @@
 }
 
 .assistant-context-chip {
-    display: inline-flex;
-    align-items: center;
     margin-bottom: 8px;
-    padding: 4px 10px;
-    border-radius: 999px;
     background: #eefbf3;
     border: 1px solid #cfe9d8;
     color: #256c45;
-    font-size: 0.78rem;
-    font-weight: 600;
 }
 
 .assistant-sources-preview {
@@ -490,10 +489,14 @@
     line-height: 1.35;
 }
 
+.conversation-mode-banner,
 .intro-scope-block {
     display: flex;
     flex-direction: column;
     gap: 4px;
+}
+
+.intro-scope-block {
     padding: 10px 12px;
     border-radius: 12px;
     background: #f8fafc;
@@ -603,7 +606,6 @@
     padding: 12px;
     border-radius: 14px;
     border: 1px solid #dbe4f0;
-    background: #ffffff;
 }
 
 .chatbot-history-item.selected {
