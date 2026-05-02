@@ -401,17 +401,19 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         return this.escalatingConversationId === item.conversationId;
     }
 
-    escalateConversation(item: ChatbotConversationSummary, event?: Event): void {
-        event?.stopPropagation();
+    canEscalateCurrentConversation(): boolean {
+        return !!this.conversationId && this.hasUserMessages();
+    }
 
-        if (this.isBusy() || this.isEscalatingConversation(item)) {
+    escalateConversation(): void {
+        if (this.isBusy() || !this.canEscalateCurrentConversation() || !this.conversationId) {
             return;
         }
 
         this.error = '';
-        this.escalatingConversationId = item.conversationId;
+        this.escalatingConversationId = this.conversationId;
 
-        this.chatbotService.escalateConversation(item.conversationId).subscribe({
+        this.chatbotService.escalateConversation(this.conversationId).subscribe({
             next: () => {
                 this.escalatingConversationId = undefined;
                 this.pushToast(

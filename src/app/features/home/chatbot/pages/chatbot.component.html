@@ -86,19 +86,6 @@
                                     <button
                                             mat-menu-item
                                             type="button"
-                                            (click)="escalateConversation(item, $event)"
-                                            [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId">
-                                        @if (isEscalatingConversation(item)) {
-                                            <mat-spinner diameter="18"></mat-spinner>
-                                        } @else {
-                                            <mat-icon color="primary">support_agent</mat-icon>
-                                        }
-                                        <span>Escalar</span>
-                                    </button>
-
-                                    <button
-                                            mat-menu-item
-                                            type="button"
                                             (click)="confirmDeleteConversation(item, $event)"
                                             [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId">
                                         @if (isDeletingConversation(item)) {
@@ -262,15 +249,31 @@
                                 <div class="composer-actions">
                                     <span class="composer-hint">Enter para enviar · Shift+Enter para salto</span>
 
-                                    <button
-                                            mat-flat-button
-                                            color="primary"
-                                            type="button"
-                                            class="send-button"
-                                            (click)="send()"
-                                            [disabled]="!message?.trim() || loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId">
-                                        Enviar
-                                    </button>
+                                    <div class="composer-primary-actions">
+                                        <button
+                                                mat-stroked-button
+                                                type="button"
+                                                class="escalate-button"
+                                                (click)="escalateConversation()"
+                                                [disabled]="!canEscalateCurrentConversation() || loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId">
+                                            @if (!!escalatingConversationId) {
+                                                <mat-spinner diameter="18"></mat-spinner>
+                                            } @else {
+                                                <mat-icon>support_agent</mat-icon>
+                                            }
+                                            <span>Escalar</span>
+                                        </button>
+
+                                        <button
+                                                mat-flat-button
+                                                color="primary"
+                                                type="button"
+                                                class="send-button"
+                                                (click)="send()"
+                                                [disabled]="!message?.trim() || loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId">
+                                            Enviar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
