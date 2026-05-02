@@ -14,7 +14,9 @@ import {environment} from '@env';
     imports: [MatDividerModule, MatGridListModule, MatListModule, MatIconModule]
 })
 export class FooterComponent {
-    readonly version = `${environment.NAME}:${environment.VERSION}`;
+    readonly hosting = `${environment.HOSTING}`;
+    readonly host = `${environment.NAME}`;
+    readonly version = `${environment.VERSION}`;
     readonly backEndUser = environment.REST_USER;
     readonly backEndEngagement = environment.REST_ENGAGEMENT;
     readonly backEndBilling = environment.REST_BILLING;

@@ -4,7 +4,7 @@ import {HttpService} from "@shared/ui/api/http.service";
 import {ENDPOINTS} from "@core/api/endpoints";
 import {AccessLink} from "@features/shared/models/access-link.model";
 import {SharedAccessLinkService} from "@features/shared/services/shared-access-link.service";
-import {AccessLinkFindCriteria} from "./pages/access-link-find-criteria.model";
+import {AccessLinkFindCriteria} from "./access-link-find-criteria.model";
 
 @Injectable({providedIn: 'root'})
 export class AccessLinkService {

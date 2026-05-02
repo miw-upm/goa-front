@@ -4,7 +4,7 @@ import {FormsModule, NgModel} from "@angular/forms";
 import {Observable} from "rxjs";
 import {MatCardModule} from "@angular/material/card";
 import {MatOptionModule} from "@angular/material/core";
-import {MatDialog, MatDialogModule} from "@angular/material/dialog";
+import {MatDialogModule} from "@angular/material/dialog";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -44,23 +44,28 @@ export class CustomerEditProfileComponent {
     user: User;
     dataProcessingConsentCreation: DataProcessingConsentCreation;
     oldMobile: string;
+    scope: string;
+    urlId: string;
     token: string;
     provinces: Observable<string[]>;
 
     constructor(private readonly customerService: CustomerService, private readonly sharedUserService: SharedUserService,
-                private readonly route: ActivatedRoute, private readonly dialog: MatDialog) {
+                private readonly route: ActivatedRoute) {
+        this.scope =  this.route.snapshot.url[1]?.path;
+        this.urlId = this.route.snapshot.paramMap.get('urlId');
         this.token = this.route.snapshot.paramMap.get("token");
-        this.user = {mobile: this.route.snapshot.paramMap.get('mobile'), firstName: null}
-        this.oldMobile = this.user.mobile;
         this.dataProcessingConsentCreation = {dataProcessingAccepted: false, promotionsAccepted: false}
-        this.customerService.readWithToken(this.user.mobile, this.token)
-            .subscribe(user => this.user = user);
+        this.customerService.readWithToken(this.scope, this.urlId, this.token)
+            .subscribe(user => {
+                this.user = user;
+                this.oldMobile = this.user.mobile;
+            });
         this.provinces = this.sharedUserService.findProvinces();
     }
 
     update(): void {
         this.customerService
-            .updateWithToken(this.oldMobile, this.user, this.dataProcessingConsentCreation, this.token)
+            .updateWithToken(this.scope, this.urlId, this.token, this.user, this.dataProcessingConsentCreation)
             .subscribe(user => this.user = user);
     }
 

@@ -1,7 +1,7 @@
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
-import {Observable, tap, throwError} from 'rxjs';
+import {EMPTY, Observable, tap, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {HttpRequestBuilder} from "@core/http/http-request-builder";
 import {BackendError, isBackendError} from "@core/http/backend-error";
@@ -19,6 +19,7 @@ export class HttpViewBuilder {
     private readonly builder: HttpRequestBuilder;
     private debugMode = false;
     private warningMode = false;
+    private noErrorMode = false;
 
     constructor(
         http: HttpClient,
@@ -46,6 +47,11 @@ export class HttpViewBuilder {
 
     error(notification: string): this {
         this.errorNotification = notification;
+        return this;
+    }
+
+    noError(): this {
+        this.noErrorMode = true;
         return this;
     }
 
@@ -102,6 +108,26 @@ export class HttpViewBuilder {
             );
     }
 
+    openJson(endpoint: string): Observable<void> {
+        return this.builder.get<unknown>(endpoint)
+            .pipe(
+                tap(() => this.notifySuccess()),
+                map((json: unknown) => {
+                    const content = JSON.stringify(json, null, 2);
+                    const url = window.URL.createObjectURL(
+                        new Blob([content], {type: 'application/json;charset=utf-8'})
+                    );
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'generico.json';
+                    link.click();
+                    window.URL.revokeObjectURL(url);
+                    return void 0;
+                }),
+                catchError(err => this.handleError(err))
+            );
+    }
+
     debug(): this {
         this.debugMode = true;
         return this;
@@ -131,26 +157,28 @@ export class HttpViewBuilder {
                 duration: HttpViewBuilder.SNACK_ERROR_DURATION
             });
         }
-        this.errorNotification = undefined;
-        this.warningMode = false;
     }
 
     private handleError(response: HttpErrorResponse): Observable<never> {
         if (response.status === HttpViewBuilder.UNAUTHORIZED) {
             this.showError('Unauthorized');
             void this.router.navigate(['']);
-            return throwError(() => response);
+            return this.propagate(response);
         }
         if (response.status === HttpViewBuilder.CONNECTION_REFUSE) {
-            this.showError('Network error');
-            return throwError(() => response);
+            this.showError('Error de Red');
+            return this.propagate(response);
         }
         if (isBackendError(response.error)) {
             this.showBackendError(response.error, response.status);
-            return throwError(() => response.error);
+            return this.propagate(response);
         }
-        this.showError('No response from server');
-        return throwError(() => response.error);
+        this.showError('Ninguna respuesta del servidor');
+        return this.propagate(response);
+    }
+
+    private propagate(error: unknown): Observable<never> {
+        return this.noErrorMode ? EMPTY : throwError(() => error);
     }
 
     private showBackendError(error: BackendError, status: number): void {
@@ -173,8 +201,5 @@ export class HttpViewBuilder {
                 {duration: HttpViewBuilder.SNACK_ERROR_DURATION}
             );
         }
-        this.errorNotification = undefined;
-        this.warningMode = false;
-        this.debugMode = false;
     }
 }

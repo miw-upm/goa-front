@@ -6,6 +6,7 @@ const CHATBOT = 'http://localhost:8086';
 
 export const environment = {
     production: false,
+    HOSTING: 'localhost',
     NAME: pkg.name,
     VERSION: pkg.version,
     FRONT_END: HOST,

@@ -5,6 +5,7 @@ const API = `${HOST}/api`;
 
 export const environment = {
     production: true,
+    HOSTING: 'AWS',
     NAME: pkg.name,
     VERSION: pkg.version,
     FRONT_END: HOST,
