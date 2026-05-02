@@ -71,16 +71,31 @@
                                 <button
                                         mat-icon-button
                                         type="button"
-                                        class="chatbot-history-item-delete"
-                                        aria-label="Borrar conversacion"
-                                        (click)="confirmDeleteConversation(item, $event)"
+                                        class="chatbot-history-item-actions-trigger"
+                                        aria-label="Acciones de conversacion"
+                                        [matMenuTriggerFor]="conversationActionsMenu"
                                         [disabled]="loading || initializing || closingConversation || !!deletingConversationId">
                                     @if (isDeletingConversation(item)) {
                                         <mat-spinner diameter="18"></mat-spinner>
                                     } @else {
-                                        <mat-icon>delete</mat-icon>
+                                        <mat-icon>more_vert</mat-icon>
                                     }
                                 </button>
+
+                                <mat-menu #conversationActionsMenu="matMenu" xPosition="before">
+                                    <button
+                                            mat-menu-item
+                                            type="button"
+                                            (click)="confirmDeleteConversation(item, $event)"
+                                            [disabled]="loading || initializing || closingConversation || !!deletingConversationId">
+                                        @if (isDeletingConversation(item)) {
+                                            <mat-spinner diameter="18"></mat-spinner>
+                                        } @else {
+                                            <mat-icon color="warn">delete</mat-icon>
+                                        }
+                                        <span>Eliminar</span>
+                                    </button>
+                                </mat-menu>
                             </div>
                         </div>
                     </div>
