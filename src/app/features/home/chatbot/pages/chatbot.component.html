@@ -195,13 +195,6 @@
                                         </div>
                                     </div>
 
-                                    <div *ngIf="item.sender === 'ASSISTANT' && item.sourcesSummary?.length" class="assistant-sources-block">
-                                        <strong class="assistant-sources-title">Contexto usado</strong>
-                                        <ul class="assistant-sources-preview">
-                                            <li *ngFor="let source of item.sourcesSummary">{{ source }}</li>
-                                        </ul>
-                                    </div>
-
                                     <p>{{ item.content }}</p>
                                 </div>
 

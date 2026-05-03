@@ -73,9 +73,9 @@
 }
 
 .chatbot-shell:not(.dialog-mode) .chatbot-card {
-    height: calc(100dvh - 185px);
-    min-height: 520px;
-    max-height: 780px;
+    height: calc(100dvh - 140px);
+    min-height: 560px;
+    max-height: none;
 }
 
 .chatbot-header {
@@ -142,6 +142,7 @@
     flex-direction: column;
     gap: 12px;
     box-sizing: border-box;
+    white-space: pre-wrap;
 }
 
 
