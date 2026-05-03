@@ -22,6 +22,7 @@ import {DocumentAcceptanceResult} from './document-acceptance-result.model';
 import {ActivatedRoute} from "@angular/router";
 import {SharedCustomerService} from "@features/shared/services/shared-customer.service";
 import {MatDivider} from "@angular/material/divider";
+import {MatProgressSpinner} from "@angular/material/progress-spinner";
 
 export interface DocumentAcceptanceContext {
     scope: string;
@@ -47,6 +48,7 @@ export interface DocumentAcceptanceContext {
         MatIcon,
         MatDivider,
         MatCardFooter,
+        MatProgressSpinner,
     ]
 })
 export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -63,6 +65,7 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
     @Output() completed = new EventEmitter<void>();
 
     documentDownloaded = false;
+    loading = false;
     completedFlag = false;
     accepted = false;
     isEmpty = true;
@@ -125,6 +128,7 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
 
     update(): void {
         if (!this.canSubmit()) return;
+        this.loading = true;
         this.submitted.emit({
             context: this.context,
             result: {
@@ -136,8 +140,14 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
 
     markCompleted(): void {
         this.completedFlag = true;
+        this.loading = false;
         this.completed.emit();
     }
+
+    markFailed(): void {
+        this.loading = false;
+    }
+
 
     startDrawing(event: PointerEvent): void {
         if (!this.isSignatureUnlocked() || this.completedFlag) return;
