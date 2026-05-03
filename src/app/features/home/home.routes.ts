@@ -29,6 +29,8 @@ import {AlertService} from "./alerts/alert.service";
 import {TimelinePageComponent } from './timeline/pages/timeline-page.component';
 import {TimelineService} from "./timeline/services/timeline.service";
 import {EngagementLetterFormComponent} from "./engagement-letter/pages/engagement-letter-form.component";
+import { DocumentAiComponent } from './document-ai/pages/document-ai.component';
+import { DocumentAiService } from './document-ai/document-ai.service';
 
 export const routes: Routes = [
     {
@@ -147,6 +149,14 @@ export const routes: Routes = [
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR, Role.CUSTOMER]},
                 providers: [TimelineService]
             },
+            {
+                path: 'document-ai',
+                component: DocumentAiComponent,
+                canActivate: [RoleGuardService],
+                data: { roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR] },
+                providers: [DocumentAiService],
+            },
+
         ],
     },
 ];

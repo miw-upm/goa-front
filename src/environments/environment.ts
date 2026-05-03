@@ -3,6 +3,7 @@ import pkg from '../../package.json';
 const HOST = 'http://localhost:4200';
 const API = 'http://localhost:8080/api';
 const CHATBOT = 'http://localhost:8086';
+const AI_DOCUMENT = 'http://localhost:8091';
 
 export const environment = {
     production: false,
@@ -15,6 +16,7 @@ export const environment = {
     REST_SUPPORT: `${API}/goa-support`,
     REST_DOCUMENT: `${API}/goa-document`,
     REST_CHATBOT: CHATBOT,
-    SECURE_ROUTES: [API, CHATBOT],
+    REST_AI_DOCUMENT: AI_DOCUMENT,
+    SECURE_ROUTES: [API, CHATBOT, AI_DOCUMENT],
 };
 
