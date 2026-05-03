@@ -1,10 +1,10 @@
-<app-filter-input (enter)="search()" [(value)]="criteria.attribute" title="All fields - Customers"></app-filter-input>
+<app-filter-input (enter)="search()" [(value)]="criteria.customer" title="All fields - Customers"></app-filter-input>
 <app-filter-input (enter)="search()" [(value)]="criteria.mobile" title="Mobile"></app-filter-input>
 <app-filter-input (enter)="search()" [(value)]="criteria.firstName" title="First Name"></app-filter-input>
 <app-filter-input (enter)="search()" [(value)]="criteria.familyName" title="Family Name"></app-filter-input>
-<app-filter-input (enter)="search()" [(value)]="criteria.email" title="Email"></app-filter-input>
 
 <app-crud (create)="create()" (link)="link($event)" (read)="read($event)" (searchAll)="search()"
-          (update)="update($event)"
-          [data]="users" [hiddenFields]="['id']" [item]="user" [linkAction]="true" [title]="title">
+          (update)="update($event)" (json)="json()"
+          [data]="users" [hiddenFields]="['id']" [item]="user" [linkAction]="true" [title]="title" [jsonAction]="true"
+          [deleteAction]=visible >
 </app-crud>

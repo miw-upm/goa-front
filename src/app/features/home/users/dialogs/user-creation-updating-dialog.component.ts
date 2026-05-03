@@ -78,7 +78,7 @@ export class UserCreationUpdatingDialogComponent {
             this.user.password = null;
         }
         this.userService
-            .update(this.oldMobile, this.user)
+            .update(this.user.id, this.user)
             .subscribe(() => this.dialog.closeAll());
     }
 

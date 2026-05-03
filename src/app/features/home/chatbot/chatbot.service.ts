@@ -52,6 +52,12 @@ export class ChatbotService {
             .patch<void>(ENDPOINTS.chatbot.closeConversation(conversationId), {});
     }
 
+    escalateConversation(conversationId: string): Observable<void> {
+        return this.httpService.request()
+            .error('No se pudo escalar la conversacion')
+            .patch<void>(ENDPOINTS.chatbot.escalateConversation(conversationId), {});
+    }
+
     deleteConversation(conversationId: string): Observable<void> {
         return this.httpService.request()
             .error('No se pudo borrar la conversacion')
