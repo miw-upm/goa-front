@@ -82,3 +82,13 @@ export interface ChatbotToastView {
     title: string;
     message: string;
 }
+
+export interface ChatbotConfigurationStatus {
+    enabled: boolean;
+    provider: string;
+    model: string;
+    maxInputCharacters?: number;
+    maxOutputTokens?: number;
+    maxContextMessages?: number;
+    documentsAvailable?: boolean;
+}

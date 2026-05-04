@@ -3,6 +3,7 @@ import {Observable} from "rxjs";
 import {HttpService} from "@shared/ui/api/http.service";
 import {ENDPOINTS} from "@core/api/endpoints";
 import {
+    ChatbotConfigurationStatus,
     ChatbotConversationType,
     ChatbotContextualConversationRequest,
     ChatbotContextualConversationResponse,
@@ -51,6 +52,12 @@ export class ChatbotService {
             .patch<void>(ENDPOINTS.chatbot.closeConversation(conversationId), {});
     }
 
+    escalateConversation(conversationId: string): Observable<void> {
+        return this.httpService.request()
+            .error('No se pudo escalar la conversacion')
+            .patch<void>(ENDPOINTS.chatbot.escalateConversation(conversationId), {});
+    }
+
     deleteConversation(conversationId: string): Observable<void> {
         return this.httpService.request()
             .error('No se pudo borrar la conversacion')
@@ -72,6 +79,12 @@ export class ChatbotService {
     reopenConversation(conversationId: string): Observable<void> {
         return this.httpService.request()
             .patch<void>(ENDPOINTS.chatbot.reopenConversation(conversationId), {});
+    }
+
+    readConfigurationStatus(): Observable<ChatbotConfigurationStatus> {
+        return this.httpService.request()
+            .error('No se pudo recuperar la configuración del asistente')
+            .get(ENDPOINTS.chatbot.configurationStatus());
     }
 
     sendMessage(request: ChatbotMessageRequest): Observable<ChatbotMessageResponse> {
