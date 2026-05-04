@@ -11,6 +11,7 @@
         icon="euro"
         label="Presupuesto"
         type="number"
+        [required]="true"
     />
     <mat-checkbox [(ngModel)]="procedure.vatIncluded">¿Incluye IVA?</mat-checkbox>
     <app-search-by-legal-task (taskChange)="addTask($event)" class="full-width"></app-search-by-legal-task>
