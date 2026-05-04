@@ -6,7 +6,7 @@ import {
     MatDialog,
     MatDialogActions,
     MatDialogClose,
-    MatDialogContent,
+    MatDialogContent, MatDialogRef,
     MatDialogTitle
 } from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -52,9 +52,13 @@ export class UserCreationUpdatingDialogComponent {
     enablePasswordChange: boolean;
     provinces: Observable<string[]>;
 
-    constructor(@Inject(MAT_DIALOG_DATA) data: User, private readonly userService: UserService,
-                private readonly sharedUserService: SharedUserService,
-                private readonly authService: AuthService, private readonly dialog: MatDialog) {
+    constructor(
+        @Inject(MAT_DIALOG_DATA) data: User,
+        private readonly userService: UserService,
+        private readonly sharedUserService: SharedUserService,
+        private readonly authService: AuthService,
+        private readonly dialogRef: MatDialogRef<UserCreationUpdatingDialogComponent, string> // 👈
+    ) {
         this.title = data ? 'Actualización de Usuarios' : 'Creación de Usuarios';
         this.user = data || {mobile: undefined, firstName: undefined, active: true};
         this.oldMobile = data ? data.mobile : undefined;
@@ -70,7 +74,7 @@ export class UserCreationUpdatingDialogComponent {
     create(): void {
         this.userService
             .create(this.user)
-            .subscribe(() => this.dialog.closeAll());
+            .subscribe(() => this.dialogRef.close(this.user.mobile));
     }
 
     update(): void {
@@ -79,7 +83,7 @@ export class UserCreationUpdatingDialogComponent {
         }
         this.userService
             .update(this.user.id, this.user)
-            .subscribe(() => this.dialog.closeAll());
+            .subscribe(() => this.dialogRef.close(this.user.mobile));
     }
 
     formInvalid(...controls: NgModel[]): boolean {

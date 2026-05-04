@@ -42,8 +42,11 @@ export class UsersComponent {
         this.dialog
             .open(UserCreationUpdatingDialogComponent)
             .afterClosed()
-            .subscribe(() => {
-                this.search();
+            .subscribe((mobile: string | undefined) => {
+                if (mobile) {
+                    this.criteria.mobile = mobile;
+                    this.search();
+                }
             });
     }
 
@@ -56,7 +59,12 @@ export class UsersComponent {
             .read(user.mobile)
             .subscribe(fullUser => this.dialog.open(UserCreationUpdatingDialogComponent, {data: fullUser})
                 .afterClosed()
-                .subscribe(() => this.search())
+                .subscribe((mobile: string | undefined) => {
+                    if (mobile) {
+                        this.criteria.mobile = mobile;
+                        this.search();
+                    }
+                })
             );
     }
 
