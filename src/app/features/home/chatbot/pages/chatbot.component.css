@@ -85,9 +85,8 @@
 }
 
 .chatbot-shell:not(.dialog-mode) .chatbot-card {
-    height: calc(100dvh - 185px);
-    min-height: 520px;
-    max-height: 780px;
+    height: calc(100dvh - 140px);
+    min-height: 560px;
 }
 
 .chatbot-header {
@@ -152,6 +151,7 @@
     padding: 18px 18px 170px;
     gap: 12px;
     box-sizing: border-box;
+    white-space: pre-wrap;
 }
 
 
@@ -172,7 +172,6 @@
     padding: 18px;
     border-radius: 16px;
     border: 1px solid #e5e7eb;
-    box-sizing: border-box;
 }
 
 .empty-chat-card strong {
@@ -238,11 +237,34 @@
     font-size: 0.82rem;
 }
 
+.composer-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    min-width: 0;
+    margin-right: auto;
+}
+
+.chatbot-model-info {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.35;
+    white-space: nowrap;
+}
+
 .message {
     max-width: min(78%, 720px);
     border-radius: 16px;
     padding: 12px 14px;
-    box-sizing: border-box;
     flex: 0 0 auto;
 }
 
@@ -280,7 +302,6 @@
     justify-content: center;
     gap: 14px;
     padding: 20px;
-    box-sizing: border-box;
 }
 
 .composer-overlay {
@@ -366,7 +387,6 @@
     .chatbot-shell:not(.dialog-mode) .chatbot-card {
         height: calc(100dvh - 145px);
         min-height: 460px;
-        max-height: none;
     }
 
     .chatbot-title-block h2 {
@@ -401,8 +421,23 @@
         align-items: stretch;
     }
 
-    .composer-hint {
+    .composer-info {
+        order: 3;
+        justify-content: center;
+        text-align: center;
+        margin-right: 0;
+    }
+
+    .chatbot-model-info {
+        order: 1;
+        align-self: center;
+    }
+
+    .send-button {
         order: 2;
+    }
+
+    .composer-hint {
         text-align: center;
     }
 
@@ -448,31 +483,6 @@
     background: #eefbf3;
     border: 1px solid #cfe9d8;
     color: #256c45;
-}
-
-.assistant-sources-preview {
-    margin: 0 0 10px 0;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 10px 14px 8px 28px;
-    color: #475569;
-    font-size: 0.82rem;
-}
-
-.assistant-sources-preview li {
-    margin-bottom: 3px;
-}
-
-.assistant-sources-block {
-    margin: 0 0 10px 0;
-}
-
-.assistant-sources-title {
-    display: block;
-    margin-bottom: 6px;
-    color: #334155;
-    font-size: 0.82rem;
 }
 
 .context-chip {
@@ -630,8 +640,4 @@
 
 .chatbot-history-item small {
     color: #64748b;
-}
-
-.chatbot-history-item-actions-trigger {
-    align-self: flex-start;
 }
