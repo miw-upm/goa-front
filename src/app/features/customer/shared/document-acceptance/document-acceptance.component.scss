@@ -41,27 +41,13 @@
   min-width: 160px;
 }
 
-.signed-confirmation {
-  margin-top: 24px;
-  padding: 16px 20px;
-  border-left: 4px solid #2e7d32;
-  background: #f1f8f4;
-  border-radius: 4px;
+.company-info {
+  display: block;
   text-align: center;
 
-  .signed-message {
-    margin: 0 0 16px;
-    font-size: 1rem;
-    color: #1b4d20;
-  }
-
-  .company-info {
-    display: block;
+  p {
     text-align: center;
-
-    p {
-      text-align: center;
-      margin: 4px 0;
-    }
+    margin: 4px 0;
   }
+
 }

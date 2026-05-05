@@ -174,7 +174,7 @@ export class CrudComponent {
                 data: {
                     title: `Delete ${this.title}`,
                     message: 'Are you sure you want to delete this item?',
-                    expectedText:`Delete`
+                    expectedText: `Delete`
                 }
             });
 

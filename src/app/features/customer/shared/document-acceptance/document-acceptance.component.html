@@ -72,25 +72,13 @@
 
     <!-- BOTÓN ENVIAR (si hay algo que enviar) -->
     <mat-dialog-actions *ngIf="hasSubmittableContent()" align="center">
-        <button (click)="update()"
-                [disabled]="!canSubmit() || completedFlag || loading"
-                class="btn-update"
-                color="primary"
-                mat-raised-button
-                type="button">
-            FIRMAR Y ENVIAR
-        </button>
+        <app-form-submit
+            #submitBtn
+            (submitted)="update()"
+            [disabled]="!canSubmit() || completedFlag"
+            label="FIRMAR Y ENVIAR"
+        />
     </mat-dialog-actions>
-
-    <!-- CONFIRMACIÓN POST-ENVÍO -->
-    <div *ngIf="loading" class="signed-confirmation">
-        <mat-spinner diameter="32"></mat-spinner>
-    </div>
-    <div *ngIf="completedFlag" class="signed-confirmation">
-        <p class="signed-message">
-            Su firma ha sido registrada correctamente. Le agradecemos la confianza en Ocaña Abogados.
-        </p>
-    </div>
 
     <!-- INFO DE LA EMPRESA (siempre visible) -->
     <mat-divider></mat-divider>

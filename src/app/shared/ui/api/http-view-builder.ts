@@ -1,7 +1,7 @@
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
-import {EMPTY, Observable, tap, throwError} from 'rxjs';
+import {Observable, tap, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {HttpRequestBuilder} from "@core/http/http-request-builder";
 import {BackendError, isBackendError} from "@core/http/backend-error";
@@ -19,7 +19,7 @@ export class HttpViewBuilder {
     private readonly builder: HttpRequestBuilder;
     private debugMode = false;
     private warningMode = false;
-    private silentErrorsMode  = false;
+    private silentErrorsMode = false;
 
     constructor(
         http: HttpClient,

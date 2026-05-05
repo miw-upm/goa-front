@@ -10,7 +10,7 @@ export class SharedCustomerService {
     constructor(private readonly httpService: HttpService) {
     }
 
-    readWithToken(scope:string, urlId: string, token: string): Observable<User> {
+    readWithToken(scope: string, urlId: string, token: string): Observable<User> {
         return this.httpService.request().get(ENDPOINTS.users.byToken(scope, urlId, token));
     }
 

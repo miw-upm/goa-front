@@ -7,11 +7,9 @@ import {CrudComponent} from "@shared/ui/crud/crud.component";
 import {AccessLinkService} from "../access-link.service";
 import {AccessLink} from "@features/shared/models/access-link.model";
 import {AuthService} from "@core/auth/auth.service";
-import {ClipboardToastDialogComponent} from "@shared/ui/dialogs/clipboard-toast-dialog.component";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {AccessLinkFindCriteria} from "../access-link-find-criteria.model";
 import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
-import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
 import {TypeToConfirmDialogComponent} from "@shared/ui/dialogs/type-to-confirm-dialog.component";
 
 @Component({
@@ -47,7 +45,7 @@ export class AccessLinksComponent {
                 data: {
                     title: 'Confirmar eliminación',
                     message: 'Este enlace ya ha sido usado. ¿Está seguro que desea eliminarlo?',
-                    expectedText:'Delete'
+                    expectedText: 'Delete'
                 }
             }).afterClosed().subscribe(result => {
                 if (result) {
