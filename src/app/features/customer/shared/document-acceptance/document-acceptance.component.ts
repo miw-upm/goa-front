@@ -17,12 +17,12 @@ import {MatButton} from '@angular/material/button';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatDialogActions} from '@angular/material/dialog';
 import {MatIcon} from '@angular/material/icon';
+import {MatDivider} from "@angular/material/divider";
+import {ActivatedRoute} from "@angular/router";
 
 import {DocumentAcceptanceResult} from './document-acceptance-result.model';
-import {ActivatedRoute} from "@angular/router";
 import {SharedCustomerService} from "@features/shared/services/shared-customer.service";
-import {MatDivider} from "@angular/material/divider";
-import {MatProgressSpinner} from "@angular/material/progress-spinner";
+import {FormSubmitComponent} from "@shared/ui/inputs/forms/form-submit.component";
 
 export interface DocumentAcceptanceContext {
     scope: string;
@@ -48,7 +48,7 @@ export interface DocumentAcceptanceContext {
         MatIcon,
         MatDivider,
         MatCardFooter,
-        MatProgressSpinner,
+        FormSubmitComponent,
     ]
 })
 export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -60,12 +60,13 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
     @Input() title = 'Aceptación de Documento';
     @Input() showCompanyInfo = true;
 
+    @Input() successMessage = 'Su firma ha sido registrada correctamente. Le agradecemos la confianza en Ocaña Abogados.';
+
     @Output() downloadRequested = new EventEmitter<DocumentAcceptanceContext>();
     @Output() submitted = new EventEmitter<{ context: DocumentAcceptanceContext; result: DocumentAcceptanceResult }>();
     @Output() completed = new EventEmitter<void>();
 
     documentDownloaded = false;
-    loading = false;
     completedFlag = false;
     accepted = false;
     isEmpty = true;
@@ -74,6 +75,9 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
 
     @ViewChild('signaturePad', {static: false})
     private readonly canvasRef?: ElementRef<HTMLCanvasElement>;
+
+    @ViewChild('submitBtn')
+    private readonly submitBtn?: FormSubmitComponent;
 
     private ctx?: CanvasRenderingContext2D;
     private drawing = false;
@@ -128,7 +132,6 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
 
     update(): void {
         if (!this.canSubmit()) return;
-        this.loading = true;
         this.submitted.emit({
             context: this.context,
             result: {
@@ -138,16 +141,15 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
         });
     }
 
-    markCompleted(): void {
+    markCompleted(message = this.successMessage): void {
         this.completedFlag = true;
-        this.loading = false;
+        this.submitBtn?.markSuccess(message);
         this.completed.emit();
     }
 
-    markFailed(): void {
-        this.loading = false;
+    markFailed(message = ''): void {
+        this.submitBtn?.markError(message);
     }
-
 
     startDrawing(event: PointerEvent): void {
         if (!this.isSignatureUnlocked() || this.completedFlag) return;
@@ -237,3 +239,4 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
         return this.canvasRef.nativeElement.toDataURL('image/png');
     }
 }
+

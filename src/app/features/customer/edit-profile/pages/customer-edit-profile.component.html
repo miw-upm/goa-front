@@ -61,9 +61,9 @@
     <mat-dialog-actions align="center">
         <app-form-submit
             #submitBtn
+            (submitted)="update(submitBtn)"
             [disabled]="formInvalid(mobile.ngModel, postalCode.ngModel)
                     || !dataProcessingConsentCreation.dataProcessingAccepted"
-            (submitted)="update(submitBtn)"
         />
     </mat-dialog-actions>
 </mat-card>

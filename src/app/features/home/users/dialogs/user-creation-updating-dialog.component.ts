@@ -3,10 +3,10 @@ import {FormsModule, NgModel} from '@angular/forms';
 import {Observable, of} from "rxjs";
 import {
     MAT_DIALOG_DATA,
-    MatDialog,
     MatDialogActions,
     MatDialogClose,
-    MatDialogContent, MatDialogRef,
+    MatDialogContent,
+    MatDialogRef,
     MatDialogTitle
 } from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';

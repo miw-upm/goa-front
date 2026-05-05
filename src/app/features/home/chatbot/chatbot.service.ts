@@ -4,11 +4,11 @@ import {HttpService} from "@shared/ui/api/http.service";
 import {ENDPOINTS} from "@core/api/endpoints";
 import {
     ChatbotConfigurationStatus,
-    ChatbotConversationType,
     ChatbotContextualConversationRequest,
     ChatbotContextualConversationResponse,
     ChatbotConversationHistoryResponse,
     ChatbotConversationSummary,
+    ChatbotConversationType,
     ChatbotMessageRequest,
     ChatbotMessageResponse
 } from "./models/chatbot.model";

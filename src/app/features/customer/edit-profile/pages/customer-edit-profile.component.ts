@@ -19,7 +19,6 @@ import {SharedUserService} from "@features/shared/services/shared-user.service";
 import {CustomerService} from "../customer.service";
 import {DataProcessingConsentCreation} from "../processing-consent-creation.model";
 import {FormSubmitComponent} from "@shared/ui/inputs/forms/form-submit.component";
-import {HttpErrorResponse} from "@angular/common/http";
 import {BackendError} from "@core/http/backend-error";
 
 @Component({
@@ -55,7 +54,7 @@ export class CustomerEditProfileComponent {
 
     constructor(private readonly customerService: CustomerService, private readonly sharedUserService: SharedUserService,
                 private readonly route: ActivatedRoute) {
-        this.scope =  this.route.snapshot.url[1]?.path;
+        this.scope = this.route.snapshot.url[1]?.path;
         this.urlId = this.route.snapshot.paramMap.get('urlId');
         this.token = this.route.snapshot.paramMap.get("token");
         this.dataProcessingConsentCreation = {dataProcessingAccepted: false, promotionsAccepted: false}

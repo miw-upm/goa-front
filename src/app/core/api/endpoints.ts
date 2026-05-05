@@ -19,7 +19,7 @@ export const ENDPOINTS = {
     users: {
         root: USERS_ROOT,
         byMobile: (mobile: string) => `${USERS_ROOT}/${enc(mobile)}`,
-        byToken: (scope:string, urlId: string, token: string) => `${USERS_ROOT}/${enc(scope)}/${enc(urlId)}/${enc(token)}`,
+        byToken: (scope: string, urlId: string, token: string) => `${USERS_ROOT}/${enc(scope)}/${enc(urlId)}/${enc(token)}`,
         provinces: () => `${USERS_ROOT}/provinces`,
         findAllJson: () => `${USERS_ROOT}/full`,
     },
