@@ -21,4 +21,5 @@ export class FooterComponent {
     readonly backEndSupport = environment.REST_SUPPORT;
     readonly backEndDocument = environment.REST_DOCUMENT;
     readonly backEndChatbot = environment.REST_CHATBOT;
+    readonly backEndAiDocument = environment.REST_AI_DOCUMENT;
 }

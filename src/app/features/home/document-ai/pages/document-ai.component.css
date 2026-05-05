@@ -22,7 +22,12 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  flex-direction: row-reverse;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.classify-checkbox {
+  margin: 0 10px;
 }
 
 .upload-status {
@@ -39,6 +44,91 @@
 
 .upload-status.success {
   color: #2e7d32;
+}
+
+.upload-result {
+  margin-top: 25px;
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.result-card {
+  border-left: 5px solid #3f51b5;
+  background-color: #f8f9ff;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(63, 81, 181, 0.1);
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e0e6f0;
+  margin-bottom: 20px;
+}
+
+.pdf-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #f44336;
+}
+
+.file-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.file-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 4px;
+}
+
+.file-meta {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+}
+
+.view-btn {
+  border-radius: 20px;
+  padding: 0 20px;
+}
+
+.category-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.category-display {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.category-display .label {
+  font-size: 0.9rem;
+  color: #5d6d7e;
+  font-weight: 500;
+}
+
+.category-select {
+  flex: 1;
+  min-width: 250px;
+}
+
+.full-width {
+  width: 100%;
 }
 
 .list-card {
