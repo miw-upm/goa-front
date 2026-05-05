@@ -56,7 +56,7 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
     @Input() downloadEnabled = false;
     @Input() acceptanceEnabled = false;
     @Input() signatureEnabled = false;
-
+    @Input() downloadSuccessMessage = 'Documento descargado correctamente.';
     @Input() title = 'Aceptación de Documento';
     @Input() showCompanyInfo = true;
 
@@ -125,9 +125,10 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
         }
     }
 
-    onDownloadClick(): void {
+    onDownloadClick(downloadBtn: FormSubmitComponent): void {
         this.downloadRequested.emit(this.context);
         this.documentDownloaded = true;
+        downloadBtn.markSuccess('Documento descargado correctamente.');
     }
 
     update(): void {

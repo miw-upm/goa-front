@@ -24,6 +24,9 @@ export type FormSubmitState = 'idle' | 'loading' | 'success' | 'warning' | 'erro
                     [disabled]="disabled || state() === 'loading'"
                     (click)="onClick()"
                     class="submit-button">
+                @if (state() === 'idle' && icon) {
+                    <mat-icon>{{ icon }}</mat-icon>
+                }
                 @if (state() === 'success') {
                     <mat-icon>check</mat-icon>
                 }
@@ -126,6 +129,7 @@ export type FormSubmitState = 'idle' | 'loading' | 'success' | 'warning' | 'erro
 export class FormSubmitComponent {
     @Input() label = 'ENVIAR';
     @Input() color: 'primary' | 'accent' | 'warn' = 'primary';
+    @Input() icon?: string;
     @Input() disabled = false;
 
     @Output() submitted = new EventEmitter<void>();

@@ -14,22 +14,16 @@
         <div *ngIf="downloadEnabled" class="download-wrapper">
             <p class="download-instructions">
                 A continuación, podrá descargarse el documento. Le rogamos que lo descargue y lo lea detenidamente.
-                El documento está en formato PDF.</p>
-            <P>No dude en ponerse en contacto con el despacho si le surge cualquier duda.</P>
-            <button (click)="onDownloadClick()"
-                    [disabled]="completedFlag"
-                    color="primary"
-                    mat-raised-button
-                    type="button">
-                <mat-icon>download</mat-icon>
-                Descargar documento
-            </button>
-            <span *ngIf="!documentDownloaded" class="download-hint">
-                Pulse el botón para continuar.
-            </span>
-            <span *ngIf="documentDownloaded" class="download-done">
-                <mat-icon>check_circle</mat-icon> Documento descargado correctamente.
-            </span>
+                El documento está en formato PDF.
+            </p>
+            <p>No dude en ponerse en contacto con el despacho si le surge cualquier duda. Pulse la descarga para poder continuar.</p>
+            <app-form-submit
+                #downloadBtn
+                label="Descargar documento"
+                icon="download"
+                [disabled]="completedFlag"
+                (submitted)="onDownloadClick(downloadBtn)"
+            />
         </div>
         <br>
 
