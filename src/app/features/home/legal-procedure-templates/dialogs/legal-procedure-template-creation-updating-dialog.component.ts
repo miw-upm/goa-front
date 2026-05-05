@@ -81,7 +81,7 @@ export class LegalProcedureTemplateCreationUpdatingDialogComponent {
     }
 
     formInvalid(legalTasks: LegalTask[], ...controls: NgModel[]): boolean {
-        return !legalTasks?.length || controls.some(ctrl => ctrl.invalid && (ctrl.dirty || ctrl.touched));
+        return controls.some(ctrl => ctrl.invalid);
     }
 
     addTask(value: LegalTask): void {
