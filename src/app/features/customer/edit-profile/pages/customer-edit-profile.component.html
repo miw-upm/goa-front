@@ -59,9 +59,11 @@
         </mat-dialog-content>
     </mat-card-content>
     <mat-dialog-actions align="center">
-        <button (click)="update()" [disabled]="formInvalid(mobile.ngModel, postalCode.ngModel)
-         || !dataProcessingConsentCreation.dataProcessingAccepted" class="btn-update"
-                color="primary" mat-raised-button>ENVIAR
-        </button>
+        <app-form-submit
+            #submitBtn
+            [disabled]="formInvalid(mobile.ngModel, postalCode.ngModel)
+                    || !dataProcessingConsentCreation.dataProcessingAccepted"
+            (submitted)="update(submitBtn)"
+        />
     </mat-dialog-actions>
 </mat-card>

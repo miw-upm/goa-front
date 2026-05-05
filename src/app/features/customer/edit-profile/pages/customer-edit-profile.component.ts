@@ -18,6 +18,9 @@ import {User} from "@features/shared/models/user.model";
 import {SharedUserService} from "@features/shared/services/shared-user.service";
 import {CustomerService} from "../customer.service";
 import {DataProcessingConsentCreation} from "../processing-consent-creation.model";
+import {FormSubmitComponent} from "@shared/ui/inputs/forms/form-submit.component";
+import {HttpErrorResponse} from "@angular/common/http";
+import {BackendError} from "@core/http/backend-error";
 
 @Component({
     standalone: true,
@@ -36,7 +39,8 @@ import {DataProcessingConsentCreation} from "../processing-consent-creation.mode
         MatDialogModule,
         FormFieldComponent,
         FormSelectComponent,
-        MatCheckbox
+        MatCheckbox,
+        FormSubmitComponent
     ],
     styleUrl: './customer-edit-profile.component.css'
 })
@@ -63,10 +67,24 @@ export class CustomerEditProfileComponent {
         this.provinces = this.sharedUserService.findProvinces();
     }
 
-    update(): void {
+    update(submitBtn: FormSubmitComponent): void {
         this.customerService
             .updateWithToken(this.scope, this.urlId, this.token, this.user, this.dataProcessingConsentCreation)
-            .subscribe(user => this.user = user);
+            .subscribe({
+                next: user => {
+                    this.user = user;
+                    submitBtn.markSuccess('Tu perfil ha sido actualizado adecuadamente.');
+                },
+                error: (error: BackendError) => {
+                    if (error.error === 'BadGatewayException') {
+                        submitBtn.markWarning(
+                            'Sus datos se han guardado, pero ' + error.message,
+                        );
+                    } else {
+                        submitBtn.markError(error.message);
+                    }
+                }
+            });
     }
 
     formInvalid(...controls: NgModel[]): boolean {

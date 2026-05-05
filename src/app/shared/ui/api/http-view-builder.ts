@@ -11,15 +11,15 @@ import {MatDialog} from "@angular/material/dialog";
 export class HttpViewBuilder {
     static readonly CONNECTION_REFUSE = 0;
     static readonly UNAUTHORIZED = 401;
-    private static readonly SNACK_SUCCESS_DURATION = 7000;
-    private static readonly SNACK_ERROR_DURATION = 7000;
+    private static readonly SNACK_SUCCESS_DURATION = 3000;
+    private static readonly SNACK_ERROR_DURATION = 3000;
 
     private successNotification: string | undefined;
-    private errorNotification: string | undefined;
+    private custonErrorNotification: string | undefined;
     private readonly builder: HttpRequestBuilder;
     private debugMode = false;
     private warningMode = false;
-    private noErrorMode = false;
+    private silentErrorsMode  = false;
 
     constructor(
         http: HttpClient,
@@ -45,13 +45,13 @@ export class HttpViewBuilder {
         return this;
     }
 
-    error(notification: string): this {
-        this.errorNotification = notification;
+    errorNotification(notification: string): this {
+        this.custonErrorNotification = notification;
         return this;
     }
 
-    noError(): this {
-        this.noErrorMode = true;
+    silentErrors(): this {
+        this.silentErrorsMode = true;
         return this;
     }
 
@@ -147,7 +147,7 @@ export class HttpViewBuilder {
     }
 
     private showError(notification: string): void {
-        const message = this.errorNotification || notification;
+        const message = this.custonErrorNotification || notification;
         if (this.warningMode) {
             this.dialog.open(WarningDialogComponent, {
                 data: {title: 'Warning', message}
@@ -161,24 +161,32 @@ export class HttpViewBuilder {
 
     private handleError(response: HttpErrorResponse): Observable<never> {
         if (response.status === HttpViewBuilder.UNAUTHORIZED) {
-            this.showError('Unauthorized');
+            if (!this.silentErrorsMode) this.showError('Unauthorized');
             void this.router.navigate(['']);
-            return this.propagate(response);
+            return throwError(() => ({
+                error: 'UnauthorizedException',
+                message: 'Sesión no autorizada.',
+                cause: ''
+            } as BackendError));
         }
         if (response.status === HttpViewBuilder.CONNECTION_REFUSE) {
-            this.showError('Error de Red');
-            return this.propagate(response);
+            if (!this.silentErrorsMode) this.showError('Error de Red');
+            return throwError(() => ({
+                error: 'ConnectionRefusedException',
+                message: 'No ha sido posible conectar con el servidor.',
+                cause: ''
+            } as BackendError));
         }
         if (isBackendError(response.error)) {
-            this.showBackendError(response.error, response.status);
-            return this.propagate(response);
+            if (!this.silentErrorsMode) this.showBackendError(response.error, response.status);
+            return throwError(() => response.error);
         }
-        this.showError('Ninguna respuesta del servidor');
-        return this.propagate(response);
-    }
-
-    private propagate(error: unknown): Observable<never> {
-        return this.noErrorMode ? EMPTY : throwError(() => error);
+        if (!this.silentErrorsMode) this.showError('Ninguna respuesta del servidor');
+        return throwError(() => ({
+            error: 'UnknownException',
+            message: 'Ninguna respuesta del servidor.',
+            cause: ''
+        } as BackendError));
     }
 
     private showBackendError(error: BackendError, status: number): void {

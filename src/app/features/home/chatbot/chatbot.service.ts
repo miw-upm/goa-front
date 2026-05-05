@@ -24,7 +24,7 @@ export class ChatbotService {
     ): Observable<ChatbotConversationSummary[]> {
         let request = this.httpService.request()
             .param('type', type)
-            .error('No se pudo recuperar el historial de conversaciones');
+            .errorNotification('No se pudo recuperar el historial de conversaciones');
 
         if (engagementLetterId) {
             request = request.param('engagementLetterId', engagementLetterId);
@@ -35,7 +35,7 @@ export class ChatbotService {
 
     startGeneralConversation(request: ChatbotMessageRequest): Observable<ChatbotMessageResponse> {
         return this.httpService.request()
-            .error('No se pudo iniciar la conversación general')
+            .errorNotification('No se pudo iniciar la conversación general')
             .post(ENDPOINTS.chatbot.generalConversation(), request);
     }
 
@@ -43,7 +43,7 @@ export class ChatbotService {
         request: ChatbotContextualConversationRequest
     ): Observable<ChatbotContextualConversationResponse> {
         return this.httpService.request()
-            .error('No se pudo iniciar la conversación contextual')
+            .errorNotification('No se pudo iniciar la conversación contextual')
             .post(ENDPOINTS.chatbot.contextualConversation(), request);
     }
 
@@ -54,13 +54,13 @@ export class ChatbotService {
 
     escalateConversation(conversationId: string): Observable<void> {
         return this.httpService.request()
-            .error('No se pudo escalar la conversacion')
+            .errorNotification('No se pudo escalar la conversacion')
             .patch<void>(ENDPOINTS.chatbot.escalateConversation(conversationId), {});
     }
 
     deleteConversation(conversationId: string): Observable<void> {
         return this.httpService.request()
-            .error('No se pudo borrar la conversacion')
+            .errorNotification('No se pudo borrar la conversacion')
             .delete(ENDPOINTS.chatbot.deleteConversation(conversationId));
     }
 
@@ -72,7 +72,7 @@ export class ChatbotService {
         return this.httpService.request()
             .param('page', String(page))
             .param('size', String(size))
-            .error('No se pudo recuperar el historial conversacional')
+            .errorNotification('No se pudo recuperar el historial conversacional')
             .get(ENDPOINTS.chatbot.history(conversationId));
     }
 
@@ -83,13 +83,13 @@ export class ChatbotService {
 
     readConfigurationStatus(): Observable<ChatbotConfigurationStatus> {
         return this.httpService.request()
-            .error('No se pudo recuperar la configuración del asistente')
+            .errorNotification('No se pudo recuperar la configuración del asistente')
             .get(ENDPOINTS.chatbot.configurationStatus());
     }
 
     sendMessage(request: ChatbotMessageRequest): Observable<ChatbotMessageResponse> {
         return this.httpService.request()
-            .error('No se pudo obtener respuesta del asistente')
+            .errorNotification('No se pudo obtener respuesta del asistente')
             .post(ENDPOINTS.chatbot.messages(), request);
     }
 }

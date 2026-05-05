@@ -18,7 +18,7 @@ export class SignDocumentService {
     signDocument(scope: string, urlId: string, token: string, signerDocument: SignerDocument): Observable<void> {
         return this.httpService.request()
             .success("Documento Firmado")
-            .noError()
+            .silentErrors()
             .warning()
             .patch(ENDPOINTS.engagementLetters.signerDocument(scope, urlId, token), signerDocument);
     }

@@ -23,7 +23,7 @@ export class CustomerService {
             dataProcessingConsentCreation: dataProcessingConsentCreation
         };
         return this.httpService.request()
-            .success(" PERFIL ACTUALIZADO!!! Si necesita cambiarlo, puede hacerlo, pero recuerde que el enlace caduca en 7 días.")
+            .silentErrors()
             .put(ENDPOINTS.users.byToken(scope, urlId, token), body);
     }
 
