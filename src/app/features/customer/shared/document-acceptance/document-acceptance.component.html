@@ -13,9 +13,9 @@
         <!-- DESCARGA (si flag activo) -->
         <div *ngIf="downloadEnabled" class="download-wrapper">
             <p class="download-instructions">
-                A continuación podrá bajarse el documento. Le rogamos que lo descargue y lo lea con
-                detenimiento. Es un documento con el formato *.PDF.</p>
-            <P>No dude en comunicarse con el despacho si le surge cualquier duda.</P>
+                A continuación, podrá descargarse el documento. Le rogamos que lo descargue y lo lea detenidamente.
+                El documento está en formato PDF.</p>
+            <P>No dude en ponerse en contacto con el despacho si le surge cualquier duda.</P>
             <button (click)="onDownloadClick()"
                     [disabled]="completedFlag"
                     color="primary"
@@ -28,7 +28,7 @@
                 Pulse el botón para continuar.
             </span>
             <span *ngIf="documentDownloaded" class="download-done">
-                <mat-icon>check_circle</mat-icon> Documento descargado correctamente
+                <mat-icon>check_circle</mat-icon> Documento descargado correctamente.
             </span>
         </div>
         <br>
