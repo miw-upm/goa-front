@@ -156,6 +156,13 @@ export class ReviewsComponent {
         this.clearMessages();
     }
 
+    onStarClick(star: number): void {
+        if (this.saving) {
+            return;
+        }
+        this.stars = star;
+    }
+
     private clearMessages(): void {
         this.errorMessage = '';
         this.successMessage = '';
