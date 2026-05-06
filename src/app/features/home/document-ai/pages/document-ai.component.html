@@ -1,85 +1,95 @@
 <div class="document-ai-container">
-  <mat-card class="upload-card">
-    <mat-card-header>
-      <mat-card-title>Subida de Documentos (Document AI)</mat-card-title>
-      <mat-card-subtitle>Sube un archivo legal en formato PDF para su análisis</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content class="upload-content">
-      <input
-        type="file"
-        #fileInput
-        hidden
-        accept="application/pdf"
-        (change)="onFileSelected($event)"
-      />
-      <div class="upload-actions">
-        <button mat-raised-button color="primary" (click)="triggerFileInput()" [disabled]="isUploading">
-          <mat-icon>upload_file</mat-icon>
-          Seleccionar Documento PDF
-        </button>
-        <button
-          mat-raised-button
-          color="accent"
-          *ngIf="selectedFile && !isUploading"
-          (click)="uploadSelectedFile()"
-        >
-          <mat-icon>cloud_upload</mat-icon>
-          Guardar documento
-        </button>
-        <mat-spinner *ngIf="isUploading" diameter="24"></mat-spinner>
-      </div>
-      <div *ngIf="selectedFile && !isUploading" class="upload-status pending">
-        <mat-icon>insert_drive_file</mat-icon>
-        <span>Archivo listo para subir: </span>
-        <strong>{{ selectedFileName }}</strong>
-        <button mat-icon-button (click)="clearSelectedFile()" title="Quitar documento" class="clear-btn">
-          <mat-icon>close</mat-icon>
-        </button>
-        <mat-checkbox *ngIf="selectedFile && !isUploading" [(ngModel)]="autoclassify" class="classify-checkbox" matTooltip="La autoclasificación se realizará automáticamente mediante inteligencia artificial" matTooltipPosition="above">
-          Autoclasificar documento
-        </mat-checkbox>
-      </div>
-      <div *ngIf="uploadSuccess && !isUploading && uploadedDocument" class="upload-result">
-        <mat-card class="result-card">
-          <mat-card-content>
-            <div class="result-header">
-              <mat-icon class="pdf-icon">picture_as_pdf</mat-icon>
-              <div class="file-info">
-                <span class="file-name">{{ uploadedDocument.name }}</span>
-                <span class="file-meta">{{ formatSize(uploadedDocument.sizeInfo) }} • {{ uploadedDocument.uploadDate | date:'short' }}</span>
-              </div>
-              <a mat-stroked-button [href]="uploadedDocument.url" target="_blank" class="view-btn">
-                <mat-icon>visibility</mat-icon>
-                Ver documento
-              </a>
+    <mat-card class="upload-card">
+        <mat-card-header>
+            <mat-card-title>Subida de Documentos (Document AI)</mat-card-title>
+            <mat-card-subtitle>Sube un archivo legal en formato PDF para su análisis</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="upload-content">
+            <input
+                    type="file"
+                    #fileInput
+                    hidden
+                    accept="application/pdf"
+                    (change)="onFileSelected($event)"
+            />
+            <div class="upload-actions">
+                <button mat-raised-button color="primary" (click)="triggerFileInput()" [disabled]="isUploading">
+                    <mat-icon>upload_file</mat-icon>
+                    Seleccionar Documento PDF
+                </button>
+                <button
+                        mat-raised-button
+                        color="accent"
+                        *ngIf="selectedFile && !isUploading"
+                        (click)="uploadSelectedFile()"
+                >
+                    <mat-icon>cloud_upload</mat-icon>
+                    Guardar documento
+                </button>
+                <mat-spinner *ngIf="isUploading" diameter="24"></mat-spinner>
             </div>
-
-            <div class="category-section">
-              <div class="category-display">
-                <span class="label">Categoría detectada:</span>
-                <mat-chip-listbox>
-                  <mat-chip-row color="primary" selected>
-                    <mat-icon matChipAvatar>{{ getCategoryIcon(uploadedDocument.category) }}</mat-icon>
-                    {{ getCategoryLabel(uploadedDocument.category) }}
-                  </mat-chip-row>
-                </mat-chip-listbox>
-              </div>
-
-              <div class="category-select">
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Cambiar categoría</mat-label>
-                  <mat-select [ngModel]="uploadedDocument.category" (selectionChange)="updateCategory($event.value)">
-                    <mat-option *ngFor="let cat of categories" [value]="cat.value">
-                      <mat-icon>{{ cat.icon }}</mat-icon>
-                      {{ cat.label }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
+            <div *ngIf="selectedFile && !isUploading" class="upload-status pending">
+                <mat-icon>insert_drive_file</mat-icon>
+                <span>Archivo listo para subir: </span>
+                <strong>{{ selectedFileName }}</strong>
+                <button mat-icon-button (click)="clearSelectedFile()" title="Quitar documento" class="clear-btn">
+                    <mat-icon>close</mat-icon>
+                </button>
+                <mat-checkbox *ngIf="selectedFile && !isUploading" [(ngModel)]="autoclassify" class="classify-checkbox" matTooltip="La autoclasificación se realizará automáticamente mediante inteligencia artificial" matTooltipPosition="above">
+                    Autoclasificar documento
+                </mat-checkbox>
             </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </mat-card-content>
-  </mat-card>
+            <div *ngIf="uploadSuccess && !isUploading && uploadedDocument" class="upload-result">
+                <mat-card class="result-card">
+                    <mat-card-content>
+                        <div class="result-header">
+                            <mat-icon class="pdf-icon">picture_as_pdf</mat-icon>
+                            <div class="file-info">
+                                <span class="file-name">{{ uploadedDocument.name }}</span>
+                                <span class="file-meta">{{ formatSize(uploadedDocument.sizeInfo) }} • {{ uploadedDocument.uploadDate | date:'short' }}</span>
+                            </div>
+                            <button
+                                    mat-raised-button
+                                    color="accent"
+                                    class="summary-btn"
+                                    (click)="generateSummary()"
+                                    [disabled]="isSummarizing">
+                                <mat-icon *ngIf="!isSummarizing">auto_awesome</mat-icon>
+                                <mat-spinner *ngIf="isSummarizing" diameter="18" style="margin-right: 8px;"></mat-spinner>
+                                {{ isSummarizing ? 'Generando...' : 'Resumir contenido' }}
+                            </button>
+                            <a mat-stroked-button [href]="uploadedDocument.url" target="_blank" class="view-btn">
+                                <mat-icon>visibility</mat-icon>
+                                Ver documento
+                            </a>
+                        </div>
+
+                        <div class="category-section">
+                            <div class="category-display">
+                                <span class="label">Categoría detectada:</span>
+                                <mat-chip-listbox>
+                                    <mat-chip-row color="primary" selected>
+                                        <mat-icon matChipAvatar>{{ getCategoryIcon(uploadedDocument.category) }}</mat-icon>
+                                        {{ getCategoryLabel(uploadedDocument.category) }}
+                                    </mat-chip-row>
+                                </mat-chip-listbox>
+                            </div>
+
+                            <div class="category-select">
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-label>Cambiar categoría</mat-label>
+                                    <mat-select [ngModel]="uploadedDocument.category" (selectionChange)="updateCategory($event.value)">
+                                        <mat-option *ngFor="let cat of categories" [value]="cat.value">
+                                            <mat-icon>{{ cat.icon }}</mat-icon>
+                                            {{ cat.label }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </mat-card-content>
+    </mat-card>
 </div>

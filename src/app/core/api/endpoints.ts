@@ -142,5 +142,7 @@ export const ENDPOINTS = {
         root: DOCUMENT_AI_ROOT,
         documents: () =>
             `${DOCUMENT_AI_ROOT}/documents`,
+        summary: (id: string) =>
+            `${DOCUMENT_AI_ROOT}/documents/${enc(id)}/summary`,
     },
 } as const;

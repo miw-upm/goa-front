@@ -14,8 +14,15 @@ export class DocumentAiService {
     formData.append('file', file);
     formData.append('autoclassify', String(autoclassify));
     return this.httpService.request()
-      .success('Documento subido con éxito')
-      .error('Error al subir el documento')
-      .post(ENDPOINTS.documentAi.documents(), formData);
+        .success('Documento subido con éxito')
+        .error('Error al subir el documento')
+        .post(ENDPOINTS.documentAi.documents(), formData);
+  }
+
+  generateSummary(id: string): Observable<any> {
+    return this.httpService.request()
+        .success('Resumen generado con éxito')
+        .error('Error al generar el resumen')
+        .post(ENDPOINTS.documentAi.summary(id));
   }
 }

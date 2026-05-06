@@ -11,7 +11,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatChipsModule} from '@angular/material/chips';
 import {FormsModule} from '@angular/forms';
 import {DocumentAiService} from '../document-ai.service';
-
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { InfoDialogComponent } from "@shared/ui/dialogs/info-dialog.component";
 export interface Document {
   id: string;
   name: string;
@@ -35,6 +36,7 @@ export interface Document {
     MatSelectModule,
     MatFormFieldModule,
     MatChipsModule,
+    MatDialogModule,
     FormsModule
   ],
   templateUrl: './document-ai.component.html',
@@ -42,13 +44,14 @@ export interface Document {
 })
 export class DocumentAiComponent {
   @ViewChild('fileInput') fileInput?: ElementRef<HTMLInputElement>;
-  
+
   isUploading = false;
   uploadSuccess = false;
   autoclassify = false;
   selectedFileName = '';
   selectedFile: File | null = null;
   uploadedDocument: Document | null = null;
+  isSummarizing: boolean = false;
 
   categories = [
     { value: 'INVOICE', label: 'Factura', icon: 'receipt' },
@@ -59,7 +62,8 @@ export class DocumentAiComponent {
     { value: 'OTHER', label: 'Otro', icon: 'more_horiz' }
   ];
 
-  constructor(private readonly documentAiService: DocumentAiService) {}
+  constructor(private readonly documentAiService: DocumentAiService,
+              private readonly matDialog: MatDialog) {}
 
   triggerFileInput(): void {
     this.fileInput?.nativeElement.click();
@@ -112,6 +116,33 @@ export class DocumentAiComponent {
 
   getCategoryIcon(value?: string): string {
     return this.categories.find(c => c.value === value)?.icon || 'help_outline';
+  }
+
+  generateSummary() {
+    if (!this.uploadedDocument) return;
+
+    this.isSummarizing = true;
+    this.documentAiService.generateSummary(this.uploadedDocument.id).subscribe({
+      next: (updatedDoc) => {
+        this.uploadedDocument = updatedDoc; // Actualizamos el documento con el summary
+        this.isSummarizing = false;
+        this.openSummaryDialog(updatedDoc.summary); // Función para abrir la modal
+      },
+      error: () => {
+        this.isSummarizing = false;
+      }
+    });
+  }
+
+  openSummaryDialog(summary: string) {
+    // Aquí le decimos al servicio: "Ábreme UNA INSTANCIA de InfoDialogComponent"
+    this.matDialog.open(InfoDialogComponent, {
+      width: '600px',
+      data: {
+        title: 'Resumen del Documento',
+        message: summary // Tu componente usa data.message en el HTML, así que se verá perfecto
+      }
+    });
   }
 
   private uploadFile(file: File): void {
