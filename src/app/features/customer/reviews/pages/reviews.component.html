@@ -27,17 +27,19 @@
             </p>
 
             <ng-container *ngIf="letterId.trim()">
-                <div class="form-field">
-                    <mat-form-field appearance="outline" class="full-width">
-                        <mat-label>Puntuación</mat-label>
-                        <mat-select [(ngModel)]="stars" [disabled]="saving">
-                            <mat-option [value]="1">1 - Muy malo</mat-option>
-                            <mat-option [value]="2">2 - Malo</mat-option>
-                            <mat-option [value]="3">3 - Regular</mat-option>
-                            <mat-option [value]="4">4 - Bueno</mat-option>
-                            <mat-option [value]="5">5 - Excelente</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                <div class="form-field star-field">
+                    <div class="star-rating-inline">
+                        <button type="button"
+                                *ngFor="let star of [1,2,3,4,5]"
+                                class="star-btn"
+                                [class.filled]="star <= (stars || 0)"
+                                [class.empty]="star > (stars || 0)"
+                                [disabled]="saving"
+                                [attr.aria-label]="'Set rating to ' + star + ' stars'"
+                                (click)="onStarClick(star)">
+                            {{ star <= (stars || 0) ? '★' : '☆' }}
+                        </button>
+                    </div>
                 </div>
 
                 <div class="form-field">
