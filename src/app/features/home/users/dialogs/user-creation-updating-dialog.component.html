@@ -23,7 +23,10 @@
         label="Código postal"
         pattern="^[0-9]{5}$"
     />
-    <app-form-field [(value)]="user.identity" label="N.I.F. (DNI, CIF O NIE)"/>
+    <app-form-nif
+        #identity
+        [(value)]="user.identity"
+    />
     <app-form-field [(value)]="user.email" label="Email"/>
     <mat-slide-toggle [(ngModel)]="enablePasswordChange">Nueva Contraseña</mat-slide-toggle>
     <app-form-field [(value)]="user.password" [disabled]="!enablePasswordChange" label="Contraseña" type="password"/>
@@ -36,11 +39,11 @@
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Cancelar</button>
     @if (isCreate()) {
-        <button (click)="create()" [disabled]="formInvalid(mobile.ngModel, name.ngModel, code.ngModel)" color="primary"
+        <button (click)="create()" [disabled]="formInvalid(mobile.ngModel, name.ngModel, code.ngModel, identity.ngModel)" color="primary"
                 mat-raised-button>Crear
         </button>
     } @else {
-        <button (click)="update()" [disabled]="formInvalid(mobile.ngModel, name.ngModel, code.ngModel)" color="primary"
+        <button (click)="update()" [disabled]="formInvalid(mobile.ngModel, name.ngModel, code.ngModel, identity.ngModel)" color="primary"
                 mat-raised-button>Actualizar
         </button>
     }

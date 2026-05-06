@@ -1,5 +1,5 @@
 import {Component} from "@angular/core";
-import {NgOptimizedImage} from "@angular/common";
+import {JsonPipe, NgIf, NgOptimizedImage} from "@angular/common";
 import {FormsModule, NgModel} from "@angular/forms";
 import {Observable} from "rxjs";
 import {MatCardModule} from "@angular/material/card";
@@ -20,6 +20,7 @@ import {CustomerService} from "../customer.service";
 import {DataProcessingConsentCreation} from "../processing-consent-creation.model";
 import {FormSubmitComponent} from "@shared/ui/inputs/forms/form-submit.component";
 import {BackendError} from "@core/http/backend-error";
+import {FormNifComponent} from "@shared/ui/inputs/forms/form-nif.component";
 
 @Component({
     standalone: true,
@@ -39,7 +40,9 @@ import {BackendError} from "@core/http/backend-error";
         FormFieldComponent,
         FormSelectComponent,
         MatCheckbox,
-        FormSubmitComponent
+        FormSubmitComponent,
+        FormNifComponent,
+        FormNifComponent
     ],
     styleUrl: './customer-edit-profile.component.css'
 })

@@ -22,6 +22,7 @@ import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {SharedUserService} from '@features/shared/services/shared-user.service';
 import {User} from '@features/shared/models/user.model';
 import {UserService} from '../user.service';
+import {FormNifComponent} from "@shared/ui/inputs/forms/form-nif.component";
 
 @Component({
     standalone: true,
@@ -39,6 +40,7 @@ import {UserService} from '../user.service';
         FormSelectComponent,
         FormFieldComponent,
         AppDateFieldComponent,
+        FormNifComponent,
     ],
     templateUrl: 'user-creation-updating-dialog.component.html',
     styleUrls: ['user-dialog.component.css']
@@ -57,7 +59,7 @@ export class UserCreationUpdatingDialogComponent {
         private readonly userService: UserService,
         private readonly sharedUserService: SharedUserService,
         private readonly authService: AuthService,
-        private readonly dialogRef: MatDialogRef<UserCreationUpdatingDialogComponent, string> // 👈
+        private readonly dialogRef: MatDialogRef<UserCreationUpdatingDialogComponent, string>
     ) {
         this.title = data ? 'Actualización de Usuarios' : 'Creación de Usuarios';
         this.user = data || {mobile: undefined, firstName: undefined, active: true};
