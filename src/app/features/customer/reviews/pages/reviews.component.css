@@ -1,0 +1,57 @@
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    padding: 24px 0;
+}
+
+.review-form {
+    margin-top: 16px;
+}
+
+.no-review-message {
+    color: #666;
+    font-style: italic;
+    text-align: center;
+    padding: 24px 0;
+}
+
+.form-field {
+    margin-bottom: 16px;
+}
+
+.button-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.message-area {
+    margin-top: 16px;
+}
+
+.error-message {
+    color: #f44336;
+    margin: 8px 0;
+    padding: 8px;
+    background: #ffebee;
+    border-radius: 4px;
+}
+
+.success-message {
+    color: #4caf50;
+    margin: 8px 0;
+    padding: 8px;
+    background: #e8f5e9;
+    border-radius: 4px;
+}
