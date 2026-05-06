@@ -1,0 +1,67 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Valoraciones</mat-card-title>
+        <mat-card-subtitle>Valora tu experiencia con el servicio</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+        <div class="form-section">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Identificador del encargo</mat-label>
+                <input matInput [(ngModel)]="letterId" placeholder="Identificador del encargo" [disabled]="loading || saving">
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" (click)="loadReview()" [disabled]="loading || saving">
+                <span *ngIf="!loading">Cargar valoración</span>
+                <span *ngIf="loading">Cargando...</span>
+            </button>
+        </div>
+
+        <div *ngIf="loading" class="spinner-container">
+            <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+        </div>
+
+        <div *ngIf="!loading" class="review-form">
+            <p class="no-review-message" *ngIf="!hasExistingReview && !loadedReview && !errorMessage">
+                Introduce el identificador del encargo y pulsa "Cargar valoración".
+            </p>
+
+            <ng-container *ngIf="letterId.trim()">
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Puntuación</mat-label>
+                        <mat-select [(ngModel)]="stars" [disabled]="saving">
+                            <mat-option [value]="1">1 - Muy malo</mat-option>
+                            <mat-option [value]="2">2 - Malo</mat-option>
+                            <mat-option [value]="3">3 - Regular</mat-option>
+                            <mat-option [value]="4">4 - Bueno</mat-option>
+                            <mat-option [value]="5">5 - Excelente</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="form-field">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Opinión</mat-label>
+                        <textarea matInput [(ngModel)]="opinion" rows="4"
+                                  placeholder="Cuéntanos tu experiencia..."
+                                  [disabled]="saving"></textarea>
+                    </mat-form-field>
+                </div>
+
+                <div class="button-row">
+                    <button mat-raised-button color="primary" (click)="saveReview()" [disabled]="saving">
+                        <span *ngIf="!saving">{{ hasExistingReview ? 'Actualizar' : 'Guardar' }}</span>
+                        <span *ngIf="saving">Guardando...</span>
+                    </button>
+                    <button mat-button (click)="resetForm()" [disabled]="saving">Limpiar</button>
+                </div>
+            </ng-container>
+        </div>
+
+        <div class="message-area">
+            <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+            <p class="success-message" *ngIf="successMessage">{{ successMessage }}</p>
+        </div>
+    </mat-card-content>
+</mat-card>

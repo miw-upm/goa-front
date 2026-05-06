@@ -24,6 +24,7 @@ import {ConsentsComponent} from "./consents/pages/consents.component";
 import {ConsentService} from "./consents/consent.service";
 import {CustomerFileDownloadComponent} from "./customer-file-download/pages/customer-file-download.component";
 import {CustomerFileDownloadService} from "./customer-file-download/customer-file-download.service";
+import {ReviewsComponent} from "../customer/reviews/pages/reviews.component";
 
 export const routes: Routes = [
     {
@@ -121,6 +122,12 @@ export const routes: Routes = [
                 component: ChatbotComponent,
                 canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR, Role.CUSTOMER]},
+            },
+            {
+                path: 'reviews',
+                component: ReviewsComponent,
+                canActivate: [RoleGuard],
+                data: {roles: [Role.CUSTOMER]},
             },
         ],
     },
