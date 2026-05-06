@@ -3,6 +3,7 @@ import pkg from '../../package.json';
 const HOST = 'http://localhost:4200';
 const API = 'http://localhost:8080/api';
 const CHATBOT = 'http://localhost:8086';
+const SANDBOX = 'http://localhost:8088/api/goa-sandbox';
 
 export const environment = {
     production: false,
@@ -15,6 +16,7 @@ export const environment = {
     REST_SUPPORT: `${API}/goa-support`,
     REST_DOCUMENT: `${API}/goa-document`,
     REST_CHATBOT: CHATBOT,
-    SECURE_ROUTES: [API, CHATBOT],
+    REST_SANDBOX: SANDBOX,
+    SECURE_ROUTES: [API, CHATBOT, SANDBOX],
 };
 
