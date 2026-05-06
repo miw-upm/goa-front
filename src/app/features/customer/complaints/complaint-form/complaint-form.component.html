@@ -1,0 +1,48 @@
+<div class="complaint-container">
+    <h2>Nueva Queja / Incidencia</h2>
+    <p>Por favor, introduzca los detalles de la Hoja de Encargo para procesar su queja.</p>
+
+    <form [formGroup]="complaintForm" (ngSubmit)="onSubmit()">
+
+        <!-- ID Hoja de Encargo (Barcode) -->
+        <div class="form-group">
+            <label for="barcode">Referencia Hoja de Encargo (Expediente)</label>
+            <input id="barcode" type="text" formControlName="barcode"
+                   placeholder="Ej: HE-2026-001" class="form-control">
+            <small class="error" *ngIf="complaintForm.get('barcode')?.touched && complaintForm.get('barcode')?.invalid">
+                La referencia es obligatoria.
+            </small>
+        </div>
+
+        <!-- ID Cliente (Mobile) -->
+        <div class="form-group">
+            <label for="mobile">ID Cliente (Teléfono registrado)</label>
+            <input id="mobile" type="text" formControlName="mobile"
+                   placeholder="Ej: 600123456" class="form-control">
+        </div>
+
+        <!-- Descripción -->
+        <div class="form-group">
+            <label for="description">Detalle de la queja</label>
+            <textarea id="description" formControlName="description"
+                      rows="4" class="form-control"
+                      placeholder="Explique detalladamente lo ocurrido..."></textarea>
+            <small class="error" *ngIf="complaintForm.get('description')?.touched && complaintForm.get('description')?.invalid">
+                La descripción debe tener al menos 15 caracteres.
+            </small>
+        </div>
+
+        <!-- Mensajes de Estado -->
+        <div *ngIf="message" [class]="'alert alert-' + message.type">
+            {{ message.text }}
+        </div>
+
+        <!-- Botón de Envío -->
+        <div class="form-actions">
+            <button type="submit" [disabled]="complaintForm.invalid || submitting" class="btn btn-primary">
+                {{ submitting ? 'Enviando...' : 'Registrar Queja' }}
+            </button>
+        </div>
+
+    </form>
+</div>
