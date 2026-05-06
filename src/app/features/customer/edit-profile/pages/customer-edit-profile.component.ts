@@ -20,6 +20,7 @@ import {CustomerService} from "../customer.service";
 import {DataProcessingConsentCreation} from "../processing-consent-creation.model";
 import {FormSubmitComponent} from "@shared/ui/inputs/forms/form-submit.component";
 import {BackendError} from "@core/http/backend-error";
+import {FormNifComponent} from "@shared/ui/inputs/forms/form-nif.component";
 
 @Component({
     standalone: true,
@@ -39,7 +40,8 @@ import {BackendError} from "@core/http/backend-error";
         FormFieldComponent,
         FormSelectComponent,
         MatCheckbox,
-        FormSubmitComponent
+        FormSubmitComponent,
+        FormNifComponent
     ],
     styleUrl: './customer-edit-profile.component.css'
 })

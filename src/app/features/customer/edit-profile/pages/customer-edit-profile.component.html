@@ -33,7 +33,11 @@
                 label="Código postal"
                 pattern="^[0-9]{5}$"
             />
-            <app-form-field [(value)]="user.identity" [required]="true" label="N.I.F. (DNI, CIF O NIE)"/>
+            <app-form-nif
+                #identity
+                [(value)]="user.identity"
+                [required]="true"
+            />
             <app-form-field [(value)]="user.email" [required]="true" label="Email (no)"/>
             <div class="privacy-text">
                 <strong>Protección de datos personales:</strong><br/>
@@ -62,7 +66,7 @@
         <app-form-submit
             #submitBtn
             (submitted)="update(submitBtn)"
-            [disabled]="formInvalid(mobile.ngModel, postalCode.ngModel)
+            [disabled]="formInvalid(mobile.ngModel, postalCode.ngModel, identity.ngModel)
                     || !dataProcessingConsentCreation.dataProcessingAccepted"
         />
     </mat-dialog-actions>
