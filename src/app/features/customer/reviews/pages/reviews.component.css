@@ -1,98 +1,289 @@
-.form-section {
+/* ─── Page Layout ─────────────────────────────────────────────── */
+:host {
+    display: block;
+    padding: 32px 16px 48px;
+}
+
+.page-header {
+    max-width: 760px;
+    margin: 0 auto 28px;
+    padding: 0 4px;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 8px;
+    color: #1a1a1a;
+}
+
+.page-subtitle {
+    font-size: 0.9rem;
+    color: #5f5f5f;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ─── Card Base ───────────────────────────────────────────────── */
+.reviews-card {
+    max-width: 760px;
+    margin: 0 auto 20px;
+    padding: 4px 0 8px;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 16px 24px 0;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    color: #333;
+}
+
+/* ─── Query Section ───────────────────────────────────────────── */
+.query-section {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    margin-bottom: 24px;
+    gap: 12px;
+    padding: 16px 24px 24px;
 }
 
-.full-width {
-    width: 100%;
+.query-button {
+    align-self: flex-start;
+    min-width: 160px;
 }
 
-.spinner-container {
+/* ─── Centered Spinner ────────────────────────────────────────── */
+.centered-spinner {
     display: flex;
     justify-content: center;
-    padding: 24px 0;
+    padding: 20px 0 28px;
 }
 
-.review-form {
-    margin-top: 16px;
+/* ─── Rating Section ──────────────────────────────────────────── */
+.rating-section {
+    max-width: 760px;
+    margin: 0 auto;
 }
 
-.no-review-message {
-    color: #666;
-    font-style: italic;
-    text-align: center;
-    padding: 24px 0;
+/* ─── Mode Badge ──────────────────────────────────────────────── */
+.mode-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 12px;
 }
 
-.form-field {
-    margin-bottom: 16px;
+.mode-badge--edit {
+    background: #e3f2fd;
+    color: #1565c0;
 }
 
-.star-field {
-    margin-bottom: 8px;
+.mode-badge--create {
+    background: #e8f5e9;
+    color: #2e7d32;
 }
 
-.star-rating-inline {
+/* ─── Empty / 404 State ──────────────────────────────────────── */
+.empty-state {
     display: flex;
-    gap: 4px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 32px 24px 36px;
+    color: #555;
+}
+
+.empty-state__icon {
+    font-size: 3rem;
+    color: #bbb;
+    margin-bottom: 12px;
+    line-height: 1;
+}
+
+.empty-state__title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    margin: 0 0 6px;
+}
+
+.empty-state__hint {
+    font-size: 0.85rem;
+    color: #888;
+    margin: 0;
+}
+
+/* ─── Form Groups ─────────────────────────────────────────────── */
+.form-group {
+    padding: 12px 24px 4px;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+/* ─── Star Rating ─────────────────────────────────────────────── */
+.star-rating {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8px;
 }
 
 .star-btn {
     background: none;
     border: none;
-    padding: 4px;
+    padding: 6px 4px;
     cursor: pointer;
-    font-size: 28px;
+    font-size: 2rem;
     line-height: 1;
-    transition: transform 0.1s ease;
+    transition: transform 0.15s ease;
+    border-radius: 4px;
 }
 
-.star-btn:focus {
+.star-btn:focus-visible {
     outline: 2px solid #1976d2;
     outline-offset: 2px;
-    border-radius: 2px;
 }
 
 .star-btn:not(:disabled):hover {
-    transform: scale(1.15);
+    transform: scale(1.2);
 }
 
-.filled {
+.star-btn--filled {
     color: #f5c518;
 }
 
-.empty {
-    color: #ccc;
+.star-btn--empty {
+    color: #d0d0d0;
 }
 
 .star-btn:disabled {
     cursor: not-allowed;
+    opacity: 0.6;
 }
 
-.button-row {
+.star-meta {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+}
+
+.star-description {
+    font-size: 0.78rem;
+    color: #888;
+}
+
+.star-current {
+    font-size: 0.85rem;
+    color: #333;
+}
+
+/* ─── Full Width Utility ──────────────────────────────────────── */
+.full-width {
+    width: 100%;
+}
+
+/* ─── Alert Boxes ─────────────────────────────────────────────── */
+.alert {
+    margin: 8px 24px 0;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    border-left: 4px solid;
+}
+
+.alert--error {
+    background: #fdecea;
+    border-left-color: #c62828;
+    color: #5f1612;
+}
+
+/* ─── Action Row ──────────────────────────────────────────────── */
+.action-row {
+    display: flex;
+    align-items: center;
     gap: 12px;
-    margin-top: 8px;
+    padding: 12px 24px 20px;
+    flex-wrap: wrap;
 }
 
-.message-area {
-    margin-top: 16px;
+.save-button {
+    min-width: 180px;
 }
 
-.error-message {
-    color: #f44336;
-    margin: 8px 0;
-    padding: 8px;
-    background: #ffebee;
-    border-radius: 4px;
+.inline-spinner {
+    display: inline-block;
+    margin-right: 6px;
+    --mdc-circular-progress-active-indicator-color: white;
 }
 
-.success-message {
-    color: #4caf50;
-    margin: 8px 0;
-    padding: 8px;
-    background: #e8f5e9;
-    border-radius: 4px;
+/* ─── Responsive: Mobile (<= 600px) ─────────────────────────── */
+@media (max-width: 600px) {
+    :host {
+        padding: 20px 12px 40px;
+    }
+
+    .page-header {
+        margin-bottom: 20px;
+    }
+
+    .page-title {
+        font-size: 1.25rem;
+    }
+
+    .card-header {
+        padding: 12px 16px 0;
+    }
+
+    .query-section {
+        padding: 12px 16px 20px;
+    }
+
+    .form-group {
+        padding: 10px 16px 4px;
+    }
+
+    .alert {
+        margin: 8px 16px 0;
+    }
+
+    .action-row {
+        padding: 10px 16px 18px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .save-button {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .star-rating {
+        gap: 4px;
+    }
+
+    .star-btn {
+        font-size: 1.7rem;
+    }
+
+    .star-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
 }
