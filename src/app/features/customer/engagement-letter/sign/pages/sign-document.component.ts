@@ -8,7 +8,6 @@ import {SignDocumentService} from '../sign-document.service';
     standalone: true,
     selector: 'app-sign-document',
     templateUrl: './sign-document.component.html',
-    styleUrls: ['./sign-document.component.scss'],
     imports: [
         FormsModule,
         DocumentAcceptanceComponent

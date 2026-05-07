@@ -7,7 +7,6 @@ import {ReadEngagementLetterService} from '../read-engagement-letter.service';
     standalone: true,
     selector: 'app-read-engagement-letter',
     templateUrl: './read-engagement-letter.component.html',
-    styleUrls: ['./read-engagement-letter.component.scss'],
     imports: [
         FormsModule,
         DocumentAcceptanceComponent
