@@ -4,9 +4,9 @@ import {FormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
-import {MatSelectModule} from '@angular/material/select';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatCardModule} from '@angular/material/card';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 import {ReviewService} from '../reviews.service';
 import {Review} from '../models/review.model';
@@ -21,7 +21,6 @@ import {ReviewUpdate} from '../models/review-update.model';
         MatInputModule,
         MatFormFieldModule,
         MatButtonModule,
-        MatSelectModule,
         MatProgressSpinnerModule,
         MatCardModule,
     ],
@@ -39,7 +38,12 @@ export class ReviewsComponent {
     successMessage = '';
     hasExistingReview = false;
 
-    constructor(private readonly reviewService: ReviewService) {
+    private static readonly SNACK_DURATION = 4000;
+
+    constructor(
+        private readonly reviewService: ReviewService,
+        private readonly snackBar: MatSnackBar
+    ) {
     }
 
     loadReview(): void {
@@ -58,7 +62,6 @@ export class ReviewsComponent {
                 this.opinion = review.opinion;
                 this.hasExistingReview = true;
                 this.loading = false;
-                this.successMessage = 'Valoración cargada correctamente.';
             },
             error: (err: any) => {
                 this.loading = false;
@@ -99,11 +102,15 @@ export class ReviewsComponent {
                     this.stars = review.stars;
                     this.opinion = review.opinion;
                     this.saving = false;
-                    this.successMessage = 'Valoración actualizada correctamente.';
+                    this.snackBar.open('Valoración actualizada correctamente.', '', {
+                        duration: ReviewsComponent.SNACK_DURATION
+                    });
                 },
                 error: () => {
                     this.saving = false;
-                    this.errorMessage = 'No se pudo actualizar la valoración. Inténtelo de nuevo.';
+                    this.snackBar.open('No se pudo actualizar la valoración. Inténtelo de nuevo.', '', {
+                        duration: ReviewsComponent.SNACK_DURATION
+                    });
                 }
             });
         } else {
@@ -117,11 +124,15 @@ export class ReviewsComponent {
                     this.loadedReview = review;
                     this.hasExistingReview = true;
                     this.saving = false;
-                    this.successMessage = 'Valoración creada correctamente.';
+                    this.snackBar.open('Valoración creada correctamente.', '', {
+                        duration: ReviewsComponent.SNACK_DURATION
+                    });
                 },
                 error: () => {
                     this.saving = false;
-                    this.errorMessage = 'No se pudo guardar la valoración. Inténtelo de nuevo.';
+                    this.snackBar.open('No se pudo guardar la valoración. Inténtelo de nuevo.', '', {
+                        duration: ReviewsComponent.SNACK_DURATION
+                    });
                 }
             });
         }

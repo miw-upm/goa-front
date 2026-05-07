@@ -1,69 +1,147 @@
-<mat-card>
-    <mat-card-header>
-        <mat-card-title>Valoraciones</mat-card-title>
-        <mat-card-subtitle>Valora tu experiencia con el servicio</mat-card-subtitle>
+<!-- Page Header -->
+<div class="page-header">
+    <h1 class="page-title">Valoraciones de tus Hojas de Encargo</h1>
+    <p class="page-subtitle">Busca una Hoja de Encargo, carga tu valoración y actualízala cuando lo necesites.</p>
+</div>
+
+<!-- Query Section -->
+<mat-card class="reviews-card">
+    <mat-card-header class="card-header">
+        <mat-card-title class="section-title">Buscar Hoja de Encargo</mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
-        <div class="form-section">
+        <div class="query-section">
             <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Identificador del encargo</mat-label>
-                <input matInput [(ngModel)]="letterId" placeholder="Identificador del encargo" [disabled]="loading || saving">
+                <mat-label>Identificador de la Hoja de Encargo</mat-label>
+                <input
+                    matInput
+                    [(ngModel)]="letterId"
+                    placeholder="p. ej. abc123"
+                    [disabled]="loading || saving"
+                    (keyup.enter)="loadReview()"
+                />
+                <mat-hint>Si no conoces el identificador, consulta tu correo de confirmación.</mat-hint>
             </mat-form-field>
 
-            <button mat-raised-button color="primary" (click)="loadReview()" [disabled]="loading || saving">
+            <button
+                mat-raised-button
+                color="primary"
+                class="query-button"
+                (click)="loadReview()"
+                [disabled]="loading || saving">
                 <span *ngIf="!loading">Cargar valoración</span>
-                <span *ngIf="loading">Cargando...</span>
+                <span *ngIf="loading">Buscando...</span>
             </button>
         </div>
 
-        <div *ngIf="loading" class="spinner-container">
+        <!-- Loading Spinner -->
+        <div *ngIf="loading" class="centered-spinner">
             <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
-        </div>
-
-        <div *ngIf="!loading" class="review-form">
-            <p class="no-review-message" *ngIf="!hasExistingReview && !loadedReview && !errorMessage">
-                Introduce el identificador del encargo y pulsa "Cargar valoración".
-            </p>
-
-            <ng-container *ngIf="letterId.trim()">
-                <div class="form-field star-field">
-                    <div class="star-rating-inline">
-                        <button type="button"
-                                *ngFor="let star of [1,2,3,4,5]"
-                                class="star-btn"
-                                [class.filled]="star <= (stars || 0)"
-                                [class.empty]="star > (stars || 0)"
-                                [disabled]="saving"
-                                [attr.aria-label]="'Set rating to ' + star + ' stars'"
-                                (click)="onStarClick(star)">
-                            {{ star <= (stars || 0) ? '★' : '☆' }}
-                        </button>
-                    </div>
-                </div>
-
-                <div class="form-field">
-                    <mat-form-field appearance="outline" class="full-width">
-                        <mat-label>Opinión</mat-label>
-                        <textarea matInput [(ngModel)]="opinion" rows="4"
-                                  placeholder="Cuéntanos tu experiencia..."
-                                  [disabled]="saving"></textarea>
-                    </mat-form-field>
-                </div>
-
-                <div class="button-row">
-                    <button mat-raised-button color="primary" (click)="saveReview()" [disabled]="saving">
-                        <span *ngIf="!saving">{{ hasExistingReview ? 'Actualizar' : 'Guardar' }}</span>
-                        <span *ngIf="saving">Guardando...</span>
-                    </button>
-                    <button mat-button (click)="resetForm()" [disabled]="saving">Limpiar</button>
-                </div>
-            </ng-container>
-        </div>
-
-        <div class="message-area">
-            <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
-            <p class="success-message" *ngIf="successMessage">{{ successMessage }}</p>
         </div>
     </mat-card-content>
 </mat-card>
+
+<!-- Rating Section -->
+<div *ngIf="letterId.trim()" class="rating-section">
+    <mat-card class="reviews-card">
+        <mat-card-header class="card-header">
+            <mat-card-title class="section-title">Tu valoración</mat-card-title>
+            <!-- Mode Badge -->
+            <span class="mode-badge" [class.mode-badge--edit]="hasExistingReview" [class.mode-badge--create]="!hasExistingReview">
+                {{ hasExistingReview ? 'Editando valoración' : 'Creando valoración' }}
+            </span>
+        </mat-card-header>
+
+        <mat-card-content>
+            <!-- Empty / Pre-load State (404 path) -->
+            <div *ngIf="!hasExistingReview && !loadedReview && !loading && !errorMessage" class="empty-state">
+                <div class="empty-state__icon">&#9734;</div>
+                <p class="empty-state__title">Todavía no has valorado este servicio. ¡Anímate!</p>
+                <p class="empty-state__hint">Selecciona tu puntuación y cuéntanos tu experiencia.</p>
+            </div>
+
+            <!-- Rating Form (shown once letterId is entered) -->
+            <ng-container *ngIf="!loading">
+                <!-- Star Rating -->
+                <div class="form-group">
+                    <label class="form-label">Puntuación</label>
+                    <div
+                        class="star-rating"
+                        role="radiogroup"
+                        aria-label="Puntuación de 1 a 5 estrellas">
+                        <button
+                            type="button"
+                            *ngFor="let star of [1,2,3,4,5]"
+                            class="star-btn"
+                            role="radio"
+                            [attr.aria-checked]="stars === star"
+                            [attr.aria-label]="star + ' de 5 estrellas'"
+                            [class.star-btn--filled]="star <= (stars || 0)"
+                            [class.star-btn--empty]="star > (stars || 0)"
+                            [disabled]="saving"
+                            (click)="onStarClick(star)">
+                            {{ star <= (stars || 0) ? '★' : '☆' }}
+                        </button>
+                    </div>
+                    <div class="star-meta">
+                        <span class="star-description">
+                            1 = Muy insatisfecho &nbsp;·&nbsp; 5 = Muy satisfecho
+                        </span>
+                        <span class="star-current" *ngIf="stars !== null">
+                            Tu puntuación: <strong>{{ stars }} / 5</strong>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Opinion Textarea -->
+                <div class="form-group">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Comentario</mat-label>
+                        <textarea
+                            matInput
+                            [(ngModel)]="opinion"
+                            rows="4"
+                            placeholder="Cuéntanos tu experiencia con este servicio."
+                            [disabled]="saving"
+                            maxlength="500">
+                        </textarea>
+                        <mat-hint align="end">{{ opinion.length }} / 500</mat-hint>
+                    </mat-form-field>
+                </div>
+
+                <!-- Validation / Error Messages -->
+                <div *ngIf="errorMessage" class="alert alert--error" role="alert">
+                    {{ errorMessage }}
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-row">
+                    <button
+                        mat-raised-button
+                        color="primary"
+                        class="save-button"
+                        (click)="saveReview()"
+                        [disabled]="saving">
+                        <mat-progress-spinner
+                            *ngIf="saving"
+                            mode="indeterminate"
+                            diameter="18"
+                            class="inline-spinner">
+                        </mat-progress-spinner>
+                        <span *ngIf="!saving">
+                            {{ hasExistingReview ? 'Actualizar valoración' : 'Guardar valoración' }}
+                        </span>
+                        <span *ngIf="saving">Guardando...</span>
+                    </button>
+                    <button
+                        mat-stroked-button
+                        (click)="resetForm()"
+                        [disabled]="saving">
+                        Limpiar
+                    </button>
+                </div>
+            </ng-container>
+        </mat-card-content>
+    </mat-card>
+</div>
