@@ -1,99 +1,111 @@
-<mat-toolbar color="primary">
-    <img alt="miw" height="48" ngSrc="../../../../assets/oa-s.png" width="48"/>
-    <button mat-button routerLink="/home">
-        <h1>Administración</h1>
-    </button>
-    <div>
-        <button (click)="login()" *ngIf="!isAuthenticated()" mat-flat-button>
-            <mat-icon>person_outline</mat-icon>
-            <span>Login</span>
-        </button>
-        <button (click)="logout()" *ngIf="isAuthenticated()" mat-button>
-            <mat-icon>account_box</mat-icon>
-            <span>Logout - {{ name() }}</span>
-        </button>
-        <button *ngIf="isAuthenticated()" [matMenuTriggerFor]="profile" mat-button>
-            <mat-icon>more_vert</mat-icon>
-        </button>
+<mat-toolbar>
+    <div class="toolbar-brand">
+        <img alt="miw" height="40" ngSrc="../../../../assets/oa-s.png" width="40"/>
+        <button mat-button routerLink="/home">Administración</button>
+    </div>
+
+    @if (isAuthenticated()) {
+        <nav class="toolbar-nav">
+            <button mat-button class="nav-btn" [matMenuTriggerFor]="usersMenu">
+                <mat-icon>groups</mat-icon>
+                <span>Usuarios</span>
+            </button>
+
+            <button mat-button class="nav-btn" [matMenuTriggerFor]="engagementLettersMenu">
+                <mat-icon>receipt</mat-icon>
+                <span>Hojas de Encargo</span>
+            </button>
+
+            <button mat-button class="nav-btn" [disabled]="true" [matMenuTriggerFor]="billingMenu">
+                <mat-icon>request_quote</mat-icon>
+                <span>Facturación</span>
+            </button>
+
+            <button mat-button class="nav-btn" routerLink="/home/customer-file-downloads">
+                <mat-icon>download</mat-icon>
+                <span>Descargas</span>
+            </button>
+
+            <button mat-button class="nav-btn" routerLink="/home/chatbot">
+                <mat-icon>smart_toy</mat-icon>
+                <span>Asistente IA</span>
+            </button>
+        </nav>
+    }
+
+    <div class="toolbar-right">
+        @if (!isAuthenticated()) {
+            <button (click)="login()" mat-flat-button>
+                <mat-icon>person_outline</mat-icon>
+                <span>Login</span>
+            </button>
+        }
+        @if (isAuthenticated()) {
+            <button mat-button [matMenuTriggerFor]="profileMenu">
+                <mat-icon>account_circle</mat-icon>
+                <span>{{ name() }}</span>
+            </button>
+        }
     </div>
 </mat-toolbar>
-<mat-menu #profile="matMenu" xPosition="before">
-    <button (click)="update()" mat-menu-item>
-        <mat-icon>manage_accounts</mat-icon>
-        <span>Perfil</span>
-    </button>
 
-    <button [matMenuTriggerFor]="usersMenu" mat-menu-item>
+<!-- Usuarios -->
+<mat-menu #usersMenu="matMenu">
+    <button mat-menu-item routerLink="/home/users">
         <mat-icon>groups</mat-icon>
-        <span>Usuarios</span>
+        <span>Listado de usuarios</span>
     </button>
-    <mat-menu #usersMenu="matMenu">
-        <button mat-menu-item routerLink="/home/users">
-            <mat-icon>groups</mat-icon>
-            <span>Listado de usuarios</span>
-        </button>
-        <button mat-menu-item routerLink="/home/consents">
-            <mat-icon>verified_user</mat-icon>
-            <span>Consentimientos LOPD</span>
-        </button>
-    </mat-menu>
-
+    <button mat-menu-item routerLink="/home/consents">
+        <mat-icon>verified_user</mat-icon>
+        <span>Consentimientos LOPD</span>
+    </button>
     <button mat-menu-item routerLink="/home/access-links">
         <mat-icon>language</mat-icon>
         <span>Links de Acceso</span>
     </button>
+</mat-menu>
 
-    <button mat-menu-item routerLink="/home/customer-file-downloads">
-        <mat-icon>download</mat-icon>
-        <span>Descargas de Documentos</span>
-    </button>
-
-    <button [matMenuTriggerFor]="engagementLetters" mat-menu-item>
+<!-- Hojas de Encargo -->
+<mat-menu #engagementLettersMenu="matMenu">
+    <button mat-menu-item routerLink="/home/engagement-letters">
         <mat-icon>receipt</mat-icon>
         <span>Hojas de Encargo</span>
     </button>
-    <mat-menu #engagementLetters="matMenu">
-        <button mat-menu-item routerLink="/home/engagement-letters">
-            <mat-icon>receipt</mat-icon>
-            <span>Hojas de Encargo</span>
-        </button>
-        <button mat-menu-item routerLink="/home/legal-procedures">
-            <mat-icon>menu</mat-icon>
-            <span>Plantilla de Procedimientos</span>
-        </button>
-        <button mat-menu-item routerLink="/home/legal-tasks">
-            <mat-icon>remove</mat-icon>
-            <span>Plantillas de Tareas</span>
-        </button>
-    </mat-menu>
-
-    <button [disabled]="true" [matMenuTriggerFor]="billingMenu" mat-menu-item>
-        <mat-icon>request_quote</mat-icon>
-        <span>Facturación</span>
+    <button mat-menu-item routerLink="/home/legal-procedures">
+        <mat-icon>menu</mat-icon>
+        <span>Plantilla de Procedimientos</span>
     </button>
-    <mat-menu #billingMenu="matMenu">
-        <button mat-menu-item routerLink="/home/invoices">
-            <mat-icon>document_scanner</mat-icon>
-            <span>Facturas</span>
-        </button>
-        <button mat-menu-item routerLink="/home/incomes">
-            <mat-icon>trending_up</mat-icon>
-            <span>Ingresos</span>
-        </button>
-        <button mat-menu-item routerLink="/home/expenses">
-            <mat-icon>trending_down</mat-icon>
-            <span>Gastos</span>
-        </button>
-    </mat-menu>
-
-    <button mat-menu-item routerLink="/home/chatbot">
-        <mat-icon>smart_toy</mat-icon>
-        <span>Asistente IA</span>
+    <button mat-menu-item routerLink="/home/legal-tasks">
+        <mat-icon>remove</mat-icon>
+        <span>Plantillas de Tareas</span>
     </button>
+</mat-menu>
 
+<!-- Facturación -->
+<mat-menu #billingMenu="matMenu">
+    <button mat-menu-item routerLink="/home/invoices">
+        <mat-icon>document_scanner</mat-icon>
+        <span>Facturas</span>
+    </button>
+    <button mat-menu-item routerLink="/home/incomes">
+        <mat-icon>trending_up</mat-icon>
+        <span>Ingresos</span>
+    </button>
+    <button mat-menu-item routerLink="/home/expenses">
+        <mat-icon>trending_down</mat-icon>
+        <span>Gastos</span>
+    </button>
+</mat-menu>
+
+<!-- Perfil -->
+<mat-menu #profileMenu="matMenu" xPosition="before">
+    <button (click)="update()" mat-menu-item>
+        <mat-icon>manage_accounts</mat-icon>
+        <span>Perfil</span>
+    </button>
     <button (click)="logout()" mat-menu-item>
         <mat-icon>logout</mat-icon>
-        <span>Logout</span>
+        <span>Cerrar sesión</span>
     </button>
 </mat-menu>
 

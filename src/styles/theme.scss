@@ -66,9 +66,74 @@ body {
   --mdc-filled-button-label-text-color: var(--mat-sys-on-error);
 }
 
-// --- Toolbar ---
+// --- Toolbar / Navbar ---
 .mat-toolbar {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: 8px;
+}
+
+.toolbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.toolbar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+
+  .nav-btn {
+    --mdc-text-button-label-text-color: var(--mat-sys-on-surface);
+    background: var(--mat-sys-surface-container-low);
+    border-radius: 12px;
+    opacity: 0.75;
+    transition: opacity 0.2s, background 0.2s;
+
+    &:hover,
+    &:focus {
+      opacity: 1;
+      background: var(--mat-sys-surface-container);
+    }
+
+    mat-icon {
+      color: var(--mat-sys-primary);
+    }
+  }
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+// --- Nav dropdown menus (segundo nivel coherente con el primero) ---
+.mat-mdc-menu-panel {
+  background: var(--mat-sys-surface-container-low) !important;
+  border-radius: 12px !important;
+
+  .mat-mdc-menu-item {
+    --mat-menu-item-label-text-color: var(--mat-sys-on-surface);
+    --mat-menu-item-label-text-weight: 500;
+    opacity: 0.75;
+    transition: opacity 0.2s, background 0.2s;
+
+    .mat-icon {
+      color: var(--mat-sys-primary);
+    }
+
+    &:hover {
+      opacity: 1;
+      background: var(--mat-sys-surface-container);
+    }
+  }
 }
 
 // --- Diálogos ---

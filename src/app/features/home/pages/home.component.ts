@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
+import {NgOptimizedImage} from '@angular/common';
 import {RouterLink, RouterOutlet} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {MatToolbar} from '@angular/material/toolbar';
@@ -16,7 +16,6 @@ import {UserCreationUpdatingDialogComponent} from "../users/dialogs/user-creatio
     standalone: true,
     providers: [],
     imports: [
-        CommonModule,
         RouterLink,
         RouterOutlet,
         NgOptimizedImage,
