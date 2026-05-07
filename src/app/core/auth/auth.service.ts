@@ -1,16 +1,35 @@
 import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {OidcSecurityService} from "angular-auth-oidc-client";
 
 import {Role} from '@core/auth/models/role.model';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
-    authenticated: boolean = false;
+    private readonly _authenticated = new BehaviorSubject<boolean>(false);
+    readonly authenticated$: Observable<boolean> = this._authenticated.asObservable();
+
     name: string = null;
     mobile: string = null;
     roles: string = null;
 
     constructor(private readonly oidc: OidcSecurityService) {
+    }
+
+    hydrate(isAuthenticated: boolean, oidc: OidcSecurityService): void {
+        this._authenticated.next(isAuthenticated);
+        if (!isAuthenticated) {
+            return;
+        }
+        oidc.getPayloadFromAccessToken().subscribe(data => {
+            this.name = data['name'];
+            this.mobile = data['sub'];
+            this.roles = data['roles'];
+        });
+    }
+
+    setAuthenticated(value: boolean): void {
+        this._authenticated.next(value);
     }
 
     login(): void {
@@ -26,7 +45,7 @@ export class AuthService {
     }
 
     isAuthenticated(): boolean {
-        return this.authenticated;
+        return this._authenticated.getValue();
     }
 
     hasRoles(roles: Role[]): boolean {

@@ -1,5 +1,5 @@
 import {bootstrapApplication} from '@angular/platform-browser';
-import {importProvidersFrom, LOCALE_ID, provideZoneChangeDetection} from "@angular/core";
+import {APP_INITIALIZER, importProvidersFrom, LOCALE_ID, provideZoneChangeDetection} from "@angular/core";
 import {provideRouter} from "@angular/router";
 import {provideHttpClient, withInterceptors} from "@angular/common/http";
 import {authInterceptor, AuthModule, LogLevel} from "angular-auth-oidc-client";
@@ -11,6 +11,7 @@ import {FormsModule} from "@angular/forms";
 import {routes} from "./app/app.routes";
 import {registerLocaleData} from "@angular/common";
 import localeEs from '@angular/common/locales/es';
+import {authInitializer} from './app/core/auth/auth.init';
 
 registerLocaleData(localeEs);
 
@@ -22,6 +23,7 @@ bootstrapApplication(AppComponent, {
         importProvidersFrom(MatNativeDateModule),
         {provide: MAT_DATE_LOCALE, useValue: 'es'},
         {provide: LOCALE_ID, useValue: 'es'},
+        {provide: APP_INITIALIZER, useFactory: authInitializer, multi: true},
         provideRouter(routes),
         provideHttpClient(),
         provideHttpClient(withInterceptors([authInterceptor()])),

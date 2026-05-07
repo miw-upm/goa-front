@@ -15,16 +15,30 @@ export class LoginCallbackComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.oidcSecurityService.checkAuth().subscribe(({isAuthenticated}) => {
-            this.authService.authenticated = isAuthenticated;
-            if (isAuthenticated) {
-                this.oidcSecurityService.getPayloadFromAccessToken().subscribe(
-                    data => {
-                        this.authService.name = data['name'];
-                        this.authService.mobile = data['sub'];
-                        this.authService.roles = data['roles'];
-                    },
-                );
+        this.oidcSecurityService.checkAuth().subscribe({
+            next: ({isAuthenticated}) => {
+                if (isAuthenticated) {
+                    this.oidcSecurityService.getPayloadFromAccessToken().subscribe({
+                        next: data => {
+                            this.authService.name = data['name'];
+                            this.authService.mobile = data['sub'];
+                            this.authService.roles = data['roles'];
+                            this.authService.setAuthenticated(true);
+                            this.router.navigate(['/home']);
+                        },
+                        error: () => {
+                            this.authService.setAuthenticated(false);
+                            this.router.navigate(['/home']);
+                        }
+                    });
+                } else {
+                    this.authService.setAuthenticated(false);
+                    this.router.navigate(['/home']);
+                }
+            },
+            error: () => {
+                this.authService.setAuthenticated(false);
+                this.router.navigate(['/home']);
             }
         });
     }
