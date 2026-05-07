@@ -1,12 +1,9 @@
-<h3 mat-dialog-title>
-    <mat-icon color="primary">info</mat-icon>
-    {{ data?.title ?? 'Information' }}.
-</h3>
+<h3 mat-dialog-title>{{ data?.title ?? 'Información' }}</h3>
 
-<div class="mat-body-1" style="padding: 0 24px 12px;">
+<mat-dialog-content>
     <p>{{ data?.message ?? '' }}</p>
-</div>
+</mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button color="primary" mat-dialog-close mat-raised-button>Cerrar</button>
+    <button mat-flat-button mat-dialog-close>Cerrar</button>
 </mat-dialog-actions>

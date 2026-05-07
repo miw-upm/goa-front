@@ -54,3 +54,9 @@ body {
   color: var(--mat-sys-on-surface);
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
+
+// --- Variantes semánticas de botón ---
+.mat-mdc-button-base.warn {
+  --mdc-filled-button-container-color: var(--mat-sys-error);
+  --mdc-filled-button-label-text-color: var(--mat-sys-on-error);
+}

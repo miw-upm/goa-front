@@ -1,6 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogTitle} from '@angular/material/dialog';
-import {MatIconModule} from '@angular/material/icon';
+import {MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 
 export type WarningDialogData = {
@@ -11,13 +10,12 @@ export type WarningDialogData = {
 @Component({
     standalone: true,
     templateUrl: 'warning-dialog.component.html',
-    styleUrls: ['./dialog.component.css'],
     imports: [
         MatDialogTitle,
+        MatDialogContent,
         MatDialogActions,
         MatDialogClose,
         MatButtonModule,
-        MatIconModule,
     ]
 })
 export class WarningDialogComponent {

@@ -45,7 +45,7 @@ export class AccessLinksComponent {
                 data: {
                     title: 'Confirmar eliminación',
                     message: 'Este enlace ya ha sido usado. ¿Está seguro que desea eliminarlo?',
-                    expectedText: 'Delete'
+                    expectedText: 'ELIMINAR'
                 }
             }).afterClosed().subscribe(result => {
                 if (result) {
