@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__acp__Write",
+      "WebFetch(domain:prototyp.digital)",
+      "mcp__acp__Edit"
+    ]
+  }
+}

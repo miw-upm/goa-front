@@ -1,0 +1,56 @@
+@use '@angular/material' as mat;
+@use './palettes' as goa;
+
+// =============================================================================
+// TEMA CENTRALIZADO GOA - Material 3
+// =============================================================================
+// Colores de empresa:
+//   Primary:    #BA792E (dorado)
+//   Secondary:  #4A5D3A (verde oliva)
+//   Tertiary:   #6B5D4F (marrón cálido)
+//   Background: #FAF7F0 (crema claro)
+//   Text:       #1F1D1A (casi negro cálido)
+// =============================================================================
+
+// --- Tema M3 ---
+html {
+  @include mat.theme((
+    color: (
+      primary: goa.$goa-primary,
+      tertiary: goa.$goa-tertiary,
+      theme-type: light,
+    ),
+    typography: Roboto,
+    density: 0,
+  ), $overrides: (
+    // Superficies y fondos
+    surface: #FAF7F0,
+    surface-dim: #ede8df,
+    surface-bright: #FAF7F0,
+    surface-container-lowest: #ffffff,
+    surface-container-low: #f6f1e8,
+    surface-container: #f0ebe2,
+    surface-container-high: #eae5dd,
+    surface-container-highest: #e4e0d7,
+
+    // Texto
+    on-surface: #1F1D1A,
+    on-surface-variant: #50463b,
+
+    // Contornos
+    outline: #84786c,
+    outline-variant: #cec9c4,
+  ));
+}
+
+// --- Estilos base ---
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}

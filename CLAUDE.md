@@ -68,3 +68,4 @@ Dos entornos (`environment.ts` para dev, `environment.prod.ts` para prod). La co
 ### UI
 
 Angular Material 19 + CDK. El tema de Material y las animaciones se configuran en el bootstrap en `main.ts`, no mediante NgModules.
+
