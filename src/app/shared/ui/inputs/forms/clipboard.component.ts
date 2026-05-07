@@ -20,13 +20,7 @@ import {MatTooltip} from '@angular/material/tooltip';
             </button>
         </mat-form-field>
     `,
-    styles: [
-        `
-            .full-width {
-                width: 100%;
-            }
-        `
-    ]
+
 
 })
 export class ClipboardComponent {

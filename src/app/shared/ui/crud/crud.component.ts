@@ -19,7 +19,7 @@ import {TypeToConfirmDialogComponent} from '@shared/ui/dialogs/type-to-confirm-d
     standalone: true,
     selector: 'app-crud',
     templateUrl: 'crud.component.html',
-    styleUrls: ['crud.component.css'],
+
     imports: [
         MatFormFieldModule,
         MatCardModule,
@@ -115,7 +115,7 @@ export class CrudComponent {
         this.itemSub = item$.subscribe(data => {
             this.dialog.open(ReadDetailDialogComponent, {
                 data: {
-                    title: `Details of ${this.title}`,
+                    title: `Detalles de ${this.title}`,
                     object: data
                 }
             });

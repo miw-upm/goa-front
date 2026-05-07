@@ -55,6 +55,11 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+// --- Utilidades globales ---
+.full-width {
+  width: 100%;
+}
+
 // --- Variantes semánticas de botón ---
 .mat-mdc-button-base.warn {
   --mdc-filled-button-container-color: var(--mat-sys-error);

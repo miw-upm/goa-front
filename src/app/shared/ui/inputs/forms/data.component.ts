@@ -33,11 +33,7 @@ import {MatIconModule} from '@angular/material/icon';
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
     `,
-    styles: [`
-        .full-width {
-            width: 100%;
-        }
-    `]
+
 })
 export class AppDateFieldComponent implements OnChanges {
     @Input() label!: string;

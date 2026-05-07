@@ -36,11 +36,7 @@ import {MatIcon} from '@angular/material/icon';
             }
         </mat-form-field>
     `,
-    styles: [`
-        .full-width {
-            width: 100%;
-        }
-    `]
+
 })
 export class FormFieldComponent implements AfterViewInit {
     @Input() label!: string;

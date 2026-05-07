@@ -1,14 +1,16 @@
-<h2 mat-dialog-title> {{ title }}</h2>
+<h2 mat-dialog-title>{{ title }}</h2>
+
 <mat-dialog-content>
     @if (object) {
         @for (key of labels(object); track key) {
-            <div class="field-row">
+            <div>
                 <strong>{{ key | uppercaseWords }}:</strong>
                 <app-data-cell [value]="object[key]" [fullList]="true"></app-data-cell>
             </div>
         }
     }
 </mat-dialog-content>
-<mat-dialog-actions>
-    <button mat-dialog-close mat-raised-button>Close</button>
+
+<mat-dialog-actions align="end">
+    <button mat-flat-button mat-dialog-close>Cerrar</button>
 </mat-dialog-actions>

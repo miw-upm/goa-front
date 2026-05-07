@@ -35,13 +35,7 @@ import {CapitalizeEnumNamePipe} from '@shared/pipes/capitalize-enum-name.pipe';
             </mat-select>
         </mat-form-field>
     `,
-    styles: [
-        `
-            .full-width {
-                width: 100%;
-            }
-        `
-    ]
+
 })
 export class FormSelectComponent {
     @Input() label = 'Select';

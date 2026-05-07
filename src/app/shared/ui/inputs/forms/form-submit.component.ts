@@ -13,17 +13,16 @@ export type FormSubmitState = 'idle' | 'loading' | 'success' | 'warning' | 'erro
     template: `
         <div class="submit-wrapper">
             @if (state() === 'warning') {
-                <mat-icon class="warning-icon" aria-label="Aviso en el envío">warning_amber</mat-icon>
+                <mat-icon class="submit-icon--warning" aria-label="Aviso en el envío">warning_amber</mat-icon>
             }
             @if (state() === 'error') {
-                <mat-icon class="error-icon" aria-label="Error en el envío">error_outline</mat-icon>
+                <mat-icon class="submit-icon--error" aria-label="Error en el envío">error_outline</mat-icon>
             }
-            <button mat-raised-button
+            <button mat-flat-button
                     type="button"
-                    [color]="color"
                     [disabled]="disabled || state() === 'loading'"
                     (click)="onClick()"
-                    class="submit-button">
+                    [class.warn]="state() === 'error'">
                 @if (state() === 'idle' && icon) {
                     <mat-icon>{{ icon }}</mat-icon>
                 }
@@ -31,7 +30,7 @@ export type FormSubmitState = 'idle' | 'loading' | 'success' | 'warning' | 'erro
                     <mat-icon>check</mat-icon>
                 }
                 @if (state() === 'loading') {
-                    <mat-spinner class="inline-spinner" diameter="20"></mat-spinner>
+                    <mat-spinner diameter="20"></mat-spinner>
                 } @else {
                     <span>{{ label }}</span>
                 }
@@ -39,13 +38,13 @@ export type FormSubmitState = 'idle' | 'loading' | 'success' | 'warning' | 'erro
         </div>
 
         @if (message()) {
-            <div class="feedback"
-                 [class.feedback--success]="state() === 'success'"
-                 [class.feedback--warning]="state() === 'warning'"
-                 [class.feedback--error]="state() === 'error'"
+            <div class="submit-feedback"
+                 [class.submit-feedback--success]="state() === 'success'"
+                 [class.submit-feedback--warning]="state() === 'warning'"
+                 [class.submit-feedback--error]="state() === 'error'"
                  role="status"
                  aria-live="polite">
-                <p class="feedback-message">{{ message() }}</p>
+                <p>{{ message() }}</p>
             </div>
         }
     `,
@@ -63,72 +62,52 @@ export type FormSubmitState = 'idle' | 'loading' | 'success' | 'warning' | 'erro
             gap: 0.5rem;
         }
 
-        .warning-icon {
-            color: #ed6c02;
+        .submit-icon--warning {
+            color: var(--mat-sys-tertiary);
             font-size: 1.5rem;
             width: 1.5rem;
             height: 1.5rem;
         }
 
-        .error-icon {
-            color: #d32f2f;
+        .submit-icon--error {
+            color: var(--mat-sys-error);
             font-size: 1.5rem;
             width: 1.5rem;
             height: 1.5rem;
         }
 
-        .inline-spinner {
-            display: inline-block;
-            --mdc-circular-progress-active-indicator-color: currentColor;
-        }
-
-        .submit-button {
-            min-width: 9rem;
-        }
-
-        .feedback {
+        .submit-feedback {
             padding: 16px 20px;
             border-left: 4px solid;
             border-radius: 4px;
             text-align: center;
         }
 
-        .feedback--success {
-            border-left-color: #2e7d32;
-            background: #f1f8f4;
-        }
-
-        .feedback--success .feedback-message {
-            color: #1b4d20;
-        }
-
-        .feedback--warning {
-            border-left-color: #ed6c02;
-            background: #fff8e6;
-        }
-
-        .feedback--warning .feedback-message {
-            color: #6b3e00;
-        }
-
-        .feedback--error {
-            border-left-color: #c62828;
-            background: #fdecea;
-        }
-
-        .feedback--error .feedback-message {
-            color: #5f1612;
-        }
-
-        .feedback-message {
+        .submit-feedback p {
             margin: 0;
-            font-size: 1rem;
+        }
+
+        .submit-feedback--success {
+            border-left-color: var(--mat-sys-secondary);
+            background: var(--mat-sys-surface-container-low);
+            color: var(--mat-sys-on-surface);
+        }
+
+        .submit-feedback--warning {
+            border-left-color: var(--mat-sys-tertiary);
+            background: var(--mat-sys-surface-container-low);
+            color: var(--mat-sys-on-surface);
+        }
+
+        .submit-feedback--error {
+            border-left-color: var(--mat-sys-error);
+            background: var(--mat-sys-surface-container-low);
+            color: var(--mat-sys-error);
         }
     `]
 })
 export class FormSubmitComponent {
     @Input() label = 'ENVIAR';
-    @Input() color: 'primary' | 'accent' | 'warn' = 'primary';
     @Input() icon?: string;
     @Input() disabled = false;
 

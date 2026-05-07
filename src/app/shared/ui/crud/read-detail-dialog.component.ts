@@ -14,7 +14,7 @@ import {DataCellComponent} from '@shared/ui/crud/data-cell.component';
 @Component({
     standalone: true,
     templateUrl: 'read-detail-dialog.component.html',
-    styleUrls: ['read-detail-dialog.component.css'],
+
     imports: [MatDialogContent, MatDialogActions, MatDialogTitle, MatDialogClose, MatButtonModule, UppercaseWordsPipe,
         DataCellComponent
     ]
