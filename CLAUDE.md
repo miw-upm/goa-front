@@ -1,70 +1,70 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Este archivo proporciona orientación a Claude Code (claude.ai/code) cuando trabaja con el código de este repositorio.
 
-## Commands
+## Comandos
 
 ```bash
-npm run start          # Dev server at http://localhost:4200
-npm run build-prod     # Production build
-npm run test-ci        # Run tests headless with coverage (Karma + Jasmine)
-ng test                # Run tests interactively
+npm run start          # Servidor de desarrollo en http://localhost:4200
+npm run build-prod     # Build de producción
+npm run test-ci        # Ejecutar tests headless con cobertura (Karma + Jasmine)
+ng test                # Ejecutar tests de forma interactiva
 ```
 
-No lint script is defined; Angular compiler checks enforce type safety.
+No hay script de lint definido; las verificaciones del compilador de Angular garantizan la seguridad de tipos.
 
-## Architecture
+## Arquitectura
 
-**goa-front** is an Angular 19 SPA for a legal/business services platform. It serves multiple roles: ADMIN, MANAGER, OPERATOR, and CUSTOMER.
+**goa-front** es una SPA Angular 19 para una plataforma de servicios legales/empresariales. Sirve múltiples roles: ADMIN, MANAGER, OPERATOR y CUSTOMER.
 
-### Key conventions
+### Convenciones clave
 
-- **Standalone components only** — no NgModules anywhere in the project.
-- **Lazy-loaded routes** — every feature module is loaded via `loadComponent` / `loadChildren`.
-- **Signals for state** — Angular 19 native signals, not NgRx or BehaviorSubjects.
-- **Locale**: Spanish (`es`) is set as the default Angular locale.
+- **Solo componentes standalone** — no hay NgModules en ninguna parte del proyecto.
+- **Rutas con carga diferida (lazy-loaded)** — cada módulo de funcionalidad se carga mediante `loadComponent` / `loadChildren`.
+- **Signals para el estado** — signals nativos de Angular 19, no NgRx ni BehaviorSubjects.
+- **Idioma**: Español (`es`) está configurado como el locale por defecto de Angular.
 
-### Route structure
+### Estructura de rutas
 
 ```
-/                        → redirects to /home
-/callback                → OAuth 2.0/OIDC callback (angular-auth-oidc-client)
-/home/*                  → protected, role-gated; lazy-loaded sub-routes:
-    users/               → user management (ADMIN)
-    consents/            → consent management
-    access-links/        → access link creation/management
-    legal-tasks/         → legal task tracking
+/                        → redirige a /home
+/callback                → callback OAuth 2.0/OIDC (angular-auth-oidc-client)
+/home/*                  → protegido, restringido por rol; sub-rutas con carga diferida:
+    users/               → gestión de usuarios (ADMIN)
+    consents/            → gestión de consentimientos
+    access-links/        → creación/gestión de enlaces de acceso
+    legal-tasks/         → seguimiento de tareas legales
     legal-procedure-templates/
-    engagement-letters/  → create, edit, list
-    billing/             → invoices, income, expenses
-    chatbot/             → AI chatbot
+    engagement-letters/  → crear, editar, listar
+    billing/             → facturas, ingresos, gastos
+    chatbot/             → chatbot de IA
     customer-file-download/
-/customer/*              → public customer-facing routes (sign/read engagement letters, edit profile)
+/customer/*              → rutas públicas para el cliente (firmar/leer cartas de encargo, editar perfil)
 ```
 
-### Module map
+### Mapa de módulos
 
-| Path | Responsibility |
-|------|---------------|
-| `src/app/core/auth/` | OIDC authentication, `AuthService`, route guards |
-| `src/app/core/api/` | API endpoint constants, environment-driven base URLs |
-| `src/app/features/home/` | Protected back-office features |
-| `src/app/features/customer/` | Public customer flows |
-| `src/app/features/auth/` | Login callback component |
-| `src/app/shared/ui/` | Reusable dialogs, CRUD components, form inputs, filter components |
-| `src/app/shared/pipes/` | `capitalize`, `uppercase-words` pipes |
+| Ruta | Responsabilidad |
+|------|----------------|
+| `src/app/core/auth/` | Autenticación OIDC, `AuthService`, guards de rutas |
+| `src/app/core/api/` | Constantes de endpoints API, URLs base según entorno |
+| `src/app/features/home/` | Funcionalidades protegidas del back-office |
+| `src/app/features/customer/` | Flujos públicos del cliente |
+| `src/app/features/auth/` | Componente de callback de login |
+| `src/app/shared/ui/` | Diálogos reutilizables, componentes CRUD, inputs de formulario, componentes de filtro |
+| `src/app/shared/pipes/` | Pipes `capitalize`, `uppercase-words` |
 
-### Authentication
+### Autenticación
 
-Uses `angular-auth-oidc-client` (v19). The HTTP auth interceptor is registered functionally at bootstrap. Secure route paths are listed in the environment config. `AuthService` exposes auth state via signals.
+Usa `angular-auth-oidc-client` (v19). El interceptor HTTP de autenticación se registra de forma funcional en el bootstrap. Las rutas seguras están listadas en la configuración del entorno. `AuthService` expone el estado de autenticación mediante signals.
 
-### Environment config
+### Configuración de entorno
 
-Two environments (`environment.ts` for dev, `environment.prod.ts` for prod). Config includes:
-- REST base URLs for microservices: `goa-user`, `goa-engagement`, `goa-billing`, `goa-support`, `goa-document`, `goa-chatbot`
-- Dev: hardcoded `localhost:8080` (API) and `localhost:8086` (chatbot)
-- Prod: derived from `window.location.origin`
+Dos entornos (`environment.ts` para dev, `environment.prod.ts` para prod). La configuración incluye:
+- URLs base REST para microservicios: `goa-user`, `goa-engagement`, `goa-billing`, `goa-support`, `goa-document`, `goa-chatbot`
+- Dev: `localhost:8080` (API) y `localhost:8086` (chatbot) hardcodeados
+- Prod: derivados de `window.location.origin`
 
 ### UI
 
-Angular Material 19 + CDK. Material theme and animations are configured at bootstrap in `main.ts`, not via NgModules.
+Angular Material 19 + CDK. El tema de Material y las animaciones se configuran en el bootstrap en `main.ts`, no mediante NgModules.
