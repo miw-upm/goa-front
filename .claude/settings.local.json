@@ -5,7 +5,8 @@
       "WebFetch(domain:prototyp.digital)",
       "mcp__acp__Edit",
       "mcp__webstorm__list_directory_tree",
-      "Bash(npx ng build:*)"
+      "Bash(npx ng build:*)",
+      "mcp__webstorm__find_files_by_name_keyword"
     ]
   }
 }

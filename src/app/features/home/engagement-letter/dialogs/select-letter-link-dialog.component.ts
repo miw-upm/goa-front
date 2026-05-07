@@ -1,17 +1,27 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+import {
+    MAT_DIALOG_DATA,
+    MatDialogActions,
+    MatDialogClose,
+    MatDialogContent,
+    MatDialogRef,
+    MatDialogTitle
+} from '@angular/material/dialog';
 import {Observable, of} from 'rxjs';
-import {User} from "@features/shared/models/user.model";
-import {MatButtonModule} from "@angular/material/button";
-import {FormSelectComponent} from "@shared/ui/inputs/forms/form-select.component";
-import {FormsModule} from "@angular/forms";
+import {User} from '@features/shared/models/user.model';
+import {MatButton} from '@angular/material/button';
+import {FormSelectComponent} from '@shared/ui/inputs/forms/form-select.component';
+import {FormsModule} from '@angular/forms';
 
 @Component({
     selector: 'app-select-letter-link.dialog',
     standalone: true,
     imports: [
-        MatDialogModule,
-        MatButtonModule,
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatDialogClose,
+        MatButton,
         FormsModule,
         FormSelectComponent
     ],

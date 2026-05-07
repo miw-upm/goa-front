@@ -66,6 +66,99 @@ body {
   --mdc-filled-button-label-text-color: var(--mat-sys-on-error);
 }
 
+// --- Toolbar ---
+.mat-toolbar {
+  justify-content: space-between;
+}
+
+// --- Diálogos ---
+mat-dialog-content,
+.mat-mdc-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+// --- Home: Engagement Letter Form ---
+.engagement-letter-form {
+  max-width: 1400px;
+  margin: 20px auto;
+
+  mat-card-content {
+    padding: 16px;
+  }
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.dates-discount-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.discount-field {
+  width: 120px;
+}
+
+.payment-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.percentage-field {
+  flex: 0 0 20%;
+}
+
+.description-field {
+  flex: 1;
+  min-width: 0;
+}
+
+.owner-fieldset {
+  margin: 16px 0;
+}
+
+// --- Invoice Breakdown Dialog ---
+.invoice-breakdown-dialog {
+  mat-card {
+    margin-bottom: 20px;
+  }
+
+  th.mat-header-cell,
+  td.mat-cell {
+    white-space: nowrap;
+    padding-right: 24px;
+  }
+
+  .id-cell {
+    word-break: break-all;
+  }
+
+  mat-list-item span[matListItemTitle] {
+    color: grey;
+    font-size: 0.8em;
+  }
+
+  mat-list-item span[matListItemLine] {
+    font-size: 1.2em;
+    text-align: right;
+    width: 100%;
+  }
+
+  table {
+    width: 100%;
+  }
+}
+
 // --- Form Submit ---
 app-form-submit {
   display: flex;
