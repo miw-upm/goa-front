@@ -2,32 +2,31 @@ import {booleanAttribute, Component, EventEmitter, Input, Output} from '@angular
 import {AsyncPipe} from '@angular/common';
 import {of} from 'rxjs';
 import {FormsModule} from '@angular/forms';
-import {MatFormFieldModule, MatLabel, MatSuffix} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
-import {MatAutocompleteModule, MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
+import {MatIcon} from '@angular/material/icon';
+import {MatAutocomplete, MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {MatIconButton} from '@angular/material/button';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatInputModule} from '@angular/material/input';
-import {MatOptionModule} from '@angular/material/core';
+import {MatTooltip} from '@angular/material/tooltip';
+import {MatInput} from '@angular/material/input';
+import {MatOption} from '@angular/material/core';
 
 @Component({
     standalone: true,
     selector: 'app-search',
     templateUrl: 'search.component.html',
-    styleUrls: ['search.component.css'],
     imports: [
         FormsModule,
         AsyncPipe,
-        MatFormFieldModule,
+        MatFormField,
         MatLabel,
         MatSuffix,
-        MatIconModule,
+        MatIcon,
         MatIconButton,
-        MatTooltipModule,
-        MatInputModule,
-        MatAutocompleteModule,
+        MatTooltip,
+        MatInput,
+        MatAutocomplete,
         MatAutocompleteTrigger,
-        MatOptionModule
+        MatOption
     ]
 })
 export class SearchComponent {

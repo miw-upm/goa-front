@@ -65,3 +65,60 @@ body {
   --mdc-filled-button-container-color: var(--mat-sys-error);
   --mdc-filled-button-label-text-color: var(--mat-sys-on-error);
 }
+
+// --- Form Submit ---
+app-form-submit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.submit-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.submit-icon--warning {
+  color: var(--mat-sys-tertiary);
+  font-size: 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.submit-icon--error {
+  color: var(--mat-sys-error);
+  font-size: 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.submit-feedback {
+  padding: 16px 20px;
+  border-left: 4px solid;
+  border-radius: 4px;
+  text-align: center;
+
+  p {
+    margin: 0;
+  }
+
+  &--success {
+    border-left-color: var(--mat-sys-secondary);
+    background: var(--mat-sys-surface-container-low);
+    color: var(--mat-sys-on-surface);
+  }
+
+  &--warning {
+    border-left-color: var(--mat-sys-tertiary);
+    background: var(--mat-sys-surface-container-low);
+    color: var(--mat-sys-on-surface);
+  }
+
+  &--error {
+    border-left-color: var(--mat-sys-error);
+    background: var(--mat-sys-surface-container-low);
+    color: var(--mat-sys-error);
+  }
+}

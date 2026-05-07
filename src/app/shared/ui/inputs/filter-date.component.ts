@@ -1,17 +1,17 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormsModule} from "@angular/forms";
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import {FormsModule} from '@angular/forms';
+import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
+import {MatInput} from '@angular/material/input';
+import {MatIcon} from '@angular/material/icon';
+import {MatIconButton} from '@angular/material/button';
+import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 
 @Component({
     standalone: true,
     selector: 'app-filter-date',
     template: `
-        <mat-form-field appearance="outline">
+        <mat-form-field>
             <mat-label>{{ title }}</mat-label>
             <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="date" (ngModelChange)="onDateChange()">
             <button
@@ -30,11 +30,15 @@ import {MatNativeDateModule} from '@angular/material/core';
     `,
     imports: [
         FormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule,
-        MatButtonModule,
-        MatDatepickerModule,
+        MatFormField,
+        MatLabel,
+        MatSuffix,
+        MatInput,
+        MatIcon,
+        MatIconButton,
+        MatDatepicker,
+        MatDatepickerInput,
+        MatDatepickerToggle,
         MatNativeDateModule
     ]
 })

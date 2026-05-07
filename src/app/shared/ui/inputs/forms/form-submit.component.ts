@@ -47,64 +47,7 @@ export type FormSubmitState = 'idle' | 'loading' | 'success' | 'warning' | 'erro
                 <p>{{ message() }}</p>
             </div>
         }
-    `,
-    styles: [`
-        :host {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .submit-wrapper {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .submit-icon--warning {
-            color: var(--mat-sys-tertiary);
-            font-size: 1.5rem;
-            width: 1.5rem;
-            height: 1.5rem;
-        }
-
-        .submit-icon--error {
-            color: var(--mat-sys-error);
-            font-size: 1.5rem;
-            width: 1.5rem;
-            height: 1.5rem;
-        }
-
-        .submit-feedback {
-            padding: 16px 20px;
-            border-left: 4px solid;
-            border-radius: 4px;
-            text-align: center;
-        }
-
-        .submit-feedback p {
-            margin: 0;
-        }
-
-        .submit-feedback--success {
-            border-left-color: var(--mat-sys-secondary);
-            background: var(--mat-sys-surface-container-low);
-            color: var(--mat-sys-on-surface);
-        }
-
-        .submit-feedback--warning {
-            border-left-color: var(--mat-sys-tertiary);
-            background: var(--mat-sys-surface-container-low);
-            color: var(--mat-sys-on-surface);
-        }
-
-        .submit-feedback--error {
-            border-left-color: var(--mat-sys-error);
-            background: var(--mat-sys-surface-container-low);
-            color: var(--mat-sys-error);
-        }
-    `]
+    `
 })
 export class FormSubmitComponent {
     @Input() label = 'ENVIAR';
