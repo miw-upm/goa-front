@@ -8,6 +8,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
 
 import {AuthService} from "@core/auth/auth.service";
+import {Role} from "@core/auth/models/role.model";
 import {FooterComponent} from '@core/layout/footer/footer.component';
 import {UserService} from "../users/user.service";
 import {UserCreationUpdatingDialogComponent} from "../users/dialogs/user-creation-updating-dialog.component";
@@ -54,6 +55,10 @@ export class HomeComponent {
 
     isAuthenticated(): boolean {
         return this.authService.isAuthenticated();
+    }
+
+    isCustomer(): boolean {
+        return this.authService.isCustomer();
     }
 
     name() {

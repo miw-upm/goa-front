@@ -91,6 +91,11 @@
         <span>Asistente IA</span>
     </button>
 
+    <button *ngIf="isCustomer()" mat-menu-item routerLink="/home/reviews">
+        <mat-icon>star</mat-icon>
+        <span>Valoraciones</span>
+    </button>
+
     <button (click)="logout()" mat-menu-item>
         <mat-icon>logout</mat-icon>
         <span>Logout</span>
