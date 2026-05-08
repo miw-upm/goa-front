@@ -4,8 +4,9 @@
 <app-filter-input (enter)="search()" [(value)]="criteria.firstName" title="Nombre"></app-filter-input>
 <app-filter-input (enter)="search()" [(value)]="criteria.familyName" title="Apellidos"></app-filter-input>
 
-<app-crud (create)="create()" (json)="json()" (link)="link($event)" (read)="read($event)"
-          (searchAll)="search()" (update)="update($event)"
-          [data]="users" [deleteAction]=visible [hiddenFields]="['id']" [item]="user" [jsonAction]="true" [linkAction]="true"
-          [title]="title">
-</app-crud>
+<app-crud2 (create)="create()" (json)="json()" (link)="link($event)" (read)="read($event)"
+           (searchAll)="search()" (update)="update($event)"
+           [columns]="columns"
+           [data]="users" [deleteAction]=visible [item]="user" [jsonAction]="true" [linkAction]="true"
+           [title]="title">
+</app-crud2>
