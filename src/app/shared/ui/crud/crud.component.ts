@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {MatCardModule} from '@angular/material/card';
+
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSortModule} from '@angular/material/sort';
@@ -19,10 +19,9 @@ import {TypeToConfirmDialogComponent} from '@shared/ui/dialogs/type-to-confirm-d
     standalone: true,
     selector: 'app-crud',
     templateUrl: 'crud.component.html',
-    styleUrls: ['crud.component.css'],
+
     imports: [
         MatFormFieldModule,
-        MatCardModule,
         MatTableModule,
         MatSortModule,
         MatIconModule,
@@ -33,7 +32,7 @@ import {TypeToConfirmDialogComponent} from '@shared/ui/dialogs/type-to-confirm-d
     ],
 })
 export class CrudComponent {
-    @Input() title = 'Management';
+    @Input() title = 'Gestión';
     @Input() secureDelete = false;
     @Input() typeToDelete: string = null;
 
@@ -115,7 +114,7 @@ export class CrudComponent {
         this.itemSub = item$.subscribe(data => {
             this.dialog.open(ReadDetailDialogComponent, {
                 data: {
-                    title: `Details of ${this.title}`,
+                    title: `Detalles de ${this.title}`,
                     object: data
                 }
             });
@@ -172,9 +171,8 @@ export class CrudComponent {
             const ref = this.dialog.open(CancelYesDialogComponent, {
                 disableClose: true,
                 data: {
-                    title: `Delete ${this.title}`,
-                    message: 'Are you sure you want to delete this item?',
-                    expectedText: `Delete`
+                    title: `Eliminar ${this.title}`,
+                    message: '¿Estás seguro de que deseas eliminar este elemento?'
                 }
             });
 
@@ -184,12 +182,12 @@ export class CrudComponent {
                 }
             });
         } else {
-            const confirmationText: string = this.typeToDelete ? item[this.typeToDelete] : 'Delete';
+            const confirmationText: string = this.typeToDelete ? item[this.typeToDelete] : 'ELIMINAR';
             this.dialog.open(TypeToConfirmDialogComponent, {
                 disableClose: true,
                 data: {
-                    title: `Delete ${this.title}`,
-                    message: 'Type the confirmation text to proceed.',
+                    title: `Eliminar ${this.title}`,
+                    message: 'Escribe el texto de confirmación para continuar.',
                     expectedText: confirmationText
                 }
             }).afterClosed()

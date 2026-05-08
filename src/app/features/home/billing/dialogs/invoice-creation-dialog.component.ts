@@ -9,9 +9,9 @@ import {
     MatDialogContent,
     MatDialogTitle
 } from '@angular/material/dialog';
-import {MatButtonModule} from '@angular/material/button';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';
+import {MatButton} from '@angular/material/button';
+import {MatFormField, MatLabel} from '@angular/material/form-field';
+import {MatOption, MatSelect} from '@angular/material/select';
 import {forkJoin, Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -43,20 +43,15 @@ interface InvoiceSelectableIncome extends Income {
         MatDialogContent,
         MatDialogActions,
         MatDialogClose,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatSelectModule,
+        MatButton,
+        MatFormField,
+        MatLabel,
+        MatSelect,
+        MatOption,
         AppDateFieldComponent
     ],
     providers: [EngagementLetterService],
-    templateUrl: 'invoice-creation-dialog.component.html',
-    styles: [
-        `
-            .full-width {
-                width: 100%;
-            }
-        `
-    ]
+    templateUrl: 'invoice-creation-dialog.component.html'
 })
 export class InvoiceCreationDialogComponent {
     title: string;

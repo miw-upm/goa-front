@@ -1,10 +1,14 @@
 import {Component, Inject} from '@angular/core';
 import {FormsModule, NgModel} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import {
+    MAT_DIALOG_DATA,
+    MatDialogActions,
+    MatDialogContent,
+    MatDialogRef,
+    MatDialogTitle
+} from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatListModule} from '@angular/material/list';
+import {MatCheckbox} from '@angular/material/checkbox';
 
 import {FormListComponent} from '@shared/ui/inputs/forms/form-list.component';
 import {InputData} from '@shared/ui/inputs/input-data.component';
@@ -20,13 +24,12 @@ import {LegalProcedure} from '../models/legal-procedure.model';
     selector: 'app-legal-procedure-edit-dialog',
     providers: [SharedLegalTaskService],
     templateUrl: './legal-procedure-edit-dialog.component.html',
-    styleUrls: ['./legal-procedure-edit-dialog.component.css'],
     imports: [
         FormsModule,
-        MatFormFieldModule,
-        MatCheckboxModule,
-        MatDialogModule,
-        MatListModule,
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatCheckbox,
         FormListComponent,
         FormFieldComponent,
         AppDateFieldComponent,

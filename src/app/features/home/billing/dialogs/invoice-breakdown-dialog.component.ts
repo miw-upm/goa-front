@@ -1,18 +1,24 @@
 import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
+import {
+    MAT_DIALOG_DATA,
+    MatDialogActions,
+    MatDialogClose,
+    MatDialogContent,
+    MatDialogTitle
+} from '@angular/material/dialog';
 import {CommonModule} from '@angular/common';
 import {MatTableModule} from '@angular/material/table';
-import {MatCardModule} from '@angular/material/card';
-import {MatListModule} from '@angular/material/list';
+import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
+import {MatList, MatListItem} from '@angular/material/list';
 import {InvoiceBreakdown} from '../models/invoice-breakdown.model';
-import {MatButtonModule} from "@angular/material/button";
+import {MatButton} from '@angular/material/button';
 
 @Component({
     standalone: true,
     selector: 'app-invoice-breakdown-dialog',
     template: `
         <h2 mat-dialog-title>Desglose de Factura</h2>
-        <mat-dialog-content>
+        <mat-dialog-content class="invoice-breakdown-dialog">
             <mat-card class="mat-elevation-z4">
                 <mat-card-header>
                     <mat-card-title>Ingresos</mat-card-title>
@@ -89,42 +95,20 @@ import {MatButtonModule} from "@angular/material/button";
             <button mat-button mat-dialog-close>Cerrar</button>
         </mat-dialog-actions>
     `,
-    styles: [`
-        mat-card {
-            margin-bottom: 20px;
-        }
-
-        th.mat-header-cell, td.mat-cell {
-            white-space: nowrap;
-            padding-right: 24px;
-        }
-
-        .id-cell {
-            word-break: break-all;
-        }
-
-        mat-list-item span[matListItemTitle] {
-            color: grey;
-            font-size: 0.8em;
-        }
-
-        mat-list-item span[matListItemLine] {
-            font-size: 1.2em;
-            text-align: right;
-            width: 100%;
-        }
-
-        table {
-            width: 100%;
-        }
-    `],
     imports: [
         CommonModule,
-        MatDialogModule,
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatDialogClose,
         MatTableModule,
-        MatCardModule,
-        MatListModule,
-        MatButtonModule
+        MatCard,
+        MatCardHeader,
+        MatCardTitle,
+        MatCardContent,
+        MatList,
+        MatListItem,
+        MatButton
     ]
 })
 export class InvoiceBreakdownDialogComponent {

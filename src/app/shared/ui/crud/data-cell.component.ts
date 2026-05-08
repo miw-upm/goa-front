@@ -7,7 +7,7 @@ import {UppercaseWordsPipe} from '@shared/pipes/uppercase-words.pipe';
     standalone: true,
     selector: 'app-data-cell',
     templateUrl: './data-cell.component.html',
-    styleUrls: ['./data-cell.component.css'],
+
     imports: [DatePipe, UppercaseWordsPipe]
 })
 export class DataCellComponent {

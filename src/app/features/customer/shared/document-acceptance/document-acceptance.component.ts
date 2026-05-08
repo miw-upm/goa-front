@@ -34,7 +34,6 @@ export interface DocumentAcceptanceContext {
     standalone: true,
     selector: 'app-document-acceptance',
     templateUrl: './document-acceptance.component.html',
-    styleUrls: ['./document-acceptance.component.scss'],
     imports: [
         NgIf,
         NgOptimizedImage,

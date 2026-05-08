@@ -24,7 +24,7 @@
             @for (item of value; track item) {
                 <li>
                     @if (isObject(item) || isArray(item)) {
-                        <app-data-cell [value]="item" [fullList]="true"/>
+                        <app-data-cell [fullList]="true" [value]="item"/>
                     } @else {
                         {{ item }}.
                     }
@@ -37,7 +37,7 @@
                 <li>
                     <strong>{{ entry[0] | uppercaseWords }}:</strong>
                     @if (isObject(entry[1]) || isArray(entry[1])) {
-                        <app-data-cell [value]="entry[1]" [fullList]="true"/>
+                        <app-data-cell [fullList]="true" [value]="entry[1]"/>
                     } @else {
                         {{ entry[1] }}
                     }

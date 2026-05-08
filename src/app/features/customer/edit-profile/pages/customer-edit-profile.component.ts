@@ -1,16 +1,11 @@
-import {Component} from "@angular/core";
-import {JsonPipe, NgIf, NgOptimizedImage} from "@angular/common";
-import {FormsModule, NgModel} from "@angular/forms";
-import {Observable} from "rxjs";
-import {MatCardModule} from "@angular/material/card";
-import {MatOptionModule} from "@angular/material/core";
-import {MatDialogModule} from "@angular/material/dialog";
-import {MatInputModule} from "@angular/material/input";
-import {MatSelectModule} from "@angular/material/select";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {ActivatedRoute} from "@angular/router";
-import {MatButtonModule} from "@angular/material/button";
-import {MatCheckbox} from "@angular/material/checkbox";
+import {Component} from '@angular/core';
+import {NgOptimizedImage} from '@angular/common';
+import {FormsModule, NgModel} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
+import {MatDialogActions, MatDialogContent} from '@angular/material/dialog';
+import {ActivatedRoute} from '@angular/router';
+import {MatCheckbox} from '@angular/material/checkbox';
 
 import {FormFieldComponent} from "@shared/ui/inputs/forms/form-field.component";
 import {FormSelectComponent} from "@shared/ui/inputs/forms/form-select.component";
@@ -30,21 +25,17 @@ import {FormNifComponent} from "@shared/ui/inputs/forms/form-nif.component";
     imports: [
         FormsModule,
         NgOptimizedImage,
-        MatCardModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        MatOptionModule,
-        MatButtonModule,
-        MatDialogModule,
+        MatCard,
+        MatCardTitle,
+        MatCardContent,
+        MatDialogContent,
+        MatDialogActions,
+        MatCheckbox,
         FormFieldComponent,
         FormSelectComponent,
-        MatCheckbox,
         FormSubmitComponent,
-        FormNifComponent,
         FormNifComponent
-    ],
-    styleUrl: './customer-edit-profile.component.css'
+    ]
 })
 export class CustomerEditProfileComponent {
     user: User;

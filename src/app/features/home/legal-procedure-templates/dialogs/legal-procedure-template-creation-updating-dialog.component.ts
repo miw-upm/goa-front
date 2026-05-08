@@ -8,12 +8,7 @@ import {
     MatDialogContent,
     MatDialogTitle
 } from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import {MatListModule} from '@angular/material/list';
-import {MatNativeDateModule} from '@angular/material/core';
+import {MatButton} from '@angular/material/button';
 
 import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
 import {InputData} from '@shared/ui/inputs/input-data.component';
@@ -33,19 +28,13 @@ import {LegalProcedureTemplateService} from '../legal-procedure-template.service
         MatDialogContent,
         MatDialogActions,
         MatDialogClose,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        MatIconModule,
-        MatListModule,
-        MatNativeDateModule,
+        MatButton,
         SearchByLegalTaskComponent,
         FormFieldComponent,
         InputData,
         FormListComponent
     ],
-    templateUrl: 'legal-procedure-template-creation-updating-dialog.component.html',
-    styleUrls: ['legal-procedure-template-dialog.component.css']
+    templateUrl: 'legal-procedure-template-creation-updating-dialog.component.html'
 })
 
 export class LegalProcedureTemplateCreationUpdatingDialogComponent {

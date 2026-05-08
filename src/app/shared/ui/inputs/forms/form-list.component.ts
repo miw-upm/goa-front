@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {CdkDragDrop, DragDropModule, moveItemInArray} from '@angular/cdk/drag-drop';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
+import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
+import {MatIconButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
 import {MatDialog} from "@angular/material/dialog";
 import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
 import {TypeToConfirmDialogComponent} from "@shared/ui/dialogs/type-to-confirm-dialog.component";
@@ -9,7 +9,7 @@ import {TypeToConfirmDialogComponent} from "@shared/ui/dialogs/type-to-confirm-d
 @Component({
     standalone: true,
     selector: 'app-form-list',
-    imports: [DragDropModule, MatButtonModule, MatIconModule],
+    imports: [CdkDropList, CdkDrag, MatIconButton, MatIcon],
     template: `
         <div cdkDropList class="example-list" (cdkDropListDropped)="onDrop($event)">
             @for (item of items; track $index; let i = $index) {

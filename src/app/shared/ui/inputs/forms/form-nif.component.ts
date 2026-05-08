@@ -1,5 +1,5 @@
 import {AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
-import {AbstractControl, NgModel, ValidationErrors, Validators} from '@angular/forms';
+import {AbstractControl, NgModel, ValidationErrors} from '@angular/forms';
 import {FormFieldComponent} from './form-field.component';
 
 @Component({
@@ -22,52 +22,21 @@ import {FormFieldComponent} from './form-field.component';
     `
 })
 export class FormNifComponent implements AfterViewInit {
+    private static readonly DNI_LETTERS = 'TRWAGMYFPDXBNJZSQVHLCKE';
+    private static readonly NIE_PREFIX_MAP: Record<string, string> = {X: '0', Y: '1', Z: '2'};
+    private static readonly CIF_LETTERS = 'JABCDEFGHI';
     @Input() label = 'N.I.F. (DNI, NIE o CIF)';
     @Input() value: string | undefined;
     @Input() required = false;
     @Input() disabled = false;
     @Input() errorMessage = 'DNI, NIE o CIF inválido';
-
     @Output() valueChange = new EventEmitter<string>();
-
-    @ViewChild('field', {static: true}) private readonly field?: FormFieldComponent;
-
     readonly NIF_PATTERN =
         '^([0-9]{8}[A-Z]|[XYZ][0-9]{7}[A-Z]|[ABCDEFGHJNPQRSUVW][0-9]{7}[0-9A-J])$';
-
-    private static readonly DNI_LETTERS = 'TRWAGMYFPDXBNJZSQVHLCKE';
-    private static readonly NIE_PREFIX_MAP: Record<string, string> = {X: '0', Y: '1', Z: '2'};
-    private static readonly CIF_LETTERS = 'JABCDEFGHI';
+    @ViewChild('field', {static: true}) private readonly field?: FormFieldComponent;
 
     get ngModel(): NgModel | undefined {
         return this.field?.ngModel;
-    }
-
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            const control = this.field?.ngModel?.control;
-            if (!control) return;
-            control.addValidators((c: AbstractControl): ValidationErrors | null => {
-                const v: string = c.value;
-                if (!v) return null;
-                return FormNifComponent.hasValidCheckDigit(v) ? null : {nif: true};
-            });
-            control.updateValueAndValidity();
-            if (control.invalid) {
-                control.markAsTouched();
-            }
-        });
-    }
-
-    onValueChange(raw: string): void {
-        const normalized = this.normalize(raw);
-        this.valueChange.emit(normalized);
-    }
-
-    private normalize(raw: string): string {
-        if (raw == null) return raw;
-        const cleaned = raw.replace(/[\s\-_.]/g, '').toUpperCase();
-        return FormNifComponent.padDniWithZeros(cleaned);
     }
 
     private static padDniWithZeros(value: string): string {
@@ -120,5 +89,32 @@ export class FormNifComponent implements AfterViewInit {
             return controlChar === String(controlDigit);
         }
         return controlChar === String(controlDigit) || controlChar === FormNifComponent.CIF_LETTERS[controlDigit];
+    }
+
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            const control = this.field?.ngModel?.control;
+            if (!control) return;
+            control.addValidators((c: AbstractControl): ValidationErrors | null => {
+                const v: string = c.value;
+                if (!v) return null;
+                return FormNifComponent.hasValidCheckDigit(v) ? null : {nif: true};
+            });
+            control.updateValueAndValidity();
+            if (control.invalid) {
+                control.markAsTouched();
+            }
+        });
+    }
+
+    onValueChange(raw: string): void {
+        const normalized = this.normalize(raw);
+        this.valueChange.emit(normalized);
+    }
+
+    private normalize(raw: string): string {
+        if (raw == null) return raw;
+        const cleaned = raw.replace(/[\s\-_.]/g, '').toUpperCase();
+        return FormNifComponent.padDniWithZeros(cleaned);
     }
 }

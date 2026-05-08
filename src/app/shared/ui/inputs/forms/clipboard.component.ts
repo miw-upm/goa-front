@@ -9,7 +9,7 @@ import {MatTooltip} from '@angular/material/tooltip';
 @Component({
     standalone: true,
     selector: 'app-form-clipboard',
-    imports: [MatFormField, MatLabel, MatInput, FormsModule, MatIcon, MatIconButton, MatSuffix, MatTooltip, MatTooltip],
+    imports: [MatFormField, MatLabel, MatInput, FormsModule, MatIcon, MatIconButton, MatSuffix, MatTooltip],
     template: `
         <mat-form-field class="full-width">
             <mat-label>{{ label }}</mat-label>
@@ -20,13 +20,7 @@ import {MatTooltip} from '@angular/material/tooltip';
             </button>
         </mat-form-field>
     `,
-    styles: [
-        `
-            .full-width {
-                width: 100%;
-            }
-        `
-    ]
+
 
 })
 export class ClipboardComponent {

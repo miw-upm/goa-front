@@ -3,12 +3,12 @@ import {
     MAT_DIALOG_DATA,
     MatDialogActions,
     MatDialogClose,
+    MatDialogContent,
     MatDialogRef,
     MatDialogTitle
 } from '@angular/material/dialog';
 import {FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 
@@ -19,7 +19,7 @@ export type TypeToConfirmDialogData = {
 };
 
 const DEFAULT_DIALOG_DATA: Required<TypeToConfirmDialogData> = {
-    title: 'Confirmar Acción',
+    title: 'Confirmar acción',
     message: 'Escribe el texto indicado para continuar',
     expectedText: 'CONFIRMAR'
 };
@@ -27,13 +27,12 @@ const DEFAULT_DIALOG_DATA: Required<TypeToConfirmDialogData> = {
 @Component({
     standalone: true,
     templateUrl: './type-to-confirm-dialog.component.html',
-    styleUrls: ['./dialog.component.css'],
     imports: [
         MatDialogTitle,
+        MatDialogContent,
         MatDialogActions,
         MatDialogClose,
         MatButtonModule,
-        MatIconModule,
         MatFormFieldModule,
         MatInputModule,
         ReactiveFormsModule

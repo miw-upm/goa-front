@@ -3,7 +3,6 @@ import {FormsModule} from '@angular/forms';
 import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/material/datepicker';
-import {MatIconModule} from '@angular/material/icon';
 
 @Component({
     standalone: true,
@@ -16,8 +15,7 @@ import {MatIconModule} from '@angular/material/icon';
         MatInput,
         MatDatepicker,
         MatDatepickerInput,
-        MatDatepickerToggle,
-        MatIconModule
+        MatDatepickerToggle
     ],
     template: `
         <mat-form-field class="full-width">
@@ -33,11 +31,7 @@ import {MatIconModule} from '@angular/material/icon';
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
     `,
-    styles: [`
-        .full-width {
-            width: 100%;
-        }
-    `]
+
 })
 export class AppDateFieldComponent implements OnChanges {
     @Input() label!: string;

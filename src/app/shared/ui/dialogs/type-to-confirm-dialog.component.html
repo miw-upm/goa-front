@@ -1,29 +1,20 @@
-<h3 mat-dialog-title>
-    <mat-icon color="warn">warning</mat-icon>
-    {{ data?.title ?? 'Dangerous operation' }}
-</h3>
+<h3 mat-dialog-title>{{ data?.title ?? 'Operación peligrosa' }}</h3>
 
-<div style="padding: 0 24px 12px;">
-    <div class="mat-body-1">{{ data?.message ?? 'Type the confirmation text to proceed.' }}</div>
+<mat-dialog-content>
+    <p>{{ data?.message ?? 'Escribe el texto de confirmación para continuar.' }}</p>
+    <p><strong>Escribe exactamente: {{ data.expectedText }}</strong></p>
 
-    <div class="mat-body-2" style="margin-top: 10px;">
-        Type exactly: <strong>{{ data.expectedText }}</strong>
-    </div>
-
-    <mat-form-field appearance="outline" style="width: 100%; margin-top: 12px;">
-        <input
-                (keyup.enter)="confirm()"
-                [formControl]="input"
-                [placeholder]="'Type: ' + data.expectedText"
-                autocomplete="off"
-                matInput
-        />
+    <mat-form-field appearance="outline">
+        <mat-label>Confirmación</mat-label>
+        <input (keyup.enter)="confirm()"
+               [formControl]="input"
+               [placeholder]="data.expectedText ?? ''"
+               autocomplete="off"
+               matInput/>
     </mat-form-field>
-</div>
+</mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button (click)="confirm()" [disabled]="!canConfirm" color="warn" mat-raised-button>
-        Delete
-    </button>
-    <button color="primary" mat-dialog-close mat-raised-button>Cancel</button>
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button (click)="confirm()" [disabled]="!canConfirm" class="warn" mat-flat-button>Eliminar</button>
 </mat-dialog-actions>

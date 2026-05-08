@@ -9,11 +9,8 @@ import {
     MatDialogRef,
     MatDialogTitle
 } from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatButtonModule} from '@angular/material/button';
-import {MatSelectModule} from "@angular/material/select";
+import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {MatButton} from '@angular/material/button';
 
 import {AuthService} from '@core/auth/auth.service';
 import {FormSelectComponent} from '@shared/ui/inputs/forms/form-select.component';
@@ -32,18 +29,14 @@ import {FormNifComponent} from "@shared/ui/inputs/forms/form-nif.component";
         MatDialogContent,
         MatDialogActions,
         MatDialogClose,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSlideToggleModule,
-        MatButtonModule,
-        MatSelectModule,
+        MatSlideToggle,
+        MatButton,
         FormSelectComponent,
         FormFieldComponent,
         AppDateFieldComponent,
         FormNifComponent,
     ],
-    templateUrl: 'user-creation-updating-dialog.component.html',
-    styleUrls: ['user-dialog.component.css']
+    templateUrl: 'user-creation-updating-dialog.component.html'
 })
 
 export class UserCreationUpdatingDialogComponent {

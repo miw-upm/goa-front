@@ -1,7 +1,11 @@
-<app-filter-input (enter)="search()" [(value)]="searchTitle" title="Titulo"></app-filter-input>
+<app-title (create)="create()" [createAction]="true" subtitle="Gestión" title="Tareas Legales"></app-title>
 
-<app-crud (create)="create()" (delete)="delete($event)" (read)="read($event)" (searchAll)="search()"
-          (update)="update($event)"
-          [data]="tasks" [deleteAction]=deleteVisibility [hiddenFields]="['id']" [item]="task"
-          [secureDelete]="true" [title]="crudTitle">
-</app-crud>
+<div class="filters-card">
+    <app-filter-input (enter)="search()" [(value)]="searchTitle" title="Titulo"></app-filter-input>
+</div>
+
+<app-crud2 (create)="create()" (delete)="delete($event)" (read)="read($event)"
+           (searchAll)="search()" (update)="update($event)"
+           [columns]="columns" [data]="tasks" [deleteAction]=deleteVisibility
+           [item]="task" [secureDelete]="true">
+</app-crud2>

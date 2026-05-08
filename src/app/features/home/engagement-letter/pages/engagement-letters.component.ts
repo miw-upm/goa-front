@@ -4,9 +4,9 @@ import {Observable, of} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
-
-import {CrudComponent} from '@shared/ui/crud/crud.component';
+import {Crud2Component} from '@shared/ui/crud2/crud2.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
+import {TitleComponent} from '@shared/ui/title/title.component';
 import {CancelYesDialogComponent} from '@shared/ui/dialogs/cancel-yes-dialog.component';
 import {ClipboardToastDialogComponent} from '@shared/ui/dialogs/clipboard-toast-dialog.component';
 import {AuthService} from '@core/auth/auth.service';
@@ -15,19 +15,19 @@ import {EngagementLetterService} from '../engagement-letter.service';
 import {EngagementLetterFindCriteria} from '../models/engagement-letter-find-criteria.model';
 import {EngagementLetter} from '../models/engagement-letter.model';
 import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
+import {ENGAGEMENT_LETTERS_COLUMNS} from './engagement-letters-columns.config';
 
 @Component({
     standalone: true,
     providers: [EngagementLetterService],
-    imports: [FormsModule, CrudComponent, FilterInputComponent, MatButtonToggleGroup, MatButtonToggle],
+    imports: [FormsModule, Crud2Component, FilterInputComponent, TitleComponent, MatButtonToggleGroup, MatButtonToggle],
     templateUrl: 'engagement-letters.component.html'
 })
 export class EngagementLettersComponent implements OnInit {
     title = 'Hojas de Encargo';
     engagementLetters: Observable<EngagementLetter[]> = of([]);
     engagementLetter: Observable<EngagementLetter>;
-    hiddenFields = ['id', 'discount', 'attachments', 'paymentMethods', 'legalClause']
-    changeFields = ['owner:firstName,familyName,mobile'];
+    columns = ENGAGEMENT_LETTERS_COLUMNS;
 
     deleteVisibility = false;
     criteria: EngagementLetterFindCriteria = {opened: true};

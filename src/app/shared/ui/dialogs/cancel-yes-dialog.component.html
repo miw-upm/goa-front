@@ -1,11 +1,10 @@
-<h3 mat-dialog-title>
-    <mat-icon color="warn">warning</mat-icon>
-    {{ data?.title ?? 'Dangerous operation' }}.
-</h3>
-<div class="mat-body-1" style="padding: 0 24px 12px;">
-    <p style="white-space: pre-line">{{ data?.message ?? 'Are you sure?' }}</p>
-</div>
-<mat-dialog-actions>
-    <button [mat-dialog-close]="true" mat-raised-button>Yes</button>
-    <button color="primary" mat-dialog-close mat-raised-button>Cancel</button>
+<h3 mat-dialog-title>{{ data?.title ?? 'Operación peligrosa' }}</h3>
+
+<mat-dialog-content>
+    <p>{{ data?.message ?? '¿Estás seguro?' }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button [mat-dialog-close]="true" class="warn" mat-flat-button>Sí</button>
 </mat-dialog-actions>

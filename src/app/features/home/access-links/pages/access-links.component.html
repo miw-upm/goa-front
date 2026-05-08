@@ -1,9 +1,13 @@
-<mat-slide-toggle (change)="search()" [(ngModel)]="criteria.expired">Expirado sin uso</mat-slide-toggle>
-<app-filter-input (enter)="search()" [(value)]="criteria.client" title="Cliente"></app-filter-input>
-<app-filter-input (enter)="search()" [(value)]="criteria.scope" title="Alcance del link"></app-filter-input>
+<app-title subtitle="Gestión" title="Enlaces de Clientes"></app-title>
 
-<app-crud (delete)="delete($event)" (read)=read($event) (searchAll)="search()"
-          [createAction]="false" [data]="accessLinks" [deleteAction]=visible
-          [hiddenFields]="['id','urlId','createdAt','documentId']"
-          [item]="accessLink" [title]="title" [updateAction]="false"
-          typeToDelete="mobile"></app-crud>
+<div class="filters-card">
+    <mat-slide-toggle (change)="search()" [(ngModel)]="criteria.expired">Expirado sin uso</mat-slide-toggle>
+    <app-filter-input (enter)="search()" [(value)]="criteria.client"
+                      title="Buscar por nombre, apellido, móvil..."></app-filter-input>
+    <app-filter-input (enter)="search()" [(value)]="criteria.scope" title="Tipo de enlace"></app-filter-input>
+</div>
+
+<app-crud2 (delete)="delete($event)" (read)=read($event) (searchAll)="search()"
+           [columns]="columns" [createAction]="false" [data]="accessLinks"
+           [deleteAction]=visible [item]="accessLink" [updateAction]="false"
+           typeToDelete="mobile"></app-crud2>
