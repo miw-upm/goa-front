@@ -5,12 +5,12 @@
         @for (key of labels(object); track key) {
             <div>
                 <strong>{{ key | uppercaseWords }}:</strong>
-                <app-data-cell [value]="object[key]" [fullList]="true"></app-data-cell>
+                <app-data-cell [fullList]="true" [value]="object[key]"></app-data-cell>
             </div>
         }
     }
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-flat-button mat-dialog-close>Cerrar</button>
+    <button mat-dialog-close mat-flat-button>Cerrar</button>
 </mat-dialog-actions>

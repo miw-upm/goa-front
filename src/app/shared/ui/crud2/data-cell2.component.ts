@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {DatePipe, DecimalPipe, CurrencyPipe} from '@angular/common';
+import {CurrencyPipe, DatePipe, DecimalPipe} from '@angular/common';
 
 import {CrudColumnConfig, CrudColumnFormat} from './crud-column.config';
 import {UppercaseWordsPipe} from '@shared/pipes/uppercase-words.pipe';
@@ -68,16 +68,6 @@ export class DataCell2Component {
 
     get hasConfig(): boolean {
         return !!this.config;
-    }
-
-    /** Resuelve un path con dot notation (ej: 'owner.firstName') sobre un objeto */
-    private resolve(obj: any, path: string): any {
-        return path.split('.').reduce((o, k) => o?.[k], obj);
-    }
-
-    /** fields efectivos: si no hay ni fieldsTitle ni fields, se infiere [key] */
-    private get effectiveFields(): string[] {
-        return this.config?.fields?.length ? this.config.fields : (!this.config?.fieldsTitle?.length ? [this.config?.key ?? ''] : []);
     }
 
     /** Tiene fieldsTitle → línea resaltada */
@@ -152,26 +142,17 @@ export class DataCell2Component {
         return `bool-${color}`;
     }
 
-    // --- Array helpers (arrayField) ---
-
     get isArrayMode(): boolean {
         if (!this.config?.arrayField || !this.row) return false;
         const val = this.resolve(this.row, this.config.key);
         return Array.isArray(val);
     }
 
-    private get arrayItems(): string[] {
-        if (!this.config?.arrayField || !this.row) return [];
-        const arr = this.resolve(this.row, this.config.key);
-        if (!Array.isArray(arr)) return [];
-        return arr
-            .map((item: any) => this.resolve(item, this.config.arrayField))
-            .filter((v: any) => v !== null && v !== undefined && v !== '');
-    }
-
     get arrayFirst(): string {
         return this.arrayItems[0] ?? '';
     }
+
+    // --- Array helpers (arrayField) ---
 
     get arraySecond(): string {
         return this.arrayItems[1] ?? '';
@@ -185,11 +166,25 @@ export class DataCell2Component {
         return this.config?.dateFormat ?? 'dd/MM/yyyy HH:mm';
     }
 
-    // --- Legacy helpers (modo sin config, compatibilidad con v1) ---
+    /** fields efectivos: si no hay ni fieldsTitle ni fields, se infiere [key] */
+    private get effectiveFields(): string[] {
+        return this.config?.fields?.length ? this.config.fields : (!this.config?.fieldsTitle?.length ? [this.config?.key ?? ''] : []);
+    }
+
+    private get arrayItems(): string[] {
+        if (!this.config?.arrayField || !this.row) return [];
+        const arr = this.resolve(this.row, this.config.key);
+        if (!Array.isArray(arr)) return [];
+        return arr
+            .map((item: any) => this.resolve(item, this.config.arrayField))
+            .filter((v: any) => v !== null && v !== undefined && v !== '');
+    }
 
     isArray(val: any): boolean {
         return Array.isArray(val);
     }
+
+    // --- Legacy helpers (modo sin config, compatibilidad con v1) ---
 
     isObject(val: any): boolean {
         return typeof val === 'object' && val !== null && !Array.isArray(val);
@@ -213,5 +208,10 @@ export class DataCell2Component {
             .map(field => obj?.[field])
             .filter(v => v !== null && v !== undefined && v !== '')
             .join(' ');
+    }
+
+    /** Resuelve un path con dot notation (ej: 'owner.firstName') sobre un objeto */
+    private resolve(obj: any, path: string): any {
+        return path.split('.').reduce((o, k) => o?.[k], obj);
     }
 }

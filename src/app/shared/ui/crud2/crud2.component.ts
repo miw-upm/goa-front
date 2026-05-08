@@ -125,23 +125,6 @@ export class Crud2Component {
         return this.autoColumns.filter(col => !hidden.includes(col));
     }
 
-    getColumnConfig(key: string): CrudColumnConfig | undefined {
-        return this.columns.find(c => c.key === key);
-    }
-
-    getColumnLabel(key: string): string {
-        const config = this.getColumnConfig(key);
-        return config ? config.label : key;
-    }
-
-    getChangeFields(column: string): string[] {
-        const rule = this.changeFields.find(item => item.startsWith(column + ':'));
-        if (!rule) return [];
-        const [, fieldsPart] = rule.split(':');
-        if (!fieldsPart) return [];
-        return fieldsPart.split(',').map(x => x.trim()).filter(Boolean);
-    }
-
     @Input()
     set data(data$: Observable<any[]>) {
         this.dataSub?.unsubscribe();
@@ -167,6 +150,23 @@ export class Crud2Component {
                 }
             });
         });
+    }
+
+    getColumnConfig(key: string): CrudColumnConfig | undefined {
+        return this.columns.find(c => c.key === key);
+    }
+
+    getColumnLabel(key: string): string {
+        const config = this.getColumnConfig(key);
+        return config ? config.label : key;
+    }
+
+    getChangeFields(column: string): string[] {
+        const rule = this.changeFields.find(item => item.startsWith(column + ':'));
+        if (!rule) return [];
+        const [, fieldsPart] = rule.split(':');
+        if (!fieldsPart) return [];
+        return fieldsPart.split(',').map(x => x.trim()).filter(Boolean);
     }
 
     hasMoreActions(): boolean {

@@ -6,7 +6,7 @@
         <ng-container [matColumnDef]="def">
             <mat-header-cell *matHeaderCellDef>{{ def | uppercaseWords }}</mat-header-cell>
             <mat-cell *matCellDef="let row">
-                <app-data-cell [value]="row[def]" [changeFields]="getChangeFields(def)"></app-data-cell>
+                <app-data-cell [changeFields]="getChangeFields(def)" [value]="row[def]"></app-data-cell>
             </mat-cell>
         </ng-container>
     }
@@ -14,100 +14,100 @@
     <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>
             @if (createAction) {
-                <button (click)="onCreate()" mat-icon-button aria-label="Crear">
+                <button (click)="onCreate()" aria-label="Crear" mat-icon-button>
                     <mat-icon>add_circle</mat-icon>
                 </button>
             }
             @if (searchAction) {
-                <button (click)="onSearch()" mat-icon-button aria-label="Buscar">
+                <button (click)="onSearch()" aria-label="Buscar" mat-icon-button>
                     <mat-icon>search</mat-icon>
                 </button>
             }
             @if (jsonAction) {
-                <button (click)="onJson()" mat-icon-button aria-label="Exportar JSON">
+                <button (click)="onJson()" aria-label="Exportar JSON" mat-icon-button>
                     <mat-icon>download</mat-icon>
                 </button>
             }
         </mat-header-cell>
         <mat-cell *matCellDef="let item">
-            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="Acciones">
+            <button [matMenuTriggerFor]="moreMenu" aria-label="Acciones" mat-icon-button>
                 <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #moreMenu="matMenu">
                 @if (readAction) {
-                    <button mat-menu-item (click)="onRead(item)" class="menu-item-primary">
+                    <button (click)="onRead(item)" class="menu-item-primary" mat-menu-item>
                         <mat-icon>visibility</mat-icon>
                         <span>Ver</span>
                     </button>
                 }
                 @if (printAction) {
-                    <button mat-menu-item (click)="onPrint(item)" class="menu-item-primary">
+                    <button (click)="onPrint(item)" class="menu-item-primary" mat-menu-item>
                         <mat-icon>picture_as_pdf</mat-icon>
                         <span>Ver PDF</span>
                     </button>
                 }
                 @if (linkAction) {
-                    <button mat-menu-item (click)="onLink(item)">
+                    <button (click)="onLink(item)" mat-menu-item>
                         <mat-icon>link</mat-icon>
                         <span>Enlace</span>
                     </button>
                 }
                 @if (updateAction) {
-                    <button mat-menu-item (click)="onUpdate(item)">
+                    <button (click)="onUpdate(item)" mat-menu-item>
                         <mat-icon>edit</mat-icon>
                         <span>Editar</span>
                     </button>
                 }
                 @if (assistantAction) {
-                    <button mat-menu-item (click)="onAssistant(item)">
+                    <button (click)="onAssistant(item)" mat-menu-item>
                         <mat-icon>smart_toy</mat-icon>
                         <span>Asistente</span>
                     </button>
                 }
                 @if (eventsAction) {
-                    <button mat-menu-item (click)="onEvents(item)">
+                    <button (click)="onEvents(item)" mat-menu-item>
                         <mat-icon>calendar_month</mat-icon>
                         <span>Eventos</span>
                     </button>
                 }
                 @if (timelineAction) {
-                    <button mat-menu-item (click)="onTimeline(item)">
+                    <button (click)="onTimeline(item)" mat-menu-item>
                         <mat-icon>timeline</mat-icon>
                         <span>Timeline</span>
                     </button>
                 }
                 @if (alertsAction) {
-                    <button mat-menu-item (click)="onAlerts(item)">
+                    <button (click)="onAlerts(item)" mat-menu-item>
                         <mat-icon>notifications</mat-icon>
                         <span>Alertas</span>
                     </button>
                 }
                 @if (notificationsAction) {
-                    <button mat-menu-item (click)="onNotifications(item)">
+                    <button (click)="onNotifications(item)" mat-menu-item>
                         <mat-icon>alarm</mat-icon>
                         <span>Avisos</span>
                     </button>
                 }
                 @if (commentsAction) {
-                    <button mat-menu-item (click)="onComments(item)">
+                    <button (click)="onComments(item)" mat-menu-item>
                         <mat-icon>comment</mat-icon>
                         <span>Comentarios</span>
                     </button>
                 }
                 @if (runAction) {
-                    <button mat-menu-item (click)="onRun(item)">
+                    <button (click)="onRun(item)" mat-menu-item>
                         <mat-icon>settings</mat-icon>
                         <span>Ejecutar</span>
                     </button>
                 }
                 @if (deleteAction) {
-                    <button mat-menu-item (click)="onDelete(item)" class="menu-item-danger">
+                    <button (click)="onDelete(item)" class="menu-item-danger" mat-menu-item>
                         <mat-icon>delete_outline</mat-icon>
                         <span>Eliminar</span>
                     </button>
                 }
                 @if (cancelAction) {
-                    <button mat-menu-item (click)="onCancel(item)">
+                    <button (click)="onCancel(item)" mat-menu-item>
                         <mat-icon>cancel</mat-icon>
                         <span>Cancelar</span>
                     </button>

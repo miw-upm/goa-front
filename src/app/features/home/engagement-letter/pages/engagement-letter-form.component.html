@@ -1,8 +1,8 @@
-<app-title [title]="'Hoja de Encargo'" [subtitle]="isEditMode ? 'ACTUALIZACIÓN' : 'CREACIÓN'"
-           [cancelAction]="true" (cancel)="cancel()"
-           [saveAction]="true" [saveLabel]="isEditMode ? 'Actualizar' : 'Crear'"
-           [saveIcon]="isEditMode ? 'edit' : 'add'" [saveDisabled]="invalid()"
-           (save)="save()">
+<app-title (cancel)="cancel()" (save)="save()"
+           [cancelAction]="true" [saveAction]="true"
+           [saveDisabled]="invalid()" [saveIcon]="isEditMode ? 'edit' : 'add'"
+           [saveLabel]="isEditMode ? 'Actualizar' : 'Crear'" [subtitle]="isEditMode ? 'ACTUALIZACIÓN' : 'CREACIÓN'"
+           [title]="'Hoja de Encargo'">
 </app-title>
 
 <mat-card class="engagement-letter-form">
@@ -18,8 +18,8 @@
 
             <div class="dates-discount-row">
                 @if (isEditMode) {
-                    <app-form-date [(value)]="engagementLetter.lastUpdatedDate" label="Fecha de Última Actualización"
-                                   [disabled]="true"/>
+                    <app-form-date [(value)]="engagementLetter.lastUpdatedDate" [disabled]="true"
+                                   label="Fecha de Última Actualización"/>
                     <app-form-date [(value)]="engagementLetter.closingDate" label="Fecha de Cierre"/>
                 }
                 <mat-form-field class="discount-field">
@@ -60,16 +60,16 @@
             </div>
             @for (method of engagementLetter.paymentMethods; track $index; let i = $index) {
                 <div class="payment-row">
-                    <button mat-icon-button color="warn" (click)="removePaymentMethod(i)">
+                    <button (click)="removePaymentMethod(i)" color="warn" mat-icon-button>
                         <mat-icon>delete</mat-icon>
                     </button>
                     <mat-form-field class="percentage-field">
                         <mat-label>Porcentaje</mat-label>
-                        <input matInput [(ngModel)]="method.percentage">
+                        <input [(ngModel)]="method.percentage" matInput>
                     </mat-form-field>
                     <mat-form-field class="description-field">
                         <mat-label>Descripción</mat-label>
-                        <input matInput [(ngModel)]="method.description">
+                        <input [(ngModel)]="method.description" matInput>
                     </mat-form-field>
                 </div>
             }

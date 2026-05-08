@@ -16,13 +16,14 @@
                 A continuación, podrá descargarse el documento. Le rogamos que lo descargue y lo lea detenidamente.
                 El documento está en formato PDF.
             </p>
-            <p>No dude en ponerse en contacto con el despacho si le surge cualquier duda. Pulse la descarga para poder continuar.</p>
+            <p>No dude en ponerse en contacto con el despacho si le surge cualquier duda. Pulse la descarga para poder
+                continuar.</p>
             <app-form-submit
                 #downloadBtn
-                label="Descargar documento"
-                icon="download"
-                [disabled]="completedFlag"
                 (submitted)="onDownloadClick(downloadBtn)"
+                [disabled]="completedFlag"
+                icon="download"
+                label="Descargar documento"
             />
         </div>
         <br>

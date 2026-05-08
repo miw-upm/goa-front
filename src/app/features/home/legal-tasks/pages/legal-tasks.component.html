@@ -1,11 +1,11 @@
-<app-title title="Tareas Legales" subtitle="Gestión" [createAction]="true" (create)="create()"></app-title>
+<app-title (create)="create()" [createAction]="true" subtitle="Gestión" title="Tareas Legales"></app-title>
 
 <div class="filters-card">
     <app-filter-input (enter)="search()" [(value)]="searchTitle" title="Titulo"></app-filter-input>
 </div>
 
-<app-crud2 (delete)="delete($event)" (read)="read($event)" (searchAll)="search()"
-          (update)="update($event)" (create)="create()"
-          [data]="tasks" [deleteAction]=deleteVisibility [item]="task"
-          [secureDelete]="true" [columns]="columns">
+<app-crud2 (create)="create()" (delete)="delete($event)" (read)="read($event)"
+           (searchAll)="search()" (update)="update($event)"
+           [columns]="columns" [data]="tasks" [deleteAction]=deleteVisibility
+           [item]="task" [secureDelete]="true">
 </app-crud2>

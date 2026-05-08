@@ -1,4 +1,4 @@
-<app-title title="Hojas de Encargo" subtitle="Gestión" [createAction]="true" (create)="create()"></app-title>
+<app-title (create)="create()" [createAction]="true" subtitle="Gestión" title="Hojas de Encargo"></app-title>
 
 <div class="filters-card">
     <mat-button-toggle-group (change)="search()" [(ngModel)]="criteria.opened">

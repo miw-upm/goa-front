@@ -1,4 +1,4 @@
-<app-title title="Clientes" subtitle="Gestión" [createAction]="true" (create)="create()"></app-title>
+<app-title (create)="create()" [createAction]="true" subtitle="Gestión" title="Clientes"></app-title>
 
 <div class="filters-card">
     <app-filter-input (enter)="search()" [(value)]="criteria.customer"

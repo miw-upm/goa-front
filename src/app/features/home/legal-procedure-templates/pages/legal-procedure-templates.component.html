@@ -1,4 +1,4 @@
-<app-title title="Procedimientos Legales" subtitle="Plantillas" [createAction]="true" (create)="create()"></app-title>
+<app-title (create)="create()" [createAction]="true" subtitle="Plantillas" title="Procedimientos Legales"></app-title>
 
 <div class="filters-card">
     <app-filter-input (enter)="search()" [(value)]="criteria.title" title="Titulo"></app-filter-input>
@@ -7,6 +7,6 @@
 
 <app-crud2 (delete)="delete($event)" (read)="read($event)" (searchAll)="search()"
            (update)="update($event)"
-           [createAction]="false" [data]="templates" [deleteAction]="deleteVisibility" [columns]="columns"
+           [columns]="columns" [createAction]="false" [data]="templates" [deleteAction]="deleteVisibility"
            [item]="template" [readAction]="true" [secureDelete]="true">
 </app-crud2>

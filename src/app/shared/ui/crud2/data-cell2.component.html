@@ -5,7 +5,9 @@
             <span class="cell-primary">{{ arrayFirst }}</span>
         }
         @if (arraySecond) {
-            <div class="cell-secondary">{{ arraySecond }}@if (arrayRemainingCount > 0) { <span>(+{{ arrayRemainingCount }} más)</span>}</div>
+            <div class="cell-secondary">{{ arraySecond }}@if (arrayRemainingCount > 0) {
+                <span>(+{{ arrayRemainingCount }} más)</span>
+            }</div>
         } @else if (arrayRemainingCount > 0) {
             <div class="cell-secondary">(+{{ arrayRemainingCount }} más)</div>
         }
@@ -15,7 +17,9 @@
     } @else {
         @switch (format) {
             @case ('boolean') {
-                <span class="bool-chip {{ booleanColorClass }}">@if (showBooleanIcon) {{{ booleanIcon }} }{{ booleanLabel }}</span>
+                <span class="bool-chip {{ booleanColorClass }}">@if (showBooleanIcon) {
+                    {{ booleanIcon }}
+                }{{ booleanLabel }}</span>
             }
             @case ('date') {
                 <span>{{ singleValue | date: dateFormat : '' : 'es' }}</span>
@@ -77,7 +81,7 @@
                 @for (item of value; track item) {
                     <li>
                         @if (isObject(item) || isArray(item)) {
-                            <app-data-cell2 [value]="item" [fullList]="true"/>
+                            <app-data-cell2 [fullList]="true" [value]="item"/>
                         } @else {
                             {{ item }}.
                         }
@@ -90,7 +94,7 @@
                     <li>
                         <strong>{{ entry[0] | uppercaseWords }}:</strong>
                         @if (isObject(entry[1]) || isArray(entry[1])) {
-                            <app-data-cell2 [value]="entry[1]" [fullList]="true"/>
+                            <app-data-cell2 [fullList]="true" [value]="entry[1]"/>
                         } @else {
                             {{ entry[1] }}
                         }

@@ -17,7 +17,7 @@
     <mat-autocomplete #auto="matAutocomplete">
         @if (keys | async; as options) {
             @for (option of options; track $index) {
-                <mat-option [value]="option" (click)="onClick(option)">
+                <mat-option (click)="onClick(option)" [value]="option">
                     @if (!keyView?.length) {
                         {{ option }}
                     } @else {

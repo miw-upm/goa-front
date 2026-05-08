@@ -9,27 +9,27 @@
 
     @if (isAuthenticated()) {
         <nav class="toolbar-nav">
-            <button mat-button class="nav-btn" [matMenuTriggerFor]="usersMenu">
+            <button [matMenuTriggerFor]="usersMenu" class="nav-btn" mat-button>
                 <mat-icon>groups</mat-icon>
                 <span>Clientes</span>
             </button>
 
-            <button mat-button class="nav-btn" [matMenuTriggerFor]="engagementLettersMenu">
+            <button [matMenuTriggerFor]="engagementLettersMenu" class="nav-btn" mat-button>
                 <mat-icon>receipt</mat-icon>
                 <span>Hojas de Encargo</span>
             </button>
 
-            <button mat-button class="nav-btn" [disabled]="true" [matMenuTriggerFor]="billingMenu">
+            <button [disabled]="true" [matMenuTriggerFor]="billingMenu" class="nav-btn" mat-button>
                 <mat-icon>request_quote</mat-icon>
                 <span>Facturación</span>
             </button>
 
-            <button mat-button class="nav-btn" routerLink="/home/customer-file-downloads">
+            <button class="nav-btn" mat-button routerLink="/home/customer-file-downloads">
                 <mat-icon>download</mat-icon>
                 <span>Descargas</span>
             </button>
 
-            <button mat-button class="nav-btn" routerLink="/home/chatbot">
+            <button class="nav-btn" mat-button routerLink="/home/chatbot">
                 <mat-icon>smart_toy</mat-icon>
                 <span>Asistente IA</span>
             </button>
@@ -44,7 +44,7 @@
             </button>
         }
         @if (isAuthenticated()) {
-            <button mat-button [matMenuTriggerFor]="profileMenu" class="user-avatar-btn">
+            <button [matMenuTriggerFor]="profileMenu" class="user-avatar-btn" mat-button>
                 <span class="user-avatar">{{ initials() }}</span>
                 <mat-icon class="user-avatar-arrow">arrow_drop_down</mat-icon>
             </button>

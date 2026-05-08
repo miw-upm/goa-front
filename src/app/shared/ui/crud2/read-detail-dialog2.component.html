@@ -7,7 +7,7 @@
             @for (col of columns; track col.key) {
                 <div>
                     <strong>{{ col.label }}:</strong>
-                    <app-data-cell2 [row]="object" [config]="col"></app-data-cell2>
+                    <app-data-cell2 [config]="col" [row]="object"></app-data-cell2>
                 </div>
             }
         } @else {
@@ -15,7 +15,7 @@
             @for (key of labels(object); track key) {
                 <div>
                     <strong>{{ key | uppercaseWords }}:</strong>
-                    <app-data-cell2 [value]="object[key]" [fullList]="true"></app-data-cell2>
+                    <app-data-cell2 [fullList]="true" [value]="object[key]"></app-data-cell2>
                 </div>
             }
         }
@@ -23,5 +23,5 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-flat-button mat-dialog-close>Cerrar</button>
+    <button mat-dialog-close mat-flat-button>Cerrar</button>
 </mat-dialog-actions>
