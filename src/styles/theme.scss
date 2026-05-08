@@ -166,7 +166,7 @@ body {
     }
 
     &.menu-item-primary {
-      --mat-menu-item-label-text-color: $color-secondary;
+      --mat-menu-item-label-text-color: #{$color-secondary};
       opacity: 1;
 
       .mat-icon { color: $color-secondary; }
@@ -217,7 +217,7 @@ app-crud2 {
   margin: 0 auto;
 
   .mat-mdc-table {
-    --mat-table-background-color: $color-white;
+    --mat-table-background-color: #{$color-white};
     --mat-table-header-headline-color: var(--mat-sys-on-surface-variant);
     --mat-table-row-item-outline-color: var(--mat-sys-outline-variant);
     border: 1px solid var(--mat-sys-outline-variant);
