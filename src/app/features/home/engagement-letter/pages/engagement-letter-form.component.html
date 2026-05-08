@@ -1,7 +1,11 @@
+<app-title [title]="'Hoja de Encargo'" [subtitle]="isEditMode ? 'ACTUALIZACIÓN' : 'CREACIÓN'"
+           [cancelAction]="true" (cancel)="cancel()"
+           [saveAction]="true" [saveLabel]="isEditMode ? 'Actualizar' : 'Crear'"
+           [saveIcon]="isEditMode ? 'edit' : 'add'" [saveDisabled]="invalid()"
+           (save)="save()">
+</app-title>
+
 <mat-card class="engagement-letter-form">
-    <mat-card-header>
-        <mat-card-title>{{ title }}</mat-card-title>
-    </mat-card-header>
     <mat-card-content>
         <div class="header-row">
             <mat-slide-toggle [(ngModel)]="engagementLetter.budgetOnly">
@@ -84,11 +88,4 @@
                            [secure]='true'></app-form-list>
         </fieldset>
     </mat-card-content>
-
-    <mat-card-actions align="end">
-        <button (click)="cancel()" mat-raised-button>Cancelar</button>
-        <button (click)="save()" [disabled]="invalid()" color="primary" mat-raised-button>
-            {{ isEditMode ? 'Actualizar' : 'Crear' }}
-        </button>
-    </mat-card-actions>
 </mat-card>

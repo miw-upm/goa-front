@@ -8,7 +8,7 @@ import {MatInput} from '@angular/material/input';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatDialog} from '@angular/material/dialog';
-import {MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
+import {MatCard, MatCardContent} from '@angular/material/card';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
@@ -26,6 +26,7 @@ import {LegalProcedure} from '../models/legal-procedure.model';
 import {LegalProcedureEditDialogComponent} from '../dialogs/legal-procedure-edit-dialog.component';
 import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
 import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
+import {TitleComponent} from "@shared/ui/title/title.component";
 
 @Component({
     standalone: true,
@@ -42,11 +43,9 @@ import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.componen
         MatIconButton,
         MatIcon,
         MatCard,
-        MatCardHeader,
-        MatCardTitle,
         MatCardContent,
-        MatCardActions,
         MatSlideToggle,
+        TitleComponent,
         SearchByUserComponent,
         SearchByLegalProcedureTemplateComponent,
         AppDateFieldComponent,

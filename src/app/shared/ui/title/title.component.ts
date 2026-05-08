@@ -15,12 +15,26 @@ import {MatIconModule} from '@angular/material/icon';
                         <p class="app-title__subtitle">{{ subtitle }}</p>
                     }
                 </div>
-                @if (createAction) {
-                    <button mat-flat-button class="app-title__create" (click)="create.emit()">
-                        <mat-icon>add</mat-icon>
-                        Crear
-                    </button>
-                }
+                <div class="app-title__actions">
+                    @if (createAction) {
+                        <button mat-flat-button class="app-title__create" (click)="create.emit()">
+                            <mat-icon>add</mat-icon>
+                            Crear
+                        </button>
+                    }
+                    @if (cancelAction) {
+                        <button mat-stroked-button class="app-title__cancel" (click)="cancel.emit()">
+                            Cancelar
+                        </button>
+                    }
+                    @if (saveAction) {
+                        <button mat-flat-button class="app-title__create" (click)="save.emit()"
+                                [disabled]="saveDisabled">
+                            <mat-icon>{{ saveIcon }}</mat-icon>
+                            {{ saveLabel }}
+                        </button>
+                    }
+                </div>
             </div>
         </div>
     `,
@@ -50,9 +64,19 @@ import {MatIconModule} from '@angular/material/icon';
             font-weight: 400;
         }
 
+        .app-title__actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .app-title__create {
             --mdc-filled-button-container-color: #4A5D3A;
             --mdc-filled-button-label-text-color: #ffffff;
+            border-radius: 12px;
+        }
+
+        .app-title__cancel {
             border-radius: 12px;
         }
     `,
@@ -60,6 +84,16 @@ import {MatIconModule} from '@angular/material/icon';
 export class TitleComponent {
     @Input() title = '';
     @Input() subtitle?: string;
+
     @Input() createAction = false;
     @Output() create = new EventEmitter<void>();
+
+    @Input() cancelAction = false;
+    @Output() cancel = new EventEmitter<void>();
+
+    @Input() saveAction = false;
+    @Input() saveLabel = 'Guardar';
+    @Input() saveIcon = 'save';
+    @Input() saveDisabled = false;
+    @Output() save = new EventEmitter<void>();
 }
