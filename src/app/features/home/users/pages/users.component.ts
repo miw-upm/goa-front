@@ -5,6 +5,7 @@ import {MatDialog} from '@angular/material/dialog';
 
 import {Crud2Component} from '@shared/ui/crud2/crud2.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
+import {TitleComponent} from '@shared/ui/title/title.component';
 import {USERS_COLUMNS} from './users-columns.config';
 import {User} from '@features/shared/models/user.model';
 import {UserCreationUpdatingDialogComponent} from '../dialogs/user-creation-updating-dialog.component';
@@ -16,7 +17,7 @@ import {AuthService} from "@core/auth/auth.service";
 
 @Component({
     standalone: true,
-    imports: [FormsModule, Crud2Component, FilterInputComponent],
+    imports: [FormsModule, Crud2Component, FilterInputComponent, TitleComponent],
     templateUrl: 'users.component.html'
 })
 export class UsersComponent {

@@ -1,3 +1,5 @@
+<app-title title="Usuarios" subtitle="Gestión" [createAction]="true" (create)="create()"></app-title>
+
 <app-filter-input (enter)="search()" [(value)]="criteria.customer"
                   title="En varios campos - Clientes"></app-filter-input>
 <app-filter-input (enter)="search()" [(value)]="criteria.mobile" title="Móvil"></app-filter-input>

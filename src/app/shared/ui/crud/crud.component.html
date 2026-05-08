@@ -1,5 +1,4 @@
 <mat-card appearance="outlined">
-    <mat-card-header><h4>{{ title }}</h4></mat-card-header>
     <mat-card-content>
         <mat-table #table [dataSource]="dataSource" matSort>
             <mat-header-row *matHeaderRowDef="visibleColumns.concat('actions')"></mat-header-row>
@@ -33,98 +32,89 @@
                     }
                 </mat-header-cell>
                 <mat-cell *matCellDef="let item">
-                    @if (readAction) {
-                        <button mat-icon-button (click)="onRead(item)" aria-label="Ver detalles">
-                            <mat-icon>view_headline</mat-icon>
-                        </button>
-                    }
-                    @if (updateAction) {
-                        <button mat-icon-button (click)="onUpdate(item)" aria-label="Editar">
-                            <mat-icon>edit_note</mat-icon>
-                        </button>
-                    }
-                    @if (printAction) {
-                        <button mat-icon-button (click)="onPrint(item)" aria-label="Imprimir">
-                            <mat-icon>print</mat-icon>
-                        </button>
-                    }
-                    @if (linkAction) {
-                        <button mat-icon-button (click)="onLink(item)" aria-label="Generar enlace público">
-                            <mat-icon>link</mat-icon>
-                        </button>
-                    }
-                    @if (deleteAction && deleteInline) {
-                        <button mat-icon-button (click)="onDelete(item)" aria-label="Eliminar">
-                            <mat-icon>delete</mat-icon>
-                        </button>
-                    }
-                    @if (commentsAction && commentsInline) {
-                        <button mat-icon-button (click)="onComments(item)" aria-label="Comentarios">
-                            <mat-icon>comment</mat-icon>
-                        </button>
-                    }
-
-                    @if (hasMoreActions()) {
-                        <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="Más acciones">
-                            <mat-icon>more_vert</mat-icon>
-                        </button>
-                        <mat-menu #moreMenu="matMenu">
-                            @if (assistantAction) {
-                                <button mat-menu-item (click)="onAssistant(item)">
-                                    <mat-icon>smart_toy</mat-icon>
-                                    <span>Asistente</span>
-                                </button>
-                            }
-                            @if (eventsAction) {
-                                <button mat-menu-item (click)="onEvents(item)">
-                                    <mat-icon>calendar_month</mat-icon>
-                                    <span>Eventos</span>
-                                </button>
-                            }
-                            @if (timelineAction) {
-                                <button mat-menu-item (click)="onTimeline(item)">
-                                    <mat-icon>timeline</mat-icon>
-                                    <span>Timeline</span>
-                                </button>
-                            }
-                            @if (alertsAction) {
-                                <button mat-menu-item (click)="onAlerts(item)">
-                                    <mat-icon>notifications</mat-icon>
-                                    <span>Alertas</span>
-                                </button>
-                            }
-                            @if (notificationsAction) {
-                                <button mat-menu-item (click)="onNotifications(item)">
-                                    <mat-icon>alarm</mat-icon>
-                                    <span>Avisos</span>
-                                </button>
-                            }
-                            @if (commentsAction && !commentsInline) {
-                                <button mat-menu-item (click)="onComments(item)">
-                                    <mat-icon>comment</mat-icon>
-                                    <span>Comentarios</span>
-                                </button>
-                            }
-                            @if (runAction) {
-                                <button mat-menu-item (click)="onRun(item)">
-                                    <mat-icon>settings</mat-icon>
-                                    <span>Ejecutar</span>
-                                </button>
-                            }
-                            @if (deleteAction && !deleteInline) {
-                                <button mat-menu-item (click)="onDelete(item)">
-                                    <mat-icon>delete</mat-icon>
-                                    <span>Eliminar</span>
-                                </button>
-                            }
-                            @if (cancelAction) {
-                                <button mat-menu-item (click)="onCancel(item)">
-                                    <mat-icon>cancel</mat-icon>
-                                    <span>Cancelar</span>
-                                </button>
-                            }
-                        </mat-menu>
-                    }
+                    <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="Acciones">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #moreMenu="matMenu">
+                        @if (readAction) {
+                            <button mat-menu-item (click)="onRead(item)">
+                                <mat-icon>visibility</mat-icon>
+                                <span>Ver</span>
+                            </button>
+                        }
+                        @if (updateAction) {
+                            <button mat-menu-item (click)="onUpdate(item)">
+                                <mat-icon>edit</mat-icon>
+                                <span>Editar</span>
+                            </button>
+                        }
+                        @if (printAction) {
+                            <button mat-menu-item (click)="onPrint(item)">
+                                <mat-icon>print</mat-icon>
+                                <span>Imprimir</span>
+                            </button>
+                        }
+                        @if (linkAction) {
+                            <button mat-menu-item (click)="onLink(item)">
+                                <mat-icon>link</mat-icon>
+                                <span>Enlace</span>
+                            </button>
+                        }
+                        @if (assistantAction) {
+                            <button mat-menu-item (click)="onAssistant(item)">
+                                <mat-icon>smart_toy</mat-icon>
+                                <span>Asistente</span>
+                            </button>
+                        }
+                        @if (eventsAction) {
+                            <button mat-menu-item (click)="onEvents(item)">
+                                <mat-icon>calendar_month</mat-icon>
+                                <span>Eventos</span>
+                            </button>
+                        }
+                        @if (timelineAction) {
+                            <button mat-menu-item (click)="onTimeline(item)">
+                                <mat-icon>timeline</mat-icon>
+                                <span>Timeline</span>
+                            </button>
+                        }
+                        @if (alertsAction) {
+                            <button mat-menu-item (click)="onAlerts(item)">
+                                <mat-icon>notifications</mat-icon>
+                                <span>Alertas</span>
+                            </button>
+                        }
+                        @if (notificationsAction) {
+                            <button mat-menu-item (click)="onNotifications(item)">
+                                <mat-icon>alarm</mat-icon>
+                                <span>Avisos</span>
+                            </button>
+                        }
+                        @if (commentsAction) {
+                            <button mat-menu-item (click)="onComments(item)">
+                                <mat-icon>comment</mat-icon>
+                                <span>Comentarios</span>
+                            </button>
+                        }
+                        @if (runAction) {
+                            <button mat-menu-item (click)="onRun(item)">
+                                <mat-icon>settings</mat-icon>
+                                <span>Ejecutar</span>
+                            </button>
+                        }
+                        @if (deleteAction) {
+                            <button mat-menu-item (click)="onDelete(item)" class="menu-item-danger">
+                                <mat-icon>delete</mat-icon>
+                                <span>Eliminar</span>
+                            </button>
+                        }
+                        @if (cancelAction) {
+                            <button mat-menu-item (click)="onCancel(item)">
+                                <mat-icon>cancel</mat-icon>
+                                <span>Cancelar</span>
+                            </button>
+                        }
+                    </mat-menu>
                 </mat-cell>
             </ng-container>
         </mat-table>
