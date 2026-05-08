@@ -1,9 +1,10 @@
-<app-title [title]="title" subtitle="Gestión"></app-title>
+<app-title title="Consentimientos LOPD" subtitle="Gestión"></app-title>
 
 <div class="filters-card">
     <app-filter-input (enter)="search()" [(value)]="criteria.attribute" title="Buscar por nombre, apellido, móvil..."></app-filter-input>
 </div>
 
-<app-crud (read)="read($event)" (searchAll)="search()" [createAction]="false" [data]="consents"
-          [hiddenFields]="['id']" [item]="consent" [title]="title" [updateAction]="false">
-</app-crud>
+<app-crud2 (read)="read($event)" (searchAll)="search()"
+           [createAction]="false" [updateAction]="false" [data]="consents" [columns]="columns"
+           [item]="consent">
+</app-crud2>

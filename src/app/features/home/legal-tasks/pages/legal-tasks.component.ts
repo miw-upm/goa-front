@@ -3,24 +3,26 @@ import {FormsModule} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Observable, of} from 'rxjs';
 
-import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
 import {LegalTask} from '@features/shared/models/legal-task.model';
 import {LegalTaskCreationUpdatingDialogComponent} from '../dialogs/legal-task-creation-updating-dialog.component';
 import {LegalTaskService} from '../legal-task.service';
 import {AuthService} from "@core/auth/auth.service";
+import {TitleComponent} from "@shared/ui/title/title.component";
+import {Crud2Component} from "@shared/ui/crud2/crud2.component";
+import {LEGAL_TASKS_COLUMNS} from "./legal-tasks-columns.config";
 
 @Component({
     standalone: true,
-    imports: [FormsModule, CrudComponent, FilterInputComponent],
+    imports: [FormsModule, FilterInputComponent, TitleComponent, Crud2Component],
     templateUrl: 'legal-tasks.component.html'
 })
 export class LegalTasksComponent {
     deleteVisibility: boolean = false;
     searchTitle: string;
-    crudTitle = "Tareas Legales";
     tasks = of([]);
     task: Observable<LegalTask>;
+    columns = LEGAL_TASKS_COLUMNS
 
     constructor(private readonly dialog: MatDialog, private readonly legalTaskService: LegalTaskService, auth: AuthService) {
         this.deleteVisibility = auth.isAdmin();

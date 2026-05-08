@@ -1,7 +1,11 @@
-<app-filter-input (enter)="search()" [(value)]="criteria.title" title="Titulo"></app-filter-input>
-<app-filter-input (enter)="search()" [(value)]="criteria.task" title="Tarea"></app-filter-input>
+<app-title title="Procedimientos Legales" subtitle="Plantillas" [createAction]="true" (create)="create()"></app-title>
 
-<app-crud (create)="create()" (delete)="delete($event)" (read)="read($event)" (searchAll)="search()"
+<div class="filters-card">
+    <app-filter-input (enter)="search()" [(value)]="criteria.title" title="Titulo"></app-filter-input>
+    <app-filter-input (enter)="search()" [(value)]="criteria.task" title="Tarea"></app-filter-input>
+</div>
+
+<app-crud (delete)="delete($event)" (read)="read($event)" (searchAll)="search()"
           (update)="update($event)"
-          [data]="templates" [deleteAction]=deleteVisibility [hiddenFields]="['id']"
+          [createAction]="false" [data]="templates" [deleteAction]=deleteVisibility [hiddenFields]="['id']"
           [item]="template" [readAction]="true" [secureDelete]="true" [title]="title"></app-crud>

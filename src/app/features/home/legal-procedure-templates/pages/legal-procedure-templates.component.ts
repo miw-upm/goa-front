@@ -12,10 +12,11 @@ import {
     LegalProcedureTemplateCreationUpdatingDialogComponent
 } from "../dialogs/legal-procedure-template-creation-updating-dialog.component";
 import {AuthService} from "@core/auth/auth.service";
+import {TitleComponent} from "@shared/ui/title/title.component";
 
 @Component({
     standalone: true,
-    imports: [FormsModule, CrudComponent, FilterInputComponent],
+    imports: [FormsModule, CrudComponent, FilterInputComponent, TitleComponent],
     templateUrl: 'legal-procedure-templates.component.html'
 })
 export class LegalProcedureTemplatesComponent {
