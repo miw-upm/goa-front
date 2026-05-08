@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
-import {MatIconButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatDialog} from '@angular/material/dialog';
 import {MatCard, MatCardContent} from '@angular/material/card';
@@ -39,6 +39,7 @@ import {TitleComponent} from "@shared/ui/title/title.component";
         MatLabel,
         MatSuffix,
         MatInput,
+        MatButton,
         MatIconButton,
         MatIcon,
         MatCard,
@@ -116,6 +117,33 @@ export class EngagementLetterFormComponent implements OnInit {
         this.router.navigate(['/home/engagement-letters'], {
             queryParamsHandling: 'preserve'
         });
+    }
+
+    userInitials(user: User): string {
+        if (!user) return '';
+        const first = user.firstName?.[0] ?? '';
+        const familyParts = (user.familyName ?? '').split(/\s+/).filter(Boolean);
+        const familyInitials = familyParts.map(p => p[0]).join('');
+        return (first + familyInitials).toUpperCase();
+    }
+
+    ownerInitials(): string {
+        return this.userInitials(this.engagementLetter.owner);
+    }
+
+    removeOwner(): void {
+        this.engagementLetter.owner = undefined;
+    }
+
+    removeAttachment(index: number): void {
+        this.engagementLetter.attachments.splice(index, 1);
+    }
+
+    formatLastUpdated(): string {
+        const date = this.engagementLetter.lastUpdatedDate;
+        if (!date) return '—';
+        const d = date instanceof Date ? date : new Date(date);
+        return this.datePipe.transform(d, "d 'de' MMMM 'de' yyyy") ?? '—';
     }
 
     invalid(): boolean {

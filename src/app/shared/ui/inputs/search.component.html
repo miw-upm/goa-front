@@ -1,24 +1,24 @@
 <mat-form-field class="full-width">
+    <mat-icon matPrefix>search</mat-icon>
     <mat-label>{{ title }}</mat-label>
     <input [(ngModel)]="inputValue"
+           (ngModelChange)="onRenew()"
+           (keyup.enter)="onRenew()"
            [matAutocomplete]="auto"
            [required]="obligatory"
            matInput
            type="text"
     >
-    <button (click)="onRenew()" mat-icon-button matSuffix matTooltip="Renew" matTooltipShowDelay="2000">
-        <mat-icon>autorenew</mat-icon>
+    <button (click)="resetKey()" [disabled]="!inputValue" mat-icon-button matSuffix aria-label="Clear">
+        <mat-icon>close</mat-icon>
     </button>
-    @if (inputValue) {
-        <button (click)="resetKey()" aria-label="Clear" mat-icon-button matSuffix>
-            <mat-icon>close</mat-icon>
-        </button>
-    }
     <mat-autocomplete #auto="matAutocomplete">
         @if (keys | async; as options) {
             @for (option of options; track $index) {
                 <mat-option (click)="onClick(option)" [value]="option">
-                    @if (!keyView?.length) {
+                    @if (displayFn) {
+                        {{ displayFn(option) }}
+                    } @else if (!keyView.length) {
                         {{ option }}
                     } @else {
                         @for (key of keyView; track $index; let last = $last) {

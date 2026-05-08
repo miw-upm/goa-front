@@ -18,6 +18,9 @@ export class SearchByUserComponent {
     @Input() title: string = 'Search by User';
     @Output() userChange = new EventEmitter<User>();
 
+    userDisplayFn = (user: User): string =>
+        `${user.firstName ?? ''} ${user.familyName ?? ''} — ${user.mobile}`.trim();
+
     constructor(private readonly sharedUserService: SharedUserService) {
     }
 

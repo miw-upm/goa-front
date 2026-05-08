@@ -1,27 +1,30 @@
-<app-title (cancel)="cancel()" (save)="save()"
-           [cancelAction]="true" [saveAction]="true"
-           [saveDisabled]="invalid()" [saveIcon]="isEditMode ? 'edit' : 'add'"
-           [saveLabel]="isEditMode ? 'Actualizar' : 'Crear'" [subtitle]="isEditMode ? 'ACTUALIZACIÓN' : 'CREACIÓN'"
-           [title]="'Hoja de Encargo'">
-</app-title>
+<div class="engagement-letter-container">
+    <app-title (cancel)="cancel()" (save)="save()"
+               [cancelAction]="true" [saveAction]="true"
+               [saveDisabled]="invalid()" [saveIcon]="isEditMode ? 'edit' : 'add'"
+               [saveLabel]="isEditMode ? 'Guardar' : 'Crear'" [subtitle]="isEditMode ? 'EDICIÓN' : 'CREACIÓN'"
+               [title]="'Hoja de Encargo'">
+    </app-title>
 
-<mat-card class="engagement-letter-form">
+    <mat-card class="engagement-letter-form">
     <mat-card-content>
-        <div class="header-row">
-            <mat-slide-toggle [(ngModel)]="engagementLetter.budgetOnly">
-                @if (engagementLetter.budgetOnly) {
-                    <strong>⚠️ SOLO presupuesto!</strong>
-                } @else {
-                    Hoja de Encargo formalizada
-                }
-            </mat-slide-toggle>
-
-            <div class="dates-discount-row">
+        <div class="zone-card">
+            <div class="zone-left">
+                <span class="zone-title">
+                    @if (engagementLetter.budgetOnly) {
+                        Presupuesto
+                    } @else {
+                        Hoja de Encargo
+                    }
+                </span>
                 @if (isEditMode) {
-                    <app-form-date [(value)]="engagementLetter.lastUpdatedDate" [disabled]="true"
-                                   label="Fecha de Última Actualización"/>
-                    <app-form-date [(value)]="engagementLetter.closingDate" label="Fecha de Cierre"/>
+                    <span class="zone-subtitle">Última edición</span>
+                    <span class="zone-date">{{ formatLastUpdated() }}</span>
                 }
+            </div>
+            <div class="zone-right">
+                <mat-slide-toggle [(ngModel)]="engagementLetter.budgetOnly"/>
+                <app-form-date [(value)]="engagementLetter.closingDate" label="Fecha de Cierre"/>
                 <mat-form-field class="discount-field">
                     <mat-label>Descuento</mat-label>
                     <input [(ngModel)]="engagementLetter.discount" matInput max="100" min="0" step="1" type="number">
@@ -29,40 +32,65 @@
                 </mat-form-field>
             </div>
         </div>
-        <fieldset class="owner-fieldset">
-            <legend>Responsable</legend>
-            <app-search-by-user [(user)]="engagementLetter.owner" class="full-width"
-                                title="Buscar cliente"></app-search-by-user>
-            <app-form-list [(items)]="ownerAsArray" [keyView]="['mobile','familyName','firstName']"></app-form-list>
-        </fieldset>
+        <div class="zone-card zone-card--column">
+            <div class="zone-row">
+                <span class="zone-title">Cliente Principal</span>
+                <app-search-by-user [(user)]="engagementLetter.owner"
+                                    title="Buscar cliente"></app-search-by-user>
+            </div>
+            @if (engagementLetter.owner) {
+                <div class="client-item">
+                    <span class="owner-avatar">{{ ownerInitials() }}</span>
+                    <div class="owner-info">
+                        <span class="owner-name">{{ engagementLetter.owner.firstName }} {{ engagementLetter.owner.familyName }}</span>
+                        <span class="owner-mobile">{{ engagementLetter.owner.mobile }}</span>
+                    </div>
+                    <button (click)="removeOwner()" mat-icon-button aria-label="Quitar responsable">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            }
+        </div>
 
-        <fieldset class="owner-fieldset">
-            <legend>Resto de clientes</legend>
-            <app-search-by-user (userChange)="addAttachment($event)" class="full-width"
-                                title="Buscar cliente"></app-search-by-user>
-            <app-form-list [(items)]="engagementLetter.attachments"
-                           [keyView]="['mobile','familyName','firstName']"></app-form-list>
-        </fieldset>
+        <div class="zone-card zone-card--column">
+            <div class="zone-row">
+                <span class="zone-title">Resto de Clientes</span>
+                <app-search-by-user (userChange)="addAttachment($event)"
+                                    title="Buscar cliente"></app-search-by-user>
+            </div>
+            @for (att of engagementLetter.attachments; track $index; let i = $index) {
+                <div class="client-item">
+                    <span class="owner-avatar">{{ userInitials(att) }}</span>
+                    <div class="owner-info">
+                        <span class="owner-name">{{ att.firstName }} {{ att.familyName }}</span>
+                        <span class="owner-mobile">{{ att.mobile }}</span>
+                    </div>
+                    <button (click)="removeAttachment(i)" mat-icon-button aria-label="Quitar cliente">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            }
+        </div>
 
-        <fieldset class="owner-fieldset">
-            <legend>Procedimientos Legales</legend>
-            <app-search-by-legal-procedure (procedureChange)="addProcedure($event)"></app-search-by-legal-procedure>
+        <div class="zone-card zone-card--column">
+            <div class="zone-row">
+                <span class="zone-title">Procedimientos Legales</span>
+                <app-search-by-legal-procedure (procedureChange)="addProcedure($event)"></app-search-by-legal-procedure>
+            </div>
             <app-form-list (action)="editLegalProcedureDialog($event)" [(items)]="engagementLetter.legalProcedures"
                            [keyView]="['title']" actionIcon="edit"></app-form-list>
-        </fieldset>
+        </div>
 
-        <fieldset class="owner-fieldset">
-            <legend>Métodos de pago</legend>
-            <div class="payment-row">
-                <button (click)="addPaymentMethod()" color="primary" mat-icon-button>
-                    <mat-icon>add_circle</mat-icon>
+        <div class="zone-card zone-card--column">
+            <div class="zone-row">
+                <span class="zone-title">Métodos de pago</span>
+                <button (click)="addPaymentMethod()" mat-flat-button color="primary">
+                    <mat-icon>add</mat-icon>
+                    Crear
                 </button>
             </div>
             @for (method of engagementLetter.paymentMethods; track $index; let i = $index) {
-                <div class="payment-row">
-                    <button (click)="removePaymentMethod(i)" color="warn" mat-icon-button>
-                        <mat-icon>delete</mat-icon>
-                    </button>
+                <div class="payment-item">
                     <mat-form-field class="percentage-field">
                         <mat-label>Porcentaje</mat-label>
                         <input [(ngModel)]="method.percentage" matInput>
@@ -71,16 +99,19 @@
                         <mat-label>Descripción</mat-label>
                         <input [(ngModel)]="method.description" matInput>
                     </mat-form-field>
+                    <button (click)="removePaymentMethod(i)" mat-icon-button aria-label="Eliminar método de pago">
+                        <mat-icon>delete_outline</mat-icon>
+                    </button>
                 </div>
             }
-        </fieldset>
+        </div>
 
-        <fieldset class="owner-fieldset">
-            <legend>Cláusula Legal</legend>
+        <div class="zone-card zone-card--column">
+            <span class="zone-title">Cláusula Legal</span>
             <mat-form-field class="full-width">
                 <textarea [(ngModel)]="engagementLetter.legalClause" matInput rows="5"></textarea>
             </mat-form-field>
-        </fieldset>
+        </div>
         <fieldset *ngIf="engagementLetter.acceptanceEngagements?.length" class="owner-fieldset">
             <legend>Firmantes</legend>
             <app-form-list [(items)]="engagementLetter.acceptanceEngagements"
@@ -88,4 +119,5 @@
                            [secure]='true'></app-form-list>
         </fieldset>
     </mat-card-content>
-</mat-card>
+    </mat-card>
+</div>
