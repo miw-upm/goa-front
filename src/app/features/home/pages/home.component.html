@@ -1,7 +1,10 @@
 <mat-toolbar>
     <div class="toolbar-brand">
         <img alt="miw" height="40" ngSrc="../../../../assets/oa-s.png" width="40"/>
-        <button mat-button routerLink="/home">Administración</button>
+        <div class="toolbar-brand-text" routerLink="/home">
+            <span class="toolbar-brand-name">Ocaña Abogados</span>
+            <span class="toolbar-brand-role">Administración</span>
+        </div>
     </div>
 
     @if (isAuthenticated()) {

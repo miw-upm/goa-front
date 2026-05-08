@@ -79,8 +79,27 @@ body {
 .toolbar-brand {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
   flex-shrink: 0;
+}
+
+.toolbar-brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.toolbar-brand-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+}
+
+.toolbar-brand-role {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: $color-muted;
 }
 
 .toolbar-nav {

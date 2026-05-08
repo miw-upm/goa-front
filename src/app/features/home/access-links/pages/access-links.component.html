@@ -1,6 +1,10 @@
-<mat-slide-toggle (change)="search()" [(ngModel)]="criteria.expired">Expirado sin uso</mat-slide-toggle>
-<app-filter-input (enter)="search()" [(value)]="criteria.client" title="Cliente"></app-filter-input>
-<app-filter-input (enter)="search()" [(value)]="criteria.scope" title="Alcance del link"></app-filter-input>
+<app-title title="Access Links" subtitle="Gestión"></app-title>
+
+<div class="filters-card">
+    <mat-slide-toggle (change)="search()" [(ngModel)]="criteria.expired">Expirado sin uso</mat-slide-toggle>
+    <app-filter-input (enter)="search()" [(value)]="criteria.client" title="Cliente"></app-filter-input>
+    <app-filter-input (enter)="search()" [(value)]="criteria.scope" title="Alcance del link"></app-filter-input>
+</div>
 
 <app-crud (delete)="delete($event)" (read)=read($event) (searchAll)="search()"
           [createAction]="false" [data]="accessLinks" [deleteAction]=visible

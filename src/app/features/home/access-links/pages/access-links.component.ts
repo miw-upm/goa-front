@@ -11,11 +11,12 @@ import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {AccessLinkFindCriteria} from "../access-link-find-criteria.model";
 import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
 import {TypeToConfirmDialogComponent} from "@shared/ui/dialogs/type-to-confirm-dialog.component";
+import {TitleComponent} from "@shared/ui/title/title.component";
 
 @Component({
     standalone: true,
     providers: [AccessLinkService],
-    imports: [FormsModule, CrudComponent, MatSlideToggle, FilterInputComponent],
+    imports: [FormsModule, CrudComponent, MatSlideToggle, FilterInputComponent, TitleComponent],
     templateUrl: 'access-links.component.html'
 })
 export class AccessLinksComponent {
