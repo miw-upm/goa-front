@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {DatePipe, DecimalPipe, CurrencyPipe} from '@angular/common';
 
-import {CrudColumnConfig} from './crud-column.config';
+import {CrudColumnConfig, CrudColumnFormat} from './crud-column.config';
 import {UppercaseWordsPipe} from '@shared/pipes/uppercase-words.pipe';
 
 @Component({
@@ -30,18 +30,18 @@ import {UppercaseWordsPipe} from '@shared/pipes/uppercase-words.pipe';
         }
 
         .bool-green {
-            background-color: #e8f5e9;
-            color: #2e7d32;
+            background-color: #e1e4de;
+            color: #38462c;
         }
 
         .bool-red {
-            background-color: #ffebee;
-            color: #c62828;
+            background-color: #ffdad6;
+            color: #93000a;
         }
 
         .bool-primary {
-            background-color: #e3f2fd;
-            color: #1565c0;
+            background-color: #f4e9dc;
+            color: #5d3d17;
         }
 
         .bool-warn {
@@ -50,8 +50,8 @@ import {UppercaseWordsPipe} from '@shared/pipes/uppercase-words.pipe';
         }
 
         .bool-default {
-            background-color: #f5f5f5;
-            color: #616161;
+            background-color: #eae8e6;
+            color: #605950;
         }
     `],
     imports: [DatePipe, DecimalPipe, CurrencyPipe, UppercaseWordsPipe]
@@ -114,28 +114,37 @@ export class DataCell2Component {
         return field ? this.row[field] : '';
     }
 
-    get format(): string {
+    get format(): CrudColumnFormat {
+        if (this.config?.format && this.config.format !== 'text') {
+            return this.config.format;
+        }
+        const val = this.singleValue;
+        if (typeof val === 'boolean') return 'boolean';
+        if (typeof val === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(val)) return 'date';
         return this.config?.format ?? 'text';
     }
 
     get booleanLabel(): string {
-        if (!this.config?.booleanConfig) return String(this.singleValue);
+        const cfg = this.config?.booleanConfig;
         return this.singleValue
-            ? this.config.booleanConfig.trueLabel
-            : this.config.booleanConfig.falseLabel;
+            ? (cfg?.trueLabel ?? 'SI')
+            : (cfg?.falseLabel ?? 'NO');
+    }
+
+    get booleanIcon(): string {
+        return this.singleValue ? '✓' : '✗';
     }
 
     get booleanColorClass(): string {
-        if (!this.config?.booleanConfig) return 'bool-default';
+        const cfg = this.config?.booleanConfig;
         const color = this.singleValue
-            ? this.config.booleanConfig.trueColor
-            : this.config.booleanConfig.falseColor;
-        if (!color) return 'bool-default';
+            ? (cfg?.trueColor ?? 'green')
+            : (cfg?.falseColor ?? 'red');
         return `bool-${color}`;
     }
 
     get dateFormat(): string {
-        return this.config?.dateFormat ?? 'd MMM yyyy';
+        return this.config?.dateFormat ?? 'dd/MM/yyyy HH:mm';
     }
 
     // --- Legacy helpers (modo sin config, compatibilidad con v1) ---

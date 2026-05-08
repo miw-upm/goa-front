@@ -2,7 +2,7 @@
     <!-- Modo configurado -->
     @switch (format) {
         @case ('boolean') {
-            <span class="bool-chip {{ booleanColorClass }}">{{ booleanLabel }}</span>
+            <span class="bool-chip {{ booleanColorClass }}">{{ booleanIcon }} {{ booleanLabel }}</span>
         }
         @case ('date') {
             <span>{{ singleValue | date: dateFormat : '' : 'es' }}</span>

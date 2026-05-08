@@ -9,7 +9,8 @@
       "mcp__webstorm__find_files_by_name_keyword",
       "Bash(npm run build-prod:*)",
       "mcp__webstorm__create_new_file",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(npm run test-ci:*)"
     ]
   }
 }

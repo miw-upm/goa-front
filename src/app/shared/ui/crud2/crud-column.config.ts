@@ -1,10 +1,10 @@
 export type CrudColumnFormat = 'text' | 'date' | 'boolean' | 'currency' | 'number';
 
 export interface CrudBooleanConfig {
-    trueLabel: string;
-    falseLabel: string;
-    trueColor?: string;
-    falseColor?: string;
+    trueLabel?: string;   // default: 'SI'
+    falseLabel?: string;  // default: 'NO'
+    trueColor?: string;   // default: 'green'
+    falseColor?: string;  // default: 'red'
 }
 
 export interface CrudColumnConfig {
