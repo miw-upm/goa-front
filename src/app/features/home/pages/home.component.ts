@@ -61,7 +61,8 @@ export class HomeComponent {
 
     initials(): string {
         const n = this.authService.name || '';
-        return n.substring(0, 3).toUpperCase();
+        const raw = n.substring(0, 3);
+        return raw.charAt(0).toUpperCase() + raw.substring(1).toLowerCase();
     }
 
 }

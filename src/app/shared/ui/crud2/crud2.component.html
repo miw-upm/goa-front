@@ -1,137 +1,133 @@
-<mat-card appearance="outlined">
-    <mat-card-content>
-        <mat-table #table [dataSource]="dataSource" matSort>
-            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-            <mat-row *matRowDef="let item; columns: displayedColumns"></mat-row>
+<mat-table #table [dataSource]="dataSource" matSort>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let item; columns: displayedColumns"></mat-row>
 
-            @if (useConfig) {
-                <!-- Modo configurado: columnas definidas por CrudColumnConfig -->
-                @for (col of columns; track col.key) {
-                    <ng-container [matColumnDef]="col.key">
-                        <mat-header-cell *matHeaderCellDef>{{ col.label }}</mat-header-cell>
-                        <mat-cell *matCellDef="let row">
-                            <app-data-cell2 [row]="row" [config]="col"></app-data-cell2>
-                        </mat-cell>
-                    </ng-container>
-                }
-            } @else {
-                <!-- Modo legacy: columnas auto-descubiertas -->
-                @for (def of visibleAutoColumns; track def) {
-                    <ng-container [matColumnDef]="def">
-                        <mat-header-cell *matHeaderCellDef>{{ def | uppercaseWords }}</mat-header-cell>
-                        <mat-cell *matCellDef="let row">
-                            <app-data-cell2 [value]="row[def]"
-                                            [changeFields]="getChangeFields(def)"></app-data-cell2>
-                        </mat-cell>
-                    </ng-container>
-                }
-            }
-
-            <!-- Columna de acciones -->
-            <ng-container matColumnDef="actions">
-                <mat-header-cell *matHeaderCellDef>
-                    @if (createAction) {
-                        <button (click)="onCreate()" mat-icon-button aria-label="Crear">
-                            <mat-icon>add_circle</mat-icon>
-                        </button>
-                    }
-                    @if (searchAction) {
-                        <button (click)="onSearch()" mat-icon-button aria-label="Buscar">
-                            <mat-icon>search</mat-icon>
-                        </button>
-                    }
-                    @if (jsonAction) {
-                        <button (click)="onJson()" mat-icon-button aria-label="Exportar JSON">
-                            <mat-icon>download</mat-icon>
-                        </button>
-                    }
-                </mat-header-cell>
-                <mat-cell *matCellDef="let item">
-                    <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="Acciones">
-                        <mat-icon>more_vert</mat-icon>
-                    </button>
-                    <mat-menu #moreMenu="matMenu">
-                        @if (readAction) {
-                            <button mat-menu-item (click)="onRead(item)">
-                                <mat-icon>visibility</mat-icon>
-                                <span>Ver</span>
-                            </button>
-                        }
-                        @if (updateAction) {
-                            <button mat-menu-item (click)="onUpdate(item)">
-                                <mat-icon>edit</mat-icon>
-                                <span>Editar</span>
-                            </button>
-                        }
-                        @if (printAction) {
-                            <button mat-menu-item (click)="onPrint(item)">
-                                <mat-icon>print</mat-icon>
-                                <span>Imprimir</span>
-                            </button>
-                        }
-                        @if (linkAction) {
-                            <button mat-menu-item (click)="onLink(item)">
-                                <mat-icon>link</mat-icon>
-                                <span>Enlace</span>
-                            </button>
-                        }
-                        @if (assistantAction) {
-                            <button mat-menu-item (click)="onAssistant(item)">
-                                <mat-icon>smart_toy</mat-icon>
-                                <span>Asistente</span>
-                            </button>
-                        }
-                        @if (eventsAction) {
-                            <button mat-menu-item (click)="onEvents(item)">
-                                <mat-icon>calendar_month</mat-icon>
-                                <span>Eventos</span>
-                            </button>
-                        }
-                        @if (timelineAction) {
-                            <button mat-menu-item (click)="onTimeline(item)">
-                                <mat-icon>timeline</mat-icon>
-                                <span>Timeline</span>
-                            </button>
-                        }
-                        @if (alertsAction) {
-                            <button mat-menu-item (click)="onAlerts(item)">
-                                <mat-icon>notifications</mat-icon>
-                                <span>Alertas</span>
-                            </button>
-                        }
-                        @if (notificationsAction) {
-                            <button mat-menu-item (click)="onNotifications(item)">
-                                <mat-icon>alarm</mat-icon>
-                                <span>Avisos</span>
-                            </button>
-                        }
-                        @if (commentsAction) {
-                            <button mat-menu-item (click)="onComments(item)">
-                                <mat-icon>comment</mat-icon>
-                                <span>Comentarios</span>
-                            </button>
-                        }
-                        @if (runAction) {
-                            <button mat-menu-item (click)="onRun(item)">
-                                <mat-icon>settings</mat-icon>
-                                <span>Ejecutar</span>
-                            </button>
-                        }
-                        @if (deleteAction) {
-                            <button mat-menu-item (click)="onDelete(item)" class="menu-item-danger">
-                                <mat-icon>delete</mat-icon>
-                                <span>Eliminar</span>
-                            </button>
-                        }
-                        @if (cancelAction) {
-                            <button mat-menu-item (click)="onCancel(item)">
-                                <mat-icon>cancel</mat-icon>
-                                <span>Cancelar</span>
-                            </button>
-                        }
-                    </mat-menu>
+    @if (useConfig) {
+        <!-- Modo configurado: columnas definidas por CrudColumnConfig -->
+        @for (col of columns; track col.key) {
+            <ng-container [matColumnDef]="col.key">
+                <mat-header-cell *matHeaderCellDef>{{ col.label }}</mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <app-data-cell2 [row]="row" [config]="col"></app-data-cell2>
                 </mat-cell>
             </ng-container>
-        </mat-table>
-    </mat-card-content>
-</mat-card>
+        }
+    } @else {
+        <!-- Modo legacy: columnas auto-descubiertas -->
+        @for (def of visibleAutoColumns; track def) {
+            <ng-container [matColumnDef]="def">
+                <mat-header-cell *matHeaderCellDef>{{ def | uppercaseWords }}</mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <app-data-cell2 [value]="row[def]"
+                                    [changeFields]="getChangeFields(def)"></app-data-cell2>
+                </mat-cell>
+            </ng-container>
+        }
+    }
+
+    <!-- Columna de acciones -->
+    <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>
+            @if (createAction) {
+                <button (click)="onCreate()" mat-icon-button aria-label="Crear">
+                    <mat-icon>add_circle</mat-icon>
+                </button>
+            }
+            @if (searchAction) {
+                <button (click)="onSearch()" mat-icon-button aria-label="Buscar">
+                    <mat-icon>search</mat-icon>
+                </button>
+            }
+            @if (jsonAction) {
+                <button (click)="onJson()" mat-icon-button aria-label="Exportar JSON">
+                    <mat-icon>download</mat-icon>
+                </button>
+            }
+        </mat-header-cell>
+        <mat-cell *matCellDef="let item">
+            <button mat-icon-button [matMenuTriggerFor]="moreMenu" aria-label="Acciones">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #moreMenu="matMenu">
+                @if (readAction) {
+                    <button mat-menu-item (click)="onRead(item)" class="menu-item-primary">
+                        <mat-icon>visibility</mat-icon>
+                        <span>Ver</span>
+                    </button>
+                }
+                @if (linkAction) {
+                    <button mat-menu-item (click)="onLink(item)">
+                        <mat-icon>link</mat-icon>
+                        <span>Enlace</span>
+                    </button>
+                }
+                @if (updateAction) {
+                    <button mat-menu-item (click)="onUpdate(item)">
+                        <mat-icon>edit</mat-icon>
+                        <span>Editar</span>
+                    </button>
+                }
+                @if (printAction) {
+                    <button mat-menu-item (click)="onPrint(item)">
+                        <mat-icon>print</mat-icon>
+                        <span>Imprimir</span>
+                    </button>
+                }
+                @if (assistantAction) {
+                    <button mat-menu-item (click)="onAssistant(item)">
+                        <mat-icon>smart_toy</mat-icon>
+                        <span>Asistente</span>
+                    </button>
+                }
+                @if (eventsAction) {
+                    <button mat-menu-item (click)="onEvents(item)">
+                        <mat-icon>calendar_month</mat-icon>
+                        <span>Eventos</span>
+                    </button>
+                }
+                @if (timelineAction) {
+                    <button mat-menu-item (click)="onTimeline(item)">
+                        <mat-icon>timeline</mat-icon>
+                        <span>Timeline</span>
+                    </button>
+                }
+                @if (alertsAction) {
+                    <button mat-menu-item (click)="onAlerts(item)">
+                        <mat-icon>notifications</mat-icon>
+                        <span>Alertas</span>
+                    </button>
+                }
+                @if (notificationsAction) {
+                    <button mat-menu-item (click)="onNotifications(item)">
+                        <mat-icon>alarm</mat-icon>
+                        <span>Avisos</span>
+                    </button>
+                }
+                @if (commentsAction) {
+                    <button mat-menu-item (click)="onComments(item)">
+                        <mat-icon>comment</mat-icon>
+                        <span>Comentarios</span>
+                    </button>
+                }
+                @if (runAction) {
+                    <button mat-menu-item (click)="onRun(item)">
+                        <mat-icon>settings</mat-icon>
+                        <span>Ejecutar</span>
+                    </button>
+                }
+                @if (deleteAction) {
+                    <button mat-menu-item (click)="onDelete(item)" class="menu-item-danger">
+                        <mat-icon>delete_outline</mat-icon>
+                        <span>Eliminar</span>
+                    </button>
+                }
+                @if (cancelAction) {
+                    <button mat-menu-item (click)="onCancel(item)">
+                        <mat-icon>cancel</mat-icon>
+                        <span>Cancelar</span>
+                    </button>
+                }
+            </mat-menu>
+        </mat-cell>
+    </ng-container>
+</mat-table>

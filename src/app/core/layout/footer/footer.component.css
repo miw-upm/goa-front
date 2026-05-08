@@ -5,14 +5,14 @@
 
 .badges {
     display: inline-flex;
-    flex-direction: column;
-    gap: 4px;
+    flex-direction: row;
+    gap: 8px;
     font-size: 12px;
     margin-top: 8px;
 }
 
 .badges img {
-    height: 20px;
+    height: 15px;
     vertical-align: middle;
 }
 
@@ -23,12 +23,16 @@
 
 .host {
     color: white;
-    background: #555;
-    font-size: 15px;
+    background: #6B5D4F;
+    font-size: 11px;
+    border-radius: 4px 0 0 4px;
+    padding: 1px 4px;
 }
 
 .version {
     color: white;
-    background: #44bb11;
-    font-size: 15px;
+    background: #4A5D3A;
+    font-size: 11px;
+    border-radius: 0 4px 4px 0;
+    padding: 1px 4px;
 }

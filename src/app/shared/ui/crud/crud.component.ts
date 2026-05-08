@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {MatCardModule} from '@angular/material/card';
+
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSortModule} from '@angular/material/sort';
@@ -22,7 +22,6 @@ import {TypeToConfirmDialogComponent} from '@shared/ui/dialogs/type-to-confirm-d
 
     imports: [
         MatFormFieldModule,
-        MatCardModule,
         MatTableModule,
         MatSortModule,
         MatIconModule,

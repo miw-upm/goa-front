@@ -1,10 +1,12 @@
 <app-title title="Usuarios" subtitle="Gestión" [createAction]="true" (create)="create()"></app-title>
 
-<app-filter-input (enter)="search()" [(value)]="criteria.customer"
-                  title="En varios campos - Clientes"></app-filter-input>
-<app-filter-input (enter)="search()" [(value)]="criteria.mobile" title="Móvil"></app-filter-input>
-<app-filter-input (enter)="search()" [(value)]="criteria.firstName" title="Nombre"></app-filter-input>
-<app-filter-input (enter)="search()" [(value)]="criteria.familyName" title="Apellidos"></app-filter-input>
+<div class="filters-card">
+    <app-filter-input (enter)="search()" [(value)]="criteria.customer"
+                      title="Buscar por nombre, apellido, móvil..."></app-filter-input>
+    <app-filter-input (enter)="search()" [(value)]="criteria.mobile" title="Móvil"></app-filter-input>
+    <app-filter-input (enter)="search()" [(value)]="criteria.firstName" title="Nombre"></app-filter-input>
+    <app-filter-input (enter)="search()" [(value)]="criteria.familyName" title="Apellidos"></app-filter-input>
+</div>
 
 <app-crud2 (create)="create()" (json)="json()" (link)="link($event)" (read)="read($event)"
            (searchAll)="search()" (update)="update($event)"

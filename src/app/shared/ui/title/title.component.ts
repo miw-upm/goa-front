@@ -26,7 +26,7 @@ import {MatIconModule} from '@angular/material/icon';
     `,
     styles: `
         .app-title {
-            padding: 24px 24px 8px;
+            padding: 24px 24px 16px;
         }
 
         .app-title__header {
