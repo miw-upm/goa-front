@@ -143,6 +143,35 @@ export class DataCell2Component {
         return `bool-${color}`;
     }
 
+    // --- Array helpers (arrayField) ---
+
+    get isArrayMode(): boolean {
+        if (!this.config?.arrayField || !this.row) return false;
+        const val = this.row[this.config.key];
+        return Array.isArray(val);
+    }
+
+    private get arrayItems(): string[] {
+        if (!this.config?.arrayField || !this.row) return [];
+        const arr = this.row[this.config.key];
+        if (!Array.isArray(arr)) return [];
+        return arr
+            .map((item: any) => item?.[this.config.arrayField])
+            .filter((v: any) => v !== null && v !== undefined && v !== '');
+    }
+
+    get arrayFirst(): string {
+        return this.arrayItems[0] ?? '';
+    }
+
+    get arraySecond(): string {
+        return this.arrayItems[1] ?? '';
+    }
+
+    get arrayRemainingCount(): number {
+        return Math.max(0, this.arrayItems.length - 2);
+    }
+
     get dateFormat(): string {
         return this.config?.dateFormat ?? 'dd/MM/yyyy HH:mm';
     }

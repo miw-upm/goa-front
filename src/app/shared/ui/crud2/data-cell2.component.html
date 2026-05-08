@@ -1,37 +1,51 @@
 @if (hasConfig) {
     <!-- Modo configurado -->
-    @switch (format) {
-        @case ('boolean') {
-            <span class="bool-chip {{ booleanColorClass }}">{{ booleanIcon }} {{ booleanLabel }}</span>
+    @if (isArrayMode) {
+        @if (arrayFirst) {
+            <span class="cell-primary">{{ arrayFirst }}</span>
         }
-        @case ('date') {
-            <span>{{ singleValue | date: dateFormat : '' : 'es' }}</span>
+        @if (arraySecond) {
+            <div class="cell-secondary">{{ arraySecond }}@if (arrayRemainingCount > 0) { <span>(+{{ arrayRemainingCount }} más)</span>}</div>
+        } @else if (arrayRemainingCount > 0) {
+            <div class="cell-secondary">(+{{ arrayRemainingCount }} más)</div>
         }
-        @case ('currency') {
-            <span>{{ singleValue | currency: 'EUR' : 'symbol' : '1.2-2' : 'es' }}</span>
+        @if (!arrayFirst) {
+            <span>—</span>
         }
-        @case ('number') {
-            <span>{{ singleValue | number: '1.0-2' : 'es' }}</span>
-        }
-        @default {
-            <!-- fieldsTitle: línea resaltada -->
-            @if (hasTitle) {
-                <span class="cell-primary">{{ titleValue }}</span>
+    } @else {
+        @switch (format) {
+            @case ('boolean') {
+                <span class="bool-chip {{ booleanColorClass }}">{{ booleanIcon }} {{ booleanLabel }}</span>
             }
-            <!-- fields: línea normal (secundaria si hay title) -->
-            @if (hasFields) {
+            @case ('date') {
+                <span>{{ singleValue | date: dateFormat : '' : 'es' }}</span>
+            }
+            @case ('currency') {
+                <span>{{ singleValue | currency: 'EUR' : 'symbol' : '1.2-2' : 'es' }}</span>
+            }
+            @case ('number') {
+                <span>{{ singleValue | number: '1.0-2' : 'es' }}</span>
+            }
+            @default {
+                <!-- fieldsTitle: línea resaltada -->
                 @if (hasTitle) {
-                    <div class="cell-secondary">{{ fieldsValue }}</div>
-                } @else {
-                    @if (fieldsValue) {
-                        <span>{{ fieldsValue }}</span>
+                    <span class="cell-primary">{{ titleValue }}</span>
+                }
+                <!-- fields: línea normal (secundaria si hay title) -->
+                @if (hasFields) {
+                    @if (hasTitle) {
+                        <div class="cell-secondary">{{ fieldsValue }}</div>
                     } @else {
-                        <span>—</span>
+                        @if (fieldsValue) {
+                            <span>{{ fieldsValue }}</span>
+                        } @else {
+                            <span>—</span>
+                        }
                     }
                 }
-            }
-            @if (!hasTitle && !hasFields) {
-                <span>—</span>
+                @if (!hasTitle && !hasFields) {
+                    <span>—</span>
+                }
             }
         }
     }

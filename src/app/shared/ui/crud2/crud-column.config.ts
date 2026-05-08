@@ -30,6 +30,10 @@ export interface CrudColumnConfig {
     /** Para format='date': patrón DatePipe (default: 'd MMM yyyy') */
     dateFormat?: string;
 
+    /** Para arrays de objetos: campo a extraer de cada elemento (ej: 'title').
+     *  Muestra el primer valor en negrita, el segundo como secundario, y (+N más) si hay más. */
+    arrayField?: string;
+
     /** Separador cuando se concatenan múltiples fields en la misma línea (default: ' ') */
     separator?: string;
 
