@@ -4,7 +4,8 @@ export interface CrudBooleanConfig {
     trueLabel?: string;   // default: 'SI'
     falseLabel?: string;  // default: 'NO'
     trueColor?: string;   // default: 'green'
-    falseColor?: string;  // default: 'red'
+    falseColor?: string;  // default: 'primary'
+    showIcon?: boolean;   // default: true
 }
 
 export interface CrudColumnConfig {

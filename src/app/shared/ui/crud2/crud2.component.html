@@ -55,6 +55,12 @@
                         <span>Ver</span>
                     </button>
                 }
+                @if (printAction) {
+                    <button mat-menu-item (click)="onPrint(item)" class="menu-item-primary">
+                        <mat-icon>picture_as_pdf</mat-icon>
+                        <span>Ver PDF</span>
+                    </button>
+                }
                 @if (linkAction) {
                     <button mat-menu-item (click)="onLink(item)">
                         <mat-icon>link</mat-icon>
@@ -65,12 +71,6 @@
                     <button mat-menu-item (click)="onUpdate(item)">
                         <mat-icon>edit</mat-icon>
                         <span>Editar</span>
-                    </button>
-                }
-                @if (printAction) {
-                    <button mat-menu-item (click)="onPrint(item)">
-                        <mat-icon>print</mat-icon>
-                        <span>Imprimir</span>
                     </button>
                 }
                 @if (assistantAction) {

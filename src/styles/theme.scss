@@ -226,6 +226,28 @@ body {
       .mat-icon[matprefix] { color: $color-muted; }
     }
   }
+
+  mat-button-toggle-group {
+    align-self: center;
+    margin-bottom: 12px;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: 12px;
+    overflow: hidden;
+
+    --mat-button-toggle-label-text-size: 0.8rem;
+    --mat-button-toggle-height: 36px;
+
+    .mat-button-toggle-appearance-standard {
+      --mat-button-toggle-state-layer-color: transparent;
+      --mat-button-toggle-label-text-color: var(--mat-sys-on-surface-variant);
+      background: $color-white;
+    }
+
+    .mat-button-toggle-checked {
+      background: var(--mat-sys-surface-container-high);
+      --mat-button-toggle-label-text-color: var(--mat-sys-on-surface);
+    }
+  }
 }
 
 // --- CRUD tabla ---

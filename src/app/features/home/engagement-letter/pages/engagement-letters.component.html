@@ -1,32 +1,33 @@
-<mat-button-toggle-group (change)="search()" [(ngModel)]="criteria.opened">
-    <mat-button-toggle [value]="null">Todos</mat-button-toggle>
-    <mat-button-toggle [value]="true">Abierto</mat-button-toggle>
-    <mat-button-toggle [value]="false">Cerrado</mat-button-toggle>
-</mat-button-toggle-group>
+<app-title title="Hojas de Encargo" subtitle="Gestión" [createAction]="true" (create)="create()"></app-title>
 
-<mat-button-toggle-group (change)="search()" [(ngModel)]="criteria.budgetOnly">
-    <mat-button-toggle [value]="null">Todos</mat-button-toggle>
-    <mat-button-toggle [value]="true">Presupuesto</mat-button-toggle>
-    <mat-button-toggle [value]="false">Hoja</mat-button-toggle>
-</mat-button-toggle-group>
+<div class="filters-card">
+    <mat-button-toggle-group (change)="search()" [(ngModel)]="criteria.opened">
+        <mat-button-toggle [value]="null">Todos</mat-button-toggle>
+        <mat-button-toggle [value]="true">Abierto</mat-button-toggle>
+        <mat-button-toggle [value]="false">Cerrado</mat-button-toggle>
+    </mat-button-toggle-group>
 
-<app-filter-input (enter)="search()" [(value)]="criteria.client" title="Cliente"></app-filter-input>
-<app-filter-input (enter)="search()" [(value)]="criteria.legalProcedureTitle"
-                  title="Titulo del Procedimiento"></app-filter-input>
-<app-filter-input (enter)="search()" [(value)]="criteria.taskTitle" title="Tarea"></app-filter-input>
+    <mat-button-toggle-group (change)="search()" [(ngModel)]="criteria.budgetOnly">
+        <mat-button-toggle [value]="null">Todos</mat-button-toggle>
+        <mat-button-toggle [value]="true">Presupuesto</mat-button-toggle>
+        <mat-button-toggle [value]="false">Hoja</mat-button-toggle>
+    </mat-button-toggle-group>
 
-<app-crud (assistant)="openAssistant($event)"
-          (create)="create()"
-          (delete)="delete($event)"
-          (link)="link($event)" (print)="print($event)" (read)="read($event)"
-          (searchAll)="search()" (update)="update($event)"
-          [assistantAction]="true" [changeFields]="changeFields"
-          [data]="engagementLetters"
-          [deleteAction]=deleteVisibility [hiddenFields]="hiddenFields"
+    <app-filter-input (enter)="search()" [(value)]="criteria.client" title="Cliente"></app-filter-input>
+    <app-filter-input (enter)="search()" [(value)]="criteria.legalProcedureTitle"
+                      title="Titulo del Procedimiento"></app-filter-input>
+    <app-filter-input (enter)="search()" [(value)]="criteria.taskTitle" title="Tarea"></app-filter-input>
+</div>
 
-          [item]="engagementLetter"
-          [linkAction]="true"
-          [printAction]="true"
-          [secureDelete]="true"
-          [title]="title">
-</app-crud>
+<app-crud2 (assistant)="openAssistant($event)"
+           (delete)="delete($event)"
+           (link)="link($event)" (print)="print($event)" (read)="read($event)"
+           (searchAll)="search()" (update)="update($event)"
+           [assistantAction]="true" [columns]="columns"
+           [data]="engagementLetters"
+           [deleteAction]="deleteVisibility"
+           [item]="engagementLetter"
+           [linkAction]="true"
+           [printAction]="true"
+           [secureDelete]="true">
+</app-crud2>

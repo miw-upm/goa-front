@@ -13,13 +13,22 @@ import {MatIconButton} from '@angular/material/button';
     imports: [FormsModule, MatFormField, MatLabel, MatSuffix, MatSelect, MatOption, MatIcon, MatIconButton]
 })
 export class FilterBooleanComponent {
-    @Input() value?: boolean;
+    @Input() value?: boolean | null;
     @Input() label: string = '¿Valor booleano?';
+    @Input() trueLabel: string = 'Sí';
+    @Input() falseLabel: string = 'No';
 
-    @Output() valueChange = new EventEmitter<boolean | undefined>();
+    @Output() valueChange = new EventEmitter<boolean | null>();
+    @Output() enter = new EventEmitter<void>();
+
+    onChange(val: boolean | null): void {
+        this.valueChange.emit(val);
+        this.enter.emit();
+    }
 
     clear(): void {
-        this.value = undefined;
-        this.valueChange.emit(this.value);
+        this.value = null;
+        this.valueChange.emit(null);
+        this.enter.emit();
     }
 }

@@ -70,6 +70,11 @@ export class DataCell2Component {
         return !!this.config;
     }
 
+    /** Resuelve un path con dot notation (ej: 'owner.firstName') sobre un objeto */
+    private resolve(obj: any, path: string): any {
+        return path.split('.').reduce((o, k) => o?.[k], obj);
+    }
+
     /** fields efectivos: si no hay ni fieldsTitle ni fields, se infiere [key] */
     private get effectiveFields(): string[] {
         return this.config?.fields?.length ? this.config.fields : (!this.config?.fieldsTitle?.length ? [this.config?.key ?? ''] : []);
@@ -90,7 +95,7 @@ export class DataCell2Component {
         if (!this.config?.fieldsTitle?.length || !this.row) return '';
         const sep = this.config.separator ?? ' ';
         return this.config.fieldsTitle
-            .map(f => this.row[f])
+            .map(f => this.resolve(this.row, f))
             .filter(v => v !== null && v !== undefined && v !== '')
             .join(sep);
     }
@@ -101,7 +106,7 @@ export class DataCell2Component {
         if (!fields.length || !this.row) return '';
         const sep = this.config?.separator ?? ' ';
         return fields
-            .map(f => this.row[f])
+            .map(f => this.resolve(this.row, f))
             .filter(v => v !== null && v !== undefined && v !== '')
             .join(sep);
     }
@@ -111,7 +116,7 @@ export class DataCell2Component {
     get singleValue(): any {
         if (!this.config || !this.row) return '';
         const field = this.config.fieldsTitle?.[0] ?? this.effectiveFields[0];
-        return field ? this.row[field] : '';
+        return field ? this.resolve(this.row, field) : '';
     }
 
     get format(): CrudColumnFormat {
@@ -131,6 +136,10 @@ export class DataCell2Component {
             : (cfg?.falseLabel ?? 'NO');
     }
 
+    get showBooleanIcon(): boolean {
+        return this.config?.booleanConfig?.showIcon !== false;
+    }
+
     get booleanIcon(): string {
         return this.singleValue ? '✓' : '✗';
     }
@@ -139,7 +148,7 @@ export class DataCell2Component {
         const cfg = this.config?.booleanConfig;
         const color = this.singleValue
             ? (cfg?.trueColor ?? 'green')
-            : (cfg?.falseColor ?? 'red');
+            : (cfg?.falseColor ?? 'primary');
         return `bool-${color}`;
     }
 
@@ -147,16 +156,16 @@ export class DataCell2Component {
 
     get isArrayMode(): boolean {
         if (!this.config?.arrayField || !this.row) return false;
-        const val = this.row[this.config.key];
+        const val = this.resolve(this.row, this.config.key);
         return Array.isArray(val);
     }
 
     private get arrayItems(): string[] {
         if (!this.config?.arrayField || !this.row) return [];
-        const arr = this.row[this.config.key];
+        const arr = this.resolve(this.row, this.config.key);
         if (!Array.isArray(arr)) return [];
         return arr
-            .map((item: any) => item?.[this.config.arrayField])
+            .map((item: any) => this.resolve(item, this.config.arrayField))
             .filter((v: any) => v !== null && v !== undefined && v !== '');
     }
 
