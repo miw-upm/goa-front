@@ -369,7 +369,9 @@ mat-dialog-content,
     align-items: stretch;
     gap: 8px;
 
-    > mat-form-field {
+    > mat-form-field,
+    > app-form-field mat-form-field,
+    > app-input-data mat-form-field {
       --mdc-filled-text-field-container-color: var(--mat-sys-surface);
     }
   }
@@ -391,7 +393,8 @@ mat-dialog-content,
     }
 
     app-form-date,
-    app-form-field {
+    app-form-field,
+    app-input-data {
       flex: 1;
       min-width: 0;
 
@@ -399,6 +402,12 @@ mat-dialog-content,
         width: 100%;
         --mdc-filled-text-field-container-color: var(--mat-sys-surface);
       }
+    }
+
+    > mat-form-field {
+      flex: 1;
+      min-width: 0;
+      --mdc-filled-text-field-container-color: var(--mat-sys-surface);
     }
 
     > .mat-mdc-icon-button {
