@@ -12,6 +12,7 @@ import {
     MatDialogTitle
 } from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatOption, MatSelect} from '@angular/material/select';
 
@@ -34,6 +35,7 @@ import {Income} from '../models/income.model';
         MatDialogActions,
         MatDialogClose,
         MatButton,
+        MatIcon,
         MatFormField,
         MatLabel,
         MatSelect,

@@ -41,7 +41,9 @@
     @if (isCreate()) {
         <button (click)="create()"
                 [disabled]="formInvalid(mobile.ngModel, name.ngModel, code.ngModel, identity.ngModel)" color="primary"
-                mat-raised-button>Crear
+                mat-raised-button>
+            <mat-icon matButtonIcon>add</mat-icon>
+            Crear
         </button>
     } @else {
         <button (click)="update()"

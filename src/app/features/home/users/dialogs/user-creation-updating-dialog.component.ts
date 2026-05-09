@@ -11,6 +11,7 @@ import {
 } from '@angular/material/dialog';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
 import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
 
 import {AuthService} from '@core/auth/auth.service';
 import {FormSelectComponent} from '@shared/ui/inputs/forms/form-select.component';
@@ -31,6 +32,7 @@ import {FormNifComponent} from "@shared/ui/inputs/forms/form-nif.component";
         MatDialogClose,
         MatSlideToggle,
         MatButton,
+        MatIcon,
         FormSelectComponent,
         FormFieldComponent,
         AppDateFieldComponent,

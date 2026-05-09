@@ -286,6 +286,10 @@ app-crud {
 }
 
 // --- Diálogos ---
+.mat-mdc-dialog-container .mat-mdc-dialog-surface {
+  background-color: $color-white;
+}
+
 mat-dialog-content,
 .mat-mdc-dialog-content {
   display: flex;

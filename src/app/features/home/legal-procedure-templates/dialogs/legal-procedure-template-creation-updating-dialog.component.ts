@@ -9,6 +9,7 @@ import {
     MatDialogTitle
 } from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
 
 import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
 import {InputData} from '@shared/ui/inputs/input-data.component';
@@ -29,6 +30,7 @@ import {LegalProcedureTemplateService} from '../legal-procedure-template.service
         MatDialogActions,
         MatDialogClose,
         MatButton,
+        MatIcon,
         SearchByLegalTaskComponent,
         FormFieldComponent,
         InputData,
