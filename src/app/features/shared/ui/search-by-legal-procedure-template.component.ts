@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Observable, of} from 'rxjs';
 
-import {SearchComponent} from '@shared/ui/inputs/search.component';
+import {SearchComponent} from '@shared/ui/inputs/filters/search.component';
 import {SharedLegalProcedureService} from "../services/shared-legal-procedure.service";
 import {LegalProcedureTemplate} from "../../home/legal-procedure-templates/models/legal-procedure-template.model";
 

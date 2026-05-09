@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Observable, of} from 'rxjs';
 
-import {SearchComponent} from '@shared/ui/inputs/search.component';
+import {SearchComponent} from '@shared/ui/inputs/filters/search.component';
 import {SharedUserService} from "../services/shared-user.service";
 import {User} from "../models/user.model";
 
@@ -18,11 +18,11 @@ export class SearchByUserComponent {
     @Input() title: string = 'Search by User';
     @Output() userChange = new EventEmitter<User>();
 
-    userDisplayFn = (user: User): string =>
-        `${user.firstName ?? ''} ${user.familyName ?? ''} — ${user.mobile}`.trim();
-
     constructor(private readonly sharedUserService: SharedUserService) {
     }
+
+    userDisplayFn = (user: User): string =>
+        `${user.firstName ?? ''} ${user.familyName ?? ''} — ${user.mobile}`.trim();
 
     public onSelect(user: User): void {
         this.userChange.emit(user);

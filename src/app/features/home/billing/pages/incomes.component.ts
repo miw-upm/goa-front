@@ -3,18 +3,18 @@ import {FormsModule} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {catchError, map, Observable, of} from 'rxjs';
 
-import {CrudComponent} from '@shared/ui/crud/crud.component';
-import {FilterDateComponent} from '@shared/ui/inputs/filter-date.component';
-import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
+import {FilterDateComponent} from '../../../../shared/ui/inputs/filters/filter-date.component';
+import {FilterInputComponent} from '../../../../shared/ui/inputs/filters/filter-input.component';
 import {IncomeCreationDialogComponent} from '../dialogs/income-creation-dialog.component';
 import {IncomeService} from '../income.service';
 import {Income} from '../models/income.model';
 import {IncomeSearch} from '../models/income-search.model';
+import {CrudComponent} from "@shared/ui/crud/crud.component";
 
 @Component({
     standalone: true,
     selector: 'app-incomes',
-    imports: [FormsModule, CrudComponent, FilterDateComponent, FilterInputComponent],
+    imports: [FormsModule, FilterDateComponent, FilterInputComponent, CrudComponent],
     templateUrl: 'incomes.component.html'
 })
 export class IncomesComponent {

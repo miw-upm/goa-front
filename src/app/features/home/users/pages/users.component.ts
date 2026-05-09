@@ -3,8 +3,8 @@ import {FormsModule} from '@angular/forms';
 import {Observable, of} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 
-import {Crud2Component} from '@shared/ui/crud2/crud2.component';
-import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
+import {CrudComponent} from '@shared/ui/crud/crud.component';
+import {FilterInputComponent} from '../../../../shared/ui/inputs/filters/filter-input.component';
 import {TitleComponent} from '@shared/ui/title/title.component';
 import {USERS_COLUMNS} from './users-columns.config';
 import {User} from '@features/shared/models/user.model';
@@ -17,7 +17,7 @@ import {AuthService} from "@core/auth/auth.service";
 
 @Component({
     standalone: true,
-    imports: [FormsModule, Crud2Component, FilterInputComponent, TitleComponent],
+    imports: [FormsModule, CrudComponent, FilterInputComponent, TitleComponent],
     templateUrl: 'users.component.html'
 })
 export class UsersComponent {

@@ -2,19 +2,19 @@ import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {catchError, map, Observable, of} from 'rxjs';
-import {CrudComponent} from '@shared/ui/crud/crud.component';
-import {FilterDateComponent} from '@shared/ui/inputs/filter-date.component';
-import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
+import {FilterDateComponent} from '../../../../shared/ui/inputs/filters/filter-date.component';
+import {FilterInputComponent} from '../../../../shared/ui/inputs/filters/filter-input.component';
 import {InvoiceService} from '../invoice.service';
 import {Invoice} from '../models/invoice.model';
 import {InvoiceSearch} from '../models/invoice-search.model';
 import {InvoiceCreationDialogComponent} from '../dialogs/invoice-creation-dialog.component';
 import {InvoiceBreakdownDialogComponent} from "../dialogs/invoice-breakdown-dialog.component";
+import {CrudComponent} from "@shared/ui/crud/crud.component";
 
 @Component({
     standalone: true,
     selector: 'app-invoices',
-    imports: [FormsModule, CrudComponent, FilterDateComponent, FilterInputComponent],
+    imports: [FormsModule, FilterDateComponent, FilterInputComponent, CrudComponent],
     templateUrl: 'invoices.component.html'
 })
 export class InvoicesComponent {

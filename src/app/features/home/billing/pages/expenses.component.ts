@@ -3,18 +3,18 @@ import {MatDialog} from '@angular/material/dialog';
 import {Observable, of} from 'rxjs';
 import {MatSnackBar} from "@angular/material/snack-bar";
 
-import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {Expense} from '../models/expense.model';
 import {ExpenseSearch} from '../models/expense-search.model';
 import {ExpenseService} from '../expense.service';
 import {ExpenseCreationDialogComponent} from '../dialogs/expense-creation-dialog.component';
-import {FilterDateComponent} from "../../../../shared/ui/inputs/filter-date.component";
-import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
+import {FilterDateComponent} from "../../../../shared/ui/inputs/filters/filter-date.component";
+import {FilterInputComponent} from "../../../../shared/ui/inputs/filters/filter-input.component";
+import {CrudComponent} from "@shared/ui/crud/crud.component";
 
 @Component({
     standalone: true,
     selector: 'app-expenses',
-    imports: [CrudComponent, FilterDateComponent, FilterInputComponent],
+    imports: [FilterDateComponent, FilterInputComponent, CrudComponent],
     templateUrl: 'expenses.component.html'
 })
 export class ExpensesComponent {

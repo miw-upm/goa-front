@@ -1,8 +1,9 @@
 import {Component, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+
+import {SignDocumentService} from '../sign-document.service';
 import {DocumentAcceptanceComponent} from '../../../shared/document-acceptance/document-acceptance.component';
 import {DocumentAcceptanceResult} from '../../../shared/document-acceptance/document-acceptance-result.model';
-import {SignDocumentService} from '../sign-document.service';
 
 @Component({
     standalone: true,

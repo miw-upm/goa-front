@@ -1,16 +1,16 @@
 <mat-form-field>
     <mat-label>{{ title }}</mat-label>
-    <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="date" (ngModelChange)="onDateChange()">
+    <input (ngModelChange)="onDateChange()" [(ngModel)]="date" [matDatepicker]="pickerFrom" matInput>
     <button
             (click)="clearDate()"
             [disabled]="!date"
+            aria-label="Limpiar fecha"
             mat-icon-button
             matSuffix
             type="button"
-            aria-label="Limpiar fecha"
     >
         <mat-icon>delete</mat-icon>
     </button>
-    <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+    <mat-datepicker-toggle [for]="pickerFrom" matSuffix></mat-datepicker-toggle>
     <mat-datepicker #pickerFrom></mat-datepicker>
 </mat-form-field>

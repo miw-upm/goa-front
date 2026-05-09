@@ -56,7 +56,7 @@ export class UserCreationUpdatingDialogComponent {
         private readonly authService: AuthService,
         private readonly dialogRef: MatDialogRef<UserCreationUpdatingDialogComponent, string>
     ) {
-        this.title = data ? 'Actualización de Usuarios' : 'Creación de Usuarios';
+        this.title = data ? 'Edición de Clientes' : 'Creación de Clientes';
         this.user = data || {mobile: undefined, firstName: undefined, active: true};
         this.oldMobile = data ? data.mobile : undefined;
         this.enablePasswordChange = false;

@@ -1,15 +1,30 @@
 <mat-table #table [dataSource]="dataSource" matSort>
-    <mat-header-row *matHeaderRowDef="visibleColumns.concat('actions')"></mat-header-row>
-    <mat-row *matRowDef="let item; columns: visibleColumns.concat('actions')"></mat-row>
-    <!-- Columnas dinámicas visibles -->
-    @for (def of visibleColumns; track def) {
-        <ng-container [matColumnDef]="def">
-            <mat-header-cell *matHeaderCellDef>{{ def | uppercaseWords }}</mat-header-cell>
-            <mat-cell *matCellDef="let row">
-                <app-data-cell [changeFields]="getChangeFields(def)" [value]="row[def]"></app-data-cell>
-            </mat-cell>
-        </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let item; columns: displayedColumns"></mat-row>
+
+    @if (useConfig) {
+        <!-- Modo configurado: columnas definidas por CrudColumnConfig -->
+        @for (col of columns; track col.key) {
+            <ng-container [matColumnDef]="col.key">
+                <mat-header-cell *matHeaderCellDef>{{ col.label }}</mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <app-data-cell2 [config]="col" [row]="row"></app-data-cell2>
+                </mat-cell>
+            </ng-container>
+        }
+    } @else {
+        <!-- Modo legacy: columnas auto-descubiertas -->
+        @for (def of visibleAutoColumns; track def) {
+            <ng-container [matColumnDef]="def">
+                <mat-header-cell *matHeaderCellDef>{{ def | uppercaseWords }}</mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <app-data-cell2 [changeFields]="getChangeFields(def)"
+                                    [value]="row[def]"></app-data-cell2>
+                </mat-cell>
+            </ng-container>
+        }
     }
+
     <!-- Columna de acciones -->
     <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>

@@ -2,9 +2,9 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
 
-import {environment} from "@env";
-import {HttpService} from "@shared/ui/api/http.service";
 import {ENDPOINTS} from "@core/api/endpoints";
+import {HttpService} from "@shared/ui/api/http.service";
+import {environment} from "@env";
 import {AccessLink} from "@features/shared/models/access-link.model";
 import {AccessLinkCreation} from "@features/shared/models/access-link-creation.model";
 

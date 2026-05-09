@@ -1,15 +1,15 @@
 <mat-form-field class="full-width">
     <mat-icon matPrefix>search</mat-icon>
     <mat-label>{{ title }}</mat-label>
-    <input [(ngModel)]="inputValue"
+    <input (keyup.enter)="onRenew()"
            (ngModelChange)="onRenew()"
-           (keyup.enter)="onRenew()"
+           [(ngModel)]="inputValue"
            [matAutocomplete]="auto"
            [required]="obligatory"
            matInput
            type="text"
     >
-    <button (click)="resetKey()" [disabled]="!inputValue" mat-icon-button matSuffix aria-label="Clear">
+    <button (click)="resetKey()" [disabled]="!inputValue" aria-label="Clear" mat-icon-button matSuffix>
         <mat-icon>close</mat-icon>
     </button>
     <mat-autocomplete #auto="matAutocomplete">

@@ -12,7 +12,7 @@ import {MatButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 
 import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
-import {InputData} from '@shared/ui/inputs/input-data.component';
+import {InputData} from '../../../../shared/ui/inputs/filters/input-data.component';
 import {FormListComponent} from '@shared/ui/inputs/forms/form-list.component';
 import {SharedLegalTaskService} from '@features/shared/services/shared-legal-task.service';
 import {SearchByLegalTaskComponent} from '@features/shared/ui/search-by-legal-task.component';
@@ -45,7 +45,7 @@ export class LegalProcedureTemplateCreationUpdatingDialogComponent {
 
     constructor(@Inject(MAT_DIALOG_DATA) data: LegalProcedureTemplate, private readonly legalProcedureTemplateService: LegalProcedureTemplateService,
                 private readonly dialog: MatDialog, private readonly sharedLegalTaskService: SharedLegalTaskService) {
-        this.title = data ? 'Actualizar Plantilla De Procedimiento Legal' : 'Crear Plantilla De Procedimiento Legal';
+        this.title = data ? 'Edición De Plantilla De Procedimiento Legal' : 'Crear Plantilla De Procedimiento Legal';
         this.template = {
             id: undefined,
             title: undefined,

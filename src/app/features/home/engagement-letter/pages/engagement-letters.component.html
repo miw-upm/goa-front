@@ -19,15 +19,14 @@
     <app-filter-input (enter)="search()" [(value)]="criteria.taskTitle" title="Tarea"></app-filter-input>
 </div>
 
-<app-crud2 (assistant)="openAssistant($event)"
-           (delete)="delete($event)"
-           (link)="link($event)" (print)="print($event)" (read)="read($event)"
-           (searchAll)="search()" (update)="update($event)"
-           [assistantAction]="true" [columns]="columns"
-           [data]="engagementLetters"
-           [deleteAction]="deleteVisibility"
-           [item]="engagementLetter"
-           [linkAction]="true"
-           [printAction]="true"
-           [secureDelete]="true">
-</app-crud2>
+<app-crud (delete)="delete($event)"
+          (link)="link($event)" (print)="print($event)" (read)="read($event)"
+          (searchAll)="search()" (update)="update($event)"
+          [assistantAction]="true" [columns]="columns"
+          [data]="engagementLetters"
+          [deleteAction]="deleteVisibility"
+          [item]="engagementLetter"
+          [linkAction]="true"
+          [printAction]="true"
+          [secureDelete]="true">
+</app-crud>

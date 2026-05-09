@@ -7,15 +7,15 @@
         <div class="zone-row">
             <app-form-date [(value)]="procedure.startDate" label="Fecha de inicio"></app-form-date>
             <app-form-field
-                    #budget
-                    [(value)]="procedure.budget"
-                    [min]="0"
-                    [required]="true"
-                    [step]="10"
-                    errorMessage="0..x"
-                    icon="euro"
-                    label="Presupuesto"
-                    type="number"
+                #budget
+                [(value)]="procedure.budget"
+                [min]="0"
+                [required]="true"
+                [step]="10"
+                errorMessage="0..x"
+                icon="euro"
+                label="Presupuesto"
+                type="number"
             />
             <mat-slide-toggle [(ngModel)]="procedure.vatIncluded">IVA incluido</mat-slide-toggle>
         </div>
@@ -29,9 +29,9 @@
         <div class="zone-row">
             <mat-form-field class="full-width">
                 <mat-label>Nueva tarea legal</mat-label>
-                <input [(ngModel)]="newTaskValue" (keydown.enter)="addNewTaskFromInput()" matInput>
+                <input (keydown.enter)="addNewTaskFromInput()" [(ngModel)]="newTaskValue" matInput>
             </mat-form-field>
-            <button (click)="addNewTaskFromInput()" mat-flat-button color="primary">
+            <button (click)="addNewTaskFromInput()" color="primary" mat-flat-button>
                 <mat-icon matButtonIcon>add</mat-icon>
                 Crear
             </button>

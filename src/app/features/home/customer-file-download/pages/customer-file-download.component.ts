@@ -2,16 +2,16 @@ import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Observable, of} from 'rxjs';
 
-import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {CustomerFileDownloadService} from '../customer-file-download.service';
-import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
+import {FilterInputComponent} from '../../../../shared/ui/inputs/filters/filter-input.component';
 import {CustomerFileDownloadFindCriteria} from "../customer-file-download-find-criteria.model";
 import {CustomerFileDownload} from "../customer-file-download.model";
+import {CrudComponent} from "@shared/ui/crud/crud.component";
 
 @Component({
     standalone: true,
     providers: [CustomerFileDownloadService],
-    imports: [FormsModule, CrudComponent, FilterInputComponent],
+    imports: [FormsModule, FilterInputComponent, CrudComponent],
     templateUrl: 'customer-file-download.component.html'
 })
 export class CustomerFileDownloadComponent {

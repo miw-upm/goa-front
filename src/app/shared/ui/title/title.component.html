@@ -8,19 +8,19 @@
         </div>
         <div class="app-title__actions">
             @if (createAction) {
-                <button mat-flat-button class="app-title__create" (click)="create.emit()">
+                <button (click)="create.emit()" class="app-title__create" mat-flat-button>
                     <mat-icon>add</mat-icon>
                     Crear
                 </button>
             }
             @if (cancelAction) {
-                <button mat-stroked-button class="app-title__cancel" (click)="cancel.emit()">
+                <button (click)="cancel.emit()" class="app-title__cancel" mat-stroked-button>
                     Cancelar
                 </button>
             }
             @if (saveAction) {
-                <button mat-flat-button class="app-title__create" (click)="save.emit()"
-                        [disabled]="saveDisabled">
+                <button (click)="save.emit()" [disabled]="saveDisabled" class="app-title__create"
+                        mat-flat-button>
                     <mat-icon>{{ saveIcon }}</mat-icon>
                     {{ saveLabel }}
                 </button>

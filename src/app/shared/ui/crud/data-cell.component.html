@@ -1,54 +1,112 @@
-@if (!fullList) {
-    @if (isArray(value) && value.length > 0) {
-        @if (isObject(value[0])) {
-            {{ getFirstKey(value[0]) }}: {{ getFirstValue(value[0]) }}...({{ Object.entries(value[0]).length }})
-        } @else {
-            {{ value[0] }}...({{ value[0].length }})
+@if (hasConfig) {
+    <!-- Modo configurado -->
+    @if (isArrayMode) {
+        @if (arrayFirst) {
+            <span class="cell-primary">{{ arrayFirst }}</span>
         }
-    } @else if (isObject(value)) {
-        @if (changeFields.length > 0) {
-            {{ buildChangedFieldsText(value) }}
-        } @else {
-            {{ getFirstKey(value) }}: {{ getFirstValue(value) }}...({{ Object.entries(value).length }})
+        @if (arraySecond) {
+            <div class="cell-secondary">{{ arraySecond }}@if (arrayRemainingCount > 0) {
+                <span>(+{{ arrayRemainingCount }} más)</span>
+            }</div>
+        } @else if (arrayRemainingCount > 0) {
+            <div class="cell-secondary">(+{{ arrayRemainingCount }} más)</div>
         }
-    } @else if (isDate(value)) {
-        {{ value | date: 'dd/MM/yyyy HH:mm:ss' }}
-    } @else if (value === null || value === undefined) {
-        —
+        @if (!arrayFirst) {
+            <span>—</span>
+        }
     } @else {
-        {{ value }}
+        @switch (format) {
+            @case ('boolean') {
+                <span class="bool-chip {{ booleanColorClass }}">@if (showBooleanIcon) {
+                    {{ booleanIcon }}
+                }{{ booleanLabel }}</span>
+            }
+            @case ('date') {
+                <span>{{ singleValue | date: dateFormat : '' : 'es' }}</span>
+            }
+            @case ('currency') {
+                <span>{{ singleValue | currency: 'EUR' : 'symbol' : '1.2-2' : 'es' }}</span>
+            }
+            @case ('number') {
+                <span>{{ singleValue | number: '1.0-2' : 'es' }}</span>
+            }
+            @default {
+                <!-- fieldsTitle: línea resaltada -->
+                @if (hasTitle) {
+                    <span class="cell-primary">{{ titleValue }}</span>
+                }
+                <!-- fields: línea normal (secundaria si hay title) -->
+                @if (hasFields) {
+                    @if (hasTitle) {
+                        <div class="cell-secondary">{{ fieldsValue }}</div>
+                    } @else {
+                        @if (fieldsValue) {
+                            <span>{{ fieldsValue }}</span>
+                        } @else {
+                            <span>—</span>
+                        }
+                    }
+                }
+                @if (!hasTitle && !hasFields) {
+                    <span>—</span>
+                }
+            }
+        }
     }
 } @else {
-    @if (isArray(value)) {
-        <ol>
-            @for (item of value; track item) {
-                <li>
-                    @if (isObject(item) || isArray(item)) {
-                        <app-data-cell [fullList]="true" [value]="item"/>
-                    } @else {
-                        {{ item }}.
-                    }
-                </li>
+    <!-- Modo legacy (sin config, compatibilidad v1) -->
+    @if (!fullList) {
+        @if (isArray(value) && value.length > 0) {
+            @if (isObject(value[0])) {
+                {{ getFirstKey(value[0]) }}: {{ getFirstValue(value[0]) }}...({{ Object.entries(value[0]).length }})
+            } @else {
+                {{ value[0] }}...({{ value[0].length }})
             }
-        </ol>
-    } @else if (isObject(value)) {
-        <ul>
-            @for (entry of Object.entries(value); track entry[0]) {
-                <li>
-                    <strong>{{ entry[0] | uppercaseWords }}:</strong>
-                    @if (isObject(entry[1]) || isArray(entry[1])) {
-                        <app-data-cell [fullList]="true" [value]="entry[1]"/>
-                    } @else {
-                        {{ entry[1] }}
-                    }
-                </li>
+        } @else if (isObject(value)) {
+            @if (changeFields.length > 0) {
+                {{ buildChangedFieldsText(value) }}
+            } @else {
+                {{ getFirstKey(value) }}: {{ getFirstValue(value) }}...({{ Object.entries(value).length }})
             }
-        </ul>
-    } @else if (isDate(value)) {
-        {{ value | date: 'dd/MM/yyyy HH:mm:ss' }}
-    } @else if (value === null || value === undefined) {
-        —
+        } @else if (isDate(value)) {
+            {{ value | date: 'dd/MM/yyyy HH:mm:ss' }}
+        } @else if (value === null || value === undefined) {
+            —
+        } @else {
+            {{ value }}
+        }
     } @else {
-        {{ value }}
+        @if (isArray(value)) {
+            <ol>
+                @for (item of value; track item) {
+                    <li>
+                        @if (isObject(item) || isArray(item)) {
+                            <app-data-cell2 [fullList]="true" [value]="item"/>
+                        } @else {
+                            {{ item }}.
+                        }
+                    </li>
+                }
+            </ol>
+        } @else if (isObject(value)) {
+            <ul>
+                @for (entry of Object.entries(value); track entry[0]) {
+                    <li>
+                        <strong>{{ entry[0] | uppercaseWords }}:</strong>
+                        @if (isObject(entry[1]) || isArray(entry[1])) {
+                            <app-data-cell2 [fullList]="true" [value]="entry[1]"/>
+                        } @else {
+                            {{ entry[1] }}
+                        }
+                    </li>
+                }
+            </ul>
+        } @else if (isDate(value)) {
+            {{ value | date: 'dd/MM/yyyy HH:mm:ss' }}
+        } @else if (value === null || value === undefined) {
+            —
+        } @else {
+            {{ value }}
+        }
     }
 }

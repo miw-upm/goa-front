@@ -37,7 +37,7 @@ export class LegalTaskCreationUpdatingDialogComponent {
 
     constructor(@Inject(MAT_DIALOG_DATA) data: LegalTask, private readonly legalTaskService: LegalTaskService,
                 private readonly sharedLegalTaskService: SharedLegalTaskService, private readonly dialog: MatDialog) {
-        this.title = data ? 'Actualización de Tarea Legal' : 'Creación de Tarea Legal';
+        this.title = data ? 'Edición de Tarea Legal' : 'Creación de Tarea Legal';
         this.task = data || {id: undefined, title: undefined};
     }
 

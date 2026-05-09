@@ -5,7 +5,7 @@
                       title="Buscar por nombre, apellido, móvil..."></app-filter-input>
 </div>
 
-<app-crud2 (read)="read($event)" (searchAll)="search()"
-           [columns]="columns" [createAction]="false" [data]="consents" [item]="consent"
-           [updateAction]="false">
-</app-crud2>
+<app-crud (read)="read($event)" (searchAll)="search()"
+          [columns]="columns" [createAction]="false" [data]="consents" [item]="consent"
+          [updateAction]="false">
+</app-crud>

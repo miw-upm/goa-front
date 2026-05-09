@@ -18,8 +18,5 @@ export class FooterComponent {
     readonly version = `${environment.VERSION}`;
     readonly backEndUser = environment.REST_USER;
     readonly backEndEngagement = environment.REST_ENGAGEMENT;
-    readonly backEndBilling = environment.REST_BILLING;
     readonly backEndSupport = environment.REST_SUPPORT;
-    readonly backEndDocument = environment.REST_DOCUMENT;
-    readonly backEndChatbot = environment.REST_CHATBOT;
 }
