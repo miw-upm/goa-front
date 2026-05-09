@@ -7,19 +7,7 @@ import {FormFieldComponent} from './form-field.component';
     selector: 'app-form-nif',
     imports: [FormFieldComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    template: `
-        <app-form-field
-            #field
-            [value]="value"
-            (valueChange)="onValueChange($event)"
-            [label]="label"
-            [required]="required"
-            [disabled]="disabled"
-            [pattern]="NIF_PATTERN"
-            [maxlength]="9"
-            [errorMessage]="errorMessage"
-        />
-    `
+    templateUrl: './form-nif.component.html'
 })
 export class FormNifComponent implements AfterViewInit {
     private static readonly DNI_LETTERS = 'TRWAGMYFPDXBNJZSQVHLCKE';

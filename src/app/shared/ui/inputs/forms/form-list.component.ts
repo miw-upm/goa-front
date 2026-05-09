@@ -10,36 +10,7 @@ import {TypeToConfirmDialogComponent} from "@shared/ui/dialogs/type-to-confirm-d
     standalone: true,
     selector: 'app-form-list',
     imports: [CdkDropList, CdkDrag, CdkDragHandle, MatIconButton, MatIcon],
-    template: `
-        <div cdkDropList (cdkDropListDropped)="onDrop($event)" class="form-list">
-            @for (item of items; track $index; let i = $index) {
-                <div class="form-list-item" cdkDrag>
-                    <mat-icon class="form-list-drag" cdkDragHandle>drag_indicator</mat-icon>
-                    <span class="form-list-text">
-                        @if (!keyView.length) {
-                            {{ item }}
-                        } @else {
-                            @for (key of keyView; track $index; let last = $last) {
-                                {{ item[key] }}@if (!last) {
-                                    ,
-                                }
-                            }
-                        }
-                    </span>
-                    <span class="form-list-actions">
-                        @if (actionIcon) {
-                            <button mat-icon-button (click)="onAction(item)" aria-label="Editar">
-                                <mat-icon>{{ actionIcon }}</mat-icon>
-                            </button>
-                        }
-                        <button mat-icon-button (click)="removeItem(i)" aria-label="Eliminar">
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </span>
-                </div>
-            }
-        </div>
-    `,
+    templateUrl: './form-list.component.html',
     styles: [`
         .form-list {
             display: flex;

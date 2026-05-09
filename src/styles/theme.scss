@@ -543,6 +543,48 @@ mat-dialog-content,
   table { width: 100%; }
 }
 
+// --- Title ---
+.app-title {
+  padding: 24px 24px 16px;
+}
+
+.app-title__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-title__text {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--mat-sys-on-surface);
+}
+
+.app-title__subtitle {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  color: var(--mat-sys-on-surface-variant);
+  font-weight: 400;
+}
+
+.app-title__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-title__create {
+  --mdc-filled-button-container-color: #{$color-secondary};
+  --mdc-filled-button-label-text-color: #{$color-white};
+  border-radius: 12px;
+}
+
+.app-title__cancel {
+  border-radius: 12px;
+}
+
 // --- Customer ---
 .title-container { padding: 16px 16px 0; }
 

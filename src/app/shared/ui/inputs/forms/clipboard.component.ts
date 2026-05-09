@@ -10,16 +10,7 @@ import {MatTooltip} from '@angular/material/tooltip';
     standalone: true,
     selector: 'app-form-clipboard',
     imports: [MatFormField, MatLabel, MatInput, FormsModule, MatIcon, MatIconButton, MatSuffix, MatTooltip],
-    template: `
-        <mat-form-field class="full-width">
-            <mat-label>{{ label }}</mat-label>
-            <input [(ngModel)]="value" matInput readonly type="text"/>
-            <button (click)="copyToClipboard()" [disabled]="!value" mat-icon-button
-                    matSuffix matTooltip="Copiar">
-                <mat-icon>content_copy</mat-icon>
-            </button>
-        </mat-form-field>
-    `,
+    templateUrl: './clipboard.component.html',
 
 
 })
