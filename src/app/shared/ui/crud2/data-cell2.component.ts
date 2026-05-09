@@ -8,52 +8,6 @@ import {UppercaseWordsPipe} from '@shared/pipes/uppercase-words.pipe';
     standalone: true,
     selector: 'app-data-cell2',
     templateUrl: './data-cell2.component.html',
-    styles: [`
-        .cell-primary {
-            font-weight: 500;
-            color: rgba(0, 0, 0, 0.87);
-        }
-
-        .cell-secondary {
-            font-size: 0.8rem;
-            color: rgba(0, 0, 0, 0.54);
-            margin-top: 2px;
-        }
-
-        .bool-chip {
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            line-height: 1.6;
-        }
-
-        .bool-green {
-            background-color: #e1e4de;
-            color: #38462c;
-        }
-
-        .bool-red {
-            background-color: #ffdad6;
-            color: #93000a;
-        }
-
-        .bool-primary {
-            background-color: #f4e9dc;
-            color: #5d3d17;
-        }
-
-        .bool-warn {
-            background-color: #fff3e0;
-            color: #e65100;
-        }
-
-        .bool-default {
-            background-color: #eae8e6;
-            color: #605950;
-        }
-    `],
     imports: [DatePipe, DecimalPipe, CurrencyPipe, UppercaseWordsPipe]
 })
 export class DataCell2Component {

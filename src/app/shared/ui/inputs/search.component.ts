@@ -13,15 +13,6 @@ import {MatOption} from '@angular/material/core';
     standalone: true,
     selector: 'app-search',
     templateUrl: 'search.component.html',
-    styles: [`
-        mat-form-field {
-            --mdc-filled-text-field-container-color: var(--mat-sys-surface);
-        }
-
-        .mat-icon[matPrefix] {
-            color: #9e9e9e;
-        }
-    `],
     imports: [
         FormsModule,
         AsyncPipe,

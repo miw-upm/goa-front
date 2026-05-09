@@ -10,7 +10,6 @@ import {environment} from '@env';
     standalone: true,
     selector: 'app-footer',
     templateUrl: './footer.component.html',
-    styleUrls: ['./footer.component.css'],
     imports: [MatDividerModule, MatGridListModule, MatListModule, MatIconModule]
 })
 export class FooterComponent {
