@@ -40,16 +40,13 @@
                                         title="Buscar cliente"></app-search-by-user>
                 </div>
                 @if (engagementLetter.owner) {
-                    <div class="item-card">
-                        <span class="avatar avatar--primary">{{ ownerInitials() }}</span>
-                        <div class="person-info">
-                            <span class="person-name">{{ engagementLetter.owner.firstName }} {{ engagementLetter.owner.familyName }}</span>
-                            <span class="person-detail">{{ engagementLetter.owner.mobile }}</span>
-                        </div>
-                        <button (click)="removeOwner()" aria-label="Quitar responsable" mat-icon-button>
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </div>
+                    @if (engagementLetter.owner) {
+                        <app-form-customer
+                                [fullName]="engagementLetter.owner.firstName + ' ' + engagementLetter.owner.familyName"
+                                [mobile]="engagementLetter.owner.mobile"
+                                (remove)="removeOwner()">
+                        </app-form-customer>
+                    }
                 }
             </div>
 
@@ -60,16 +57,11 @@
                                         title="Buscar cliente"></app-search-by-user>
                 </div>
                 @for (att of engagementLetter.attachments; track $index; let i = $index) {
-                    <div class="item-card">
-                        <span class="avatar avatar--primary">{{ userInitials(att) }}</span>
-                        <div class="person-info">
-                            <span class="person-name">{{ att.firstName }} {{ att.familyName }}</span>
-                            <span class="person-detail">{{ att.mobile }}</span>
-                        </div>
-                        <button (click)="removeAttachment(i)" aria-label="Quitar cliente" mat-icon-button>
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </div>
+                    <app-form-customer
+                            [fullName]="(att.firstName ?? '') + ' ' + (att.familyName ?? '')"
+                            [mobile]="att.mobile"
+                            (remove)="removeAttachment(i)">
+                    </app-form-customer>
                 }
             </div>
 
@@ -120,16 +112,12 @@
                     <span class="zone-title">Firmantes</span>
                 </div>
                 @for (att of engagementLetter.acceptanceEngagements; track $index; let i = $index) {
-                    <div class="item-card">
-                        <span class="avatar avatar--primary">{{ userInitials(att.signerFullName) }}</span>
-                        <div class="person-info">
-                            <span class="person-name">{{ att.signerFullName }}</span>
-                            <span class="person-detail">{{ att.mobile }}</span>
-                        </div>
-                        <button (click)="removeAttachment(i)" aria-label="Quitar cliente" mat-icon-button>
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </div>
+                    <app-form-customer
+                            [fullName]="att.signerFullName"
+                            [mobile]="att.mobile"
+                            [secure]="true"
+                            (remove)="removeAcceptance(i)">
+                    </app-form-customer>
                 }
             </div>
 

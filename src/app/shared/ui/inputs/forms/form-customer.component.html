@@ -1,0 +1,21 @@
+<div class="item-card">
+    <span class="avatar avatar--primary">
+        {{ initials }}
+    </span>
+
+    <div class="person-info">
+        <span class="person-name">{{ fullName }}</span>
+
+        @if (mobile) {
+            <span class="person-detail">{{ mobile }}</span>
+        }
+    </div>
+
+    <button
+            type="button"
+            (click)="removeCustomer()"
+            aria-label="Quitar cliente"
+            mat-icon-button>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>

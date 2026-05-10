@@ -6,10 +6,10 @@
         }
         @if (arraySecond) {
             <div class="cell-secondary">{{ arraySecond }}@if (arrayRemainingCount > 0) {
-                <span>(+{{ arrayRemainingCount }} más)</span>
+                <span> (+{{ arrayRemainingCount }} más)</span>
             }</div>
         } @else if (arrayRemainingCount > 0) {
-            <div class="cell-secondary">(+{{ arrayRemainingCount }} más)</div>
+            <div class="cell-secondary"> (+{{ arrayRemainingCount }} más)</div>
         }
         @if (!arrayFirst) {
             <span>—</span>

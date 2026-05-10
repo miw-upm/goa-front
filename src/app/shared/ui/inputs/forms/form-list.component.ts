@@ -34,7 +34,7 @@ export class FormListComponent {
             this.dialog.open(TypeToConfirmDialogComponent, {
                 data: {
                     title: 'Eliminar peligroso',
-                    message: 'Eliminar las firmas no tendrán forma de recuperarse, ¿Estás seguro?',
+                    message: 'Eliminar elementos no tendrán forma de recuperarse, ¿Estás seguro?',
                     expectedText: "Estoy Seguro"
                 }
             }).afterClosed().subscribe(result => {

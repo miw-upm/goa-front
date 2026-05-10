@@ -27,6 +27,7 @@ import {LegalProcedureEditDialogComponent} from '../dialogs/legal-procedure-edit
 import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
 import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
 import {TitleComponent} from "@shared/ui/title/title.component";
+import {FormCustomerComponent} from "@shared/ui/inputs/forms/form-customer.component";
 
 @Component({
     standalone: true,
@@ -49,7 +50,8 @@ import {TitleComponent} from "@shared/ui/title/title.component";
         SearchByUserComponent,
         SearchByLegalProcedureTemplateComponent,
         AppDateFieldComponent,
-        FormListComponent
+        FormListComponent,
+        FormCustomerComponent
     ],
 })
 export class EngagementLetterFormComponent implements OnInit {
@@ -116,25 +118,6 @@ export class EngagementLetterFormComponent implements OnInit {
         this.router.navigate(['/home/engagement-letters'], {
             queryParamsHandling: 'preserve'
         });
-    }
-
-    userInitials(value: User | string): string {
-        const fullName =
-            typeof value === 'string'
-                ? value
-                : `${value?.firstName ?? ''} ${value?.familyName ?? ''}`;
-
-        return fullName
-            .trim()
-            .split(/\s+/)
-            .filter(Boolean)
-            .map(part => part[0])
-            .join('')
-            .toUpperCase();
-    }
-
-    ownerInitials(): string {
-        return this.userInitials(this.engagementLetter.owner);
     }
 
     removeOwner(): void {
@@ -256,5 +239,12 @@ export class EngagementLetterFormComponent implements OnInit {
         this.router.navigate(['/home/engagement-letters'], {
             queryParams: {client, opened: true}
         });
+    }
+
+    protected removeAcceptance(i: number) {
+        this.engagementLetter.acceptanceEngagements.splice(i, 1);
+        this.engagementLetter.acceptanceEngagements = [
+            ...this.engagementLetter.acceptanceEngagements
+        ];
     }
 }

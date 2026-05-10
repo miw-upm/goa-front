@@ -13,10 +13,11 @@ export const ENGAGEMENT_LETTERS_COLUMNS: CrudColumnConfig[] = [
     },
     {
         key: 'owner',
-        label: 'RESPONSABLE',
+        label: 'CLIENTE PRINCIPAL',
         fieldsTitle: ['owner.firstName', 'owner.familyName'],
         fields: ['owner.mobile']
     },
+    {key: 'attachments', label: 'OTROS CLIENTES', arrayField: 'firstName'},
     {key: 'legalProcedures', label: 'PROCEDIMIENTOS', arrayField: 'title'},
     {key: 'acceptanceEngagements', label: 'FIRMANTES', arrayField: 'signerFullName'},
     {key: 'signed', label: 'ACEPTDO Y FIRMADO'},
