@@ -1,0 +1,24 @@
+.invoice-breakdown-dialog {
+  mat-card { margin-bottom: 20px; }
+
+  th.mat-header-cell,
+  td.mat-cell {
+    white-space: nowrap;
+    padding-right: 24px;
+  }
+
+  .id-cell { word-break: break-all; }
+
+  mat-list-item span[matListItemTitle] {
+    color: var(--mat-sys-outline);
+    font-size: 0.8em;
+  }
+
+  mat-list-item span[matListItemLine] {
+    font-size: 1.2em;
+    text-align: right;
+    width: 100%;
+  }
+
+  table { width: 100%; }
+}

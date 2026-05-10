@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {NgOptimizedImage} from '@angular/common';
 import {FormsModule, NgModel} from '@angular/forms';
 import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
@@ -22,6 +22,8 @@ import {DataProcessingConsentCreation} from "../processing-consent-creation.mode
     selector: 'app-customer',
     providers: [CustomerService],
     templateUrl: './customer-edit-profile.component.html',
+    styleUrls: ['./customer-edit-profile.component.scss'],
+    encapsulation: ViewEncapsulation.None,
     imports: [
         FormsModule,
         NgOptimizedImage,

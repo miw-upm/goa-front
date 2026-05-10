@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {DatePipe, NgIf} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -34,6 +34,8 @@ import {FormCustomerComponent} from "@shared/ui/inputs/forms/form-customer.compo
     selector: 'app-engagement-letter-form',
     providers: [DatePipe, EngagementLetterService],
     templateUrl: 'engagement-letter-form.component.html',
+    styleUrls: ['engagement-letter-form.component.scss'],
+    encapsulation: ViewEncapsulation.None,
     imports: [
         FormsModule,
         MatFormField,

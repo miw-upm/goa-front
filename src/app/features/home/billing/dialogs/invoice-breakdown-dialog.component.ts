@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, ViewEncapsulation} from '@angular/core';
 import {
     MAT_DIALOG_DATA,
     MatDialogActions,
@@ -17,6 +17,8 @@ import {MatButton} from '@angular/material/button';
     standalone: true,
     selector: 'app-invoice-breakdown-dialog',
     templateUrl: './invoice-breakdown-dialog.component.html',
+    styleUrls: ['./invoice-breakdown-dialog.component.scss'],
+    encapsulation: ViewEncapsulation.None,
     imports: [
         CommonModule,
         MatDialogTitle,

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatListModule} from '@angular/material/list';
@@ -10,6 +10,8 @@ import {environment} from '@env';
     standalone: true,
     selector: 'app-footer',
     templateUrl: './footer.component.html',
+    styleUrls: ['./footer.component.scss'],
+    encapsulation: ViewEncapsulation.None,
     imports: [MatDividerModule, MatGridListModule, MatListModule, MatIconModule]
 })
 export class FooterComponent {

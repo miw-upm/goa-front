@@ -1,0 +1,17 @@
+.title-container { padding: 16px 16px 0; }
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.privacy-text {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+:host mat-checkbox {
+  display: block;
+  margin-bottom: 0.5rem;
+}

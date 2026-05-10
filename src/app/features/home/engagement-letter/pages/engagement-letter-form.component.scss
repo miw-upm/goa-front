@@ -1,0 +1,63 @@
+$card-radius: 16px;
+
+.engagement-letter-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.engagement-letter-form {
+  margin-top: 4px;
+
+  mat-card-content { padding: 16px; }
+}
+
+.zone-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.zone-date {
+  font-size: 0.85rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.zone-right {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 12px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+:host {
+  app-form-date {
+    flex: 0 0 240px;
+
+    mat-form-field {
+      width: 100%;
+      --mdc-filled-text-field-container-color: var(--mat-sys-surface);
+    }
+  }
+
+  .discount-field {
+    flex: 0 0 240px;
+    --mdc-filled-text-field-container-color: var(--mat-sys-surface);
+  }
+
+  .percentage-field {
+    flex: 0 0 20%;
+    --mdc-filled-text-field-container-color: var(--mat-sys-surface);
+  }
+
+  .description-field {
+    flex: 1;
+    min-width: 0;
+    --mdc-filled-text-field-container-color: var(--mat-sys-surface);
+  }
+
+  .owner-fieldset { margin: 16px 0; }
+}

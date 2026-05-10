@@ -8,7 +8,8 @@ import {
     OnDestroy,
     OnInit,
     Output,
-    ViewChild
+    ViewChild,
+    ViewEncapsulation
 } from '@angular/core';
 import {NgIf, NgOptimizedImage} from '@angular/common';
 import {FormsModule} from '@angular/forms';
@@ -34,6 +35,8 @@ export interface DocumentAcceptanceContext {
     standalone: true,
     selector: 'app-document-acceptance',
     templateUrl: './document-acceptance.component.html',
+    styleUrls: ['./document-acceptance.component.scss'],
+    encapsulation: ViewEncapsulation.None,
     imports: [
         NgIf,
         NgOptimizedImage,
