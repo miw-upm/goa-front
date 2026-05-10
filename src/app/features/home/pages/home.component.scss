@@ -1,0 +1,71 @@
+.toolbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.toolbar-brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.toolbar-brand-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+}
+
+.toolbar-brand-role {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--mat-sys-outline);
+}
+
+.toolbar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 1;
+
+  .nav-btn {
+    --mdc-text-button-label-text-color: var(--mat-sys-on-surface);
+    background: transparent;
+    border-radius: 12px;
+    opacity: 0.75;
+    transition: opacity 0.2s, background 0.2s;
+
+    &:hover, &:focus {
+      opacity: 1;
+      background: var(--mat-sys-surface-container-low);
+    }
+
+    mat-icon {
+      color: var(--mat-sys-primary);
+    }
+  }
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.user-avatar-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.user-avatar-arrow {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: var(--mat-sys-on-surface-variant);
+}

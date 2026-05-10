@@ -8,10 +8,12 @@ import {
     MatDialogTitle
 } from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
-import {MatCheckbox} from '@angular/material/checkbox';
+import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {MatFormField, MatLabel} from '@angular/material/form-field';
+import {MatIcon} from '@angular/material/icon';
+import {MatInput} from '@angular/material/input';
 
 import {FormListComponent} from '@shared/ui/inputs/forms/form-list.component';
-import {InputData} from '@shared/ui/inputs/input-data.component';
 import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {SharedLegalTaskService} from '@features/shared/services/shared-legal-task.service';
@@ -29,17 +31,21 @@ import {LegalProcedure} from '../models/legal-procedure.model';
         MatDialogTitle,
         MatDialogContent,
         MatDialogActions,
-        MatCheckbox,
+        MatSlideToggle,
         FormListComponent,
         FormFieldComponent,
         AppDateFieldComponent,
         SearchByLegalTaskComponent,
         MatButton,
-        InputData,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatIcon,
     ]
 })
 export class LegalProcedureEditDialogComponent {
     procedure: LegalProcedure;
+    newTaskValue = '';
 
     constructor(
         @Inject(MAT_DIALOG_DATA) data: LegalProcedure,
@@ -74,6 +80,11 @@ export class LegalProcedureEditDialogComponent {
                 () => this.procedure.legalTasks.push(title)
             );
         }
+    }
+
+    addNewTaskFromInput(): void {
+        this.addNewTask(this.newTaskValue);
+        this.newTaskValue = '';
     }
 
     formInvalid(...controls: NgModel[]): boolean {

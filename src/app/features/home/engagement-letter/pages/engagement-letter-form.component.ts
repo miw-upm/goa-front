@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {DatePipe, NgIf} from '@angular/common';
+import {DatePipe} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
-import {MatIconButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
 import {MatDialog} from '@angular/material/dialog';
 import {MatCard, MatCardContent} from '@angular/material/card';
@@ -27,18 +27,22 @@ import {LegalProcedureEditDialogComponent} from '../dialogs/legal-procedure-edit
 import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
 import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
 import {TitleComponent} from "@shared/ui/title/title.component";
+import {FormCustomerComponent} from "@shared/ui/inputs/forms/form-customer.component";
 
 @Component({
     standalone: true,
     selector: 'app-engagement-letter-form',
     providers: [DatePipe, EngagementLetterService],
     templateUrl: 'engagement-letter-form.component.html',
+    styleUrls: ['engagement-letter-form.component.scss'],
+    encapsulation: ViewEncapsulation.None,
     imports: [
         FormsModule,
         MatFormField,
         MatLabel,
         MatSuffix,
         MatInput,
+        MatButton,
         MatIconButton,
         MatIcon,
         MatCard,
@@ -49,7 +53,7 @@ import {TitleComponent} from "@shared/ui/title/title.component";
         SearchByLegalProcedureTemplateComponent,
         AppDateFieldComponent,
         FormListComponent,
-        NgIf
+        FormCustomerComponent
     ],
 })
 export class EngagementLetterFormComponent implements OnInit {
@@ -118,6 +122,21 @@ export class EngagementLetterFormComponent implements OnInit {
         });
     }
 
+    removeOwner(): void {
+        this.engagementLetter.owner = undefined;
+    }
+
+    removeAttachment(index: number): void {
+        this.engagementLetter.attachments.splice(index, 1);
+    }
+
+    formatLastUpdated(): string {
+        const date = this.engagementLetter.lastUpdatedDate;
+        if (!date) return '—';
+        const d = date instanceof Date ? date : new Date(date);
+        return this.datePipe.transform(d, "d 'de' MMMM 'de' yyyy") ?? '—';
+    }
+
     invalid(): boolean {
         return this.checkInvalid(this.engagementLetter.owner?.mobile) ||
             this.checkInvalid(this.engagementLetter.legalProcedures) ||
@@ -171,6 +190,13 @@ export class EngagementLetterFormComponent implements OnInit {
                 this.engagementLetter.legalProcedures[index] = result;
             }
         });
+    }
+
+    protected removeAcceptance(i: number) {
+        this.engagementLetter.acceptanceEngagements.splice(i, 1);
+        this.engagementLetter.acceptanceEngagements = [
+            ...this.engagementLetter.acceptanceEngagements
+        ];
     }
 
     private prepareForSend(): EngagementLetter {

@@ -28,11 +28,6 @@
                 <mat-icon>download</mat-icon>
                 <span>Descargas</span>
             </button>
-
-            <button class="nav-btn" mat-button routerLink="/home/chatbot">
-                <mat-icon>smart_toy</mat-icon>
-                <span>Asistente IA</span>
-            </button>
         </nav>
     }
 
@@ -45,7 +40,7 @@
         }
         @if (isAuthenticated()) {
             <button [matMenuTriggerFor]="profileMenu" class="user-avatar-btn" mat-button>
-                <span class="user-avatar">{{ initials() }}</span>
+                <span class="avatar avatar--secondary">{{ initials() }}</span>
                 <mat-icon class="user-avatar-arrow">arrow_drop_down</mat-icon>
             </button>
         }

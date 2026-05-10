@@ -8,7 +8,8 @@ import {
     OnDestroy,
     OnInit,
     Output,
-    ViewChild
+    ViewChild,
+    ViewEncapsulation
 } from '@angular/core';
 import {NgIf, NgOptimizedImage} from '@angular/common';
 import {FormsModule} from '@angular/forms';
@@ -20,9 +21,9 @@ import {MatIcon} from '@angular/material/icon';
 import {MatDivider} from "@angular/material/divider";
 import {ActivatedRoute} from "@angular/router";
 
-import {DocumentAcceptanceResult} from './document-acceptance-result.model';
-import {SharedCustomerService} from "@features/shared/services/shared-customer.service";
 import {FormSubmitComponent} from "@shared/ui/inputs/forms/form-submit.component";
+import {SharedCustomerService} from "@features/shared/services/shared-customer.service";
+import {DocumentAcceptanceResult} from './document-acceptance-result.model';
 
 export interface DocumentAcceptanceContext {
     scope: string;
@@ -34,6 +35,8 @@ export interface DocumentAcceptanceContext {
     standalone: true,
     selector: 'app-document-acceptance',
     templateUrl: './document-acceptance.component.html',
+    styleUrls: ['./document-acceptance.component.scss'],
+    encapsulation: ViewEncapsulation.None,
     imports: [
         NgIf,
         NgOptimizedImage,

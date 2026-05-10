@@ -5,10 +5,12 @@
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Close</button>
     @if (isCreate()) {
-        <button (click)="create()" [disabled]="formInvalid(titleNg.ngModel)" color="primary" mat-raised-button>Create
+        <button (click)="create()" [disabled]="formInvalid(titleNg.ngModel)" color="primary" mat-raised-button>
+            <mat-icon matButtonIcon>add</mat-icon>
+            Crear
         </button>
     } @else {
-        <button (click)="update()" [disabled]="formInvalid(titleNg.ngModel)" color="primary" mat-raised-button>Update
+        <button (click)="update()" [disabled]="formInvalid(titleNg.ngModel)" color="primary" mat-raised-button>Guardar
         </button>
     }
 </mat-dialog-actions>

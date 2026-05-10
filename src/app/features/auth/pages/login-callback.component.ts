@@ -6,7 +6,7 @@ import {AuthService} from "@core/auth/auth.service";
 
 @Component({
     selector: 'app-login-callback',
-    template: `<p>Autenticando...</p>`,
+    templateUrl: './login-callback.component.html',
 })
 export class LoginCallbackComponent implements OnInit {
     constructor(private readonly oidcSecurityService: OidcSecurityService,

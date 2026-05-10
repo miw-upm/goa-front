@@ -4,8 +4,8 @@ import {Observable, of} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
-import {Crud2Component} from '@shared/ui/crud2/crud2.component';
-import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
+import {CrudComponent} from '@shared/ui/crud/crud.component';
+import {FilterInputComponent} from '@shared/ui/inputs/filters/filter-input.component';
 import {TitleComponent} from '@shared/ui/title/title.component';
 import {CancelYesDialogComponent} from '@shared/ui/dialogs/cancel-yes-dialog.component';
 import {ClipboardToastDialogComponent} from '@shared/ui/dialogs/clipboard-toast-dialog.component';
@@ -14,13 +14,12 @@ import {AuthService} from '@core/auth/auth.service';
 import {EngagementLetterService} from '../engagement-letter.service';
 import {EngagementLetterFindCriteria} from '../models/engagement-letter-find-criteria.model';
 import {EngagementLetter} from '../models/engagement-letter.model';
-import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
 import {ENGAGEMENT_LETTERS_COLUMNS} from './engagement-letters-columns.config';
 
 @Component({
     standalone: true,
     providers: [EngagementLetterService],
-    imports: [FormsModule, Crud2Component, FilterInputComponent, TitleComponent, MatButtonToggleGroup, MatButtonToggle],
+    imports: [FormsModule, CrudComponent, FilterInputComponent, TitleComponent, MatButtonToggleGroup, MatButtonToggle],
     templateUrl: 'engagement-letters.component.html'
 })
 export class EngagementLettersComponent implements OnInit {
@@ -88,17 +87,6 @@ export class EngagementLettersComponent implements OnInit {
 
     print(engagement: EngagementLetter): void {
         this.engagementLettersService.print(engagement.id).subscribe();
-    }
-
-    openAssistant(engagement: EngagementLetter): void {
-        if (!engagement?.id) return;
-        this.dialog.open(ChatbotComponent, {
-            data: {engagementLetterId: engagement.id},
-            width: '960px',
-            maxWidth: '96vw',
-            height: '80vh',
-            disableClose: true
-        });
     }
 
     link(engagement: EngagementLetter): void {

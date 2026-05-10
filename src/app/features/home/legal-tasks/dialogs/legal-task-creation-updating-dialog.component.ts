@@ -9,6 +9,7 @@ import {
     MatDialogTitle
 } from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
 
 import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
 import {SharedLegalTaskService} from '@features/shared/services/shared-legal-task.service';
@@ -23,6 +24,7 @@ import {LegalTaskService} from '../legal-task.service';
         MatDialogActions,
         MatDialogClose,
         MatButton,
+        MatIcon,
         FormFieldComponent,
         MatDialogContent
     ],
@@ -35,7 +37,7 @@ export class LegalTaskCreationUpdatingDialogComponent {
 
     constructor(@Inject(MAT_DIALOG_DATA) data: LegalTask, private readonly legalTaskService: LegalTaskService,
                 private readonly sharedLegalTaskService: SharedLegalTaskService, private readonly dialog: MatDialog) {
-        this.title = data ? 'Actualización de Tarea Legal' : 'Creación de Tarea Legal';
+        this.title = data ? 'Edición de Tarea Legal' : 'Creación de Tarea Legal';
         this.task = data || {id: undefined, title: undefined};
     }
 

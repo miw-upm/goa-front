@@ -38,7 +38,8 @@
                 [disabled]="!canSubmit() || formInvalid(amountNg.ngModel, descriptionNg.ngModel)"
                 color="primary"
                 mat-raised-button>
-            Create
+            <mat-icon matButtonIcon>add</mat-icon>
+            Crear
         </button>
     } @else {
         <button

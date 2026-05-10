@@ -8,16 +8,16 @@ import {AccessLink} from "@features/shared/models/access-link.model";
 import {AuthService} from "@core/auth/auth.service";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {AccessLinkFindCriteria} from "../access-link-find-criteria.model";
-import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
+import {FilterInputComponent} from "../../../../shared/ui/inputs/filters/filter-input.component";
 import {TypeToConfirmDialogComponent} from "@shared/ui/dialogs/type-to-confirm-dialog.component";
 import {TitleComponent} from "@shared/ui/title/title.component";
-import {Crud2Component} from "@shared/ui/crud2/crud2.component";
+import {CrudComponent} from "@shared/ui/crud/crud.component";
 import {ACCESS_LINKS_COLUMNS} from "./access-links-columns.config";
 
 @Component({
     standalone: true,
     providers: [AccessLinkService],
-    imports: [FormsModule, MatSlideToggle, FilterInputComponent, TitleComponent, Crud2Component],
+    imports: [FormsModule, MatSlideToggle, FilterInputComponent, TitleComponent, CrudComponent],
     templateUrl: 'access-links.component.html'
 })
 export class AccessLinksComponent {

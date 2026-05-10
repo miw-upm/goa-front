@@ -3,10 +3,11 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {Router} from '@angular/router';
 import {Observable, tap, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
+import {MatDialog} from "@angular/material/dialog";
+
 import {HttpRequestBuilder} from "@core/http/http-request-builder";
 import {BackendError, isBackendError} from "@core/http/backend-error";
 import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
-import {MatDialog} from "@angular/material/dialog";
 
 export class HttpViewBuilder {
     static readonly CONNECTION_REFUSE = 0;

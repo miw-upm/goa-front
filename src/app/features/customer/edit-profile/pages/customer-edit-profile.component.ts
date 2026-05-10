@@ -1,27 +1,29 @@
-import {Component} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {NgOptimizedImage} from '@angular/common';
 import {FormsModule, NgModel} from '@angular/forms';
-import {Observable} from 'rxjs';
 import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
 import {MatDialogActions, MatDialogContent} from '@angular/material/dialog';
 import {ActivatedRoute} from '@angular/router';
 import {MatCheckbox} from '@angular/material/checkbox';
+import {Observable} from 'rxjs';
 
+import {BackendError} from "@core/http/backend-error";
+import {FormSubmitComponent} from "@shared/ui/inputs/forms/form-submit.component";
+import {FormNifComponent} from "@shared/ui/inputs/forms/form-nif.component";
 import {FormFieldComponent} from "@shared/ui/inputs/forms/form-field.component";
 import {FormSelectComponent} from "@shared/ui/inputs/forms/form-select.component";
 import {User} from "@features/shared/models/user.model";
 import {SharedUserService} from "@features/shared/services/shared-user.service";
 import {CustomerService} from "../customer.service";
 import {DataProcessingConsentCreation} from "../processing-consent-creation.model";
-import {FormSubmitComponent} from "@shared/ui/inputs/forms/form-submit.component";
-import {BackendError} from "@core/http/backend-error";
-import {FormNifComponent} from "@shared/ui/inputs/forms/form-nif.component";
 
 @Component({
     standalone: true,
     selector: 'app-customer',
     providers: [CustomerService],
     templateUrl: './customer-edit-profile.component.html',
+    styleUrls: ['./customer-edit-profile.component.scss'],
+    encapsulation: ViewEncapsulation.None,
     imports: [
         FormsModule,
         NgOptimizedImage,

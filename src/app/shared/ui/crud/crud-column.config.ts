@@ -3,8 +3,8 @@ export type CrudColumnFormat = 'text' | 'date' | 'boolean' | 'currency' | 'numbe
 export interface CrudBooleanConfig {
     trueLabel?: string;   // default: 'SI'
     falseLabel?: string;  // default: 'NO'
-    trueColor?: string;   // default: 'green'
-    falseColor?: string;  // default: 'primary'
+    trueColor?: string;   // default: 'success'  → bool-chip--success
+    falseColor?: string;  // default: 'primary'  → bool-chip--primary
     showIcon?: boolean;   // default: true
 }
 

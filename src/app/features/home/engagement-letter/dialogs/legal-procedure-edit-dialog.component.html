@@ -1,22 +1,43 @@
 <h2 mat-dialog-title>Editar Procedimiento Legal</h2>
 <mat-dialog-content>
-    <app-form-field #titleNg [(value)]="procedure.title" [required]="true" errorMessage="Obligatorio" label="Título"/>
-    <app-form-date [(value)]="procedure.startDate" label="Fecha de inicio"></app-form-date>
-    <app-form-field
-        #budget
-        [(value)]="procedure.budget"
-        [min]="0"
-        [required]="true"
-        [step]="10"
-        errorMessage="0..x"
-        icon="euro"
-        label="Presupuesto"
-        type="number"
-    />
-    <mat-checkbox [(ngModel)]="procedure.vatIncluded">¿Incluye IVA?</mat-checkbox>
-    <app-search-by-legal-task (taskChange)="addTask($event)" class="full-width"></app-search-by-legal-task>
-    <app-input-data (action)="addNewTask($event)" title="Nueva tarea legal"></app-input-data>
-    <app-form-list [(items)]="procedure.legalTasks"></app-form-list>
+    <div class="zone-card zone-card--column">
+        <span class="zone-title">Datos del procedimiento</span>
+        <app-form-field #titleNg [(value)]="procedure.title" [required]="true" errorMessage="Obligatorio"
+                        label="Título"/>
+        <div class="zone-row">
+            <app-form-date [(value)]="procedure.startDate" label="Fecha de inicio"></app-form-date>
+            <app-form-field
+                #budget
+                [(value)]="procedure.budget"
+                [min]="0"
+                [required]="true"
+                [step]="10"
+                errorMessage="0..x"
+                icon="euro"
+                label="Presupuesto"
+                type="number"
+            />
+            <mat-slide-toggle [(ngModel)]="procedure.vatIncluded">IVA incluido</mat-slide-toggle>
+        </div>
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <div class="zone-row">
+            <span class="zone-title">Tareas legales</span>
+            <app-search-by-legal-task (taskChange)="addTask($event)"></app-search-by-legal-task>
+        </div>
+        <div class="zone-row">
+            <mat-form-field class="full-width">
+                <mat-label>Nueva tarea legal</mat-label>
+                <input (keydown.enter)="addNewTaskFromInput()" [(ngModel)]="newTaskValue" matInput>
+            </mat-form-field>
+            <button (click)="addNewTaskFromInput()" color="primary" mat-flat-button>
+                <mat-icon matButtonIcon>add</mat-icon>
+                Crear
+            </button>
+        </div>
+        <app-form-list [(items)]="procedure.legalTasks"></app-form-list>
+    </div>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">

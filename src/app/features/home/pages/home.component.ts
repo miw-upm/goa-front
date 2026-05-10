@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {NgOptimizedImage} from '@angular/common';
 import {RouterLink, RouterOutlet} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
@@ -29,6 +29,8 @@ import {UserCreationUpdatingDialogComponent} from "../users/dialogs/user-creatio
     ],
     selector: 'app-home',
     templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class HomeComponent {
     title = 'GOA';

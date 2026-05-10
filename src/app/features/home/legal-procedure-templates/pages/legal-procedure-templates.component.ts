@@ -3,8 +3,8 @@ import {FormsModule} from "@angular/forms";
 import {Observable, of} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 
-import {Crud2Component} from "@shared/ui/crud2/crud2.component";
-import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
+import {CrudComponent} from "@shared/ui/crud/crud.component";
+import {FilterInputComponent} from "@shared/ui/inputs/filters/filter-input.component";
 import {LegalProcedureTemplate} from '../models/legal-procedure-template.model';
 import {LegalProcedureFindCriteria} from "../models/legal-procedure-find-criteria.model";
 import {LegalProcedureTemplateService} from "../legal-procedure-template.service";
@@ -17,7 +17,7 @@ import {LEGAL_PROCEDURE_TEMPLATES_COLUMNS} from "./legal-procedure-templates-col
 
 @Component({
     standalone: true,
-    imports: [FormsModule, Crud2Component, FilterInputComponent, TitleComponent],
+    imports: [FormsModule, CrudComponent, FilterInputComponent, TitleComponent],
     templateUrl: 'legal-procedure-templates.component.html'
 })
 export class LegalProcedureTemplatesComponent {

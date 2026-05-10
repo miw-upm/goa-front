@@ -1,0 +1,8 @@
+<mat-form-field class="full-width">
+    <mat-label>{{ label }}</mat-label>
+    <input [(ngModel)]="value" matInput readonly type="text"/>
+    <button (click)="copyToClipboard()" [disabled]="!value" mat-icon-button
+            matSuffix matTooltip="Copiar">
+        <mat-icon>content_copy</mat-icon>
+    </button>
+</mat-form-field>

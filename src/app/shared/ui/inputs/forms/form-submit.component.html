@@ -1,0 +1,36 @@
+<div class="submit-wrapper">
+    @if (state() === 'warning') {
+        <mat-icon aria-label="Aviso en el envío" class="submit-icon--warning">warning_amber</mat-icon>
+    }
+    @if (state() === 'error') {
+        <mat-icon aria-label="Error en el envío" class="submit-icon--error">error_outline</mat-icon>
+    }
+    <button (click)="onClick()"
+            [class.warn]="state() === 'error'"
+            [disabled]="disabled || state() === 'loading'"
+            mat-flat-button
+            type="button">
+        @if (state() === 'idle' && icon) {
+            <mat-icon>{{ icon }}</mat-icon>
+        }
+        @if (state() === 'success') {
+            <mat-icon>check</mat-icon>
+        }
+        @if (state() === 'loading') {
+            <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+            <span>{{ label }}</span>
+        }
+    </button>
+</div>
+
+@if (message()) {
+    <div [class.submit-feedback--error]="state() === 'error'"
+         [class.submit-feedback--success]="state() === 'success'"
+         [class.submit-feedback--warning]="state() === 'warning'"
+         aria-live="polite"
+         class="submit-feedback"
+         role="status">
+        <p>{{ message() }}</p>
+    </div>
+}

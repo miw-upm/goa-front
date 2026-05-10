@@ -6,11 +6,9 @@ const CONSENTS_ROOT = `${environment.REST_USER}/consents`;
 const ENGAGEMENT_LETTER_ROOT = `${environment.REST_ENGAGEMENT}/engagement-letters`;
 const LEGAL_PROCEDURE_TEMPLATE_ROOT = `${environment.REST_ENGAGEMENT}/legal-procedure-templates`;
 const LEGAL_TASK_ROOT = `${environment.REST_ENGAGEMENT}/legal-tasks`;
-const ISSUE_ROOT = `${environment.REST_SUPPORT}/issues`;
 const EXPENSE_ROOT = `${environment.REST_BILLING}/expenses`;
 const INCOME_ROOT = `${environment.REST_BILLING}/incomes`;
 const INVOICE_ROOT = `${environment.REST_BILLING}/invoices`;
-const CHATBOT_ROOT = `${environment.REST_CHATBOT}/chatbot`;
 const CUSTOMER_FILE_DOWNLOAD_ROOT = `${environment.REST_ENGAGEMENT}/customer-file-downloads`;
 
 const enc = encodeURIComponent;
@@ -52,12 +50,6 @@ export const ENDPOINTS = {
         byId: (id: string) => `${LEGAL_TASK_ROOT}/${enc(id)}`,
     },
 
-    issues: {
-        root: ISSUE_ROOT,
-        byId: (id: string) => `${ISSUE_ROOT}/${enc(id)}`,
-        syncById: (id: string) => `${ISSUE_ROOT}/${enc(id)}/sync`,
-    },
-
     expenses: {
         root: EXPENSE_ROOT,
         byId: (id: string) => `${EXPENSE_ROOT}/${enc(id)}`,
@@ -79,17 +71,4 @@ export const ENDPOINTS = {
         byId: (id: string) => `${CUSTOMER_FILE_DOWNLOAD_ROOT}/${enc(id)}`,
     },
 
-    chatbot: {
-        root: CHATBOT_ROOT,
-        conversations: () => `${CHATBOT_ROOT}/conversations`,
-        deleteConversation: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}`,
-        generalConversation: () => `${CHATBOT_ROOT}/conversations/general`,
-        contextualConversation: () => `${CHATBOT_ROOT}/conversations/contextual`,
-        closeConversation: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/close`,
-        escalateConversation: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/escalate`,
-        history: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/messages`,
-        reopenConversation: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/reopen`,
-        configurationStatus: () => `${CHATBOT_ROOT}/configuration/status`,
-        messages: () => `${CHATBOT_ROOT}/messages`,
-    },
 } as const;

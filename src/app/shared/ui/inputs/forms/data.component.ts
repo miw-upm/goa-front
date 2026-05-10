@@ -17,20 +17,7 @@ import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from '@angular/m
         MatDatepickerInput,
         MatDatepickerToggle
     ],
-    template: `
-        <mat-form-field class="full-width">
-            <mat-label>{{ label }}</mat-label>
-            <input
-                    [ngModel]="dateValue"
-                    (ngModelChange)="onDateChange($event)"
-                    [matDatepicker]="picker"
-                    [disabled]="disabled"
-                    matInput
-            />
-            <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-    `,
+    templateUrl: './data.component.html',
 
 })
 export class AppDateFieldComponent implements OnChanges {

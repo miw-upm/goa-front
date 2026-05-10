@@ -2,17 +2,17 @@ import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Observable, of} from 'rxjs';
 
-import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
+import {FilterInputComponent} from '../../../../shared/ui/inputs/filters/filter-input.component';
 import {TitleComponent} from '@shared/ui/title/title.component';
 import {ConsentSearch} from '../consent-search.model';
 import {ConsentService} from '../consent.service';
 import {Consent} from "../consent.model";
 import {CONSENTS_COLUMNS} from "./consents-columns.config";
-import {Crud2Component} from "@shared/ui/crud2/crud2.component";
+import {CrudComponent} from "@shared/ui/crud/crud.component";
 
 @Component({
     standalone: true,
-    imports: [FormsModule, FilterInputComponent, TitleComponent, Crud2Component],
+    imports: [FormsModule, FilterInputComponent, TitleComponent, CrudComponent],
     templateUrl: 'consents.component.html'
 })
 export class ConsentsComponent {

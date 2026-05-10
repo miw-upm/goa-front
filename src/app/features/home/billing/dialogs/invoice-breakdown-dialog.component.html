@@ -1,0 +1,77 @@
+<h2 mat-dialog-title>Desglose de Factura</h2>
+<mat-dialog-content class="invoice-breakdown-dialog">
+    <mat-card class="mat-elevation-z4">
+        <mat-card-header>
+            <mat-card-title>Ingresos</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <table [dataSource]="data.incomes" class="mat-elevation-z0" mat-table>
+                <ng-container matColumnDef="id">
+                    <th *matHeaderCellDef mat-header-cell>ID</th>
+                    <td *matCellDef="let element" class="id-cell" mat-cell>{{ element.id }}</td>
+                </ng-container>
+                <ng-container matColumnDef="taxableBase">
+                    <th *matHeaderCellDef mat-header-cell>Base Imponible</th>
+                    <td *matCellDef="let element" mat-cell>{{ element.taxableBase | currency:'EUR' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="vatAmount">
+                    <th *matHeaderCellDef mat-header-cell>21% IVA</th>
+                    <td *matCellDef="let element" mat-cell>{{ element.vatAmount | currency:'EUR' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="amountWithVat">
+                    <th *matHeaderCellDef mat-header-cell>Total</th>
+                    <td *matCellDef="let element" mat-cell>{{ element.amountWithVat | currency:'EUR' }}</td>
+                </ng-container>
+                <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+                <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+            </table>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="mat-elevation-z4">
+        <mat-card-header>
+            <mat-card-title>Gastos</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <table [dataSource]="data.expenses" class="mat-elevation-z0" mat-table>
+                <ng-container matColumnDef="id">
+                    <th *matHeaderCellDef mat-header-cell>ID</th>
+                    <td *matCellDef="let element" class="id-cell" mat-cell>{{ element.id }}</td>
+                </ng-container>
+                <ng-container matColumnDef="taxableBase">
+                    <th *matHeaderCellDef mat-header-cell>Base Imponible</th>
+                    <td *matCellDef="let element" mat-cell>{{ element.taxableBase | currency:'EUR' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="vatAmount">
+                    <th *matHeaderCellDef mat-header-cell>21% IVA</th>
+                    <td *matCellDef="let element" mat-cell>{{ element.vatAmount | currency:'EUR' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="amountWithVat">
+                    <th *matHeaderCellDef mat-header-cell>Total</th>
+                    <td *matCellDef="let element" mat-cell>{{ element.amountWithVat | currency:'EUR' }}</td>
+                </ng-container>
+                <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+                <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+            </table>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-list>
+        <mat-list-item>
+            <span matListItemTitle>BASE IMPONIBLE</span>
+            <span matListItemLine>{{ data.taxableBase | currency:'EUR' }}</span>
+        </mat-list-item>
+        <mat-list-item>
+            <span matListItemTitle>21% IVA</span>
+            <span matListItemLine>{{ data.vatAmount | currency:'EUR' }}</span>
+        </mat-list-item>
+        <mat-list-item>
+            <span matListItemTitle><strong>TOTAL</strong></span>
+            <span matListItemLine><strong>{{ data.totalAmount | currency:'EUR' }}</strong></span>
+        </mat-list-item>
+    </mat-list>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+</mat-dialog-actions>

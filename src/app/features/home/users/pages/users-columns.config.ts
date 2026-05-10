@@ -1,4 +1,4 @@
-import {CrudColumnConfig} from '@shared/ui/crud2/crud-column.config';
+import {CrudColumnConfig} from '@shared/ui/crud/crud-column.config';
 
 export const USERS_COLUMNS: CrudColumnConfig[] = [
     {key: 'cliente', label: 'CLIENTES', fieldsTitle: ['firstName', 'familyName']},
