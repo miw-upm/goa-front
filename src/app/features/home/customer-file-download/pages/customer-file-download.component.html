@@ -1,10 +1,14 @@
-<app-filter-input (enter)="search()" [(value)]="criteria.customer" title="Cliente"></app-filter-input>
-<app-filter-input (enter)="search()" [(value)]="criteria.documentType" title="Tipo de documento"></app-filter-input>
+<app-title subtitle="Gestión" title="Descargas de Documentos"></app-title>
+
+<div class="filters-card">
+    <app-filter-input (enter)="search()" [(value)]="criteria.customer" title="Cliente"></app-filter-input>
+    <app-filter-input (enter)="search()" [(value)]="criteria.documentType" title="Tipo de documento"></app-filter-input>
+</div>
 
 <app-crud (read)="read($event)" (searchAll)="search()"
-          [changeFields]="changeFields" [createAction]="false"
+          [createAction]="false"
           [data]="customerFileDownloads"
           [deleteAction]="false"
-          [hiddenFields]="['id','documentId','downloadToken']"
-          [item]="customerFileDownload" [title]="title" [updateAction]="false">
+          [columns]="columns"
+          [item]="customerFileDownload" [updateAction]="false">
 </app-crud>

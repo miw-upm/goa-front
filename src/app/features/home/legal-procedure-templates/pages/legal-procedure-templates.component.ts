@@ -4,7 +4,7 @@ import {Observable, of} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 
 import {CrudComponent} from "@shared/ui/crud/crud.component";
-import {FilterInputComponent} from "../../../../shared/ui/inputs/filters/filter-input.component";
+import {FilterInputComponent} from "@shared/ui/inputs/filters/filter-input.component";
 import {LegalProcedureTemplate} from '../models/legal-procedure-template.model';
 import {LegalProcedureFindCriteria} from "../models/legal-procedure-find-criteria.model";
 import {LegalProcedureTemplateService} from "../legal-procedure-template.service";
