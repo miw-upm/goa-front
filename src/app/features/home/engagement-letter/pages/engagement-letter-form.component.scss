@@ -9,7 +9,9 @@ $card-radius: 16px;
 .engagement-letter-form {
   margin-top: 4px;
 
-  mat-card-content { padding: 16px; }
+  mat-card-content {
+    padding: 16px;
+  }
 }
 
 .zone-left {
@@ -59,5 +61,7 @@ $card-radius: 16px;
     --mdc-filled-text-field-container-color: var(--mat-sys-surface);
   }
 
-  .owner-fieldset { margin: 16px 0; }
+  .owner-fieldset {
+    margin: 16px 0;
+  }
 }

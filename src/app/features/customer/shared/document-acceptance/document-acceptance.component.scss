@@ -1,6 +1,9 @@
 .instructions {
   margin-bottom: 16px;
-  p { margin: 4px 0; }
+
+  p {
+    margin: 4px 0;
+  }
 }
 
 .signature-wrapper {
@@ -29,5 +32,9 @@
 .company-info {
   display: block;
   text-align: center;
-  p { text-align: center; margin: 4px 0; }
+
+  p {
+    text-align: center;
+    margin: 4px 0;
+  }
 }

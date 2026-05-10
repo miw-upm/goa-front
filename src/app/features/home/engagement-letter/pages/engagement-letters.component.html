@@ -19,8 +19,8 @@
     <app-filter-input (enter)="search()" [(value)]="criteria.taskTitle" title="Tarea"></app-filter-input>
 </div>
 
-<app-crud (delete)="delete($event)"
-          (link)="link($event)" (print)="print($event)" (read)="read($event)" (create)="create()"
+<app-crud (create)="create()"
+          (delete)="delete($event)" (link)="link($event)" (print)="print($event)" (read)="read($event)"
           (searchAll)="search()" (update)="update($event)"
           [assistantAction]="true" [columns]="columns"
           [data]="engagementLetters"

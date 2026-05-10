@@ -43,7 +43,9 @@
       background: var(--mat-sys-surface-container-low);
     }
 
-    mat-icon { color: var(--mat-sys-primary); }
+    mat-icon {
+      color: var(--mat-sys-primary);
+    }
   }
 }
 

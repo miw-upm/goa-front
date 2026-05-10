@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {DatePipe, NgIf} from '@angular/common';
+import {DatePipe} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
@@ -192,6 +192,13 @@ export class EngagementLetterFormComponent implements OnInit {
         });
     }
 
+    protected removeAcceptance(i: number) {
+        this.engagementLetter.acceptanceEngagements.splice(i, 1);
+        this.engagementLetter.acceptanceEngagements = [
+            ...this.engagementLetter.acceptanceEngagements
+        ];
+    }
+
     private prepareForSend(): EngagementLetter {
         return {
             ...this.engagementLetter,
@@ -241,12 +248,5 @@ export class EngagementLetterFormComponent implements OnInit {
         this.router.navigate(['/home/engagement-letters'], {
             queryParams: {client, opened: true}
         });
-    }
-
-    protected removeAcceptance(i: number) {
-        this.engagementLetter.acceptanceEngagements.splice(i, 1);
-        this.engagementLetter.acceptanceEngagements = [
-            ...this.engagementLetter.acceptanceEngagements
-        ];
     }
 }

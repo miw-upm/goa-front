@@ -103,6 +103,19 @@ body {
   padding: 0;
 }
 
+.form-list-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.form-list-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
 // --- Info de persona (nombre + detalle) ---
 .person-info {
   display: flex;
@@ -406,8 +419,7 @@ body {
 }
 
 // --- Tablas ---
-app-crud,
-app-crud2 {
+app-crud {
   display: block;
   max-width: $content-max-width;
   margin: 0 auto;

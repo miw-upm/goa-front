@@ -42,9 +42,9 @@
                 @if (engagementLetter.owner) {
                     @if (engagementLetter.owner) {
                         <app-form-customer
+                                (remove)="removeOwner()"
                                 [fullName]="engagementLetter.owner.firstName + ' ' + engagementLetter.owner.familyName"
-                                [mobile]="engagementLetter.owner.mobile"
-                                (remove)="removeOwner()">
+                                [mobile]="engagementLetter.owner.mobile">
                         </app-form-customer>
                     }
                 }
@@ -58,9 +58,9 @@
                 </div>
                 @for (att of engagementLetter.attachments; track $index; let i = $index) {
                     <app-form-customer
+                            (remove)="removeAttachment(i)"
                             [fullName]="(att.firstName ?? '') + ' ' + (att.familyName ?? '')"
-                            [mobile]="att.mobile"
-                            (remove)="removeAttachment(i)">
+                            [mobile]="att.mobile">
                     </app-form-customer>
                 }
             </div>
@@ -113,10 +113,10 @@
                 </div>
                 @for (att of engagementLetter.acceptanceEngagements; track $index; let i = $index) {
                     <app-form-customer
+                            (remove)="removeAcceptance(i)"
                             [fullName]="att.signerFullName"
                             [mobile]="att.mobile"
-                            [secure]="true"
-                            (remove)="removeAcceptance(i)">
+                            [secure]="true">
                     </app-form-customer>
                 }
             </div>
