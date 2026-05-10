@@ -20,7 +20,7 @@
 </div>
 
 <app-crud (delete)="delete($event)"
-          (link)="link($event)" (print)="print($event)" (read)="read($event)"
+          (link)="link($event)" (print)="print($event)" (read)="read($event)" (create)="create()"
           (searchAll)="search()" (update)="update($event)"
           [assistantAction]="true" [columns]="columns"
           [data]="engagementLetters"

@@ -114,12 +114,25 @@
                     <textarea [(ngModel)]="engagementLetter.legalClause" matInput rows="5"></textarea>
                 </mat-form-field>
             </div>
-            <fieldset *ngIf="engagementLetter.acceptanceEngagements?.length" class="owner-fieldset">
-                <legend>Firmantes</legend>
-                <app-form-list [(items)]="engagementLetter.acceptanceEngagements"
-                               [keyView]="['mobile','signerFullName','signatureAt']"
-                               [secure]='true'></app-form-list>
-            </fieldset>
+
+            <div class="zone-card zone-card--column">
+                <div class="zone-row">
+                    <span class="zone-title">Firmantes</span>
+                </div>
+                @for (att of engagementLetter.acceptanceEngagements; track $index; let i = $index) {
+                    <div class="item-card">
+                        <span class="avatar avatar--primary">{{ userInitials(att.signerFullName) }}</span>
+                        <div class="person-info">
+                            <span class="person-name">{{ att.signerFullName }}</span>
+                            <span class="person-detail">{{ att.mobile }}</span>
+                        </div>
+                        <button (click)="removeAttachment(i)" aria-label="Quitar cliente" mat-icon-button>
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                }
+            </div>
+
         </mat-card-content>
     </mat-card>
 </div>

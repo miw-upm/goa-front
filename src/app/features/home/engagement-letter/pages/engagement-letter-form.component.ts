@@ -49,8 +49,7 @@ import {TitleComponent} from "@shared/ui/title/title.component";
         SearchByUserComponent,
         SearchByLegalProcedureTemplateComponent,
         AppDateFieldComponent,
-        FormListComponent,
-        NgIf
+        FormListComponent
     ],
 })
 export class EngagementLetterFormComponent implements OnInit {
@@ -119,12 +118,19 @@ export class EngagementLetterFormComponent implements OnInit {
         });
     }
 
-    userInitials(user: User): string {
-        if (!user) return '';
-        const first = user.firstName?.[0] ?? '';
-        const familyParts = (user.familyName ?? '').split(/\s+/).filter(Boolean);
-        const familyInitials = familyParts.map(p => p[0]).join('');
-        return (first + familyInitials).toUpperCase();
+    userInitials(value: User | string): string {
+        const fullName =
+            typeof value === 'string'
+                ? value
+                : `${value?.firstName ?? ''} ${value?.familyName ?? ''}`;
+
+        return fullName
+            .trim()
+            .split(/\s+/)
+            .filter(Boolean)
+            .map(part => part[0])
+            .join('')
+            .toUpperCase();
     }
 
     ownerInitials(): string {

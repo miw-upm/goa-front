@@ -5,7 +5,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
 import {CrudComponent} from '@shared/ui/crud/crud.component';
-import {FilterInputComponent} from '../../../../shared/ui/inputs/filters/filter-input.component';
+import {FilterInputComponent} from '@shared/ui/inputs/filters/filter-input.component';
 import {TitleComponent} from '@shared/ui/title/title.component';
 import {CancelYesDialogComponent} from '@shared/ui/dialogs/cancel-yes-dialog.component';
 import {ClipboardToastDialogComponent} from '@shared/ui/dialogs/clipboard-toast-dialog.component';
