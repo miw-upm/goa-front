@@ -40,11 +40,11 @@
                                         title="Buscar cliente"></app-search-by-user>
                 </div>
                 @if (engagementLetter.owner) {
-                    <div class="client-item">
-                        <span class="owner-avatar">{{ ownerInitials() }}</span>
-                        <div class="owner-info">
-                            <span class="owner-name">{{ engagementLetter.owner.firstName }} {{ engagementLetter.owner.familyName }}</span>
-                            <span class="owner-mobile">{{ engagementLetter.owner.mobile }}</span>
+                    <div class="item-card">
+                        <span class="avatar avatar--primary">{{ ownerInitials() }}</span>
+                        <div class="person-info">
+                            <span class="person-name">{{ engagementLetter.owner.firstName }} {{ engagementLetter.owner.familyName }}</span>
+                            <span class="person-detail">{{ engagementLetter.owner.mobile }}</span>
                         </div>
                         <button (click)="removeOwner()" aria-label="Quitar responsable" mat-icon-button>
                             <mat-icon>close</mat-icon>
@@ -60,11 +60,11 @@
                                         title="Buscar cliente"></app-search-by-user>
                 </div>
                 @for (att of engagementLetter.attachments; track $index; let i = $index) {
-                    <div class="client-item">
-                        <span class="owner-avatar">{{ userInitials(att) }}</span>
-                        <div class="owner-info">
-                            <span class="owner-name">{{ att.firstName }} {{ att.familyName }}</span>
-                            <span class="owner-mobile">{{ att.mobile }}</span>
+                    <div class="item-card">
+                        <span class="avatar avatar--primary">{{ userInitials(att) }}</span>
+                        <div class="person-info">
+                            <span class="person-name">{{ att.firstName }} {{ att.familyName }}</span>
+                            <span class="person-detail">{{ att.mobile }}</span>
                         </div>
                         <button (click)="removeAttachment(i)" aria-label="Quitar cliente" mat-icon-button>
                             <mat-icon>close</mat-icon>
@@ -92,7 +92,7 @@
                     </button>
                 </div>
                 @for (method of engagementLetter.paymentMethods; track $index; let i = $index) {
-                    <div class="payment-item">
+                    <div class="item-card">
                         <mat-form-field class="percentage-field">
                             <mat-label>Porcentaje</mat-label>
                             <input [(ngModel)]="method.percentage" matInput>

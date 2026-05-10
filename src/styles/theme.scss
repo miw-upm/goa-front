@@ -12,13 +12,13 @@
 //   Text:       #1F1D1A (casi negro cálido)
 // =============================================================================
 
-$color-white: #ffffff;
-$color-secondary: #4A5D3A;
-$color-muted: #9e9e9e;
+// --- Variables de layout ---
 $content-max-width: 97%;
 $card-radius: 16px;
 
-// --- Tema M3 ---
+// =============================================================================
+// 1. TEMA M3
+// =============================================================================
 html {
   @include mat.theme((
     color: (
@@ -28,23 +28,12 @@ html {
     ),
     typography: Roboto,
     density: -1,
-  ), $overrides: (
-    surface: #FAF7F0,
-    surface-dim: #ede8df,
-    surface-bright: #FAF7F0,
-    surface-container-lowest: $color-white,
-    surface-container-low: #f6f1e8,
-    surface-container: #f0ebe2,
-    surface-container-high: #eae5dd,
-    surface-container-highest: #e4e0d7,
-    on-surface: #1F1D1A,
-    on-surface-variant: #50463b,
-    outline: #84786c,
-    outline-variant: #cec9c4,
   ));
 }
 
-// --- Estilos base ---
+// =============================================================================
+// 2. ESTILOS BASE
+// =============================================================================
 html, body {
   height: 100%;
   margin: 0;
@@ -60,94 +49,15 @@ body {
   width: 100%;
 }
 
-// --- Variantes semánticas de botón ---
-.mat-mdc-button-base.warn {
-  --mdc-filled-button-container-color: var(--mat-sys-error);
-  --mdc-filled-button-label-text-color: var(--mat-sys-on-error);
-}
+// =============================================================================
+// 3. CLASES REUTILIZABLES DE EMPRESA
+// =============================================================================
 
-// --- Toolbar / Navbar ---
-.mat-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  background: $color-white !important;
-  border-bottom: 1px solid var(--mat-sys-outline-variant);
-}
-
-.toolbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.toolbar-brand-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.2;
-  cursor: pointer;
-}
-
-.toolbar-brand-name {
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--mat-sys-on-surface);
-}
-
-.toolbar-brand-role {
-  font-size: 0.75rem;
-  font-weight: 400;
-  color: $color-muted;
-}
-
-.toolbar-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  flex: 1;
-
-  .nav-btn {
-    --mdc-text-button-label-text-color: var(--mat-sys-on-surface);
-    background: transparent;
-    border-radius: 12px;
-    opacity: 0.75;
-    transition: opacity 0.2s, background 0.2s;
-
-    &:hover, &:focus {
-      opacity: 1;
-      background: var(--mat-sys-surface-container-low);
-    }
-
-    mat-icon {
-      color: var(--mat-sys-primary);
-    }
-  }
-}
-
-.toolbar-right {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-shrink: 0;
-}
-
-// --- Avatar de usuario ---
-.user-avatar-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-
-.user-avatar {
+// --- Avatar circular con iniciales ---
+.avatar {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background-color: $color-secondary;
-  color: $color-white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -155,163 +65,67 @@ body {
   font-weight: 600;
   letter-spacing: 0.03em;
   flex-shrink: 0;
-}
 
-.user-avatar-arrow {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-  color: var(--mat-sys-on-surface-variant);
-}
+  &--primary {
+    background-color: var(--mat-sys-primary);
+    color: var(--mat-sys-on-primary);
+  }
 
-// --- Menus desplegables ---
-.mat-mdc-menu-panel {
-  background: $color-white !important;
-  border-radius: 12px !important;
-
-  .mat-mdc-menu-item {
-    --mat-menu-item-label-text-color: var(--mat-sys-on-surface);
-    --mat-menu-item-label-text-weight: 500;
-    opacity: 0.75;
-    transition: opacity 0.2s, background 0.2s;
-
-    .mat-icon {
-      color: var(--mat-sys-primary);
-    }
-
-    &:hover {
-      opacity: 1;
-      background: var(--mat-sys-surface-container-low);
-    }
-
-    &.menu-item-primary {
-      --mat-menu-item-label-text-color: #{$color-secondary};
-      opacity: 1;
-
-      .mat-icon { color: $color-secondary; }
-    }
-
-    &.menu-item-danger {
-      --mat-menu-item-label-text-color: var(--mat-sys-error);
-      opacity: 1;
-
-      .mat-icon { color: var(--mat-sys-error); }
-    }
+  &--secondary {
+    background-color: var(--mat-sys-secondary);
+    color: var(--mat-sys-on-secondary);
   }
 }
 
-// --- Filtros de búsqueda ---
-.filters-card {
-  width: $content-max-width;
-  margin: 0 auto 16px;
-  padding: 12px 10px 0;
-  background: $color-white;
-  border: 1px solid var(--mat-sys-outline-variant);
-  border-radius: $card-radius;
+// --- Tarjeta item con borde (listas editables) ---
+.item-card {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 0 8px;
-  box-sizing: border-box;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 12px;
+  background: var(--mat-sys-surface-container-lowest);
+  transition: box-shadow 0.2s;
 
-  app-filter-input,
-  app-filter-date,
-  app-filter-boolean {
-    flex: 1 1 180px;
-
-    mat-form-field {
-      width: 100%;
-      --mdc-filled-text-field-container-color: var(--mat-sys-surface);
-
-      .mat-icon[matprefix] { color: $color-muted; }
-    }
-  }
-
-  mat-button-toggle-group {
-    align-self: center;
-    margin-bottom: 12px;
-    border: 1px solid var(--mat-sys-outline-variant);
-    border-radius: 12px;
-    overflow: hidden;
-
-    --mat-button-toggle-label-text-size: 0.8rem;
-    --mat-button-toggle-height: 36px;
-
-    .mat-button-toggle-appearance-standard {
-      --mat-button-toggle-state-layer-color: transparent;
-      --mat-button-toggle-label-text-color: var(--mat-sys-on-surface-variant);
-      background: $color-white;
-    }
-
-    .mat-button-toggle-checked {
-      background: var(--mat-sys-surface-container-high);
-      --mat-button-toggle-label-text-color: var(--mat-sys-on-surface);
-    }
+  &:hover {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   }
 }
 
-// --- CRUD tabla ---
-app-crud,
-app-crud2 {
-  display: block;
-  max-width: $content-max-width;
-  margin: 0 auto;
-
-  .mat-mdc-table {
-    --mat-table-background-color: #{$color-white};
-    --mat-table-header-headline-color: var(--mat-sys-on-surface-variant);
-    --mat-table-row-item-outline-color: var(--mat-sys-outline-variant);
-    border: 1px solid var(--mat-sys-outline-variant);
-    border-radius: $card-radius;
-    overflow: hidden;
-  }
-
-  .mat-mdc-header-cell,
-  .mat-mdc-cell {
-    .mat-mdc-icon-button { color: $color-muted; }
-  }
-
-  .mat-mdc-header-cell {
-    color: $color-muted;
-    font-weight: 500;
-  }
+// --- Icon button pequeño (acciones en listas) ---
+.icon-btn-sm {
+  color: var(--mat-sys-outline);
+  --mdc-icon-button-state-layer-size: 32px;
+  --mdc-icon-button-icon-size: 18px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
 }
 
-app-crud {
-  .mat-mdc-header-cell,
-  .mat-mdc-cell {
-    text-align: center;
-    justify-content: center;
-  }
-}
-
-// --- Diálogos ---
-.mat-mdc-dialog-container .mat-mdc-dialog-surface {
-  background-color: $color-white;
-}
-
-mat-dialog-content,
-.mat-mdc-dialog-content {
+// --- Info de persona (nombre + detalle) ---
+.person-info {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
 }
 
-// --- Engagement Letter Form ---
-.engagement-letter-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 16px;
+.person-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
 }
 
-.engagement-letter-form {
-  margin-top: 4px;
-
-  mat-card-content { padding: 16px; }
+.person-detail {
+  font-size: 0.8rem;
+  color: var(--mat-sys-outline);
 }
 
+// --- Zona/sección con borde (formularios) ---
 .zone-card {
-  background: $color-white;
+  background: var(--mat-sys-surface-container-lowest);
   border: 1px solid var(--mat-sys-outline-variant);
   border-radius: $card-radius;
   padding: 12px 16px;
@@ -320,53 +134,6 @@ mat-dialog-content,
   align-items: center;
   gap: 16px;
   box-sizing: border-box;
-
-  .zone-left {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    flex-shrink: 0;
-  }
-
-  .zone-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--mat-sys-on-surface);
-    letter-spacing: 0.01em;
-  }
-
-  .zone-subtitle {
-    font-size: 0.8rem;
-    color: $color-muted;
-  }
-
-  .zone-date {
-    font-size: 0.85rem;
-    color: var(--mat-sys-on-surface-variant);
-  }
-
-  .zone-right {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0 12px;
-    flex: 1;
-    justify-content: flex-end;
-  }
-
-  app-form-date {
-    flex: 0 0 240px;
-
-    mat-form-field {
-      width: 100%;
-      --mdc-filled-text-field-container-color: var(--mat-sys-surface);
-    }
-  }
-
-  .discount-field {
-    flex: 0 0 240px;
-    --mdc-filled-text-field-container-color: var(--mat-sys-surface);
-  }
 
   &--column {
     flex-direction: column;
@@ -379,171 +146,122 @@ mat-dialog-content,
       --mdc-filled-text-field-container-color: var(--mat-sys-surface);
     }
   }
+}
 
-  .zone-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.zone-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--mat-sys-on-surface);
+  letter-spacing: 0.01em;
+}
 
-    .zone-title {
-      flex: 1;
-    }
+.zone-subtitle {
+  font-size: 0.8rem;
+  color: var(--mat-sys-outline);
+}
 
-    app-search-by-user,
-    app-search-by-legal-procedure,
-    app-search-by-legal-task {
-      flex: 1;
-      min-width: 180px;
-    }
+.zone-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 
-    app-form-date,
-    app-form-field,
-    app-input-data {
-      flex: 1;
-      min-width: 0;
+  .zone-title { flex: 1; }
 
-      mat-form-field {
-        width: 100%;
-        --mdc-filled-text-field-container-color: var(--mat-sys-surface);
-      }
-    }
+  app-search-by-user,
+  app-search-by-legal-procedure,
+  app-search-by-legal-task {
+    flex: 1;
+    min-width: 180px;
+  }
 
-    > mat-form-field {
-      flex: 1;
-      min-width: 0;
+  app-form-date,
+  app-form-field,
+  app-input-data {
+    flex: 1;
+    min-width: 0;
+
+    mat-form-field {
+      width: 100%;
       --mdc-filled-text-field-container-color: var(--mat-sys-surface);
     }
-
-    > .mat-mdc-icon-button {
-      flex-shrink: 0;
-      color: $color-muted;
-    }
-  }
-}
-
-.owner-avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background-color: var(--mat-sys-primary);
-  color: $color-white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  flex-shrink: 0;
-}
-
-.owner-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.owner-name {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--mat-sys-on-surface);
-}
-
-.owner-mobile {
-  font-size: 0.8rem;
-  color: $color-muted;
-}
-
-.client-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 8px;
-  border: 1px solid var(--mat-sys-outline-variant);
-  border-radius: 12px;
-  background: var(--mat-sys-surface-container-lowest);
-  transition: box-shadow 0.2s;
-
-  &:hover {
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   }
 
-  .owner-info { flex: 1; min-width: 0; }
-
-  .mat-mdc-icon-button {
-    flex-shrink: 0;
-    color: $color-muted;
-    --mdc-icon-button-state-layer-size: 32px;
-    --mdc-icon-button-icon-size: 18px;
-    width: 32px;
-    height: 32px;
-    padding: 0;
-  }
-}
-
-.payment-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 8px;
-  border: 1px solid var(--mat-sys-outline-variant);
-  border-radius: 12px;
-  background: var(--mat-sys-surface-container-lowest);
-  transition: box-shadow 0.2s;
-
-  &:hover {
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-  }
-
-  .percentage-field {
-    flex: 0 0 20%;
-    --mdc-filled-text-field-container-color: var(--mat-sys-surface);
-  }
-
-  .description-field {
+  > mat-form-field {
     flex: 1;
     min-width: 0;
     --mdc-filled-text-field-container-color: var(--mat-sys-surface);
   }
 
-  .mat-mdc-icon-button {
+  > .mat-mdc-icon-button {
     flex-shrink: 0;
-    color: $color-muted;
-    --mdc-icon-button-state-layer-size: 32px;
-    --mdc-icon-button-icon-size: 18px;
-    width: 32px;
-    height: 32px;
-    padding: 0;
+    color: var(--mat-sys-outline);
   }
 }
-.owner-fieldset { margin: 16px 0; }
 
-// --- Invoice Breakdown Dialog ---
-.invoice-breakdown-dialog {
-  mat-card { margin-bottom: 20px; }
+// --- Chips semánticos (booleanos, estados) ---
+.bool-chip {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.6;
 
-  th.mat-header-cell,
-  td.mat-cell {
-    white-space: nowrap;
-    padding-right: 24px;
+  &--success {
+    background-color: var(--mat-sys-secondary-container);
+    color: var(--mat-sys-on-secondary-container);
   }
 
-  .id-cell { word-break: break-all; }
-
-  mat-list-item span[matListItemTitle] {
-    color: grey;
-    font-size: 0.8em;
+  &--error {
+    background-color: var(--mat-sys-error-container);
+    color: var(--mat-sys-on-error-container);
   }
 
-  mat-list-item span[matListItemLine] {
-    font-size: 1.2em;
-    text-align: right;
-    width: 100%;
+  &--primary {
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
   }
 
-  table { width: 100%; }
+  &--warn {
+    background-color: var(--mat-sys-tertiary-container);
+    color: var(--mat-sys-on-tertiary-container);
+  }
+
+  &--default {
+    background-color: var(--mat-sys-surface-container-highest);
+    color: var(--mat-sys-on-surface-variant);
+  }
 }
 
-// --- Title ---
+// --- Feedback de formulario (éxito, aviso, error) ---
+.submit-feedback {
+  padding: 16px 20px;
+  border-left: 4px solid;
+  border-radius: 4px;
+  text-align: center;
+
+  p { margin: 0; }
+
+  &--success {
+    border-left-color: var(--mat-sys-secondary);
+    background: var(--mat-sys-surface-container-low);
+    color: var(--mat-sys-on-surface);
+  }
+
+  &--warning {
+    border-left-color: var(--mat-sys-tertiary);
+    background: var(--mat-sys-surface-container-low);
+    color: var(--mat-sys-on-surface);
+  }
+
+  &--error {
+    border-left-color: var(--mat-sys-error);
+    background: var(--mat-sys-surface-container-low);
+    color: var(--mat-sys-error);
+  }
+}
+
+// --- Título de página ---
 .app-title {
   padding: 24px 24px 16px;
 }
@@ -576,13 +294,415 @@ mat-dialog-content,
 }
 
 .app-title__create {
-  --mdc-filled-button-container-color: #{$color-secondary};
-  --mdc-filled-button-label-text-color: #{$color-white};
+  --mdc-filled-button-container-color: var(--mat-sys-secondary);
+  --mdc-filled-button-label-text-color: var(--mat-sys-on-secondary);
   border-radius: 12px;
 }
 
 .app-title__cancel {
   border-radius: 12px;
+}
+
+// --- Filtros de búsqueda ---
+.filters-card {
+  width: $content-max-width;
+  margin: 0 auto 16px;
+  padding: 12px 10px 0;
+  background: var(--mat-sys-surface-container-lowest);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: $card-radius;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 8px;
+  box-sizing: border-box;
+
+  app-filter-input,
+  app-filter-date,
+  app-filter-boolean {
+    flex: 1 1 180px;
+
+    mat-form-field {
+      width: 100%;
+      --mdc-filled-text-field-container-color: var(--mat-sys-surface);
+
+      .mat-icon[matprefix] { color: var(--mat-sys-outline); }
+    }
+  }
+
+  mat-button-toggle-group {
+    align-self: center;
+    margin-bottom: 12px;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: 12px;
+    overflow: hidden;
+
+    --mat-button-toggle-label-text-size: 0.8rem;
+    --mat-button-toggle-height: 36px;
+
+    .mat-button-toggle-appearance-standard {
+      --mat-button-toggle-state-layer-color: transparent;
+      --mat-button-toggle-label-text-color: var(--mat-sys-on-surface-variant);
+      background: var(--mat-sys-surface-container-lowest);
+    }
+
+    .mat-button-toggle-checked {
+      background: var(--mat-sys-surface-container-high);
+      --mat-button-toggle-label-text-color: var(--mat-sys-on-surface);
+    }
+  }
+}
+
+// =============================================================================
+// 4. OVERRIDES DE COMPONENTES MATERIAL
+// =============================================================================
+
+// --- Botón variante semántica ---
+.mat-mdc-button-base.warn {
+  --mdc-filled-button-container-color: var(--mat-sys-error);
+  --mdc-filled-button-label-text-color: var(--mat-sys-on-error);
+}
+
+// --- Toolbar ---
+.mat-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: var(--mat-sys-surface-container-lowest) !important;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+// --- Menús ---
+.mat-mdc-menu-panel {
+  background: var(--mat-sys-surface-container-lowest) !important;
+  border-radius: 12px !important;
+
+  .mat-mdc-menu-item {
+    --mat-menu-item-label-text-color: var(--mat-sys-on-surface);
+    --mat-menu-item-label-text-weight: 500;
+    opacity: 0.75;
+    transition: opacity 0.2s, background 0.2s;
+
+    .mat-icon { color: var(--mat-sys-primary); }
+
+    &:hover {
+      opacity: 1;
+      background: var(--mat-sys-surface-container-low);
+    }
+
+    &.menu-item-primary {
+      --mat-menu-item-label-text-color: var(--mat-sys-secondary);
+      opacity: 1;
+      .mat-icon { color: var(--mat-sys-secondary); }
+    }
+
+    &.menu-item-danger {
+      --mat-menu-item-label-text-color: var(--mat-sys-error);
+      opacity: 1;
+      .mat-icon { color: var(--mat-sys-error); }
+    }
+  }
+}
+
+// --- Tablas ---
+app-crud,
+app-crud2 {
+  display: block;
+  max-width: $content-max-width;
+  margin: 0 auto;
+
+  .mat-mdc-table {
+    --mat-table-background-color: var(--mat-sys-surface-container-lowest);
+    --mat-table-header-headline-color: var(--mat-sys-on-surface-variant);
+    --mat-table-row-item-outline-color: var(--mat-sys-outline-variant);
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: $card-radius;
+    overflow: hidden;
+  }
+
+  .mat-mdc-header-cell,
+  .mat-mdc-cell {
+    .mat-mdc-icon-button { color: var(--mat-sys-outline); }
+  }
+
+  .mat-mdc-header-cell {
+    color: var(--mat-sys-outline);
+    font-weight: 500;
+  }
+}
+
+app-crud {
+  .mat-mdc-header-cell,
+  .mat-mdc-cell {
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+// --- Diálogos ---
+.mat-mdc-dialog-container .mat-mdc-dialog-surface {
+  background-color: var(--mat-sys-surface-container-lowest);
+}
+
+mat-dialog-content,
+.mat-mdc-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+// --- Form fields dentro de zonas ---
+app-search mat-form-field {
+  --mdc-filled-text-field-container-color: var(--mat-sys-surface);
+}
+
+app-search .mat-icon[matPrefix] {
+  color: var(--mat-sys-outline);
+}
+
+// =============================================================================
+// 5. COMPONENTES CUSTOM COMPARTIDOS (layout + tema)
+// =============================================================================
+
+// --- Toolbar: marca y navegación ---
+.toolbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.toolbar-brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.toolbar-brand-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+}
+
+.toolbar-brand-role {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--mat-sys-outline);
+}
+
+.toolbar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+
+  .nav-btn {
+    --mdc-text-button-label-text-color: var(--mat-sys-on-surface);
+    background: transparent;
+    border-radius: 12px;
+    opacity: 0.75;
+    transition: opacity 0.2s, background 0.2s;
+
+    &:hover, &:focus {
+      opacity: 1;
+      background: var(--mat-sys-surface-container-low);
+    }
+
+    mat-icon { color: var(--mat-sys-primary); }
+  }
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.user-avatar-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.user-avatar-arrow {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+// --- Data Cell ---
+app-data-cell2 {
+  .cell-primary {
+    font-weight: 500;
+    color: var(--mat-sys-on-surface);
+  }
+
+  .cell-secondary {
+    font-size: 0.8rem;
+    color: var(--mat-sys-on-surface-variant);
+    margin-top: 2px;
+  }
+}
+
+// --- Form Submit ---
+app-form-submit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.submit-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.submit-icon--warning { color: var(--mat-sys-tertiary); }
+.submit-icon--error { color: var(--mat-sys-error); }
+
+// --- Form List ---
+app-form-list {
+  .form-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-list-drag {
+    color: var(--mat-sys-outline);
+    cursor: grab;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .form-list-text {
+    flex: 1;
+    font-size: 0.875rem;
+    color: var(--mat-sys-on-surface);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .form-list-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 0;
+  }
+
+  .cdk-drag-preview {
+    @extend .item-card;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 6px 8px 6px 4px;
+  }
+
+  .cdk-drag-placeholder {
+    opacity: 0.3;
+  }
+}
+
+// =============================================================================
+// 6. LAYOUT DE PANTALLAS
+// =============================================================================
+
+// --- Engagement Letter ---
+.engagement-letter-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.engagement-letter-form {
+  margin-top: 4px;
+
+  mat-card-content { padding: 16px; }
+}
+
+.zone-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.zone-date {
+  font-size: 0.85rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.zone-right {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 12px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+app-engagement-letter-form {
+  app-form-date {
+    flex: 0 0 240px;
+
+    mat-form-field {
+      width: 100%;
+      --mdc-filled-text-field-container-color: var(--mat-sys-surface);
+    }
+  }
+
+  .discount-field {
+    flex: 0 0 240px;
+    --mdc-filled-text-field-container-color: var(--mat-sys-surface);
+  }
+
+  .percentage-field {
+    flex: 0 0 20%;
+    --mdc-filled-text-field-container-color: var(--mat-sys-surface);
+  }
+
+  .description-field {
+    flex: 1;
+    min-width: 0;
+    --mdc-filled-text-field-container-color: var(--mat-sys-surface);
+  }
+
+  .owner-fieldset { margin: 16px 0; }
+}
+
+// --- Invoice Breakdown Dialog ---
+.invoice-breakdown-dialog {
+  mat-card { margin-bottom: 20px; }
+
+  th.mat-header-cell,
+  td.mat-cell {
+    white-space: nowrap;
+    padding-right: 24px;
+  }
+
+  .id-cell { word-break: break-all; }
+
+  mat-list-item span[matListItemTitle] {
+    color: var(--mat-sys-outline);
+    font-size: 0.8em;
+  }
+
+  mat-list-item span[matListItemLine] {
+    font-size: 1.2em;
+    text-align: right;
+    width: 100%;
+  }
+
+  table { width: 100%; }
 }
 
 // --- Customer ---
@@ -658,9 +778,7 @@ app-footer {
       gap: 2px;
     }
 
-    img {
-      height: 16px;
-    }
+    img { height: 16px; }
   }
 
   .front-badge {
@@ -676,202 +794,18 @@ app-footer {
   }
 
   .host {
-    color: $color-white;
-    background: #6B5D4F;
+    color: var(--mat-sys-on-tertiary);
+    background: var(--mat-sys-tertiary);
     font-size: 11px;
     border-radius: 4px 0 0 4px;
     padding: 1px 4px;
   }
 
   .version {
-    color: $color-white;
-    background: $color-secondary;
+    color: var(--mat-sys-on-secondary);
+    background: var(--mat-sys-secondary);
     font-size: 11px;
     border-radius: 0 4px 4px 0;
     padding: 1px 4px;
-  }
-}
-
-// --- Data Cell 2 ---
-app-data-cell2 {
-  .cell-primary {
-    font-weight: 500;
-    color: rgba(0, 0, 0, 0.87);
-  }
-
-  .cell-secondary {
-    font-size: 0.8rem;
-    color: rgba(0, 0, 0, 0.54);
-    margin-top: 2px;
-  }
-
-  .bool-chip {
-    display: inline-block;
-    padding: 2px 10px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    line-height: 1.6;
-  }
-
-  .bool-green {
-    background-color: #e1e4de;
-    color: #38462c;
-  }
-
-  .bool-red {
-    background-color: #ffdad6;
-    color: #93000a;
-  }
-
-  .bool-primary {
-    background-color: #f4e9dc;
-    color: #5d3d17;
-  }
-
-  .bool-warn {
-    background-color: #fff3e0;
-    color: #e65100;
-  }
-
-  .bool-default {
-    background-color: #eae8e6;
-    color: #605950;
-  }
-}
-
-// --- Search ---
-app-search {
-  mat-form-field {
-    --mdc-filled-text-field-container-color: var(--mat-sys-surface);
-  }
-
-  .mat-icon[matPrefix] {
-    color: $color-muted;
-  }
-}
-
-// --- Form List ---
-app-form-list {
-  .form-list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .form-list-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 8px 6px 4px;
-    border: 1px solid var(--mat-sys-outline-variant);
-    border-radius: 12px;
-    background: var(--mat-sys-surface-container-lowest);
-    transition: box-shadow 0.2s;
-
-    &:hover {
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-    }
-  }
-
-  .form-list-drag {
-    color: $color-muted;
-    cursor: grab;
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-  }
-
-  .form-list-text {
-    flex: 1;
-    font-size: 0.875rem;
-    color: var(--mat-sys-on-surface);
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .form-list-actions {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-    gap: 0;
-
-    .mat-mdc-icon-button {
-      color: $color-muted;
-      --mdc-icon-button-state-layer-size: 32px;
-      --mdc-icon-button-icon-size: 18px;
-      width: 32px;
-      height: 32px;
-      padding: 0;
-    }
-  }
-
-  .cdk-drag-preview {
-    border: 1px solid var(--mat-sys-outline-variant);
-    border-radius: 12px;
-    background: var(--mat-sys-surface-container-lowest);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 8px 6px 4px;
-  }
-
-  .cdk-drag-placeholder {
-    opacity: 0.3;
-  }
-}
-
-// --- Form Submit ---
-app-form-submit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.submit-wrapper {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.submit-icon--warning,
-.submit-icon--error {
-  font-size: 1.5rem;
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.submit-icon--warning { color: var(--mat-sys-tertiary); }
-.submit-icon--error { color: var(--mat-sys-error); }
-
-.submit-feedback {
-  padding: 16px 20px;
-  border-left: 4px solid;
-  border-radius: 4px;
-  text-align: center;
-
-  p { margin: 0; }
-
-  &--success {
-    border-left-color: var(--mat-sys-secondary);
-    background: var(--mat-sys-surface-container-low);
-    color: var(--mat-sys-on-surface);
-  }
-
-  &--warning {
-    border-left-color: var(--mat-sys-tertiary);
-    background: var(--mat-sys-surface-container-low);
-    color: var(--mat-sys-on-surface);
-  }
-
-  &--error {
-    border-left-color: var(--mat-sys-error);
-    background: var(--mat-sys-surface-container-low);
-    color: var(--mat-sys-error);
   }
 }

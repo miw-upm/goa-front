@@ -40,7 +40,7 @@
         }
         @if (isAuthenticated()) {
             <button [matMenuTriggerFor]="profileMenu" class="user-avatar-btn" mat-button>
-                <span class="user-avatar">{{ initials() }}</span>
+                <span class="avatar avatar--secondary">{{ initials() }}</span>
                 <mat-icon class="user-avatar-arrow">arrow_drop_down</mat-icon>
             </button>
         }

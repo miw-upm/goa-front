@@ -1,6 +1,6 @@
 <div (cdkDropListDropped)="onDrop($event)" cdkDropList class="form-list">
     @for (item of items; track $index; let i = $index) {
-        <div cdkDrag class="form-list-item">
+        <div cdkDrag class="item-card">
             <mat-icon cdkDragHandle class="form-list-drag">drag_indicator</mat-icon>
             <span class="form-list-text">
                 @if (!keyView.length) {
@@ -15,11 +15,11 @@
             </span>
             <span class="form-list-actions">
                 @if (actionIcon) {
-                    <button (click)="onAction(item)" aria-label="Editar" mat-icon-button>
+                    <button (click)="onAction(item)" aria-label="Editar" class="icon-btn-sm" mat-icon-button>
                         <mat-icon>{{ actionIcon }}</mat-icon>
                     </button>
                 }
-                <button (click)="removeItem(i)" aria-label="Eliminar" mat-icon-button>
+                <button (click)="removeItem(i)" aria-label="Eliminar" class="icon-btn-sm" mat-icon-button>
                     <mat-icon>close</mat-icon>
                 </button>
             </span>

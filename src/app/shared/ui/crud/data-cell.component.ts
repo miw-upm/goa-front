@@ -91,9 +91,9 @@ export class DataCellComponent {
     get booleanColorClass(): string {
         const cfg = this.config?.booleanConfig;
         const color = this.singleValue
-            ? (cfg?.trueColor ?? 'green')
+            ? (cfg?.trueColor ?? 'success')
             : (cfg?.falseColor ?? 'primary');
-        return `bool-${color}`;
+        return `bool-chip--${color}`;
     }
 
     get isArrayMode(): boolean {
