@@ -48,7 +48,7 @@ import {TypeToConfirmDialogComponent} from "@shared/ui/dialogs/type-to-confirm-d
         TextFieldModule
     ],
     templateUrl: "./chatbot.component.html",
-    styleUrls: ["./chatbot.component.css"]
+    styleUrls: ["./chatbot.component.scss"]
 })
 
 export class ChatbotComponent implements OnInit, OnDestroy {
