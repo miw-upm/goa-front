@@ -267,7 +267,8 @@
                                                 class="send-button"
                                                 (click)="send()"
                                                 [disabled]="!message?.trim() || isComposerLocked() || !!deletingConversationId || !!escalatingConversationId">
-                                            Enviar
+                                            <mat-icon>send</mat-icon>
+                                            <span>Enviar</span>
                                         </button>
                                     </div>
                                 </div>
