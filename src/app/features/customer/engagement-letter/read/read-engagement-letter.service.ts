@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {HttpService} from '@shared/ui/api/http.service';
+
 import {ENDPOINTS} from '@core/api/endpoints';
+import {HttpService} from '@shared/ui/api/http.service';
 
 @Injectable({providedIn: 'root'})
 export class ReadEngagementLetterService {

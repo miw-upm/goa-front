@@ -1,14 +1,27 @@
-<h2 mat-dialog-title> {{ title }}</h2>
+<h2 mat-dialog-title>{{ title }}</h2>
+
 <mat-dialog-content>
     @if (object) {
-        @for (key of labels(object); track key) {
-            <div class="field-row">
-                <strong>{{ key | uppercaseWords }}:</strong>
-                <app-data-cell [value]="object[key]" [fullList]="true"></app-data-cell>
-            </div>
+        @if (useConfig) {
+            <!-- Modo configurado: usa columns para labels y formato -->
+            @for (col of columns; track col.key) {
+                <div>
+                    <strong>{{ col.label }}:</strong>
+                    <app-data-cell2 [config]="col" [row]="object"></app-data-cell2>
+                </div>
+            }
+        } @else {
+            <!-- Modo legacy: todas las propiedades -->
+            @for (key of labels(object); track key) {
+                <div>
+                    <strong>{{ key | uppercaseWords }}:</strong>
+                    <app-data-cell2 [fullList]="true" [value]="object[key]"></app-data-cell2>
+                </div>
+            }
         }
     }
 </mat-dialog-content>
-<mat-dialog-actions>
-    <button mat-dialog-close mat-raised-button>Close</button>
+
+<mat-dialog-actions align="end">
+    <button mat-dialog-close mat-flat-button>Cerrar</button>
 </mat-dialog-actions>

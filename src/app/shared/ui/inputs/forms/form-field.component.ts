@@ -9,38 +9,8 @@ import {MatIcon} from '@angular/material/icon';
     selector: 'app-form-field',
     imports: [MatFormField, MatLabel, MatInput, MatError, FormsModule, MatIcon, MatSuffix],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    template: `
-        <mat-form-field class="full-width">
-            <mat-label>{{ label }}</mat-label>
-            <input
-                    [ngModel]="value"
-                    (ngModelChange)="valueChange.emit($event)"
-                    #ctrl="ngModel"
-                    matInput
-                    [type]="type"
-                    [required]="required"
-                    [pattern]="pattern"
-                    [maxlength]="maxlength"
-                    [minlength]="minlength"
-                    [attr.name]="label"
-                    [disabled]="disabled"
-                    [attr.max]="max"
-                    [attr.min]="min"
-                    [step]="step"
-            />
-            @if (icon) {
-                <mat-icon matSuffix>{{ icon }}</mat-icon>
-            }
-            @if (ctrl.invalid && (ctrl.dirty || ctrl.touched)) {
-                <mat-error>{{ errorMessage }}</mat-error>
-            }
-        </mat-form-field>
-    `,
-    styles: [`
-        .full-width {
-            width: 100%;
-        }
-    `]
+    templateUrl: './form-field.component.html',
+
 })
 export class FormFieldComponent implements AfterViewInit {
     @Input() label!: string;

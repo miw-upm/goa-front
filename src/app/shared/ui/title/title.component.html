@@ -1,0 +1,30 @@
+<div class="app-title">
+    <div class="app-title__header">
+        <div>
+            <h1 class="app-title__text">{{ title }}</h1>
+            @if (subtitle) {
+                <p class="app-title__subtitle">{{ subtitle }}</p>
+            }
+        </div>
+        <div class="app-title__actions">
+            @if (createAction) {
+                <button (click)="create.emit()" class="app-title__create" mat-flat-button>
+                    <mat-icon>add</mat-icon>
+                    Crear
+                </button>
+            }
+            @if (cancelAction) {
+                <button (click)="cancel.emit()" class="app-title__cancel" mat-stroked-button>
+                    Cancelar
+                </button>
+            }
+            @if (saveAction) {
+                <button (click)="save.emit()" [disabled]="saveDisabled" class="app-title__create"
+                        mat-flat-button>
+                    <mat-icon>{{ saveIcon }}</mat-icon>
+                    {{ saveLabel }}
+                </button>
+            }
+        </div>
+    </div>
+</div>

@@ -18,30 +18,8 @@ import {CapitalizeEnumNamePipe} from '@shared/pipes/capitalize-enum-name.pipe';
         MatOption,
         CapitalizeEnumNamePipe
     ],
-    template: `
-        <mat-form-field class="full-width">
-            <mat-label>{{ label }}</mat-label>
-            <mat-select [(ngModel)]="selected" (ngModelChange)="selectedChange.emit($event)" [required]="required">
-                <mat-option [value]="undefined">-- Selecciona --</mat-option>
-                @for (type of (values | async); track type) {
-                    <mat-option [value]="type">
-                        @if (capitalize) {
-                            {{ type | capitalizeEnumName }}
-                        } @else {
-                            {{ type }}
-                        }
-                    </mat-option>
-                }
-            </mat-select>
-        </mat-form-field>
-    `,
-    styles: [
-        `
-            .full-width {
-                width: 100%;
-            }
-        `
-    ]
+    templateUrl: './form-select.component.html',
+
 })
 export class FormSelectComponent {
     @Input() label = 'Select';

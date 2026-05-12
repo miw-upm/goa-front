@@ -1,0 +1,11 @@
+<app-form-field
+    #field
+    (valueChange)="onValueChange($event)"
+    [disabled]="disabled"
+    [errorMessage]="errorMessage"
+    [label]="label"
+    [maxlength]="9"
+    [pattern]="NIF_PATTERN"
+    [required]="required"
+    [value]="value"
+/>

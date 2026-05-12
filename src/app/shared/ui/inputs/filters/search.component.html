@@ -1,0 +1,36 @@
+<mat-form-field class="full-width">
+    <mat-icon matPrefix>search</mat-icon>
+    <mat-label>{{ title }}</mat-label>
+    <input (keyup.enter)="onRenew()"
+           (ngModelChange)="onRenew()"
+           [(ngModel)]="inputValue"
+           [matAutocomplete]="auto"
+           [required]="obligatory"
+           matInput
+           type="text"
+    >
+    <button (click)="resetKey()" [disabled]="!inputValue" aria-label="Clear" mat-icon-button matSuffix>
+        <mat-icon>close</mat-icon>
+    </button>
+    <mat-autocomplete #auto="matAutocomplete">
+        @if (keys | async; as options) {
+            @for (option of options; track $index) {
+                <mat-option (click)="onClick(option)" [value]="option">
+                    @if (displayFn) {
+                        {{ displayFn(option) }}
+                    } @else if (!keyView.length) {
+                        {{ option }}
+                    } @else {
+                        @for (key of keyView; track $index; let last = $last) {
+                            {{ option[key] }}@if (!last) {
+                                ,
+                            }
+                        }
+                    }
+                </mat-option>
+            }
+        } @else {
+            <mat-option disabled>Cargando...</mat-option>
+        }
+    </mat-autocomplete>
+</mat-form-field>

@@ -8,7 +8,8 @@ import {
     OnDestroy,
     OnInit,
     Output,
-    ViewChild
+    ViewChild,
+    ViewEncapsulation
 } from '@angular/core';
 import {NgIf, NgOptimizedImage} from '@angular/common';
 import {FormsModule} from '@angular/forms';
@@ -17,11 +18,12 @@ import {MatButton} from '@angular/material/button';
 import {MatCheckbox} from '@angular/material/checkbox';
 import {MatDialogActions} from '@angular/material/dialog';
 import {MatIcon} from '@angular/material/icon';
-
-import {DocumentAcceptanceResult} from './document-acceptance-result.model';
-import {ActivatedRoute} from "@angular/router";
-import {SharedCustomerService} from "@features/shared/services/shared-customer.service";
 import {MatDivider} from "@angular/material/divider";
+import {ActivatedRoute} from "@angular/router";
+
+import {FormSubmitComponent} from "@shared/ui/inputs/forms/form-submit.component";
+import {SharedCustomerService} from "@features/shared/services/shared-customer.service";
+import {DocumentAcceptanceResult} from './document-acceptance-result.model';
 
 export interface DocumentAcceptanceContext {
     scope: string;
@@ -34,6 +36,7 @@ export interface DocumentAcceptanceContext {
     selector: 'app-document-acceptance',
     templateUrl: './document-acceptance.component.html',
     styleUrls: ['./document-acceptance.component.scss'],
+    encapsulation: ViewEncapsulation.None,
     imports: [
         NgIf,
         NgOptimizedImage,
@@ -47,6 +50,7 @@ export interface DocumentAcceptanceContext {
         MatIcon,
         MatDivider,
         MatCardFooter,
+        FormSubmitComponent,
     ]
 })
 export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -54,9 +58,11 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
     @Input() downloadEnabled = false;
     @Input() acceptanceEnabled = false;
     @Input() signatureEnabled = false;
-
+    @Input() downloadSuccessMessage = 'Documento descargado correctamente.';
     @Input() title = 'Aceptación de Documento';
     @Input() showCompanyInfo = true;
+
+    @Input() successMessage = 'Su firma ha sido registrada correctamente. Le agradecemos la confianza en Ocaña Abogados.';
 
     @Output() downloadRequested = new EventEmitter<DocumentAcceptanceContext>();
     @Output() submitted = new EventEmitter<{ context: DocumentAcceptanceContext; result: DocumentAcceptanceResult }>();
@@ -71,6 +77,9 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
 
     @ViewChild('signaturePad', {static: false})
     private readonly canvasRef?: ElementRef<HTMLCanvasElement>;
+
+    @ViewChild('submitBtn')
+    private readonly submitBtn?: FormSubmitComponent;
 
     private ctx?: CanvasRenderingContext2D;
     private drawing = false;
@@ -118,9 +127,10 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
         }
     }
 
-    onDownloadClick(): void {
+    onDownloadClick(downloadBtn: FormSubmitComponent): void {
         this.downloadRequested.emit(this.context);
         this.documentDownloaded = true;
+        downloadBtn.markSuccess('Documento descargado correctamente.');
     }
 
     update(): void {
@@ -134,9 +144,14 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
         });
     }
 
-    markCompleted(): void {
+    markCompleted(message = this.successMessage): void {
         this.completedFlag = true;
+        this.submitBtn?.markSuccess(message);
         this.completed.emit();
+    }
+
+    markFailed(message = ''): void {
+        this.submitBtn?.markError(message);
     }
 
     startDrawing(event: PointerEvent): void {
@@ -227,3 +242,4 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
         return this.canvasRef.nativeElement.toDataURL('image/png');
     }
 }
+

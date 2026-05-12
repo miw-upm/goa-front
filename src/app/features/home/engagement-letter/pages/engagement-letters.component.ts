@@ -4,9 +4,9 @@ import {Observable, of} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
-
 import {CrudComponent} from '@shared/ui/crud/crud.component';
-import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
+import {FilterInputComponent} from '@shared/ui/inputs/filters/filter-input.component';
+import {TitleComponent} from '@shared/ui/title/title.component';
 import {CancelYesDialogComponent} from '@shared/ui/dialogs/cancel-yes-dialog.component';
 import {ClipboardToastDialogComponent} from '@shared/ui/dialogs/clipboard-toast-dialog.component';
 import {AuthService} from '@core/auth/auth.service';
@@ -14,20 +14,19 @@ import {AuthService} from '@core/auth/auth.service';
 import {EngagementLetterService} from '../engagement-letter.service';
 import {EngagementLetterFindCriteria} from '../models/engagement-letter-find-criteria.model';
 import {EngagementLetter} from '../models/engagement-letter.model';
-import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
+import {ENGAGEMENT_LETTERS_COLUMNS} from './engagement-letters-columns.config';
 
 @Component({
     standalone: true,
     providers: [EngagementLetterService],
-    imports: [FormsModule, CrudComponent, FilterInputComponent, MatButtonToggleGroup, MatButtonToggle],
+    imports: [FormsModule, CrudComponent, FilterInputComponent, TitleComponent, MatButtonToggleGroup, MatButtonToggle],
     templateUrl: 'engagement-letters.component.html'
 })
 export class EngagementLettersComponent implements OnInit {
     title = 'Hojas de Encargo';
     engagementLetters: Observable<EngagementLetter[]> = of([]);
     engagementLetter: Observable<EngagementLetter>;
-    hiddenFields = ['id', 'discount', 'attachments', 'paymentMethods', 'legalClause']
-    changeFields = ['owner:firstName,familyName,mobile'];
+    columns = ENGAGEMENT_LETTERS_COLUMNS;
 
     deleteVisibility = false;
     criteria: EngagementLetterFindCriteria = {opened: true};
@@ -88,17 +87,6 @@ export class EngagementLettersComponent implements OnInit {
 
     print(engagement: EngagementLetter): void {
         this.engagementLettersService.print(engagement.id).subscribe();
-    }
-
-    openAssistant(engagement: EngagementLetter): void {
-        if (!engagement?.id) return;
-        this.dialog.open(ChatbotComponent, {
-            data: {engagementLetterId: engagement.id},
-            width: '960px',
-            maxWidth: '96vw',
-            height: '80vh',
-            disableClose: true
-        });
     }
 
     link(engagement: EngagementLetter): void {

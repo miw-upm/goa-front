@@ -6,6 +6,7 @@
         #budget
         [(value)]="template.budget"
         [min]="0"
+        [required]="true"
         [step]="10"
         errorMessage="0..x"
         icon="euro"
@@ -24,12 +25,14 @@
     @if (isCreate()) {
         <button (click)="create()" [disabled]="formInvalid(template.legalTasks, titleNg.ngModel,budget.ngModel)"
                 color="primary"
-                mat-raised-button>Create
+                mat-raised-button>
+            <mat-icon matButtonIcon>add</mat-icon>
+            Crear
         </button>
     } @else {
         <button (click)="update()" [disabled]="formInvalid(template.legalTasks, titleNg.ngModel,budget.ngModel)"
                 color="primary"
-                mat-raised-button>Update
+                mat-raised-button>Guardar
         </button>
     }
 </mat-dialog-actions>

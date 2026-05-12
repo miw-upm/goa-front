@@ -2,8 +2,9 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {HttpViewBuilder} from "@shared/ui/api/http-view-builder";
 import {MatDialog} from "@angular/material/dialog";
+
+import {HttpViewBuilder} from "@shared/ui/api/http-view-builder";
 
 @Injectable({providedIn: 'root'})
 export class HttpService {

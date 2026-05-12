@@ -3,17 +3,15 @@ import {FormsModule, NgModel} from '@angular/forms';
 import {Observable, of} from "rxjs";
 import {
     MAT_DIALOG_DATA,
-    MatDialog,
     MatDialogActions,
     MatDialogClose,
     MatDialogContent,
+    MatDialogRef,
     MatDialogTitle
 } from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatButtonModule} from '@angular/material/button';
-import {MatSelectModule} from "@angular/material/select";
+import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
 
 import {AuthService} from '@core/auth/auth.service';
 import {FormSelectComponent} from '@shared/ui/inputs/forms/form-select.component';
@@ -22,6 +20,7 @@ import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {SharedUserService} from '@features/shared/services/shared-user.service';
 import {User} from '@features/shared/models/user.model';
 import {UserService} from '../user.service';
+import {FormNifComponent} from "@shared/ui/inputs/forms/form-nif.component";
 
 @Component({
     standalone: true,
@@ -31,17 +30,15 @@ import {UserService} from '../user.service';
         MatDialogContent,
         MatDialogActions,
         MatDialogClose,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSlideToggleModule,
-        MatButtonModule,
-        MatSelectModule,
+        MatSlideToggle,
+        MatButton,
+        MatIcon,
         FormSelectComponent,
         FormFieldComponent,
         AppDateFieldComponent,
+        FormNifComponent,
     ],
-    templateUrl: 'user-creation-updating-dialog.component.html',
-    styleUrls: ['user-dialog.component.css']
+    templateUrl: 'user-creation-updating-dialog.component.html'
 })
 
 export class UserCreationUpdatingDialogComponent {
@@ -52,10 +49,14 @@ export class UserCreationUpdatingDialogComponent {
     enablePasswordChange: boolean;
     provinces: Observable<string[]>;
 
-    constructor(@Inject(MAT_DIALOG_DATA) data: User, private readonly userService: UserService,
-                private readonly sharedUserService: SharedUserService,
-                private readonly authService: AuthService, private readonly dialog: MatDialog) {
-        this.title = data ? 'Actualización de Usuarios' : 'Creación de Usuarios';
+    constructor(
+        @Inject(MAT_DIALOG_DATA) data: User,
+        private readonly userService: UserService,
+        private readonly sharedUserService: SharedUserService,
+        private readonly authService: AuthService,
+        private readonly dialogRef: MatDialogRef<UserCreationUpdatingDialogComponent, string>
+    ) {
+        this.title = data ? 'Edición de Clientes' : 'Creación de Clientes';
         this.user = data || {mobile: undefined, firstName: undefined, active: true};
         this.oldMobile = data ? data.mobile : undefined;
         this.enablePasswordChange = false;
@@ -70,7 +71,7 @@ export class UserCreationUpdatingDialogComponent {
     create(): void {
         this.userService
             .create(this.user)
-            .subscribe(() => this.dialog.closeAll());
+            .subscribe(() => this.dialogRef.close(this.user.mobile));
     }
 
     update(): void {
@@ -79,7 +80,7 @@ export class UserCreationUpdatingDialogComponent {
         }
         this.userService
             .update(this.user.id, this.user)
-            .subscribe(() => this.dialog.closeAll());
+            .subscribe(() => this.dialogRef.close(this.user.mobile));
     }
 
     formInvalid(...controls: NgModel[]): boolean {

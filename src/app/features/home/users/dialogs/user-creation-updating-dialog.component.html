@@ -23,12 +23,15 @@
         label="Código postal"
         pattern="^[0-9]{5}$"
     />
-    <app-form-field [(value)]="user.identity" label="N.I.F. (DNI, CIF O NIE)"/>
+    <app-form-nif
+        #identity
+        [(value)]="user.identity"
+    />
     <app-form-field [(value)]="user.email" label="Email"/>
     <mat-slide-toggle [(ngModel)]="enablePasswordChange">Nueva Contraseña</mat-slide-toggle>
     <app-form-field [(value)]="user.password" [disabled]="!enablePasswordChange" label="Contraseña" type="password"/>
     @if (!isCreate()) {
-        <app-form-date [(value)]="user.registrationDate" label="Fecha de Registro" [disabled]="true"/>
+        <app-form-date [(value)]="user.registrationDate" [disabled]="true" label="Fecha de Registro"/>
     }
     <app-form-select [(selected)]="user.role" [values]="roles" label="Rol"/>
     <mat-slide-toggle [(ngModel)]="user.active">Active</mat-slide-toggle>
@@ -36,12 +39,16 @@
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Cancelar</button>
     @if (isCreate()) {
-        <button (click)="create()" [disabled]="formInvalid(mobile.ngModel, name.ngModel, code.ngModel)" color="primary"
-                mat-raised-button>Crear
+        <button (click)="create()"
+                [disabled]="formInvalid(mobile.ngModel, name.ngModel, code.ngModel, identity.ngModel)" color="primary"
+                mat-raised-button>
+            <mat-icon matButtonIcon>add</mat-icon>
+            Crear
         </button>
     } @else {
-        <button (click)="update()" [disabled]="formInvalid(mobile.ngModel, name.ngModel, code.ngModel)" color="primary"
-                mat-raised-button>Actualizar
+        <button (click)="update()"
+                [disabled]="formInvalid(mobile.ngModel, name.ngModel, code.ngModel, identity.ngModel)" color="primary"
+                mat-raised-button>Guardar
         </button>
     }
 </mat-dialog-actions>

@@ -11,9 +11,10 @@ import {
     MatDialogContent,
     MatDialogTitle
 } from '@angular/material/dialog';
-import {MatButtonModule} from '@angular/material/button';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';
+import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+import {MatFormField, MatLabel} from '@angular/material/form-field';
+import {MatOption, MatSelect} from '@angular/material/select';
 
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
@@ -31,15 +32,17 @@ import {Expense} from '../models/expense.model';
         MatDialogContent,
         MatDialogActions,
         MatDialogClose,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatSelectModule,
+        MatButton,
+        MatIcon,
+        MatFormField,
+        MatLabel,
+        MatSelect,
+        MatOption,
         AppDateFieldComponent,
         FormFieldComponent,
     ],
     providers: [EngagementLetterService],
-    templateUrl: 'expense-creation-dialog.component.html',
-    styleUrls: ['expense-creation-dialog.component.css']
+    templateUrl: 'expense-creation-dialog.component.html'
 })
 export class ExpenseCreationDialogComponent {
     title: string;

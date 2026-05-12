@@ -13,23 +13,18 @@
         <!-- DESCARGA (si flag activo) -->
         <div *ngIf="downloadEnabled" class="download-wrapper">
             <p class="download-instructions">
-                A continuación podrá bajarse el documento. Le rogamos que lo descargue y lo lea con
-                detenimiento. Es un documento con el formato *.PDF.</p>
-            <P>No dude en comunicarse con el despacho si le surge cualquier duda.</P>
-            <button (click)="onDownloadClick()"
-                    [disabled]="completedFlag"
-                    color="primary"
-                    mat-raised-button
-                    type="button">
-                <mat-icon>download</mat-icon>
-                Descargar documento
-            </button>
-            <span *ngIf="!documentDownloaded" class="download-hint">
-                Pulse el botón para continuar.
-            </span>
-            <span *ngIf="documentDownloaded" class="download-done">
-                <mat-icon>check_circle</mat-icon> Documento descargado correctamente
-            </span>
+                A continuación, podrá descargarse el documento. Le rogamos que lo descargue y lo lea detenidamente.
+                El documento está en formato PDF.
+            </p>
+            <p>No dude en ponerse en contacto con el despacho si le surge cualquier duda. Pulse la descarga para poder
+                continuar.</p>
+            <app-form-submit
+                #downloadBtn
+                (submitted)="onDownloadClick(downloadBtn)"
+                [disabled]="completedFlag"
+                icon="download"
+                label="Descargar documento"
+            />
         </div>
         <br>
 
@@ -72,22 +67,14 @@
 
     <!-- BOTÓN ENVIAR (si hay algo que enviar) -->
     <mat-dialog-actions *ngIf="hasSubmittableContent()" align="center">
-        <button (click)="update()"
-                [disabled]="!canSubmit() || completedFlag"
-                class="btn-update"
-                color="primary"
-                mat-raised-button
-                type="button">
-            FIRMAR Y ENVIAR
-        </button>
+        <app-form-submit
+            #submitBtn
+            (submitted)="update()"
+            [disabled]="!canSubmit() || completedFlag"
+            label="FIRMAR Y ENVIAR"
+        />
     </mat-dialog-actions>
 
-    <!-- CONFIRMACIÓN POST-ENVÍO -->
-    <div *ngIf="completedFlag" class="signed-confirmation">
-        <p class="signed-message">
-            Su firma ha sido registrada correctamente. Le agradecemos la confianza en Ocaña Abogados.
-        </p>
-    </div>
     <!-- INFO DE LA EMPRESA (siempre visible) -->
     <mat-divider></mat-divider>
     <mat-card-footer class="company-info">

@@ -1,13 +1,19 @@
 import {Component, Inject} from '@angular/core';
 import {FormsModule, NgModel} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import {
+    MAT_DIALOG_DATA,
+    MatDialogActions,
+    MatDialogContent,
+    MatDialogRef,
+    MatDialogTitle
+} from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatListModule} from '@angular/material/list';
+import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {MatFormField, MatLabel} from '@angular/material/form-field';
+import {MatIcon} from '@angular/material/icon';
+import {MatInput} from '@angular/material/input';
 
 import {FormListComponent} from '@shared/ui/inputs/forms/form-list.component';
-import {InputData} from '@shared/ui/inputs/input-data.component';
 import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {SharedLegalTaskService} from '@features/shared/services/shared-legal-task.service';
@@ -20,23 +26,26 @@ import {LegalProcedure} from '../models/legal-procedure.model';
     selector: 'app-legal-procedure-edit-dialog',
     providers: [SharedLegalTaskService],
     templateUrl: './legal-procedure-edit-dialog.component.html',
-    styleUrls: ['./legal-procedure-edit-dialog.component.css'],
     imports: [
         FormsModule,
-        MatFormFieldModule,
-        MatCheckboxModule,
-        MatDialogModule,
-        MatListModule,
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatSlideToggle,
         FormListComponent,
         FormFieldComponent,
         AppDateFieldComponent,
         SearchByLegalTaskComponent,
         MatButton,
-        InputData,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatIcon,
     ]
 })
 export class LegalProcedureEditDialogComponent {
     procedure: LegalProcedure;
+    newTaskValue = '';
 
     constructor(
         @Inject(MAT_DIALOG_DATA) data: LegalProcedure,
@@ -73,7 +82,12 @@ export class LegalProcedureEditDialogComponent {
         }
     }
 
+    addNewTaskFromInput(): void {
+        this.addNewTask(this.newTaskValue);
+        this.newTaskValue = '';
+    }
+
     formInvalid(...controls: NgModel[]): boolean {
-        return controls.some(ctrl => ctrl.invalid && (ctrl.dirty || ctrl.touched));
+        return controls.some(ctrl => ctrl.invalid);
     }
 }

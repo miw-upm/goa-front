@@ -4,7 +4,9 @@ import {Observable, of} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
-import {FilterInputComponent} from '@shared/ui/inputs/filter-input.component';
+import {FilterInputComponent} from '../../../../shared/ui/inputs/filters/filter-input.component';
+import {TitleComponent} from '@shared/ui/title/title.component';
+import {USERS_COLUMNS} from './users-columns.config';
 import {User} from '@features/shared/models/user.model';
 import {UserCreationUpdatingDialogComponent} from '../dialogs/user-creation-updating-dialog.component';
 import {UserFindCriteria} from '../user-find-criteria.model';
@@ -15,15 +17,17 @@ import {AuthService} from "@core/auth/auth.service";
 
 @Component({
     standalone: true,
-    imports: [FormsModule, CrudComponent, FilterInputComponent],
+    imports: [FormsModule, CrudComponent, FilterInputComponent, TitleComponent],
     templateUrl: 'users.component.html'
 })
 export class UsersComponent {
     visible: boolean = true;
     criteria: UserFindCriteria;
-    title = "Users";
+    title = 'Usuarios';
     users = of([]);
     user: Observable<any>;
+
+    columns = USERS_COLUMNS;
 
     constructor(private readonly dialog: MatDialog, private readonly userService: UserService, auth: AuthService) {
         this.visible = auth.isAdmin();
@@ -42,8 +46,11 @@ export class UsersComponent {
         this.dialog
             .open(UserCreationUpdatingDialogComponent)
             .afterClosed()
-            .subscribe(() => {
-                this.search();
+            .subscribe((mobile: string | undefined) => {
+                if (mobile) {
+                    this.criteria.mobile = mobile;
+                    this.search();
+                }
             });
     }
 
@@ -56,7 +63,12 @@ export class UsersComponent {
             .read(user.mobile)
             .subscribe(fullUser => this.dialog.open(UserCreationUpdatingDialogComponent, {data: fullUser})
                 .afterClosed()
-                .subscribe(() => this.search())
+                .subscribe((mobile: string | undefined) => {
+                    if (mobile) {
+                        this.criteria.mobile = mobile;
+                        this.search();
+                    }
+                })
             );
     }
 

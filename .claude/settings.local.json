@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__acp__Write",
+      "WebFetch(domain:prototyp.digital)",
+      "mcp__acp__Edit",
+      "mcp__webstorm__list_directory_tree",
+      "Bash(npx ng build:*)",
+      "mcp__webstorm__find_files_by_name_keyword",
+      "Bash(npm run build-prod:*)",
+      "mcp__webstorm__create_new_file",
+      "Bash(git checkout:*)",
+      "Bash(npm run test-ci:*)",
+      "mcp__webstorm__get_file_text_by_path",
+      "mcp__webstorm__search_in_files_by_text",
+      "mcp__webstorm__search_text"
+    ]
+  }
+}

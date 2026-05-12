@@ -1,11 +1,11 @@
-import {Component} from '@angular/core';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
+import {Component, ViewEncapsulation} from '@angular/core';
+import {NgOptimizedImage} from '@angular/common';
 import {RouterLink, RouterOutlet} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatMenuModule} from '@angular/material/menu';
+import {MatToolbar} from '@angular/material/toolbar';
+import {MatIcon} from '@angular/material/icon';
+import {MatButton} from '@angular/material/button';
+import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 
 import {AuthService} from "@core/auth/auth.service";
 import {FooterComponent} from '@core/layout/footer/footer.component';
@@ -16,20 +16,21 @@ import {UserCreationUpdatingDialogComponent} from "../users/dialogs/user-creatio
     standalone: true,
     providers: [],
     imports: [
-        CommonModule,
         RouterLink,
         RouterOutlet,
         NgOptimizedImage,
         FooterComponent,
-        MatToolbarModule,
-        MatIconModule,
-        MatButtonModule,
-        MatMenuModule
+        MatToolbar,
+        MatIcon,
+        MatButton,
+        MatMenu,
+        MatMenuItem,
+        MatMenuTrigger
     ],
     selector: 'app-home',
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css'],
-
+    styleUrls: ['./home.component.scss'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class HomeComponent {
     title = 'GOA';
@@ -58,6 +59,12 @@ export class HomeComponent {
 
     name() {
         return this.authService.name;
+    }
+
+    initials(): string {
+        const n = this.authService.name || '';
+        const raw = n.substring(0, 3);
+        return raw.charAt(0).toUpperCase() + raw.substring(1).toLowerCase();
     }
 
 }

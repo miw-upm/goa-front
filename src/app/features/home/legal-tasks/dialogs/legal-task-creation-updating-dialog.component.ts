@@ -8,9 +8,8 @@ import {
     MatDialogContent,
     MatDialogTitle
 } from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
+import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
 
 import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
 import {SharedLegalTaskService} from '@features/shared/services/shared-legal-task.service';
@@ -24,14 +23,12 @@ import {LegalTaskService} from '../legal-task.service';
         MatDialogTitle,
         MatDialogActions,
         MatDialogClose,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
+        MatButton,
+        MatIcon,
         FormFieldComponent,
         MatDialogContent
     ],
-    templateUrl: 'legal-task-creation-updating-dialog.component.html',
-    styleUrls: ['legal-task-dialog.component.css']
+    templateUrl: 'legal-task-creation-updating-dialog.component.html'
 })
 
 export class LegalTaskCreationUpdatingDialogComponent {
@@ -40,7 +37,7 @@ export class LegalTaskCreationUpdatingDialogComponent {
 
     constructor(@Inject(MAT_DIALOG_DATA) data: LegalTask, private readonly legalTaskService: LegalTaskService,
                 private readonly sharedLegalTaskService: SharedLegalTaskService, private readonly dialog: MatDialog) {
-        this.title = data ? 'Actualización de Tarea Legal' : 'Creación de Tarea Legal';
+        this.title = data ? 'Edición de Tarea Legal' : 'Creación de Tarea Legal';
         this.task = data || {id: undefined, title: undefined};
     }
 

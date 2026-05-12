@@ -1,13 +1,13 @@
 import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {DocumentAcceptanceComponent} from '../../../shared/document-acceptance/document-acceptance.component';
+
 import {ReadEngagementLetterService} from '../read-engagement-letter.service';
+import {DocumentAcceptanceComponent} from '../../../shared/document-acceptance/document-acceptance.component';
 
 @Component({
     standalone: true,
     selector: 'app-read-engagement-letter',
     templateUrl: './read-engagement-letter.component.html',
-    styleUrls: ['./read-engagement-letter.component.scss'],
     imports: [
         FormsModule,
         DocumentAcceptanceComponent

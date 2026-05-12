@@ -41,11 +41,22 @@
 </mat-dialog-content>
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Close</button>
-    <button
-            (click)="isCreate() ? create() : update()"
-            [disabled]="!canSubmit()"
-            color="primary"
-            mat-raised-button>
-        {{ isCreate() ? 'Create' : 'Update' }}
-    </button>
+    @if (isCreate()) {
+        <button
+                (click)="create()"
+                [disabled]="!canSubmit()"
+                color="primary"
+                mat-raised-button>
+            <mat-icon matButtonIcon>add</mat-icon>
+            Crear
+        </button>
+    } @else {
+        <button
+                (click)="update()"
+                [disabled]="!canSubmit()"
+                color="primary"
+                mat-raised-button>
+            Update
+        </button>
+    }
 </mat-dialog-actions>

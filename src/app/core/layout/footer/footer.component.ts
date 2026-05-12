@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatListModule} from '@angular/material/list';
@@ -10,7 +10,8 @@ import {environment} from '@env';
     standalone: true,
     selector: 'app-footer',
     templateUrl: './footer.component.html',
-    styleUrls: ['./footer.component.css'],
+    styleUrls: ['./footer.component.scss'],
+    encapsulation: ViewEncapsulation.None,
     imports: [MatDividerModule, MatGridListModule, MatListModule, MatIconModule]
 })
 export class FooterComponent {
@@ -19,8 +20,5 @@ export class FooterComponent {
     readonly version = `${environment.VERSION}`;
     readonly backEndUser = environment.REST_USER;
     readonly backEndEngagement = environment.REST_ENGAGEMENT;
-    readonly backEndBilling = environment.REST_BILLING;
     readonly backEndSupport = environment.REST_SUPPORT;
-    readonly backEndDocument = environment.REST_DOCUMENT;
-    readonly backEndChatbot = environment.REST_CHATBOT;
 }

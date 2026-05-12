@@ -11,9 +11,10 @@ import {
     MatDialogContent,
     MatDialogTitle
 } from '@angular/material/dialog';
-import {MatButtonModule} from '@angular/material/button';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';
+import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+import {MatFormField, MatLabel} from '@angular/material/form-field';
+import {MatOption, MatSelect} from '@angular/material/select';
 
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
@@ -33,16 +34,18 @@ import {Income} from '../models/income.model';
         MatDialogContent,
         MatDialogActions,
         MatDialogClose,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatSelectModule,
+        MatButton,
+        MatIcon,
+        MatFormField,
+        MatLabel,
+        MatSelect,
+        MatOption,
         AppDateFieldComponent,
         FormFieldComponent,
         FormSelectComponent,
     ],
     providers: [EngagementLetterService],
-    templateUrl: 'income-creation-dialog.component.html',
-    styleUrls: ['income-creation-dialog.component.css']
+    templateUrl: 'income-creation-dialog.component.html'
 })
 export class IncomeCreationDialogComponent {
     title: string;

@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {HttpService} from "@shared/ui/api/http.service";
+
 import {ENDPOINTS} from "@core/api/endpoints";
+import {HttpService} from "@shared/ui/api/http.service";
 import {SignerDocument} from "./sign-document.model";
 
 @Injectable({providedIn: 'root'})
@@ -18,7 +19,7 @@ export class SignDocumentService {
     signDocument(scope: string, urlId: string, token: string, signerDocument: SignerDocument): Observable<void> {
         return this.httpService.request()
             .success("Documento Firmado")
-            .noError()
+            .silentErrors()
             .warning()
             .patch(ENDPOINTS.engagementLetters.signerDocument(scope, urlId, token), signerDocument);
     }

@@ -4,7 +4,7 @@ import {Observable, of} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 
 import {CrudComponent} from "@shared/ui/crud/crud.component";
-import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
+import {FilterInputComponent} from "@shared/ui/inputs/filters/filter-input.component";
 import {LegalProcedureTemplate} from '../models/legal-procedure-template.model';
 import {LegalProcedureFindCriteria} from "../models/legal-procedure-find-criteria.model";
 import {LegalProcedureTemplateService} from "../legal-procedure-template.service";
@@ -12,10 +12,12 @@ import {
     LegalProcedureTemplateCreationUpdatingDialogComponent
 } from "../dialogs/legal-procedure-template-creation-updating-dialog.component";
 import {AuthService} from "@core/auth/auth.service";
+import {TitleComponent} from "@shared/ui/title/title.component";
+import {LEGAL_PROCEDURE_TEMPLATES_COLUMNS} from "./legal-procedure-templates-columns.config";
 
 @Component({
     standalone: true,
-    imports: [FormsModule, CrudComponent, FilterInputComponent],
+    imports: [FormsModule, CrudComponent, FilterInputComponent, TitleComponent],
     templateUrl: 'legal-procedure-templates.component.html'
 })
 export class LegalProcedureTemplatesComponent {
@@ -24,6 +26,7 @@ export class LegalProcedureTemplatesComponent {
     title = "Plantillas de Procedimientos Legales";
     templates: Observable<LegalProcedureTemplate[]> = of([]);
     template: Observable<LegalProcedureTemplate>;
+    columns = LEGAL_PROCEDURE_TEMPLATES_COLUMNS;
 
     constructor(private readonly dialog: MatDialog, private readonly legalProcedureTemplateService: LegalProcedureTemplateService,
                 auth: AuthService) {

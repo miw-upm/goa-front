@@ -3,21 +3,21 @@ import {FormsModule} from "@angular/forms";
 import {Observable, of} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 
-import {CrudComponent} from "@shared/ui/crud/crud.component";
 import {AccessLinkService} from "../access-link.service";
 import {AccessLink} from "@features/shared/models/access-link.model";
 import {AuthService} from "@core/auth/auth.service";
-import {ClipboardToastDialogComponent} from "@shared/ui/dialogs/clipboard-toast-dialog.component";
 import {MatSlideToggle} from "@angular/material/slide-toggle";
 import {AccessLinkFindCriteria} from "../access-link-find-criteria.model";
-import {FilterInputComponent} from "@shared/ui/inputs/filter-input.component";
-import {CancelYesDialogComponent} from "@shared/ui/dialogs/cancel-yes-dialog.component";
+import {FilterInputComponent} from "../../../../shared/ui/inputs/filters/filter-input.component";
 import {TypeToConfirmDialogComponent} from "@shared/ui/dialogs/type-to-confirm-dialog.component";
+import {TitleComponent} from "@shared/ui/title/title.component";
+import {CrudComponent} from "@shared/ui/crud/crud.component";
+import {ACCESS_LINKS_COLUMNS} from "./access-links-columns.config";
 
 @Component({
     standalone: true,
     providers: [AccessLinkService],
-    imports: [FormsModule, CrudComponent, MatSlideToggle, FilterInputComponent],
+    imports: [FormsModule, MatSlideToggle, FilterInputComponent, TitleComponent, CrudComponent],
     templateUrl: 'access-links.component.html'
 })
 export class AccessLinksComponent {
@@ -27,6 +27,7 @@ export class AccessLinksComponent {
 
     accessLinks: Observable<AccessLink[]> = of([]);
     accessLink: Observable<any>;
+    columns = ACCESS_LINKS_COLUMNS;
 
     constructor(private readonly dialog: MatDialog, private readonly accessLinkService: AccessLinkService, auth: AuthService) {
         this.visible = auth.isAdmin();
@@ -47,7 +48,7 @@ export class AccessLinksComponent {
                 data: {
                     title: 'Confirmar eliminación',
                     message: 'Este enlace ya ha sido usado. ¿Está seguro que desea eliminarlo?',
-                    expectedText:'Delete'
+                    expectedText: 'ELIMINAR'
                 }
             }).afterClosed().subscribe(result => {
                 if (result) {

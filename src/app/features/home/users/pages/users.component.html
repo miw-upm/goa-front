@@ -1,10 +1,16 @@
-<app-filter-input (enter)="search()" [(value)]="criteria.customer" title="All fields - Customers"></app-filter-input>
-<app-filter-input (enter)="search()" [(value)]="criteria.mobile" title="Mobile"></app-filter-input>
-<app-filter-input (enter)="search()" [(value)]="criteria.firstName" title="First Name"></app-filter-input>
-<app-filter-input (enter)="search()" [(value)]="criteria.familyName" title="Family Name"></app-filter-input>
+<app-title (create)="create()" [createAction]="true" subtitle="Gestión" title="Clientes"></app-title>
 
-<app-crud (create)="create()" (link)="link($event)" (read)="read($event)" (searchAll)="search()"
-          (update)="update($event)" (json)="json()"
-          [data]="users" [hiddenFields]="['id']" [item]="user" [linkAction]="true" [title]="title" [jsonAction]="true"
-          [deleteAction]=visible >
+<div class="filters-card">
+    <app-filter-input (enter)="search()" [(value)]="criteria.customer"
+                      title="Buscar por nombre, apellido, móvil..."></app-filter-input>
+    <app-filter-input (enter)="search()" [(value)]="criteria.mobile" title="Móvil"></app-filter-input>
+    <app-filter-input (enter)="search()" [(value)]="criteria.firstName" title="Nombre"></app-filter-input>
+    <app-filter-input (enter)="search()" [(value)]="criteria.familyName" title="Apellidos"></app-filter-input>
+</div>
+
+<app-crud (create)="create()" (json)="json()" (link)="link($event)" (read)="read($event)"
+          (searchAll)="search()" (update)="update($event)"
+          [columns]="columns"
+          [data]="users" [deleteAction]=visible [item]="user" [jsonAction]="true" [linkAction]="true"
+          [title]="title">
 </app-crud>

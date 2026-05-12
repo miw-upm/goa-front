@@ -1,11 +1,3 @@
-.title-container {
-  .profile-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-}
-
 .instructions {
   margin-bottom: 16px;
 
@@ -23,11 +15,11 @@
 
 .signature-pad {
   width: 100%;
-  height: 240px; // recuadro grande para firma con dedo
-  border: 2px dashed #888;
+  height: 240px;
+  border: 2px dashed var(--mat-sys-outline);
   border-radius: 8px;
-  background: #fafafa;
-  touch-action: none; // evita el scroll al firmar en móvil
+  background: var(--mat-sys-surface-container-lowest);
+  touch-action: none;
   cursor: crosshair;
   display: block;
 }
@@ -37,31 +29,12 @@
   justify-content: flex-end;
 }
 
-.btn-update {
-  min-width: 160px;
-}
-
-.signed-confirmation {
-  margin-top: 24px;
-  padding: 16px 20px;
-  border-left: 4px solid #2e7d32;
-  background: #f1f8f4;
-  border-radius: 4px;
+.company-info {
+  display: block;
   text-align: center;
 
-  .signed-message {
-    margin: 0 0 16px;
-    font-size: 1rem;
-    color: #1b4d20;
-  }
-
-  .company-info {
-    display: block;
+  p {
     text-align: center;
-
-    p {
-      text-align: center;
-      margin: 4px 0;
-    }
+    margin: 4px 0;
   }
 }

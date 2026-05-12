@@ -1,0 +1,475 @@
+@use '@angular/material' as mat;
+@use './palettes' as goa;
+
+// =============================================================================
+// TEMA CENTRALIZADO GOA - Material 3
+// =============================================================================
+// Colores de empresa:
+//   Primary:    #BA792E (dorado)
+//   Secondary:  #4A5D3A (verde oliva)
+//   Tertiary:   #6B5D4F (marrón cálido)
+//   Background: #FAF7F0 (crema claro)
+//   Text:       #1F1D1A (casi negro cálido)
+// =============================================================================
+
+// --- Variables de layout ---
+$content-max-width: 97%;
+$card-radius: 16px;
+
+// =============================================================================
+// 1. TEMA M3
+// =============================================================================
+html {
+  @include mat.theme((
+    color: (
+      primary: goa.$goa-primary,
+      tertiary: goa.$goa-tertiary,
+      theme-type: light,
+    ),
+    typography: Roboto,
+    density: -1,
+  ));
+}
+
+// =============================================================================
+// 2. ESTILOS BASE
+// =============================================================================
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.full-width {
+  width: 100%;
+}
+
+// =============================================================================
+// 3. CLASES REUTILIZABLES DE EMPRESA
+// =============================================================================
+
+// --- Avatar circular con iniciales ---
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+
+  &--primary {
+    background-color: var(--mat-sys-primary);
+    color: var(--mat-sys-on-primary);
+  }
+
+  &--secondary {
+    background-color: var(--mat-sys-secondary);
+    color: var(--mat-sys-on-secondary);
+  }
+}
+
+// --- Tarjeta item con borde (listas editables) ---
+.item-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 12px;
+  background: var(--mat-sys-surface-container-lowest);
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 1px 4px color-mix(in srgb, var(--mat-sys-shadow) 8%, transparent);
+  }
+}
+
+// --- Icon button pequeño (acciones en listas) ---
+.icon-btn-sm {
+  color: var(--mat-sys-outline);
+  --mdc-icon-button-state-layer-size: 32px;
+  --mdc-icon-button-icon-size: 18px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+}
+
+.form-list-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.form-list-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+// --- Info de persona (nombre + detalle) ---
+.person-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.person-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+}
+
+.person-detail {
+  font-size: 0.8rem;
+  color: var(--mat-sys-outline);
+}
+
+// --- Zona/sección con borde (formularios) ---
+.zone-card {
+  background: var(--mat-sys-surface-container-lowest);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: $card-radius;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-sizing: border-box;
+
+  &--column {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+
+    > mat-form-field,
+    > app-form-field mat-form-field,
+    > app-input-data mat-form-field {
+      --mdc-filled-text-field-container-color: var(--mat-sys-surface);
+    }
+  }
+}
+
+.zone-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--mat-sys-on-surface);
+  letter-spacing: 0.01em;
+}
+
+.zone-subtitle {
+  font-size: 0.8rem;
+  color: var(--mat-sys-outline);
+}
+
+.zone-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .zone-title { flex: 1; }
+
+  app-search-by-user,
+  app-search-by-legal-procedure,
+  app-search-by-legal-task {
+    flex: 1;
+    min-width: 180px;
+  }
+
+  app-form-date,
+  app-form-field,
+  app-input-data {
+    flex: 1;
+    min-width: 0;
+
+    mat-form-field {
+      width: 100%;
+      --mdc-filled-text-field-container-color: var(--mat-sys-surface);
+    }
+  }
+
+  > mat-form-field {
+    flex: 1;
+    min-width: 0;
+    --mdc-filled-text-field-container-color: var(--mat-sys-surface);
+  }
+
+  > .mat-mdc-icon-button {
+    flex-shrink: 0;
+    color: var(--mat-sys-outline);
+  }
+}
+
+// --- Chips semánticos (booleanos, estados) ---
+.bool-chip {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.6;
+
+  &--success {
+    background-color: var(--mat-sys-secondary-container);
+    color: var(--mat-sys-on-secondary-container);
+  }
+
+  &--error {
+    background-color: var(--mat-sys-error-container);
+    color: var(--mat-sys-on-error-container);
+  }
+
+  &--primary {
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+  }
+
+  &--warn {
+    background-color: var(--mat-sys-tertiary-container);
+    color: var(--mat-sys-on-tertiary-container);
+  }
+
+  &--default {
+    background-color: var(--mat-sys-surface-container-highest);
+    color: var(--mat-sys-on-surface-variant);
+  }
+}
+
+// --- Feedback de formulario (éxito, aviso, error) ---
+.submit-feedback {
+  padding: 16px 20px;
+  border-left: 4px solid;
+  border-radius: 4px;
+  text-align: center;
+
+  p { margin: 0; }
+
+  &--success {
+    border-left-color: var(--mat-sys-secondary);
+    background: var(--mat-sys-surface-container-low);
+    color: var(--mat-sys-on-surface);
+  }
+
+  &--warning {
+    border-left-color: var(--mat-sys-tertiary);
+    background: var(--mat-sys-surface-container-low);
+    color: var(--mat-sys-on-surface);
+  }
+
+  &--error {
+    border-left-color: var(--mat-sys-error);
+    background: var(--mat-sys-surface-container-low);
+    color: var(--mat-sys-error);
+  }
+}
+
+// --- Título de página ---
+.app-title {
+  padding: 24px 24px 16px;
+}
+
+.app-title__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-title__text {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--mat-sys-on-surface);
+}
+
+.app-title__subtitle {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  color: var(--mat-sys-on-surface-variant);
+  font-weight: 400;
+}
+
+.app-title__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-title__create {
+  --mdc-filled-button-container-color: var(--mat-sys-secondary);
+  --mdc-filled-button-label-text-color: var(--mat-sys-on-secondary);
+  border-radius: 12px;
+}
+
+.app-title__cancel {
+  border-radius: 12px;
+}
+
+// --- Filtros de búsqueda ---
+.filters-card {
+  width: $content-max-width;
+  margin: 0 auto 16px;
+  padding: 12px 12px 0;
+  background: var(--mat-sys-surface-container-lowest);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: $card-radius;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 8px;
+  box-sizing: border-box;
+
+  app-filter-input,
+  app-filter-date,
+  app-filter-boolean {
+    flex: 1 1 180px;
+
+    mat-form-field {
+      width: 100%;
+      --mdc-filled-text-field-container-color: var(--mat-sys-surface);
+
+      .mat-icon[matprefix] { color: var(--mat-sys-outline); }
+    }
+  }
+
+  mat-button-toggle-group {
+    align-self: center;
+    margin-bottom: 12px;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: 12px;
+    overflow: hidden;
+
+    --mat-button-toggle-label-text-size: 0.8rem;
+    --mat-button-toggle-height: 36px;
+
+    .mat-button-toggle-appearance-standard {
+      --mat-button-toggle-state-layer-color: transparent;
+      --mat-button-toggle-label-text-color: var(--mat-sys-on-surface-variant);
+      background: var(--mat-sys-surface-container-lowest);
+    }
+
+    .mat-button-toggle-checked {
+      background: var(--mat-sys-surface-container-high);
+      --mat-button-toggle-label-text-color: var(--mat-sys-on-surface);
+    }
+  }
+}
+
+// =============================================================================
+// 4. OVERRIDES DE COMPONENTES MATERIAL
+// =============================================================================
+
+// --- Botón variante semántica ---
+.mat-mdc-button-base.warn {
+  --mdc-filled-button-container-color: var(--mat-sys-error);
+  --mdc-filled-button-label-text-color: var(--mat-sys-on-error);
+}
+
+// --- Toolbar ---
+.mat-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: var(--mat-sys-surface-container-lowest) !important;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+// --- Menús ---
+.mat-mdc-menu-panel {
+  background: var(--mat-sys-surface-container-lowest) !important;
+  border-radius: 12px !important;
+
+  .mat-mdc-menu-item {
+    --mat-menu-item-label-text-color: var(--mat-sys-on-surface);
+    --mat-menu-item-label-text-weight: 500;
+    opacity: 0.75;
+    transition: opacity 0.2s, background 0.2s;
+
+    .mat-icon { color: var(--mat-sys-primary); }
+
+    &:hover {
+      opacity: 1;
+      background: var(--mat-sys-surface-container-low);
+    }
+
+    &.menu-item-primary {
+      --mat-menu-item-label-text-color: var(--mat-sys-secondary);
+      opacity: 1;
+      .mat-icon { color: var(--mat-sys-secondary); }
+    }
+
+    &.menu-item-danger {
+      --mat-menu-item-label-text-color: var(--mat-sys-error);
+      opacity: 1;
+      .mat-icon { color: var(--mat-sys-error); }
+    }
+  }
+}
+
+// --- Tablas ---
+app-crud {
+  display: block;
+  max-width: $content-max-width;
+  margin: 0 auto;
+
+  .mat-mdc-table {
+    --mat-table-background-color: var(--mat-sys-surface-container-lowest);
+    --mat-table-header-headline-color: var(--mat-sys-on-surface-variant);
+    --mat-table-row-item-outline-color: var(--mat-sys-outline-variant);
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: $card-radius;
+    overflow: hidden;
+  }
+
+  .mat-mdc-header-cell,
+  .mat-mdc-cell {
+    .mat-mdc-icon-button { color: var(--mat-sys-outline); }
+  }
+
+  .mat-mdc-header-cell {
+    color: var(--mat-sys-outline);
+    font-weight: 500;
+  }
+}
+
+app-crud {
+  .mat-mdc-header-cell,
+  .mat-mdc-cell {
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+// --- Diálogos ---
+.mat-mdc-dialog-container .mat-mdc-dialog-surface {
+  background-color: var(--mat-sys-surface-container-lowest);
+}
+
+mat-dialog-content,
+.mat-mdc-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+// --- Form fields dentro de zonas ---
+app-search mat-form-field {
+  --mdc-filled-text-field-container-color: var(--mat-sys-surface);
+}
+
+app-search .mat-icon[matPrefix] {
+  color: var(--mat-sys-outline);
+}
+
