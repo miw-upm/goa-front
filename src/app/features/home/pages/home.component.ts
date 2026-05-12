@@ -6,11 +6,13 @@ import {MatToolbar} from '@angular/material/toolbar';
 import {MatIcon} from '@angular/material/icon';
 import {MatButton} from '@angular/material/button';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
+import {MatTooltip} from '@angular/material/tooltip';
 
 import {AuthService} from "@core/auth/auth.service";
 import {FooterComponent} from '@core/layout/footer/footer.component';
 import {UserService} from "../users/user.service";
 import {UserCreationUpdatingDialogComponent} from "../users/dialogs/user-creation-updating-dialog.component";
+import {ChatbotComponent} from "../chatbot/pages/chatbot.component";
 
 @Component({
     standalone: true,
@@ -25,7 +27,8 @@ import {UserCreationUpdatingDialogComponent} from "../users/dialogs/user-creatio
         MatButton,
         MatMenu,
         MatMenuItem,
-        MatMenuTrigger
+        MatMenuTrigger,
+        MatTooltip
     ],
     selector: 'app-home',
     templateUrl: './home.component.html',
@@ -51,6 +54,15 @@ export class HomeComponent {
 
     logout(): void {
         this.authService.logout();
+    }
+
+    openChatbot(): void {
+        this.dialog.open(ChatbotComponent, {
+            disableClose: true,
+            width: '1200px',
+            maxWidth: '96vw',
+            height: '85vh'
+        });
     }
 
     isAuthenticated(): boolean {

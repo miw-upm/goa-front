@@ -69,3 +69,48 @@
   height: 18px;
   color: var(--mat-sys-on-surface-variant);
 }
+
+.chatbot-fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 112px;
+  height: 112px;
+  z-index: 1100;
+  border-radius: 50%;
+  --mdc-fab-container-color: var(--mat-sys-secondary);
+  --mat-fab-foreground-color: var(--mat-sys-on-secondary);
+  box-shadow:
+    0 14px 34px color-mix(in srgb, var(--mat-sys-shadow) 22%, transparent),
+    0 0 0 6px color-mix(in srgb, var(--mat-sys-secondary) 10%, transparent);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  mat-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 44px;
+  }
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow:
+      0 18px 42px color-mix(in srgb, var(--mat-sys-shadow) 28%, transparent),
+      0 0 0 8px color-mix(in srgb, var(--mat-sys-secondary) 14%, transparent);
+  }
+}
+
+@media (max-width: 960px) {
+  .chatbot-fab {
+    right: 16px;
+    bottom: 16px;
+    width: 84px;
+    height: 84px;
+
+    mat-icon {
+      width: 34px;
+      height: 34px;
+      font-size: 34px;
+    }
+  }
+}
