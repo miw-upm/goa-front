@@ -28,11 +28,6 @@
                 <mat-icon>download</mat-icon>
                 <span>Descargas</span>
             </button>
-
-            <button class="nav-btn" mat-button routerLink="/home/chatbot">
-                <mat-icon>smart_toy</mat-icon>
-                <span>Asistente IA</span>
-            </button>
         </nav>
     }
 
@@ -113,4 +108,14 @@
 </mat-menu>
 
 <router-outlet></router-outlet>
+@if (isAuthenticated()) {
+    <button
+            (click)="openChatbot()"
+            aria-label="Abrir asistente IA"
+            class="chatbot-fab"
+            color="primary"
+            mat-fab>
+        <mat-icon>forum</mat-icon>
+    </button>
+}
 <app-footer></app-footer>

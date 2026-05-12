@@ -158,29 +158,25 @@
 .empty-chat-card {
     width: min(100%, 760px);
     padding: 24px;
-    gap: 20px;
+    gap: 24px;
     align-items: stretch;
 }
 
-.empty-chat-card > strong {
-    display: block;
-    margin: 0;
-    font-size: 1rem;
-    color: #111827;
+.empty-chat-description {
+    gap: 16px;
+    max-width: none;
     text-align: left;
+    margin-top: 16px;
+    background: transparent;
 }
 
-.empty-chat-description {
+.empty-chat-description > span {
+    display: block;
     color: #4b5563;
     line-height: 1.4;
-    max-width: 640px;
-    padding-top: 2px;
-    text-align: left;
-    align-self: stretch;
 }
 
 .empty-chat-card .intro-scope-block {
-    margin-top: 6px;
     padding: 12px 14px;
 }
 
@@ -189,7 +185,6 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 12px;
-    margin-top: 6px;
     max-width: 620px;
     align-self: center;
 }

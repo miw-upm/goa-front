@@ -160,26 +160,26 @@
                                 @if (shouldShowIntroCard()) {
                                     <div class="empty-chat-state">
                                         <div class="empty-chat-card app-panel">
-                                            <strong>Empieza con una consulta frecuente</strong>
-
                                             <div class="intro-scope-block app-banner">
                                                 <strong>{{ scopeTitle() }}</strong>
                                                 <span>{{ scopeDescription() }}</span>
                                             </div>
 
-                                            <div class="empty-chat-description">{{ requiresConversation()
-                                                ? 'Puedes preguntar por el estado del encargo, hitos recientes o pr&oacute;ximos pasos.'
-                                                : 'Puedes hacer preguntas frecuentes sobre el asistente, el estado de un encargo o c&oacute;mo consultar pr&oacute;ximos pasos.' }}</div>
+                                            <div class="empty-chat-description app-banner">
+                                                <span>{{ requiresConversation()
+                                                    ? 'Puedes preguntar por el estado del encargo, hitos recientes o pr&oacute;ximos pasos.'
+                                                    : 'Puedes hacer preguntas frecuentes sobre el asistente, el estado de un encargo o c&oacute;mo consultar pr&oacute;ximos pasos.' }}</span>
 
-                                            <div class="suggested-questions">
-                                                <button
-                                                        *ngFor="let question of suggestedQuestions()"
-                                                        type="button"
-                                                        class="suggestion-chip"
-                                                        (click)="applySuggestedQuestion(question)"
-                                                        [disabled]="isComposerLocked() || !!deletingConversationId || !!escalatingConversationId">
-                                                    {{ question }}
-                                                </button>
+                                                <div class="suggested-questions">
+                                                    <button
+                                                            *ngFor="let question of suggestedQuestions()"
+                                                            type="button"
+                                                            class="suggestion-chip"
+                                                            (click)="applySuggestedQuestion(question)"
+                                                            [disabled]="isComposerLocked() || !!deletingConversationId || !!escalatingConversationId">
+                                                        {{ question }}
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
