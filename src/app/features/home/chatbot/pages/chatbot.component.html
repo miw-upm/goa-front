@@ -1,0 +1,281 @@
+<section [class.dialog-mode]="isDialogMode()" class="chatbot-shell">
+    <div class="chatbot-card">
+        <mat-drawer-container class="chatbot-layout" [hasBackdrop]="true">
+            <mat-drawer
+                    class="chatbot-sidebar"
+                    mode="over"
+                    position="start"
+                    [opened]="sideBarOpened"
+                    (closedStart)="closeSidebar()">
+                <div class="chatbot-sidebar-content">
+                    <div class="chatbot-sidebar-header">
+                        <button mat-icon-button type="button" aria-label="Cerrar barra lateral" (click)="closeSidebar()">
+                            <mat-icon>arrow_back</mat-icon>
+                        </button>
+                    </div>
+
+                    <div class="conversation-mode-banner">
+                        <strong>{{ conversationModeLabel() }}</strong>
+                        <span>{{ conversationModeDescription() }}</span>
+                    </div>
+
+                    <div class="intro-scope-block chatbot-sidebar-block">
+                        <strong>{{ scopeTitle() }}</strong>
+                        <span>{{ scopeDescription() }}</span>
+                    </div>
+
+                    <button
+                            mat-flat-button
+                            color="primary"
+                            type="button"
+                            class="sidebar-new-conversation-button"
+                            (click)="startNewConversation()"
+                            [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId || !hasUserMessages()">
+                        Nueva conversación
+                    </button>
+
+                    <div class="chatbot-sidebar-history">
+                        <strong class="chatbot-sidebar-history-title">{{ historyTitle() }}</strong>
+
+                        <div *ngIf="historyLoading" class="chatbot-sidebar-history-state">
+                            <mat-spinner diameter="22"></mat-spinner>
+                            <span>Cargando historial...</span>
+                        </div>
+
+                        <div *ngIf="!historyLoading && !historyItems.length" class="chatbot-sidebar-history-state">
+                            <span>{{ historyEmptyLabel() }}</span>
+                        </div>
+
+                        <div *ngIf="!historyLoading && historyError && !historyItems.length" class="chatbot-sidebar-history-state">
+                            <span>{{ historyError }}</span>
+                        </div>
+
+                        <div *ngIf="!historyLoading && historyItems.length" class="chatbot-sidebar-history-list">
+                            <div *ngFor="let item of historyItems"
+                                 class="chatbot-history-item"
+                                 [class.selected]="isSelectedConversation(item)">
+                                <button
+                                        type="button"
+                                        class="chatbot-history-item-select"
+                                        (click)="selectConversation(item)"
+                                        [disabled]="loading || initializing || closingConversation || !!deletingConversationId">
+                                    <div class="chatbot-history-item-top">
+                                        <strong>{{ item.type === 'CONTEXTUAL' ? 'Contextual' : 'General' }}</strong>
+                                        <span>{{ item.status }}</span>
+                                    </div>
+
+                                    <p>{{ previewLabel(item) }}</p>
+                                    <small>{{ item.lastMessageAt || item.createdAt }}</small>
+                                </button>
+
+                                <button
+                                        mat-icon-button
+                                        type="button"
+                                        class="chatbot-history-item-actions-trigger"
+                                        aria-label="Acciones de conversacion"
+                                        [matMenuTriggerFor]="conversationActionsMenu"
+                                        [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId">
+                                    @if (isDeletingConversation(item) || isEscalatingConversation(item)) {
+                                        <mat-spinner diameter="18"></mat-spinner>
+                                    } @else {
+                                        <mat-icon>more_vert</mat-icon>
+                                    }
+                                </button>
+
+                                <mat-menu #conversationActionsMenu="matMenu" xPosition="before">
+                                    <button
+                                            mat-menu-item
+                                            type="button"
+                                            (click)="confirmDeleteConversation(item, $event)"
+                                            [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId">
+                                        @if (isDeletingConversation(item)) {
+                                            <mat-spinner diameter="18"></mat-spinner>
+                                        } @else {
+                                            <mat-icon color="warn">delete</mat-icon>
+                                        }
+                                        <span>Eliminar</span>
+                                    </button>
+                                </mat-menu>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-drawer>
+
+            <mat-drawer-content class="chatbot-main">
+                <div class="chatbot-header">
+                    <div class="chatbot-title-wrap">
+                        <button mat-icon-button type="button" aria-label="Abrir barra lateral" (click)="toggleSidebar()">
+                            <mat-icon>segment</mat-icon>
+                        </button>
+                        <div class="chatbot-title-block">
+                            <h2>Asistente conversacional</h2>
+                        </div>
+                    </div>
+
+                    @if (isDialogMode()) {
+                        <button mat-icon-button type="button" aria-label="Cerrar" (click)="closeDialog()" [disabled]="closingConversation">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    }
+                </div>
+
+                @if (contextActiveLabel()) {
+                    <div class="context-chip">
+                        <strong>Contexto activo:</strong>
+                        <span>{{ contextActiveLabel() }}</span>
+                    </div>
+                }
+
+                @if (toasts.length) {
+                    <div class="chat-toast-overlay">
+                        <div *ngFor="let toast of toasts"
+                             class="chat-toast"
+                             [ngClass]="toast.kind">
+                            <div class="chat-toast-body">
+                                <strong>{{ toast.title }}</strong>
+                                <span>{{ toast.message }}</span>
+                            </div>
+
+                            <button
+                                    type="button"
+                                    class="chat-toast-close"
+                                    aria-label="Cerrar aviso"
+                                    (click)="closeToast(toast.id)">
+                                ×
+                            </button>
+                        </div>
+                    </div>
+                }
+
+                @if (initializing) {
+                    <div class="chat-state">
+                        <mat-spinner diameter="36"></mat-spinner>
+                        <p>Cargando contexto del caso...</p>
+                    </div>
+                } @else {
+                    <div class="conversation-stage">
+                        <div class="messages-panel">
+                            <div #messagesContainer class="messages-container" (scroll)="onMessagesScroll()">
+                                @if (shouldShowIntroCard()) {
+                                    <div class="empty-chat-state">
+                                        <div class="empty-chat-card">
+                                            <strong>Empieza con una consulta frecuente</strong>
+
+                                            <div class="intro-scope-block">
+                                                <strong>{{ scopeTitle() }}</strong>
+                                                <span>{{ scopeDescription() }}</span>
+                                            </div>
+
+                                            <p>
+                                                {{
+                                                    requiresConversation()
+                                                        ? 'Puedes preguntar por el estado del encargo, hitos recientes o próximos pasos.'
+                                                        : 'Puedes hacer preguntas frecuentes sobre el asistente, el estado de un encargo o cómo consultar próximos pasos.'
+                                                }}
+                                            </p>
+
+                                            <div class="suggested-questions">
+                                                <button
+                                                        *ngFor="let question of suggestedQuestions()"
+                                                        type="button"
+                                                        class="suggestion-chip"
+                                                        (click)="applySuggestedQuestion(question)"
+                                                        [disabled]="isComposerLocked() || !!deletingConversationId || !!escalatingConversationId">
+                                                    {{ question }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                <div *ngFor="let item of messages"
+                                     class="message"
+                                     [ngClass]="{
+                                         'user': item.sender === 'USER',
+                                         'assistant': item.sender === 'ASSISTANT',
+                                         'restricted': !!item.restricted
+                                     }">
+                                    <strong>{{ item.sender === 'USER' ? 'Tú' : 'Asistente' }}</strong>
+
+                                    <div *ngIf="item.sender === 'ASSISTANT'" class="assistant-meta-row">
+                                        @if (assistantModeLabel(item); as modeLabel) {
+                                            <div class="assistant-mode-chip">
+                                                {{ modeLabel }}
+                                            </div>
+                                        }
+
+                                        <div *ngIf="item.usedPlatformData" class="assistant-context-chip">
+                                            Respuesta apoyada en datos del caso
+                                        </div>
+                                    </div>
+
+                                    <p>{{ item.content }}</p>
+                                </div>
+
+                                <div *ngIf="loading" class="message assistant">
+                                    <strong>Asistente</strong>
+                                    <div class="assistant-meta-row">
+                                        <div class="assistant-mode-chip">Generando respuesta</div>
+                                    </div>
+                                    <p>Escribiendo...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="composer-overlay">
+                            <p *ngIf="error" class="error-message">{{ error }}</p>
+
+                            <div class="composer-box">
+                                <textarea
+                                    #composerTextarea
+                                    [(ngModel)]="message"
+                                    cdkTextareaAutosize
+                                    cdkAutosizeMinRows="1"
+                                    cdkAutosizeMaxRows="6"
+                                    class="composer-textarea"
+                                    [placeholder]="isCurrentConversationArchived() ? 'Conversación archivada. No se pueden enviar más mensajes.' : composerPlaceholder()"
+                                    [disabled]="isComposerLocked() || !!deletingConversationId || !!escalatingConversationId"
+                                    (keydown)="onKeydown($event)">
+                                </textarea>
+
+                                <div class="composer-actions">
+                                    <div class="composer-info">
+                                        <span class="composer-hint">Enter para enviar · Shift+Enter para salto</span>
+                                    </div>
+                                    <span class="chatbot-model-info">{{ aiModelLabel() }}</span>
+
+                                    <div class="composer-primary-actions">
+                                        <button
+                                                mat-stroked-button
+                                                type="button"
+                                                class="escalate-button"
+                                                (click)="confirmEscalateConversation()"
+                                                [disabled]="!canEscalateCurrentConversation() || !!deletingConversationId || !!escalatingConversationId">
+                                            @if (!!escalatingConversationId) {
+                                                <mat-spinner diameter="18"></mat-spinner>
+                                            } @else {
+                                                <mat-icon>support_agent</mat-icon>
+                                            }
+                                            <span>Escalar</span>
+                                        </button>
+
+                                        <button
+                                                mat-flat-button
+                                                color="primary"
+                                                type="button"
+                                                class="send-button"
+                                                (click)="send()"
+                                                [disabled]="!message?.trim() || isComposerLocked() || !!deletingConversationId || !!escalatingConversationId">
+                                            Enviar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </mat-drawer-content>
+        </mat-drawer-container>
+    </div>
+</section>
