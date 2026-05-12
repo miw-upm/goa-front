@@ -6,7 +6,6 @@ import {MatToolbar} from '@angular/material/toolbar';
 import {MatIcon} from '@angular/material/icon';
 import {MatButton} from '@angular/material/button';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
-import {MatTooltip} from '@angular/material/tooltip';
 
 import {AuthService} from "@core/auth/auth.service";
 import {FooterComponent} from '@core/layout/footer/footer.component';
@@ -27,8 +26,7 @@ import {ChatbotComponent} from "../chatbot/pages/chatbot.component";
         MatButton,
         MatMenu,
         MatMenuItem,
-        MatMenuTrigger,
-        MatTooltip
+        MatMenuTrigger
     ],
     selector: 'app-home',
     templateUrl: './home.component.html',
