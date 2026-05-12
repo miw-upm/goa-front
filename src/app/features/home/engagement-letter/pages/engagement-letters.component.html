@@ -20,6 +20,7 @@
 </div>
 
 <app-crud (create)="create()"
+          (assistant)="openAssistant($event)"
           (delete)="delete($event)" (link)="link($event)" (print)="print($event)" (read)="read($event)"
           (searchAll)="search()" (update)="update($event)"
           [assistantAction]="true" [columns]="columns"
