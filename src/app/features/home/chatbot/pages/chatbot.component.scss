@@ -216,9 +216,12 @@
     margin-bottom: 6px;
 }
 
-.assistant-mode-chip,
-.assistant-context-chip {
-    font-size: 0.74rem;
+.chatbot-meta-chip {
+    min-height: 26px;
+    padding: 4px 10px;
+    font-size: 0.76rem;
+    line-height: 1.35;
+    box-sizing: border-box;
 }
 
 .assistant-mode-chip mat-icon {
@@ -242,18 +245,12 @@
 }
 
 .chatbot-model-info {
-    display: inline-flex;
-    align-items: center;
-    max-width: 100%;
-    padding: 3px 9px;
-    border-radius: 999px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    color: #475569;
-    font-size: 0.78rem;
-    font-weight: 600;
-    line-height: 1.35;
+    flex: 0 1 auto;
+    flex-wrap: nowrap;
+    min-width: 0;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .message {
@@ -275,10 +272,12 @@
     border: 1px solid #ececec;
 }
 
-.message strong {
+.message-sender-label {
     display: block;
-    margin-bottom: 3px;
-    font-size: 0.82rem;
+    margin: 0 0 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.25;
     color: #374151;
 }
 
@@ -453,17 +452,13 @@
     border: 1px solid #f1d8a8;
 }
 
-.message.assistant.restricted strong {
+.message.assistant.restricted .message-sender-label {
     color: #8a5a00;
 }
 
 .conversation-mode-banner {
     max-width: calc(100% - 12px);
     word-break: break-word;
-}
-
-.assistant-context-chip {
-    margin-bottom: 8px;
 }
 
 .context-chip {
