@@ -192,16 +192,16 @@
                                          'assistant': item.sender === 'ASSISTANT',
                                          'restricted': !!item.restricted
                                      }">
-                                    <strong>{{ item.sender === 'USER' ? 'T&uacute;' : 'Asistente' }}</strong>
+                                    <strong class="message-sender-label">{{ item.sender === 'USER' ? 'T&uacute;' : 'Asistente' }}</strong>
 
                                     <div *ngIf="item.sender === 'ASSISTANT'" class="assistant-meta-row">
                                         @if (assistantModeLabel(item); as modeLabel) {
-                                            <div class="assistant-mode-chip app-pill app-pill--muted">
+                                            <div class="assistant-mode-chip chatbot-meta-chip app-pill app-pill--muted">
                                                 {{ modeLabel }}
                                             </div>
                                         }
 
-                                        <div *ngIf="item.usedPlatformData" class="assistant-context-chip app-pill app-pill--success">
+                                        <div *ngIf="item.usedPlatformData" class="assistant-context-chip chatbot-meta-chip app-pill app-pill--success">
                                             Respuesta apoyada en datos del caso
                                         </div>
                                     </div>
@@ -210,9 +210,9 @@
                                 </div>
 
                                 <div *ngIf="loading" class="message assistant">
-                                    <strong>Asistente</strong>
+                                    <strong class="message-sender-label">Asistente</strong>
                                     <div class="assistant-meta-row">
-                                        <div class="assistant-mode-chip app-pill app-pill--muted">Generando respuesta</div>
+                                        <div class="assistant-mode-chip chatbot-meta-chip app-pill app-pill--muted">Generando respuesta</div>
                                     </div>
                                     <p>Escribiendo...</p>
                                 </div>
@@ -239,7 +239,7 @@
                                     <div class="composer-info">
                                         <span class="composer-hint">Enter para enviar &middot; Shift+Enter para salto</span>
                                     </div>
-                                    <span class="chatbot-model-info">{{ aiModelLabel() }}</span>
+                                    <span class="chatbot-model-info chatbot-meta-chip app-pill app-pill--muted">{{ aiModelLabel() }}</span>
 
                                     <div class="composer-primary-actions">
                                         <button
