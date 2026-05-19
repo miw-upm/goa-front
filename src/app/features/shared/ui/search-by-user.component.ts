@@ -21,9 +21,6 @@ export class SearchByUserComponent {
     constructor(private readonly sharedUserService: SharedUserService) {
     }
 
-    userDisplayFn = (user: User): string =>
-        `${user.firstName ?? ''} ${user.familyName ?? ''} — ${user.mobile}`.trim();
-
     public onSelect(user: User): void {
         this.userChange.emit(user);
     }

@@ -16,9 +16,9 @@ export class SharedUserService {
             .get(ENDPOINTS.users.byMobile(mobile));
     }
 
-    searchUsers(attribute: string): Observable<User[]> {
+    searchUsers(customer: string): Observable<User[]> {
         return this.httpService.request()
-            .param('attribute', attribute ?? '')
+            .param('customer', customer ?? '')
             .get(ENDPOINTS.users.root);
     }
 
