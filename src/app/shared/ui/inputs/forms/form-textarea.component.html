@@ -1,0 +1,22 @@
+<mat-form-field class="full-width">
+    <mat-label>{{ label }}</mat-label>
+    <textarea
+        #ctrl="ngModel"
+        (ngModelChange)="valueChange.emit($event)"
+        [attr.name]="label"
+        [disabled]="disabled"
+        [maxlength]="maxlength"
+        [minlength]="minlength"
+        [ngModel]="value"
+        [pattern]="pattern"
+        [required]="required"
+        [rows]="rows"
+        matInput
+    ></textarea>
+    @if (icon) {
+        <mat-icon matSuffix>{{ icon }}</mat-icon>
+    }
+    @if (ctrl.invalid && (ctrl.dirty || ctrl.touched)) {
+        <mat-error>{{ errorMessage }}</mat-error>
+    }
+</mat-form-field>

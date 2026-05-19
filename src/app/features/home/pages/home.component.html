@@ -15,8 +15,8 @@
             </button>
 
             <button [matMenuTriggerFor]="engagementLettersMenu" class="nav-btn" mat-button>
-                <mat-icon>receipt</mat-icon>
-                <span>Hojas de Encargo</span>
+                <mat-icon>gavel</mat-icon>
+                <span>Documentos Legales</span>
             </button>
 
             <button [disabled]="true" [matMenuTriggerFor]="billingMenu" class="nav-btn" mat-button>
@@ -70,12 +70,16 @@
         <span>Hojas de Encargo</span>
     </button>
     <button mat-menu-item routerLink="/home/legal-procedures">
-        <mat-icon>menu</mat-icon>
+        <mat-icon>account_balance</mat-icon>
         <span>Plantilla de Procedimientos</span>
     </button>
     <button mat-menu-item routerLink="/home/legal-tasks">
-        <mat-icon>remove</mat-icon>
+        <mat-icon>task_alt</mat-icon>
         <span>Plantillas de Tareas</span>
+    </button>
+    <button mat-menu-item routerLink="/home/authorization-purpose-templates">
+        <mat-icon>fact_check</mat-icon>
+        <span>Prop&oacute;sitos de Autorizaci&oacute;n</span>
     </button>
     <button mat-menu-item routerLink="/home/administrative-authorizations">
         <mat-icon>assignment</mat-icon>

@@ -6,6 +6,7 @@ const CONSENTS_ROOT = `${environment.REST_USER}/consents`;
 const ENGAGEMENT_LETTER_ROOT = `${environment.REST_ENGAGEMENT}/engagement-letters`;
 const LEGAL_PROCEDURE_TEMPLATE_ROOT = `${environment.REST_ENGAGEMENT}/legal-procedure-templates`;
 const LEGAL_TASK_ROOT = `${environment.REST_ENGAGEMENT}/legal-tasks`;
+const AUTHORIZATION_PURPOSE_TEMPLATE_ROOT = `${environment.REST_ENGAGEMENT}/authorization-purpose-templates`;
 const EXPENSE_ROOT = `${environment.REST_BILLING}/expenses`;
 const INCOME_ROOT = `${environment.REST_BILLING}/incomes`;
 const INVOICE_ROOT = `${environment.REST_BILLING}/invoices`;
@@ -49,6 +50,11 @@ export const ENDPOINTS = {
     legalTasks: {
         root: LEGAL_TASK_ROOT,
         byId: (id: string) => `${LEGAL_TASK_ROOT}/${enc(id)}`,
+    },
+
+    authorizationPurposeTemplates: {
+        root: AUTHORIZATION_PURPOSE_TEMPLATE_ROOT,
+        byId: (id: string) => `${AUTHORIZATION_PURPOSE_TEMPLATE_ROOT}/${enc(id)}`,
     },
 
     expenses: {
