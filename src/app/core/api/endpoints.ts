@@ -78,6 +78,7 @@ export const ENDPOINTS = {
         byId: (id: string) => `${ADMINISTRATIVE_AUTHORIZATION_ROOT}/${enc(id)}`,
         pendingSigners: (id: string) => `${ADMINISTRATIVE_AUTHORIZATION_ROOT}/${enc(id)}/pending-signers`,
         view: (id: string) => `${ADMINISTRATIVE_AUTHORIZATION_ROOT}/${enc(id)}/view`,
+        signerDocument: (scope: string, urlId: string, token: string) => `${ADMINISTRATIVE_AUTHORIZATION_ROOT}/${enc(scope)}/${enc(urlId)}/${enc(token)}`,
     },
 
     customerFileDownload: {

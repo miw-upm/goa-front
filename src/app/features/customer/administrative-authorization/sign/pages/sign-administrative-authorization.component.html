@@ -1,0 +1,14 @@
+@if (authorizationPurpose) {
+    <section>
+        <strong>Prop&oacute;sito</strong>
+        <p>{{ authorizationPurpose }}</p>
+    </section>
+}
+
+<app-document-acceptance
+        (submitted)="onSubmit($event)"
+        [acceptanceEnabled]="false"
+        [downloadEnabled]="false"
+        [signatureEnabled]="true"
+        [title]="'Firma de Autorizaci&oacute;n Administrativa'">
+</app-document-acceptance>
