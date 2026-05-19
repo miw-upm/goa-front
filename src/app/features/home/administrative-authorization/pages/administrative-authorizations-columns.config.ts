@@ -5,5 +5,6 @@ export const ADMINISTRATIVE_AUTHORIZATIONS_COLUMNS: CrudColumnConfig[] = [
     {key: 'authorizedRepresentatives', label: 'REPRESENTANTES AUTORIZADOS', arrayField: 'firstName'},
     {key: 'authorizationPurpose', label: 'PROPOSITO'},
     {key: 'signatures', label: 'FIRMANTES', arrayField: 'signerFullName'},
+    {key: 'signed', label: 'ACEPTDO Y FIRMADO'},
     {key: 'lastUpdatedDate', label: 'ÚLTIMA ACTUALIZACIÓN'},
 ];

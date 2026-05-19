@@ -58,6 +58,7 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
     @Input() downloadEnabled = false;
     @Input() acceptanceEnabled = false;
     @Input() signatureEnabled = false;
+    @Input() signatureDescription = '';
     @Input() downloadSuccessMessage = 'Documento descargado correctamente.';
     @Input() title = 'Aceptación de Documento';
     @Input() showCompanyInfo = true;
