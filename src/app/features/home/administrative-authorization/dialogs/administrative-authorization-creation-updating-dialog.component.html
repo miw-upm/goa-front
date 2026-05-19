@@ -11,8 +11,8 @@
     <div class="zone-card zone-card--column">
         <div class="zone-row">
             <span class="zone-title">Clientes Autorizantes</span>
-            <app-search-by-user (userChange)="addAuthorizingCustomer($event)"
-                                title="Clientes"></app-search-by-user>
+            <app-search-by-customer (userChange)="addAuthorizingCustomer($event)"
+                                title="Clientes"></app-search-by-customer>
         </div>
         @for (customer of authorization.authorizingCustomers; track $index; let i = $index) {
             <app-form-customer
@@ -26,8 +26,8 @@
     <div class="zone-card zone-card--column">
         <div class="zone-row">
             <span class="zone-title">Representantes Autorizados</span>
-            <app-search-by-user (userChange)="addAuthorizedRepresentative($event)"
-                                title="Representantes"></app-search-by-user>
+            <app-search-by-staff (userChange)="addAuthorizedRepresentative($event)"
+                                title="Representantes"></app-search-by-staff>
         </div>
         @for (rep of authorization.authorizedRepresentatives; track $index; let i = $index) {
             <app-form-customer

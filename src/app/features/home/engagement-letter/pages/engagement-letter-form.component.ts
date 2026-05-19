@@ -13,7 +13,7 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
 
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {FormListComponent} from '@shared/ui/inputs/forms/form-list.component';
-import {SearchByUserComponent} from '@features/shared/ui/search-by-user.component';
+import {SearchByCustomerComponent} from '../../../shared/ui/search-by-customer.component';
 import {
     SearchByLegalProcedureTemplateComponent
 } from '@features/shared/ui/search-by-legal-procedure-template.component';
@@ -49,7 +49,7 @@ import {FormCustomerComponent} from "@shared/ui/inputs/forms/form-customer.compo
         MatCardContent,
         MatSlideToggle,
         TitleComponent,
-        SearchByUserComponent,
+        SearchByCustomerComponent,
         SearchByLegalProcedureTemplateComponent,
         AppDateFieldComponent,
         FormListComponent,

@@ -14,10 +14,11 @@ import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
 
 import {FormCustomerComponent} from '@shared/ui/inputs/forms/form-customer.component';
-import {SearchByUserComponent} from '@features/shared/ui/search-by-user.component';
+import {SearchByCustomerComponent} from '../../../shared/ui/search-by-customer.component';
 import {User} from '@features/shared/models/user.model';
 import {AdministrativeAuthorizationService} from '../administrative-authorization.service';
 import {AdministrativeAuthorization} from '../models/administrative-authorization.model';
+import {SearchByStaffComponent} from "@features/shared/ui/search-by-staff.component";
 
 @Component({
     standalone: true,
@@ -33,7 +34,8 @@ import {AdministrativeAuthorization} from '../models/administrative-authorizatio
         MatLabel,
         MatInput,
         FormCustomerComponent,
-        SearchByUserComponent,
+        SearchByCustomerComponent,
+        SearchByStaffComponent,
     ],
     templateUrl: 'administrative-authorization-creation-updating-dialog.component.html'
 })
