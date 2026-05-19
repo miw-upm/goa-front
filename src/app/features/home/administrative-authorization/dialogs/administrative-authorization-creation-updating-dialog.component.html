@@ -2,6 +2,8 @@
 <mat-dialog-content>
     <div class="zone-card zone-card--column">
         <span class="zone-title">Finalidad de la Autorización</span>
+        <app-search-by-authorization-purpose (purposeChange)="setAuthorizationPurpose($event)"
+                                             class="full-width"></app-search-by-authorization-purpose>
         <mat-form-field class="full-width">
             <mat-label>Finalidad</mat-label>
             <textarea [(ngModel)]="authorization.authorizationPurpose" matInput rows="3" required></textarea>

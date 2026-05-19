@@ -19,6 +19,12 @@ import {User} from '@features/shared/models/user.model';
 import {AdministrativeAuthorizationService} from '../administrative-authorization.service';
 import {AdministrativeAuthorization} from '../models/administrative-authorization.model';
 import {SearchByStaffComponent} from "@features/shared/ui/search-by-staff.component";
+import {
+    SearchByAuthorizationPurposeTemplateComponent
+} from '@features/shared/ui/search-by-authorization-purpose-template.component';
+import {
+    AuthorizationPurposeTemplate
+} from '../../authorization-purpose-templates/models/authorization-purpose-template.model';
 
 @Component({
     standalone: true,
@@ -36,6 +42,7 @@ import {SearchByStaffComponent} from "@features/shared/ui/search-by-staff.compon
         FormCustomerComponent,
         SearchByCustomerComponent,
         SearchByStaffComponent,
+        SearchByAuthorizationPurposeTemplateComponent,
     ],
     templateUrl: 'administrative-authorization-creation-updating-dialog.component.html'
 })
@@ -74,6 +81,10 @@ export class AdministrativeAuthorizationCreationUpdatingDialogComponent {
         return !this.authorization.authorizationPurpose?.trim() ||
             !this.authorization.authorizingCustomers?.length ||
             !this.authorization.authorizedRepresentatives?.length;
+    }
+
+    setAuthorizationPurpose(template: AuthorizationPurposeTemplate): void {
+        this.authorization.authorizationPurpose = template?.purpose;
     }
 
     addAuthorizingCustomer(user: User): void {
