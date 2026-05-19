@@ -9,6 +9,7 @@ const LEGAL_TASK_ROOT = `${environment.REST_ENGAGEMENT}/legal-tasks`;
 const EXPENSE_ROOT = `${environment.REST_BILLING}/expenses`;
 const INCOME_ROOT = `${environment.REST_BILLING}/incomes`;
 const INVOICE_ROOT = `${environment.REST_BILLING}/invoices`;
+const ADMINISTRATIVE_AUTHORIZATION_ROOT = `${environment.REST_ENGAGEMENT}/administrative-authorizations`;
 const CUSTOMER_FILE_DOWNLOAD_ROOT = `${environment.REST_ENGAGEMENT}/customer-file-downloads`;
 
 const enc = encodeURIComponent;
@@ -64,6 +65,13 @@ export const ENDPOINTS = {
         root: INVOICE_ROOT,
         byId: (id: string) => `${INVOICE_ROOT}/${enc(id)}`,
         breakdown: (id: string) => `${INVOICE_ROOT}/${enc(id)}/breakdown`,
+    },
+
+    administrativeAuthorizations: {
+        root: ADMINISTRATIVE_AUTHORIZATION_ROOT,
+        byId: (id: string) => `${ADMINISTRATIVE_AUTHORIZATION_ROOT}/${enc(id)}`,
+        pendingSigners: (id: string) => `${ADMINISTRATIVE_AUTHORIZATION_ROOT}/${enc(id)}/pending-signers`,
+        view: (id: string) => `${ADMINISTRATIVE_AUTHORIZATION_ROOT}/${enc(id)}/view`,
     },
 
     customerFileDownload: {

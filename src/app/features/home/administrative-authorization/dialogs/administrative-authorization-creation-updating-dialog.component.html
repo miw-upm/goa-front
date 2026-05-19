@@ -1,0 +1,53 @@
+<h4 mat-dialog-title>{{ title }}</h4>
+<mat-dialog-content>
+    <div class="zone-card zone-card--column">
+        <span class="zone-title">Finalidad de la Autorización</span>
+        <mat-form-field class="full-width">
+            <mat-label>Finalidad</mat-label>
+            <textarea [(ngModel)]="authorization.authorizationPurpose" matInput rows="3" required></textarea>
+        </mat-form-field>
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <div class="zone-row">
+            <span class="zone-title">Clientes Autorizantes</span>
+            <app-search-by-user (userChange)="addAuthorizingCustomer($event)"
+                                title="Clientes"></app-search-by-user>
+        </div>
+        @for (customer of authorization.authorizingCustomers; track $index; let i = $index) {
+            <app-form-customer
+                    (remove)="removeAuthorizingCustomer(i)"
+                    [fullName]="(customer.firstName ?? '') + ' ' + (customer.familyName ?? '')"
+                    [mobile]="customer.mobile">
+            </app-form-customer>
+        }
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <div class="zone-row">
+            <span class="zone-title">Representantes Autorizados</span>
+            <app-search-by-user (userChange)="addAuthorizedRepresentative($event)"
+                                title="Representantes"></app-search-by-user>
+        </div>
+        @for (rep of authorization.authorizedRepresentatives; track $index; let i = $index) {
+            <app-form-customer
+                    (remove)="removeAuthorizedRepresentative(i)"
+                    [fullName]="(rep.firstName ?? '') + ' ' + (rep.familyName ?? '')"
+                    [mobile]="rep.mobile">
+            </app-form-customer>
+        }
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Cancelar</button>
+    @if (isCreate()) {
+        <button (click)="create()" [disabled]="invalid()" color="primary" mat-raised-button>
+            <mat-icon matButtonIcon>add</mat-icon>
+            Crear
+        </button>
+    } @else {
+        <button (click)="update()" [disabled]="invalid()" color="primary" mat-raised-button>
+            Guardar
+        </button>
+    }
+</mat-dialog-actions>

@@ -4,7 +4,7 @@ import {Observable, of} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
-import {FilterInputComponent} from '../../../../shared/ui/inputs/filters/filter-input.component';
+import {FilterInputComponent} from '@shared/ui/inputs/filters/filter-input.component';
 import {TitleComponent} from '@shared/ui/title/title.component';
 import {USERS_COLUMNS} from './users-columns.config';
 import {User} from '@features/shared/models/user.model';

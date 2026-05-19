@@ -12,6 +12,8 @@ import {LegalProcedureTemplatesComponent} from "./legal-procedure-templates/page
 import {LegalProcedureTemplateService} from "./legal-procedure-templates/legal-procedure-template.service";
 import {EngagementLettersComponent} from "./engagement-letter/pages/engagement-letters.component";
 import {EngagementLetterService} from "./engagement-letter/engagement-letter.service";
+import {AdministrativeAuthorizationsComponent} from "./administrative-authorization/pages/administrative-authorizations.component";
+import {AdministrativeAuthorizationService} from "./administrative-authorization/administrative-authorization.service";
 import {InvoicesComponent} from "./billing/pages/invoices.component";
 import {IncomesComponent} from "./billing/pages/incomes.component";
 import {ExpensesComponent} from "./billing/pages/expenses.component";
@@ -85,6 +87,13 @@ export const routes: Routes = [
                 canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [EngagementLetterService],
+            },
+            {
+                path: 'administrative-authorizations',
+                component: AdministrativeAuthorizationsComponent,
+                canActivate: [RoleGuard],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [AdministrativeAuthorizationService],
             },
             {
                 path: 'customer-file-downloads',
