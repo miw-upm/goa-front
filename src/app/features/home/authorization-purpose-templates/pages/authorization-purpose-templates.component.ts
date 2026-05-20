@@ -8,7 +8,9 @@ import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filters/filter-input.component';
 import {TitleComponent} from '@shared/ui/title/title.component';
 import {AuthorizationPurposeTemplateService} from '../authorization-purpose-template.service';
-import {AuthorizationPurposeTemplateCreationUpdatingDialogComponent} from '../dialogs/authorization-purpose-template-creation-updating-dialog.component';
+import {
+    AuthorizationPurposeTemplateCreationUpdatingDialogComponent
+} from '../dialogs/authorization-purpose-template-creation-updating-dialog.component';
 import {AuthorizationPurposeTemplate} from '../models/authorization-purpose-template.model';
 import {AUTHORIZATION_PURPOSE_TEMPLATES_COLUMNS} from './authorization-purpose-templates-columns.config';
 

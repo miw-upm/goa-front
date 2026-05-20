@@ -1,8 +1,9 @@
-<app-title (create)="create()" [createAction]="true" subtitle="Gestión" title="Autorizaciones Administrativas"></app-title>
+<app-title (create)="create()" [createAction]="true" subtitle="Gestión"
+           title="Autorizaciones Administrativas"></app-title>
 
 <div class="filters-card">
     <app-filter-input (enter)="search()" [(value)]="criteria.client" title="Cliente"></app-filter-input>
-    <app-filter-input (enter)="search()" [(value)]="criteria.authorizationPurpose"
+    <app-filter-input (enter)="search()" [(value)]="criteria.purpose"
                       title="Finalidad"></app-filter-input>
 </div>
 

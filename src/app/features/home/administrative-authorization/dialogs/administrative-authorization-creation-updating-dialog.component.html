@@ -6,7 +6,7 @@
                                              class="full-width"></app-search-by-authorization-purpose>
         <mat-form-field class="full-width">
             <mat-label>Finalidad</mat-label>
-            <textarea [(ngModel)]="authorization.authorizationPurpose" matInput rows="3" required></textarea>
+            <textarea [(ngModel)]="authorization.purpose" matInput required rows="3"></textarea>
         </mat-form-field>
     </div>
 
@@ -14,7 +14,7 @@
         <div class="zone-row">
             <span class="zone-title">Clientes Autorizantes</span>
             <app-search-by-customer (userChange)="addAuthorizingCustomer($event)"
-                                title="Clientes"></app-search-by-customer>
+                                    title="Clientes"></app-search-by-customer>
         </div>
         @for (customer of authorization.authorizingCustomers; track $index; let i = $index) {
             <app-form-customer
@@ -29,13 +29,27 @@
         <div class="zone-row">
             <span class="zone-title">Representantes Autorizados</span>
             <app-search-by-staff (userChange)="addAuthorizedRepresentative($event)"
-                                title="Representantes"></app-search-by-staff>
+                                 title="Representantes"></app-search-by-staff>
         </div>
         @for (rep of authorization.authorizedRepresentatives; track $index; let i = $index) {
             <app-form-customer
                     (remove)="removeAuthorizedRepresentative(i)"
                     [fullName]="(rep.firstName ?? '') + ' ' + (rep.familyName ?? '')"
                     [mobile]="rep.mobile">
+            </app-form-customer>
+        }
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <div class="zone-row">
+            <span class="zone-title">Firmantes</span>
+        </div>
+        @for (signature of authorization.signatures; track $index; let i = $index) {
+            <app-form-customer
+                    (remove)="removeSignature(i)"
+                    [fullName]="signature.signerFullName"
+                    [mobile]="signature.mobile"
+                    [secure]="true">
             </app-form-customer>
         }
     </div>

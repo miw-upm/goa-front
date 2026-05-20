@@ -226,7 +226,7 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
         this.ctx.lineWidth = 2.5;
         this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'round';
-        this.ctx.strokeStyle = '#111';
+        this.ctx.strokeStyle = '#0b57d0';
     }
 
     private getPosition(event: PointerEvent): { x: number, y: number } {
@@ -240,7 +240,53 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
 
     private getSignatureDataUrl(): string | undefined {
         if (this.isEmpty || !this.canvasRef) return undefined;
-        return this.canvasRef.nativeElement.toDataURL('image/png');
+        const canvas = this.canvasRef.nativeElement;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return undefined;
+
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const bounds = this.findSignatureBounds(imageData.data, canvas.width, canvas.height);
+        if (!bounds) return undefined;
+
+        const padding = 12;
+        const left = Math.max(bounds.left - padding, 0);
+        const top = Math.max(bounds.top - padding, 0);
+        const right = Math.min(bounds.right + padding, canvas.width - 1);
+        const bottom = Math.min(bounds.bottom + padding, canvas.height - 1);
+        const width = right - left + 1;
+        const height = bottom - top + 1;
+
+        const croppedCanvas = document.createElement('canvas');
+        croppedCanvas.width = width;
+        croppedCanvas.height = height;
+        croppedCanvas.getContext('2d')?.putImageData(ctx.getImageData(left, top, width, height), 0, 0);
+
+        return croppedCanvas.toDataURL('image/png');
+    }
+
+    private findSignatureBounds(data: Uint8ClampedArray, width: number, height: number): {
+        left: number;
+        top: number;
+        right: number;
+        bottom: number;
+    } | undefined {
+        let left = width;
+        let top = height;
+        let right = -1;
+        let bottom = -1;
+
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                const alpha = data[((y * width + x) * 4) + 3];
+                if (alpha === 0) continue;
+                left = Math.min(left, x);
+                top = Math.min(top, y);
+                right = Math.max(right, x);
+                bottom = Math.max(bottom, y);
+            }
+        }
+
+        return right === -1 ? undefined : {left, top, right, bottom};
     }
 }
 

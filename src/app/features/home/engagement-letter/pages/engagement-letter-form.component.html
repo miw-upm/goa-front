@@ -37,7 +37,7 @@
                 <div class="zone-row">
                     <span class="zone-title">Cliente Principal</span>
                     <app-search-by-customer [(user)]="engagementLetter.owner"
-                                        title="Buscar cliente"></app-search-by-customer>
+                                            title="Buscar cliente"></app-search-by-customer>
                 </div>
                 @if (engagementLetter.owner) {
                     @if (engagementLetter.owner) {
@@ -54,7 +54,7 @@
                 <div class="zone-row">
                     <span class="zone-title">Resto de Clientes</span>
                     <app-search-by-customer (userChange)="addAttachment($event)"
-                                        title="Buscar cliente"></app-search-by-customer>
+                                            title="Buscar cliente"></app-search-by-customer>
                 </div>
                 @for (att of engagementLetter.attachments; track $index; let i = $index) {
                     <app-form-customer

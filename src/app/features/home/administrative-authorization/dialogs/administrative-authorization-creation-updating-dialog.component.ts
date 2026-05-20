@@ -1,7 +1,8 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {
     MAT_DIALOG_DATA,
+    MatDialog,
     MatDialogActions,
     MatDialogClose,
     MatDialogContent,
@@ -25,6 +26,7 @@ import {
 import {
     AuthorizationPurposeTemplate
 } from '../../authorization-purpose-templates/models/authorization-purpose-template.model';
+import {WarningDialogComponent} from '@shared/ui/dialogs/warning-dialog.component';
 
 @Component({
     standalone: true,
@@ -46,21 +48,31 @@ import {
     ],
     templateUrl: 'administrative-authorization-creation-updating-dialog.component.html'
 })
-export class AdministrativeAuthorizationCreationUpdatingDialogComponent {
+export class AdministrativeAuthorizationCreationUpdatingDialogComponent implements OnInit {
     authorization: AdministrativeAuthorization;
     title: string;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) data: AdministrativeAuthorization,
         private readonly service: AdministrativeAuthorizationService,
+        private readonly dialog: MatDialog,
         private readonly dialogRef: MatDialogRef<AdministrativeAuthorizationCreationUpdatingDialogComponent, string>
     ) {
         this.title = data ? 'Edición de Autorización Administrativa' : 'Creación de Autorización Administrativa';
-        this.authorization = data ? {...data,
+        this.authorization = data ? {
+            ...data,
             authorizingCustomers: [...(data.authorizingCustomers ?? [])],
             authorizedRepresentatives: [...(data.authorizedRepresentatives ?? [])],
             signatures: [...(data.signatures ?? [])],
         } : this.createEmpty();
+    }
+
+    ngOnInit(): void {
+        if (this.authorization.signatures?.length) {
+            this.dialog.open(WarningDialogComponent, {
+                data: {title: 'Warning', message: 'Existen firmas en esta Autorizacion Administrativa'}
+            });
+        }
     }
 
     isCreate(): boolean {
@@ -78,13 +90,14 @@ export class AdministrativeAuthorizationCreationUpdatingDialogComponent {
     }
 
     invalid(): boolean {
-        return !this.authorization.authorizationPurpose?.trim() ||
+        return !this.authorization.purpose?.trim() ||
             !this.authorization.authorizingCustomers?.length ||
-            !this.authorization.authorizedRepresentatives?.length;
+            !this.authorization.authorizedRepresentatives?.length ||
+            !!this.authorization.signatures?.length;
     }
 
     setAuthorizationPurpose(template: AuthorizationPurposeTemplate): void {
-        this.authorization.authorizationPurpose = template?.purpose;
+        this.authorization.purpose = template?.purpose;
     }
 
     addAuthorizingCustomer(user: User): void {
@@ -107,11 +120,18 @@ export class AdministrativeAuthorizationCreationUpdatingDialogComponent {
         this.authorization.authorizedRepresentatives.splice(index, 1);
     }
 
+    removeSignature(index: number): void {
+        this.authorization.signatures.splice(index, 1);
+        this.authorization.signatures = [
+            ...this.authorization.signatures
+        ];
+    }
+
     private createEmpty(): AdministrativeAuthorization {
         return {
             authorizingCustomers: [],
             authorizedRepresentatives: [],
-            authorizationPurpose: '',
+            purpose: '',
             signatures: [],
         };
     }

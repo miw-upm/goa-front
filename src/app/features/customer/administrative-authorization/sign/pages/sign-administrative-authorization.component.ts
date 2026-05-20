@@ -29,7 +29,7 @@ export class SignAdministrativeAuthorizationComponent implements OnInit {
         const context = this.context();
         this.service
             .readAuthorization(context.scope, context.urlId, context.token)
-            .subscribe(authorization => this.authorizationPurpose = authorization.authorizationPurpose ?? '');
+            .subscribe(authorization => this.authorizationPurpose = authorization.purpose ?? '');
     }
 
     onSubmit(payload: {

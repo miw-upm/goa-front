@@ -3,7 +3,9 @@ import {Observable} from 'rxjs';
 
 import {ENDPOINTS} from '@core/api/endpoints';
 import {HttpService} from '@shared/ui/api/http.service';
-import {AuthorizationPurposeTemplate} from '../../home/authorization-purpose-templates/models/authorization-purpose-template.model';
+import {
+    AuthorizationPurposeTemplate
+} from '../../home/authorization-purpose-templates/models/authorization-purpose-template.model';
 
 @Injectable({providedIn: 'root'})
 export class SharedAuthorizationPurposeTemplateService {

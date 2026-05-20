@@ -6,6 +6,6 @@ export interface AdministrativeAuthorization {
     lastUpdatedDate?: Date | string;
     authorizingCustomers?: User[];
     authorizedRepresentatives?: User[];
-    authorizationPurpose?: string;
+    purpose?: string;
     signatures?: AdministrativeAuthorizationSignature[];
 }

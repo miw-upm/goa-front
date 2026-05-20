@@ -2,7 +2,9 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Observable, of} from 'rxjs';
 
 import {SearchComponent} from '@shared/ui/inputs/filters/search.component';
-import {AuthorizationPurposeTemplate} from '../../home/authorization-purpose-templates/models/authorization-purpose-template.model';
+import {
+    AuthorizationPurposeTemplate
+} from '../../home/authorization-purpose-templates/models/authorization-purpose-template.model';
 import {SharedAuthorizationPurposeTemplateService} from '../services/shared-authorization-purpose-template.service';
 
 @Component({
