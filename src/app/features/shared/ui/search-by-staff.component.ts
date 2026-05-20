@@ -8,27 +8,24 @@ import {User} from "../models/user.model";
 @Component({
     standalone: true,
     imports: [SearchComponent],
-    selector: 'app-search-by-user',
-    templateUrl: './search-by-user.component.html'
+    selector: 'app-search-by-staff',
+    templateUrl: './search-by-staff.component.html'
 })
-export class SearchByUserComponent {
+export class SearchByStaffComponent {
     users: Observable<User[]> = of([]);
 
     @Input() user: User;
-    @Input() title: string = 'Search by User';
+    @Input() title: string = 'Search by Staff';
     @Output() userChange = new EventEmitter<User>();
 
     constructor(private readonly sharedUserService: SharedUserService) {
     }
-
-    userDisplayFn = (user: User): string =>
-        `${user.firstName ?? ''} ${user.familyName ?? ''} — ${user.mobile}`.trim();
 
     public onSelect(user: User): void {
         this.userChange.emit(user);
     }
 
     searchByUser(filter: string): void {
-        this.users = this.sharedUserService.searchUsers(filter);
+        this.users = this.sharedUserService.searchStaffs(filter);
     }
 }

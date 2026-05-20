@@ -1,4 +1,4 @@
 <app-search (renew)="searchByUser($event)" (selected)="onSelect($event)"
-            [(key)]="user" [displayFn]="userDisplayFn" [keys]="users" [title]="title"
+            [(key)]="user" [keyView]="['firstName', 'familyName', 'mobile']" [keys]="users" [title]="title"
             class="full-width" obligatory=false>
 </app-search>

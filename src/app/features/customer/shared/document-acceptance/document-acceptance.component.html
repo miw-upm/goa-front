@@ -26,12 +26,15 @@
                 label="Descargar documento"
             />
         </div>
-        <br>
 
         <!-- FIRMA MANUSCRITA (si flag activo) -->
         <div *ngIf="signatureEnabled"
              [class.disabled]="!isSignatureUnlocked() || completedFlag"
              class="signature-wrapper">
+            @if (signatureDescription) {
+                <p class="signature-description">La presente firma es para autorizar:
+                    <strong>{{ signatureDescription }}</strong></p>
+            }
             <p class="signature-instructions">
                 Firme dentro del recuadro habilitado al efecto, bien con el dedo sobre pantalla táctil,
                 bien con el ratón o lápiz digital.

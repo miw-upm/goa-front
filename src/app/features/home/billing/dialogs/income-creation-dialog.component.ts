@@ -87,7 +87,7 @@ export class IncomeCreationDialogComponent {
                 .map(engagement => engagement.id)
                 .filter((id): id is string => !!id)));
 
-        this.userIds = this.sharedUserService.searchUsers('')
+        this.userIds = this.sharedUserService.searchCustomers('')
             .pipe(map(users => this.buildUserIds(users)));
     }
 

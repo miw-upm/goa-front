@@ -35,7 +35,6 @@ export class SearchComponent {
     @Input() keyView: string[] = [];
     @Input() keys = of<any[]>([]);
     @Input({transform: booleanAttribute}) obligatory = false;
-    @Input() displayFn: ((item: any) => string) | null = null;
 
     @Output() keyChange = new EventEmitter<any>();
     @Output() renew = new EventEmitter<string>();

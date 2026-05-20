@@ -6,9 +6,11 @@ const CONSENTS_ROOT = `${environment.REST_USER}/consents`;
 const ENGAGEMENT_LETTER_ROOT = `${environment.REST_ENGAGEMENT}/engagement-letters`;
 const LEGAL_PROCEDURE_TEMPLATE_ROOT = `${environment.REST_ENGAGEMENT}/legal-procedure-templates`;
 const LEGAL_TASK_ROOT = `${environment.REST_ENGAGEMENT}/legal-tasks`;
+const AUTHORIZATION_PURPOSE_TEMPLATE_ROOT = `${environment.REST_ENGAGEMENT}/authorization-purpose-templates`;
 const EXPENSE_ROOT = `${environment.REST_BILLING}/expenses`;
 const INCOME_ROOT = `${environment.REST_BILLING}/incomes`;
 const INVOICE_ROOT = `${environment.REST_BILLING}/invoices`;
+const ADMINISTRATIVE_AUTHORIZATION_ROOT = `${environment.REST_ENGAGEMENT}/administrative-authorizations`;
 const CUSTOMER_FILE_DOWNLOAD_ROOT = `${environment.REST_ENGAGEMENT}/customer-file-downloads`;
 const CHATBOT_ROOT = `${environment.REST_CHATBOT}/chatbot`;
 
@@ -51,6 +53,11 @@ export const ENDPOINTS = {
         byId: (id: string) => `${LEGAL_TASK_ROOT}/${enc(id)}`,
     },
 
+    authorizationPurposeTemplates: {
+        root: AUTHORIZATION_PURPOSE_TEMPLATE_ROOT,
+        byId: (id: string) => `${AUTHORIZATION_PURPOSE_TEMPLATE_ROOT}/${enc(id)}`,
+    },
+
     expenses: {
         root: EXPENSE_ROOT,
         byId: (id: string) => `${EXPENSE_ROOT}/${enc(id)}`,
@@ -65,6 +72,14 @@ export const ENDPOINTS = {
         root: INVOICE_ROOT,
         byId: (id: string) => `${INVOICE_ROOT}/${enc(id)}`,
         breakdown: (id: string) => `${INVOICE_ROOT}/${enc(id)}/breakdown`,
+    },
+
+    administrativeAuthorizations: {
+        root: ADMINISTRATIVE_AUTHORIZATION_ROOT,
+        byId: (id: string) => `${ADMINISTRATIVE_AUTHORIZATION_ROOT}/${enc(id)}`,
+        pendingSigners: (id: string) => `${ADMINISTRATIVE_AUTHORIZATION_ROOT}/${enc(id)}/pending-signers`,
+        view: (id: string) => `${ADMINISTRATIVE_AUTHORIZATION_ROOT}/${enc(id)}/view`,
+        signerDocument: (scope: string, urlId: string, token: string) => `${ADMINISTRATIVE_AUTHORIZATION_ROOT}/${enc(scope)}/${enc(urlId)}/${enc(token)}`,
     },
 
     customerFileDownload: {
