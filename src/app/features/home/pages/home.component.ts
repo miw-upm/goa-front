@@ -11,6 +11,7 @@ import {AuthService} from "@core/auth/auth.service";
 import {FooterComponent} from '@core/layout/footer/footer.component';
 import {UserService} from "../users/user.service";
 import {UserCreationUpdatingDialogComponent} from "../users/dialogs/user-creation-updating-dialog.component";
+import {ChatbotComponent} from "../chatbot/pages/chatbot.component";
 
 @Component({
     standalone: true,
@@ -51,6 +52,15 @@ export class HomeComponent {
 
     logout(): void {
         this.authService.logout();
+    }
+
+    openChatbot(): void {
+        this.dialog.open(ChatbotComponent, {
+            disableClose: true,
+            width: '1200px',
+            maxWidth: '96vw',
+            height: '85vh'
+        });
     }
 
     isAuthenticated(): boolean {

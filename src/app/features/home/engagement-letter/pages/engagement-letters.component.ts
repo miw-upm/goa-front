@@ -10,6 +10,7 @@ import {TitleComponent} from '@shared/ui/title/title.component';
 import {CancelYesDialogComponent} from '@shared/ui/dialogs/cancel-yes-dialog.component';
 import {ClipboardToastDialogComponent} from '@shared/ui/dialogs/clipboard-toast-dialog.component';
 import {AuthService} from '@core/auth/auth.service';
+import {ChatbotComponent} from '../../chatbot/pages/chatbot.component';
 
 import {EngagementLetterService} from '../engagement-letter.service';
 import {EngagementLetterFindCriteria} from '../models/engagement-letter-find-criteria.model';
@@ -92,6 +93,20 @@ export class EngagementLettersComponent implements OnInit {
     link(engagement: EngagementLetter): void {
         this.engagementLettersService.createAccessLink(engagement)
             .subscribe(link => this.copyAndNotify(link));
+    }
+
+    openAssistant(engagement: EngagementLetter): void {
+        if (!engagement.id) {
+            return;
+        }
+
+        this.dialog.open(ChatbotComponent, {
+            data: { engagementLetterId: engagement.id },
+            width: '960px',
+            maxWidth: '96vw',
+            height: '80vh',
+            disableClose: true
+        });
     }
 
     private copyAndNotify(link: string): void {

@@ -12,6 +12,7 @@ const INCOME_ROOT = `${environment.REST_BILLING}/incomes`;
 const INVOICE_ROOT = `${environment.REST_BILLING}/invoices`;
 const ADMINISTRATIVE_AUTHORIZATION_ROOT = `${environment.REST_ENGAGEMENT}/administrative-authorizations`;
 const CUSTOMER_FILE_DOWNLOAD_ROOT = `${environment.REST_ENGAGEMENT}/customer-file-downloads`;
+const CHATBOT_ROOT = `${environment.REST_CHATBOT}/chatbot`;
 
 const enc = encodeURIComponent;
 
@@ -84,6 +85,20 @@ export const ENDPOINTS = {
     customerFileDownload: {
         root: CUSTOMER_FILE_DOWNLOAD_ROOT,
         byId: (id: string) => `${CUSTOMER_FILE_DOWNLOAD_ROOT}/${enc(id)}`,
+    },
+
+    chatbot: {
+        root: CHATBOT_ROOT,
+        conversations: () => `${CHATBOT_ROOT}/conversations`,
+        deleteConversation: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}`,
+        generalConversation: () => `${CHATBOT_ROOT}/conversations/general`,
+        contextualConversation: () => `${CHATBOT_ROOT}/conversations/contextual`,
+        closeConversation: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/close`,
+        escalateConversation: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/escalate`,
+        history: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/messages`,
+        reopenConversation: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/reopen`,
+        configurationStatus: () => `${CHATBOT_ROOT}/configuration/status`,
+        messages: () => `${CHATBOT_ROOT}/messages`,
     },
 
 } as const;
