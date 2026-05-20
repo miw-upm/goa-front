@@ -15,6 +15,7 @@ export class SignAdministrativeAuthorizationService {
 
     readAuthorization(scope: string, urlId: string, token: string): Observable<AdministrativeAuthorization> {
         return this.httpService.request()
+            .silentErrors()
             .get(ENDPOINTS.administrativeAuthorizations.signerDocument(scope, urlId, token));
     }
 
@@ -23,7 +24,6 @@ export class SignAdministrativeAuthorizationService {
         return this.httpService.request()
             .success('Autorizacion firmada')
             .silentErrors()
-            .warning()
             .patch(ENDPOINTS.administrativeAuthorizations.signerDocument(scope, urlId, token), signature);
     }
 }

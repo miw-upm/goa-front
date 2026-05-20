@@ -29,7 +29,12 @@ export class SignAdministrativeAuthorizationComponent implements OnInit {
         const context = this.context();
         this.service
             .readAuthorization(context.scope, context.urlId, context.token)
-            .subscribe(authorization => this.authorizationPurpose = authorization.purpose ?? '');
+            .subscribe({
+                next: authorization => this.authorizationPurpose = authorization.purpose ?? '',
+                error: () => {
+                    this.authorizationPurpose = 'ERROR. Enlace inválido. Por favor, solicite uno nuevo.'
+                }
+            });
     }
 
     onSubmit(payload: {
@@ -42,7 +47,7 @@ export class SignAdministrativeAuthorizationComponent implements OnInit {
             })
             .subscribe({
                 complete: () => this.acceptance.markCompleted(),
-                error: () => this.acceptance.markFailed()
+                error: () => this.acceptance.markFailed('Enlace inválido. Por favor, solicite un enlace nuevo')
             });
     }
 
