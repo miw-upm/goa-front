@@ -37,7 +37,7 @@ export class SignDocumentComponent {
             })
             .subscribe({
                 complete: () => this.acceptance.markCompleted(),
-                error: () => this.acceptance.markFailed()
+                error: () => this.acceptance.markFailed('Enlace inválido. Por favor, solicite uno nuevo.'),
             });
     }
 }

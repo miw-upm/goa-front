@@ -131,7 +131,7 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
     onDownloadClick(downloadBtn: FormSubmitComponent): void {
         this.downloadRequested.emit(this.context);
         this.documentDownloaded = true;
-        downloadBtn.markSuccess('Documento descargado correctamente.');
+        downloadBtn.markSuccess('Pulsado botón de descarga.');
     }
 
     update(): void {
