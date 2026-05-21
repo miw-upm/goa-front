@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, OnInit, Optional, ViewChild, OnDestroy, HostListener} from "@angular/core";
+import {Component, ElementRef, HostListener, Inject, OnDestroy, OnInit, Optional, ViewChild} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
@@ -7,14 +7,14 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {AuthService} from "@core/auth/auth.service";
 import {CHATBOT_SCOPE_RESTRICTED_REPLIES, CHATBOT_SCOPE_UI} from "../support/chatbot-scope-ui";
 import {
     ChatbotConfigurationStatus,
-    ChatbotConversationStatus,
     ChatbotConversationHistoryResponse,
+    ChatbotConversationStatus,
     ChatbotConversationSummary,
     ChatbotHistoryMessage,
     ChatbotMessageResponse,
@@ -70,16 +70,16 @@ export class ChatbotComponent implements OnInit, OnDestroy {
     loadingOlderMessages = false;
     hasMoreHistoryMessages = false;
     currentHistoryPage = 0;
-    private allowHistoryIncrementalLoad = false;
     selectedConversationId?: string;
+    conversationStatus: ChatbotConversationStatus = 'ACTIVE';
+    configurationStatus?: ChatbotConfigurationStatus;
+    private allowHistoryIncrementalLoad = false;
     private toastIdSequence = 0;
     private shownToastKeys = new Set<string>();
     private escalatedConversationIds = new Set<string>();
     private autoScrollTimeouts: number[] = [];
     private backdropClickSubscription?: Subscription;
     private modalCloseRequested = false;
-    conversationStatus: ChatbotConversationStatus = 'ACTIVE';
-    configurationStatus?: ChatbotConfigurationStatus;
     @ViewChild('messagesContainer') private messagesContainer?: ElementRef<HTMLDivElement>;
     @ViewChild('composerTextarea') private composerTextarea?: ElementRef<HTMLTextAreaElement>;
 
@@ -230,39 +230,6 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         }
 
         this.closeCurrentConversationForReset();
-    }
-
-    private resetConversationState(scroll: boolean): void {
-        this.messages = [];
-        this.conversationId = undefined;
-        this.selectedConversationId = undefined;
-        this.conversationStatus = 'ACTIVE';
-        this.closeSidebar();
-
-        if (scroll) {
-            this.scrollToBottom();
-        }
-    }
-
-    private closeCurrentConversationForReset(): void {
-        const conversationId = this.conversationId;
-        if (!conversationId) {
-            return;
-        }
-
-        this.closingConversation = true;
-
-        this.chatbotService.closeConversation(conversationId).subscribe({
-            next: () => {
-                this.closingConversation = false;
-                this.resetConversationState(true);
-                this.loadHistoryList();
-            },
-            error: () => {
-                this.error = 'No se pudo cerrar la conversación actual antes de crear una nueva.';
-                this.closingConversation = false;
-            }
-        });
     }
 
     selectConversation(item: ChatbotConversationSummary): void {
@@ -446,34 +413,6 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         });
     }
 
-    private escalateConversation(): void {
-        if (this.isBusy() || !this.canEscalateCurrentConversation() || !this.conversationId) {
-            return;
-        }
-
-        this.error = '';
-        this.escalatingConversationId = this.conversationId;
-
-        this.chatbotService.escalateConversation(this.conversationId).subscribe({
-            next: () => {
-                this.escalatedConversationIds.add(this.conversationId!);
-                this.conversationStatus = 'ARCHIVED';
-                this.escalatingConversationId = undefined;
-                this.message = '';
-                this.loadHistoryList();
-                this.pushToast(
-                    'success',
-                    'Conversacion escalada',
-                    'La conversacion se ha marcado para su escalado.'
-                );
-            },
-            error: () => {
-                this.error = 'No se pudo escalar la conversacion seleccionada.';
-                this.escalatingConversationId = undefined;
-            }
-        });
-    }
-
     confirmDeleteConversation(item: ChatbotConversationSummary, event?: Event): void {
         event?.stopPropagation();
 
@@ -501,6 +440,207 @@ export class ChatbotComponent implements OnInit, OnDestroy {
                     this.deleteConversation(item);
                 }
             });
+        });
+    }
+
+    isDialogMode(): boolean {
+        return !!this.dialogRef;
+    }
+
+    requiresConversation(): boolean {
+        return !!this.dialogData?.engagementLetterId;
+    }
+
+    conversationModeLabel(): string {
+        return this.authService.isCustomer() ? 'Modo cliente' : 'Modo profesional';
+    }
+
+    conversationModeDescription(): string {
+        return this.authService.isCustomer()
+            ? 'El asistente usará un lenguaje más claro y guiado.'
+            : 'El asistente usará un lenguaje más técnico y operativo.';
+    }
+
+    composerPlaceholder(): string {
+        return this.authService.isCustomer()
+            ? 'Escribe tu duda sobre el encargo'
+            : 'Escribe tu consulta operativa o técnica';
+    }
+
+    hasUserMessages(): boolean {
+        return this.messages.some(message => message.sender === 'USER');
+    }
+
+    shouldShowIntroCard(): boolean {
+        return !this.hasUserMessages() && !this.loading;
+    }
+
+    contextActiveLabel(): string | null {
+        if (!this.dialogData?.engagementLetterId) {
+            return null;
+        }
+
+        return `Hoja de encargo ${this.dialogData.engagementLetterId}`;
+    }
+
+    closeToast(toastId: number): void {
+        this.toasts = this.toasts.filter(toast => toast.id !== toastId);
+    }
+
+    suggestedQuestions(): string[] {
+        if (this.requiresConversation()) {
+            return this.authService.isCustomer()
+                ? [
+                    '¿Cuál es el estado de mi encargo?',
+                    '¿Qué pasos siguen ahora?',
+                    '¿Hay hitos recientes en mi caso?'
+                ]
+                : [
+                    'Necesito conocer el estado del encargo',
+                    '¿Qué hitos recientes tiene este caso?',
+                    '¿Cuáles son los próximos pasos visibles?'
+                ];
+        }
+
+        return this.authService.isCustomer()
+            ? [
+                '¿Qué tipo de dudas puedes resolver?',
+                '¿Cómo puedo consultar el estado de mi encargo?',
+                '¿Cómo sé cuáles son los próximos pasos?'
+            ]
+            : [
+                '¿Qué consultas frecuentes puedes resolver?',
+                '¿Cómo obtengo el estado de un encargo?',
+                '¿Cómo consultar próximos pasos de un caso?'
+            ];
+    }
+
+    applySuggestedQuestion(question: string): void {
+        if (this.isComposerLocked() || !!this.deletingConversationId || !!this.escalatingConversationId) {
+            return;
+        }
+
+        this.message = question;
+    }
+
+    onKeydown(event: KeyboardEvent): void {
+        if (this.isComposerLocked()) {
+            event.preventDefault();
+            return;
+        }
+
+        if (event.key !== 'Enter' || event.shiftKey) {
+            return;
+        }
+
+        event.preventDefault();
+        this.send();
+    }
+
+    assistantModeLabel(item: ChatbotMessageView): string | null {
+        if (item.sender !== 'ASSISTANT') {
+            return null;
+        }
+
+        switch (item.responseMode) {
+            case 'GENERAL':
+                return 'Respuesta general';
+            case 'CONTEXTUAL_PLATFORM_DATA':
+                return 'Respuesta contextual';
+            case 'CONTEXTUAL_RESTRICTED':
+                return 'Respuesta restringida';
+            default:
+                return null;
+        }
+    }
+
+    scopeTitle(): string {
+        return this.requiresConversation()
+            ? CHATBOT_SCOPE_UI.contextual.title
+            : CHATBOT_SCOPE_UI.general.title;
+    }
+
+    scopeDescription(): string {
+        return this.requiresConversation()
+            ? CHATBOT_SCOPE_UI.contextual.description
+            : CHATBOT_SCOPE_UI.general.description;
+    }
+
+    isRestrictedAssistantReply(message: string | undefined): boolean {
+        if (!message) {
+            return false;
+        }
+
+        return CHATBOT_SCOPE_RESTRICTED_REPLIES.includes(message as typeof CHATBOT_SCOPE_RESTRICTED_REPLIES[number]);
+    }
+
+    aiModelLabel(): string {
+        if (!this.configurationStatus?.model) {
+            return 'IA configurada por el sistema';
+        }
+
+        const provider = this.configurationStatus.provider || 'IA';
+        return `IA: ${provider} · ${this.configurationStatus.model}`;
+    }
+
+    private resetConversationState(scroll: boolean): void {
+        this.messages = [];
+        this.conversationId = undefined;
+        this.selectedConversationId = undefined;
+        this.conversationStatus = 'ACTIVE';
+        this.closeSidebar();
+
+        if (scroll) {
+            this.scrollToBottom();
+        }
+    }
+
+    private closeCurrentConversationForReset(): void {
+        const conversationId = this.conversationId;
+        if (!conversationId) {
+            return;
+        }
+
+        this.closingConversation = true;
+
+        this.chatbotService.closeConversation(conversationId).subscribe({
+            next: () => {
+                this.closingConversation = false;
+                this.resetConversationState(true);
+                this.loadHistoryList();
+            },
+            error: () => {
+                this.error = 'No se pudo cerrar la conversación actual antes de crear una nueva.';
+                this.closingConversation = false;
+            }
+        });
+    }
+
+    private escalateConversation(): void {
+        if (this.isBusy() || !this.canEscalateCurrentConversation() || !this.conversationId) {
+            return;
+        }
+
+        this.error = '';
+        this.escalatingConversationId = this.conversationId;
+
+        this.chatbotService.escalateConversation(this.conversationId).subscribe({
+            next: () => {
+                this.escalatedConversationIds.add(this.conversationId!);
+                this.conversationStatus = 'ARCHIVED';
+                this.escalatingConversationId = undefined;
+                this.message = '';
+                this.loadHistoryList();
+                this.pushToast(
+                    'success',
+                    'Conversacion escalada',
+                    'La conversacion se ha marcado para su escalado.'
+                );
+            },
+            error: () => {
+                this.error = 'No se pudo escalar la conversacion seleccionada.';
+                this.escalatingConversationId = undefined;
+            }
         });
     }
 
@@ -569,50 +709,6 @@ export class ChatbotComponent implements OnInit, OnDestroy {
             sourcesSummary: [],
             responseMode: undefined
         };
-    }
-
-    isDialogMode(): boolean {
-        return !!this.dialogRef;
-    }
-
-    requiresConversation(): boolean {
-        return !!this.dialogData?.engagementLetterId;
-    }
-
-    conversationModeLabel(): string {
-        return this.authService.isCustomer() ? 'Modo cliente' : 'Modo profesional';
-    }
-
-    conversationModeDescription(): string {
-        return this.authService.isCustomer()
-            ? 'El asistente usará un lenguaje más claro y guiado.'
-            : 'El asistente usará un lenguaje más técnico y operativo.';
-    }
-
-    composerPlaceholder(): string {
-        return this.authService.isCustomer()
-            ? 'Escribe tu duda sobre el encargo'
-            : 'Escribe tu consulta operativa o técnica';
-    }
-
-    hasUserMessages(): boolean {
-        return this.messages.some(message => message.sender === 'USER');
-    }
-
-    shouldShowIntroCard(): boolean {
-        return !this.hasUserMessages() && !this.loading;
-    }
-
-    contextActiveLabel(): string | null {
-        if (!this.dialogData?.engagementLetterId) {
-            return null;
-        }
-
-        return `Hoja de encargo ${this.dialogData.engagementLetterId}`;
-    }
-
-    closeToast(toastId: number): void {
-        this.toasts = this.toasts.filter(toast => toast.id !== toastId);
     }
 
     private closeFromModalInteraction(): void {
@@ -755,93 +851,6 @@ export class ChatbotComponent implements OnInit, OnDestroy {
         }
     }
 
-    suggestedQuestions(): string[] {
-        if (this.requiresConversation()) {
-            return this.authService.isCustomer()
-                ? [
-                    '¿Cuál es el estado de mi encargo?',
-                    '¿Qué pasos siguen ahora?',
-                    '¿Hay hitos recientes en mi caso?'
-                ]
-                : [
-                    'Necesito conocer el estado del encargo',
-                    '¿Qué hitos recientes tiene este caso?',
-                    '¿Cuáles son los próximos pasos visibles?'
-                ];
-        }
-
-        return this.authService.isCustomer()
-            ? [
-                '¿Qué tipo de dudas puedes resolver?',
-                '¿Cómo puedo consultar el estado de mi encargo?',
-                '¿Cómo sé cuáles son los próximos pasos?'
-            ]
-            : [
-                '¿Qué consultas frecuentes puedes resolver?',
-                '¿Cómo obtengo el estado de un encargo?',
-                '¿Cómo consultar próximos pasos de un caso?'
-            ];
-    }
-
-    applySuggestedQuestion(question: string): void {
-        if (this.isComposerLocked() || !!this.deletingConversationId || !!this.escalatingConversationId) {
-            return;
-        }
-
-        this.message = question;
-    }
-
-    onKeydown(event: KeyboardEvent): void {
-        if (this.isComposerLocked()) {
-            event.preventDefault();
-            return;
-        }
-
-        if (event.key !== 'Enter' || event.shiftKey) {
-            return;
-        }
-
-        event.preventDefault();
-        this.send();
-    }
-
-    assistantModeLabel(item: ChatbotMessageView): string | null {
-        if (item.sender !== 'ASSISTANT') {
-            return null;
-        }
-
-        switch (item.responseMode) {
-            case 'GENERAL':
-                return 'Respuesta general';
-            case 'CONTEXTUAL_PLATFORM_DATA':
-                return 'Respuesta contextual';
-            case 'CONTEXTUAL_RESTRICTED':
-                return 'Respuesta restringida';
-            default:
-                return null;
-        }
-    }
-
-    scopeTitle(): string {
-        return this.requiresConversation()
-            ? CHATBOT_SCOPE_UI.contextual.title
-            : CHATBOT_SCOPE_UI.general.title;
-    }
-
-    scopeDescription(): string {
-        return this.requiresConversation()
-            ? CHATBOT_SCOPE_UI.contextual.description
-            : CHATBOT_SCOPE_UI.general.description;
-    }
-
-    isRestrictedAssistantReply(message: string | undefined): boolean {
-        if (!message) {
-            return false;
-        }
-
-        return CHATBOT_SCOPE_RESTRICTED_REPLIES.includes(message as typeof CHATBOT_SCOPE_RESTRICTED_REPLIES[number]);
-    }
-
     private mapAssistantMessage(response: ChatbotMessageResponse): ChatbotMessageView {
         return {
             sender: 'ASSISTANT',
@@ -937,15 +946,6 @@ export class ChatbotComponent implements OnInit, OnDestroy {
             next: status => this.configurationStatus = status,
             error: () => this.configurationStatus = undefined
         });
-    }
-
-    aiModelLabel(): string {
-        if (!this.configurationStatus?.model) {
-            return 'IA configurada por el sistema';
-        }
-
-        const provider = this.configurationStatus.provider || 'IA';
-        return `IA: ${provider} · ${this.configurationStatus.model}`;
     }
 
 }

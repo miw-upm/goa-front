@@ -101,7 +101,7 @@ export class EngagementLettersComponent implements OnInit {
         }
 
         this.dialog.open(ChatbotComponent, {
-            data: { engagementLetterId: engagement.id },
+            data: {engagementLetterId: engagement.id},
             width: '960px',
             maxWidth: '96vw',
             height: '80vh',

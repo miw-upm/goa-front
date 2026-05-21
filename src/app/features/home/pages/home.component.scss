@@ -80,9 +80,8 @@
   border-radius: 50%;
   --mdc-fab-container-color: var(--mat-sys-secondary);
   --mat-fab-foreground-color: var(--mat-sys-on-secondary);
-  box-shadow:
-    0 14px 34px color-mix(in srgb, var(--mat-sys-shadow) 22%, transparent),
-    0 0 0 6px color-mix(in srgb, var(--mat-sys-secondary) 10%, transparent);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--mat-sys-shadow) 22%, transparent),
+  0 0 0 6px color-mix(in srgb, var(--mat-sys-secondary) 10%, transparent);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   mat-icon {
@@ -94,9 +93,8 @@
   &:hover,
   &:focus-visible {
     transform: translateY(-3px) scale(1.03);
-    box-shadow:
-      0 18px 42px color-mix(in srgb, var(--mat-sys-shadow) 28%, transparent),
-      0 0 0 8px color-mix(in srgb, var(--mat-sys-secondary) 14%, transparent);
+    box-shadow: 0 18px 42px color-mix(in srgb, var(--mat-sys-shadow) 28%, transparent),
+    0 0 0 8px color-mix(in srgb, var(--mat-sys-secondary) 14%, transparent);
   }
 }
 

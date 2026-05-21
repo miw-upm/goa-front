@@ -1,15 +1,16 @@
 <section [class.dialog-mode]="isDialogMode()" class="chatbot-shell">
     <div class="chatbot-card app-panel">
-        <mat-drawer-container class="chatbot-layout" [hasBackdrop]="true">
+        <mat-drawer-container [hasBackdrop]="true" class="chatbot-layout">
             <mat-drawer
+                    (closedStart)="closeSidebar()"
+                    [opened]="sideBarOpened"
                     class="chatbot-sidebar"
                     mode="over"
-                    position="start"
-                    [opened]="sideBarOpened"
-                    (closedStart)="closeSidebar()">
+                    position="start">
                 <div class="chatbot-sidebar-content">
                     <div class="chatbot-sidebar-header">
-                        <button mat-icon-button type="button" aria-label="Cerrar barra lateral" (click)="closeSidebar()">
+                        <button (click)="closeSidebar()" aria-label="Cerrar barra lateral" mat-icon-button
+                                type="button">
                             <mat-icon>arrow_back</mat-icon>
                         </button>
                     </div>
@@ -25,12 +26,12 @@
                     </div>
 
                     <button
-                            mat-flat-button
-                            color="primary"
-                            type="button"
-                            class="sidebar-new-conversation-button"
                             (click)="startNewConversation()"
-                            [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId || !hasUserMessages()">
+                            [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId || !hasUserMessages()"
+                            class="sidebar-new-conversation-button"
+                            color="primary"
+                            mat-flat-button
+                            type="button">
                         Nueva conversaci&oacute;n
                     </button>
 
@@ -46,19 +47,20 @@
                             <span>{{ historyEmptyLabel() }}</span>
                         </div>
 
-                        <div *ngIf="!historyLoading && historyError && !historyItems.length" class="chatbot-sidebar-history-state">
+                        <div *ngIf="!historyLoading && historyError && !historyItems.length"
+                             class="chatbot-sidebar-history-state">
                             <span>{{ historyError }}</span>
                         </div>
 
                         <div *ngIf="!historyLoading && historyItems.length" class="chatbot-sidebar-history-list">
                             <div *ngFor="let item of historyItems"
-                                 class="chatbot-history-item app-panel"
-                                 [class.selected]="isSelectedConversation(item)">
+                                 [class.selected]="isSelectedConversation(item)"
+                                 class="chatbot-history-item app-panel">
                                 <button
-                                        type="button"
-                                        class="chatbot-history-item-select"
                                         (click)="selectConversation(item)"
-                                        [disabled]="loading || initializing || closingConversation || !!deletingConversationId">
+                                        [disabled]="loading || initializing || closingConversation || !!deletingConversationId"
+                                        class="chatbot-history-item-select"
+                                        type="button">
                                     <div class="chatbot-history-item-top">
                                         <strong>{{ item.type === 'CONTEXTUAL' ? 'Contextual' : 'General' }}</strong>
                                         <span>{{ item.status }}</span>
@@ -69,12 +71,12 @@
                                 </button>
 
                                 <button
-                                        mat-icon-button
-                                        type="button"
-                                        class="chatbot-history-item-actions-trigger"
-                                        aria-label="Acciones de conversaci&oacute;n"
+                                        [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId"
                                         [matMenuTriggerFor]="conversationActionsMenu"
-                                        [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId">
+                                        aria-label="Acciones de conversaci&oacute;n"
+                                        class="chatbot-history-item-actions-trigger"
+                                        mat-icon-button
+                                        type="button">
                                     @if (isDeletingConversation(item) || isEscalatingConversation(item)) {
                                         <mat-spinner diameter="18"></mat-spinner>
                                     } @else {
@@ -84,10 +86,10 @@
 
                                 <mat-menu #conversationActionsMenu="matMenu" xPosition="before">
                                     <button
-                                            mat-menu-item
-                                            type="button"
                                             (click)="confirmDeleteConversation(item, $event)"
-                                            [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId">
+                                            [disabled]="loading || initializing || closingConversation || !!deletingConversationId || !!escalatingConversationId"
+                                            mat-menu-item
+                                            type="button">
                                         @if (isDeletingConversation(item)) {
                                             <mat-spinner diameter="18"></mat-spinner>
                                         } @else {
@@ -105,7 +107,8 @@
             <mat-drawer-content class="chatbot-main">
                 <div class="chatbot-header">
                     <div class="chatbot-title-wrap">
-                        <button mat-icon-button type="button" aria-label="Abrir barra lateral" (click)="toggleSidebar()">
+                        <button (click)="toggleSidebar()" aria-label="Abrir barra lateral" mat-icon-button
+                                type="button">
                             <mat-icon>segment</mat-icon>
                         </button>
                         <div class="chatbot-title-block">
@@ -114,7 +117,8 @@
                     </div>
 
                     @if (isDialogMode()) {
-                        <button mat-icon-button type="button" aria-label="Cerrar" (click)="closeDialog()" [disabled]="closingConversation">
+                        <button (click)="closeDialog()" [disabled]="closingConversation" aria-label="Cerrar" mat-icon-button
+                                type="button">
                             <mat-icon>close</mat-icon>
                         </button>
                     }
@@ -137,18 +141,18 @@
                         @if (toasts.length) {
                             <div class="chat-toast-overlay">
                                 <div *ngFor="let toast of toasts"
-                                     class="chat-toast app-toast"
-                                     [ngClass]="'app-toast--' + toast.kind">
+                                     [ngClass]="'app-toast--' + toast.kind"
+                                     class="chat-toast app-toast">
                                     <div class="chat-toast-body app-toast__body">
                                         <strong>{{ toast.title }}</strong>
                                         <span>{{ toast.message }}</span>
                                     </div>
 
                                     <button
-                                            type="button"
-                                            class="chat-toast-close app-toast__close"
+                                            (click)="closeToast(toast.id)"
                                             aria-label="Cerrar aviso"
-                                            (click)="closeToast(toast.id)">
+                                            class="chat-toast-close app-toast__close"
+                                            type="button">
                                         &times;
                                     </button>
                                 </div>
@@ -156,7 +160,7 @@
                         }
 
                         <div class="messages-panel app-panel app-panel--soft">
-                            <div #messagesContainer class="messages-container" (scroll)="onMessagesScroll()">
+                            <div #messagesContainer (scroll)="onMessagesScroll()" class="messages-container">
                                 @if (shouldShowIntroCard()) {
                                     <div class="empty-chat-state">
                                         <div class="empty-chat-card app-panel">
@@ -166,17 +170,19 @@
                                             </div>
 
                                             <div class="empty-chat-description app-banner">
-                                                <span>{{ requiresConversation()
-                                                    ? 'Puedes preguntar por el estado del encargo, hitos recientes o pr&oacute;ximos pasos.'
-                                                    : 'Puedes hacer preguntas frecuentes sobre el asistente, el estado de un encargo o c&oacute;mo consultar pr&oacute;ximos pasos.' }}</span>
+                                                <span>{{
+                                                        requiresConversation()
+                                                            ? 'Puedes preguntar por el estado del encargo, hitos recientes o pr&oacute;ximos pasos.'
+                                                            : 'Puedes hacer preguntas frecuentes sobre el asistente, el estado de un encargo o c&oacute;mo consultar pr&oacute;ximos pasos.'
+                                                    }}</span>
 
                                                 <div class="suggested-questions">
                                                     <button
-                                                            *ngFor="let question of suggestedQuestions()"
-                                                            type="button"
-                                                            class="suggestion-chip"
                                                             (click)="applySuggestedQuestion(question)"
-                                                            [disabled]="isComposerLocked() || !!deletingConversationId || !!escalatingConversationId">
+                                                            *ngFor="let question of suggestedQuestions()"
+                                                            [disabled]="isComposerLocked() || !!deletingConversationId || !!escalatingConversationId"
+                                                            class="suggestion-chip"
+                                                            type="button">
                                                         {{ question }}
                                                     </button>
                                                 </div>
@@ -186,12 +192,12 @@
                                 }
 
                                 <div *ngFor="let item of messages"
-                                     class="message"
                                      [ngClass]="{
                                          'user': item.sender === 'USER',
                                          'assistant': item.sender === 'ASSISTANT',
                                          'restricted': !!item.restricted
-                                     }">
+                                     }"
+                                     class="message">
                                     <strong class="message-sender-label">{{ item.sender === 'USER' ? 'T&uacute;' : 'Asistente' }}</strong>
 
                                     <div *ngIf="item.sender === 'ASSISTANT'" class="assistant-meta-row">
@@ -201,7 +207,8 @@
                                             </div>
                                         }
 
-                                        <div *ngIf="item.usedPlatformData" class="assistant-context-chip chatbot-meta-chip app-pill app-pill--success">
+                                        <div *ngIf="item.usedPlatformData"
+                                             class="assistant-context-chip chatbot-meta-chip app-pill app-pill--success">
                                             Respuesta apoyada en datos del caso
                                         </div>
                                     </div>
@@ -212,7 +219,9 @@
                                 <div *ngIf="loading" class="message assistant">
                                     <strong class="message-sender-label">Asistente</strong>
                                     <div class="assistant-meta-row">
-                                        <div class="assistant-mode-chip chatbot-meta-chip app-pill app-pill--muted">Generando respuesta</div>
+                                        <div class="assistant-mode-chip chatbot-meta-chip app-pill app-pill--muted">
+                                            Generando respuesta
+                                        </div>
                                     </div>
                                     <p>Escribiendo...</p>
                                 </div>
@@ -225,14 +234,14 @@
                             <div class="composer-box app-panel app-panel--glass">
                                 <textarea
                                     #composerTextarea
+                                    (keydown)="onKeydown($event)"
                                     [(ngModel)]="message"
-                                    cdkTextareaAutosize
-                                    cdkAutosizeMinRows="1"
-                                    cdkAutosizeMaxRows="6"
-                                    class="composer-textarea"
-                                    [placeholder]="isCurrentConversationArchived() ? 'Conversaci&oacute;n archivada. No se pueden enviar m&aacute;s mensajes.' : composerPlaceholder()"
                                     [disabled]="isComposerLocked() || !!deletingConversationId || !!escalatingConversationId"
-                                    (keydown)="onKeydown($event)">
+                                    [placeholder]="isCurrentConversationArchived() ? 'Conversaci&oacute;n archivada. No se pueden enviar m&aacute;s mensajes.' : composerPlaceholder()"
+                                    cdkAutosizeMaxRows="6"
+                                    cdkAutosizeMinRows="1"
+                                    cdkTextareaAutosize
+                                    class="composer-textarea">
                                 </textarea>
 
                                 <div class="composer-actions">
@@ -243,11 +252,11 @@
 
                                     <div class="composer-primary-actions">
                                         <button
-                                                mat-stroked-button
-                                                type="button"
-                                                class="escalate-button"
                                                 (click)="confirmEscalateConversation()"
-                                                [disabled]="!canEscalateCurrentConversation() || !!deletingConversationId || !!escalatingConversationId">
+                                                [disabled]="!canEscalateCurrentConversation() || !!deletingConversationId || !!escalatingConversationId"
+                                                class="escalate-button"
+                                                mat-stroked-button
+                                                type="button">
                                             @if (!!escalatingConversationId) {
                                                 <mat-spinner diameter="18"></mat-spinner>
                                             } @else {
@@ -257,12 +266,12 @@
                                         </button>
 
                                         <button
-                                                mat-flat-button
-                                                color="primary"
-                                                type="button"
-                                                class="send-button"
                                                 (click)="send()"
-                                                [disabled]="!message?.trim() || isComposerLocked() || !!deletingConversationId || !!escalatingConversationId">
+                                                [disabled]="!message?.trim() || isComposerLocked() || !!deletingConversationId || !!escalatingConversationId"
+                                                class="send-button"
+                                                color="primary"
+                                                mat-flat-button
+                                                type="button">
                                             <mat-icon>send</mat-icon>
                                             <span>Enviar</span>
                                         </button>

@@ -21,13 +21,13 @@ $card-radius: 16px;
 // =============================================================================
 html {
   @include mat.theme((
-    color: (
-      primary: goa.$goa-primary,
-      tertiary: goa.$goa-tertiary,
-      theme-type: light,
-    ),
-    typography: Roboto,
-    density: -1,
+          color: (
+                  primary: goa.$goa-primary,
+                  tertiary: goa.$goa-tertiary,
+                  theme-type: light,
+          ),
+          typography: Roboto,
+          density: -1,
   ));
 }
 
@@ -178,7 +178,9 @@ body {
   align-items: center;
   gap: 12px;
 
-  .zone-title { flex: 1; }
+  .zone-title {
+    flex: 1;
+  }
 
   app-search-by-customer,
   app-search-by-legal-procedure,
@@ -378,7 +380,9 @@ body {
   border-radius: 4px;
   text-align: center;
 
-  p { margin: 0; }
+  p {
+    margin: 0;
+  }
 
   &--success {
     border-left-color: var(--mat-sys-secondary);
@@ -464,7 +468,9 @@ body {
       width: 100%;
       --mdc-filled-text-field-container-color: var(--mat-sys-surface);
 
-      .mat-icon[matprefix] { color: var(--mat-sys-outline); }
+      .mat-icon[matprefix] {
+        color: var(--mat-sys-outline);
+      }
     }
   }
 
@@ -522,7 +528,9 @@ body {
     opacity: 0.75;
     transition: opacity 0.2s, background 0.2s;
 
-    .mat-icon { color: var(--mat-sys-primary); }
+    .mat-icon {
+      color: var(--mat-sys-primary);
+    }
 
     &:hover {
       opacity: 1;
@@ -532,13 +540,19 @@ body {
     &.menu-item-primary {
       --mat-menu-item-label-text-color: var(--mat-sys-secondary);
       opacity: 1;
-      .mat-icon { color: var(--mat-sys-secondary); }
+
+      .mat-icon {
+        color: var(--mat-sys-secondary);
+      }
     }
 
     &.menu-item-danger {
       --mat-menu-item-label-text-color: var(--mat-sys-error);
       opacity: 1;
-      .mat-icon { color: var(--mat-sys-error); }
+
+      .mat-icon {
+        color: var(--mat-sys-error);
+      }
     }
   }
 }
@@ -560,7 +574,9 @@ app-crud {
 
   .mat-mdc-header-cell,
   .mat-mdc-cell {
-    .mat-mdc-icon-button { color: var(--mat-sys-outline); }
+    .mat-mdc-icon-button {
+      color: var(--mat-sys-outline);
+    }
   }
 
   .mat-mdc-header-cell {
