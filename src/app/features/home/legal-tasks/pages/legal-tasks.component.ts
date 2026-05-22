@@ -3,7 +3,7 @@ import {FormsModule} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {Observable, of} from 'rxjs';
 
-import {FilterInputComponent} from '../../../../shared/ui/inputs/filters/filter-input.component';
+import {FilterInputComponent} from '@shared/ui/inputs/filters/filter-input.component';
 import {LegalTask} from '@features/shared/models/legal-task.model';
 import {LegalTaskCreationUpdatingDialogComponent} from '../dialogs/legal-task-creation-updating-dialog.component';
 import {LegalTaskService} from '../legal-task.service';

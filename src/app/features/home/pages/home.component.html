@@ -19,7 +19,7 @@
                 <span>Documentos Legales</span>
             </button>
 
-            <button [disabled]="true" [matMenuTriggerFor]="billingMenu" class="nav-btn" mat-button>
+            <button [matMenuTriggerFor]="billingMenu" class="nav-btn" mat-button>
                 <mat-icon>request_quote</mat-icon>
                 <span>Facturación</span>
             </button>
@@ -97,9 +97,9 @@
         <mat-icon>trending_up</mat-icon>
         <span>Ingresos</span>
     </button>
-    <button mat-menu-item routerLink="/home/expenses">
-        <mat-icon>trending_down</mat-icon>
-        <span>Gastos</span>
+    <button mat-menu-item routerLink="/home/payments">
+        <mat-icon>payments</mat-icon>
+        <span>Pagos</span>
     </button>
 </mat-menu>
 

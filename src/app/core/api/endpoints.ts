@@ -10,6 +10,7 @@ const AUTHORIZATION_PURPOSE_TEMPLATE_ROOT = `${environment.REST_ENGAGEMENT}/auth
 const EXPENSE_ROOT = `${environment.REST_BILLING}/expenses`;
 const INCOME_ROOT = `${environment.REST_BILLING}/incomes`;
 const INVOICE_ROOT = `${environment.REST_BILLING}/invoices`;
+const PAYMENT_ROOT = `${environment.REST_BILLING}/payments`;
 const ADMINISTRATIVE_AUTHORIZATION_ROOT = `${environment.REST_ENGAGEMENT}/administrative-authorizations`;
 const CUSTOMER_FILE_DOWNLOAD_ROOT = `${environment.REST_ENGAGEMENT}/customer-file-downloads`;
 const CHATBOT_ROOT = `${environment.REST_CHATBOT}/chatbot`;
@@ -72,6 +73,11 @@ export const ENDPOINTS = {
         root: INVOICE_ROOT,
         byId: (id: string) => `${INVOICE_ROOT}/${enc(id)}`,
         breakdown: (id: string) => `${INVOICE_ROOT}/${enc(id)}/breakdown`,
+    },
+
+    payments: {
+        root: PAYMENT_ROOT,
+        byId: (id: string) => `${PAYMENT_ROOT}/${enc(id)}`,
     },
 
     administrativeAuthorizations: {
