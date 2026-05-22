@@ -1,15 +1,20 @@
 <mat-form-field>
+    <mat-icon matPrefix>search</mat-icon>
     <mat-label>{{ title }}</mat-label>
-    <input (ngModelChange)="onDateChange()" [(ngModel)]="date" [matDatepicker]="pickerFrom" matInput>
+    <input (keyup.enter)="enter.emit()"
+           (ngModelChange)="onDateChange($event)"
+           [(ngModel)]="date"
+           [matDatepicker]="pickerFrom"
+           matInput>
     <button
             (click)="clearDate()"
             [disabled]="!date"
-            aria-label="Limpiar fecha"
+            aria-label="Clear"
             mat-icon-button
             matSuffix
             type="button"
     >
-        <mat-icon>delete</mat-icon>
+        <mat-icon>close</mat-icon>
     </button>
     <mat-datepicker-toggle [for]="pickerFrom" matSuffix></mat-datepicker-toggle>
     <mat-datepicker #pickerFrom></mat-datepicker>

@@ -1,8 +1,8 @@
-<app-title (create)="create()" [createAction]="true" subtitle="Gestion" title="Pagos"></app-title>
+<app-title (create)="create()" [createAction]="true" subtitle="Gestion" title="Ingresos"></app-title>
 
 <div class="filters-card">
     <app-filter-input (enter)="search()" [(value)]="criteria.client" title="Cliente"></app-filter-input>
-    <app-filter-date [(date)]="criteria.fromDate" title="Desde"></app-filter-date>
+    <app-filter-date (enter)="search()" [(date)]="criteria.fromDate" title="Desde"></app-filter-date>
 </div>
 
 <app-crud
