@@ -56,4 +56,8 @@ export class SearchComponent {
         this.selected.emit(value);
         this.inputValue = '';
     }
+
+    resolve(value: any, path: string): any {
+        return path.split('.').reduce((obj, key) => obj?.[key], value);
+    }
 }

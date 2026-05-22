@@ -1,0 +1,5 @@
+<app-search (renew)="searchByClient($event)" (selected)="onSelect($event)"
+            [(key)]="engagementLetter" [keyView]="['owner.firstName', 'owner.familyName']"
+            [keys]="engagementLetters" [title]="title"
+            class="full-width" obligatory=false>
+</app-search>

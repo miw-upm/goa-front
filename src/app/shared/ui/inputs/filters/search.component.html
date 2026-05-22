@@ -19,7 +19,7 @@
                         {{ option }}
                     } @else {
                         @for (key of keyView; track $index; let last = $last) {
-                            {{ option[key] }}@if (!last) {
+                            {{ resolve(option, key) }}@if (!last) {
                                 ,
                             }
                         }

@@ -1,6 +1,6 @@
 import {Component, Inject, Optional} from '@angular/core';
 import {FormsModule, NgModel} from '@angular/forms';
-import {MatButton} from '@angular/material/button';
+import {MatButton, MatIconButton} from '@angular/material/button';
 import {
     MAT_DIALOG_DATA,
     MatDialog,
@@ -10,17 +10,16 @@ import {
     MatDialogTitle
 } from '@angular/material/dialog';
 import {MatIcon} from '@angular/material/icon';
-import {Observable, of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {of} from 'rxjs';
 
 import {AppDateFieldComponent} from '@shared/ui/inputs/forms/data.component';
 import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
 import {FormSelectComponent} from '@shared/ui/inputs/forms/form-select.component';
 import {FormCustomerComponent} from '@shared/ui/inputs/forms/form-customer.component';
 import {User} from '@features/shared/models/user.model';
+import {SearchByEngagementLetterComponent} from '@features/shared/ui/search-by-engagement-letter.component';
 import {SearchByCustomerComponent} from '@features/shared/ui/search-by-customer.component';
-import {EngagementLetterService} from '../../engagement-letter/engagement-letter.service';
-import {EngagementLetterFindCriteria} from '../../engagement-letter/models/engagement-letter-find-criteria.model';
+import {EngagementLetter} from '../../engagement-letter/models/engagement-letter.model';
 import {Payment} from '../models/payment.model';
 import {PaymentMethod} from '../models/payment-method.model';
 import {PaymentService} from '../payment.service';
@@ -34,19 +33,19 @@ import {PaymentService} from '../payment.service';
         MatDialogActions,
         MatDialogClose,
         MatButton,
+        MatIconButton,
         MatIcon,
         AppDateFieldComponent,
         FormFieldComponent,
         FormSelectComponent,
         FormCustomerComponent,
         SearchByCustomerComponent,
+        SearchByEngagementLetterComponent,
     ],
-    providers: [EngagementLetterService],
     templateUrl: 'payment-creation-updating-dialog.component.html'
 })
 export class PaymentCreationUpdatingDialogComponent {
     title: string;
-    engagementIds: Observable<string[]>;
     methods = of(Object.values(PaymentMethod));
     payment: Payment = {
         id: undefined,
@@ -56,13 +55,12 @@ export class PaymentCreationUpdatingDialogComponent {
         amount: undefined,
         method: undefined,
     };
-    engagementId: string | undefined;
+    selectedEngagementLetter: EngagementLetter;
     selectedUser: User;
     private paymentDateValue: Date | null = null;
 
     constructor(
         private readonly paymentService: PaymentService,
-        private readonly engagementLetterService: EngagementLetterService,
         private readonly dialog: MatDialog,
         @Optional() @Inject(MAT_DIALOG_DATA) data?: Payment
     ) {
@@ -75,19 +73,9 @@ export class PaymentCreationUpdatingDialogComponent {
             amount: data?.amount,
             method: data?.method,
         };
-        this.engagementId = data?.engagement?.id;
+        this.selectedEngagementLetter = data?.engagement as EngagementLetter;
         this.selectedUser = data?.user as User;
         this.paymentDate = data?.date;
-
-        const criteria: EngagementLetterFindCriteria = {
-            opened: true,
-            client: '',
-            legalProcedureTitle: ''
-        };
-        this.engagementIds = this.engagementLetterService.search(criteria)
-            .pipe(map(engagements => engagements
-                .map(engagement => engagement.id)
-                .filter((id): id is string => !!id)));
     }
 
     get paymentDate(): Date | null {
@@ -139,8 +127,16 @@ export class PaymentCreationUpdatingDialogComponent {
         this.selectedUser = user;
     }
 
+    setEngagementLetter(engagementLetter: EngagementLetter): void {
+        this.selectedEngagementLetter = engagementLetter;
+    }
+
     removeUser(): void {
         this.selectedUser = undefined;
+    }
+
+    removeEngagementLetter(): void {
+        this.selectedEngagementLetter = undefined;
     }
 
     private hasUser(): boolean {
@@ -159,7 +155,7 @@ export class PaymentCreationUpdatingDialogComponent {
     private buildPayment(): Payment {
         return {
             ...this.payment,
-            engagement: this.engagementId ? {id: this.engagementId} : undefined,
+            engagement: this.selectedEngagementLetter?.id ? {id: this.selectedEngagementLetter.id} : undefined,
             user: {
                 id: this.selectedUser.id,
                 mobile: this.selectedUser.mobile,
