@@ -64,7 +64,7 @@ export class PaymentCreationUpdatingDialogComponent {
         private readonly dialog: MatDialog,
         @Optional() @Inject(MAT_DIALOG_DATA) data?: Payment
     ) {
-        this.title = data?.id ? 'Edicion de Pago' : 'Creacion de Pago';
+        this.title = data?.id ? 'Edicion de Ingreso' : 'Creacion de Ingreso';
         this.payment = {
             id: data?.id,
             date: data?.date,

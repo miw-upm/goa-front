@@ -18,4 +18,5 @@ export interface Payment {
     user: UserSnapshot;
     amount: number;
     method: PaymentMethod;
+    invoiced?:boolean;
 }

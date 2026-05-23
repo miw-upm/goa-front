@@ -12,17 +12,20 @@ import {PaymentFindCriteria} from '../models/payment-find-criteria.model';
 import {Payment} from '../models/payment.model';
 import {PaymentService} from '../payment.service';
 import {PAYMENTS_COLUMNS} from './payments-columns.config';
+import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
+import {FormsModule} from "@angular/forms";
+import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
 
 @Component({
     standalone: true,
-    imports: [FilterDateComponent, FilterInputComponent, TitleComponent, CrudComponent],
+    imports: [FilterDateComponent, FilterInputComponent, TitleComponent, CrudComponent, MatButtonToggle, MatButtonToggleGroup, FormsModule],
     templateUrl: 'payments.component.html'
 })
 export class PaymentsComponent {
     deleteVisibility = false;
     payments = of([] as Payment[]);
     payment: Observable<Payment>;
-    criteria: PaymentFindCriteria = {};
+    criteria: PaymentFindCriteria = {invoiced: null};
     columns = PAYMENTS_COLUMNS;
 
     constructor(
@@ -35,11 +38,7 @@ export class PaymentsComponent {
 
     search(): void {
         this.criteria.fromDate = this.formatDateValue(this.criteria.fromDate);
-        this.payments = this.paymentService.search(this.criteria)
-            .pipe(
-                map(payments => [...payments].sort((a, b) => b.date.localeCompare(a.date))),
-                catchError(() => of([] as Payment[]))
-            );
+        this.payments = this.paymentService.search(this.criteria);
     }
 
     resetSearch(): void {
@@ -61,16 +60,16 @@ export class PaymentsComponent {
     }
 
     delete(payment: Payment): void {
-        if (!payment.id) {
-            return;
+        if (payment.invoiced) {
+            this.dialog.open(WarningDialogComponent, {
+                data: {title: 'Warning', message: 'Este ingreso ya ha sido facturado. No se puede eliminar.'}
+            });
+        } else {
+            this.paymentService.delete(payment.id).subscribe(() => this.search());
         }
-        this.paymentService.delete(payment.id).subscribe(() => this.search());
     }
 
     read(payment: Payment): void {
-        if (!payment.id) {
-            return;
-        }
         this.payment = this.paymentService.read(payment.id);
     }
 

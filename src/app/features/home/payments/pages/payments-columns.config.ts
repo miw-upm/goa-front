@@ -7,4 +7,5 @@ export const PAYMENTS_COLUMNS: CrudColumnConfig[] = [
     {key: 'engagement.legalProcedures', label: 'HOJA DE ENCARGO (Procedimientos)', arrayField: 'title'},
     {key: 'amount', label: 'IMPORTE', format: 'currency'},
     {key: 'method', label: 'METODO'},
+    {key: 'invoiced', label: 'FACTURADO'},
 ];
