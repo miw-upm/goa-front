@@ -63,14 +63,14 @@
         <span class="zone-title">Datos del pago</span>
 
         <app-form-field
-                #amountNg
-                [(value)]="payment.amount"
-                [min]="0.01"
-                [required]="true"
-                [step]="0.01"
-                errorMessage="Obligatorio y mayor que 0"
-                label="Importe"
-                type="number"/>
+            #amountNg
+            [(value)]="payment.amount"
+            [min]="0.01"
+            [required]="true"
+            [step]="0.01"
+            errorMessage="Obligatorio y mayor que 0"
+            label="Importe"
+            type="number"/>
 
         <app-form-date
                 [(value)]="paymentDate"

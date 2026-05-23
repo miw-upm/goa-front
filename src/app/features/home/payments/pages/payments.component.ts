@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {catchError, map, Observable, of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 
 import {AuthService} from '@core/auth/auth.service';
 import {CrudComponent} from '@shared/ui/crud/crud.component';
