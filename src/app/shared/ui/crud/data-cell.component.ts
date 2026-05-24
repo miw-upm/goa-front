@@ -63,6 +63,16 @@ export class DataCellComponent {
         return field ? this.resolve(this.row, field) : '';
     }
 
+    get titleSingleValue(): any {
+        const field = this.config?.fieldsTitle?.[0];
+        return field && this.row ? this.resolve(this.row, field) : '';
+    }
+
+    get fieldSingleValue(): any {
+        const field = this.effectiveFields[0];
+        return field && this.row ? this.resolve(this.row, field) : '';
+    }
+
     get format(): CrudColumnFormat {
         if (this.config?.format && this.config.format !== 'text') {
             return this.config.format;

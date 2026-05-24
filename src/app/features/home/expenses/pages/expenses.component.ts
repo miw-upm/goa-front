@@ -1,9 +1,5 @@
-import {AsyncPipe} from '@angular/common';
 import {Component} from '@angular/core';
-import {FormsModule} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
-import {MatFormField, MatLabel} from '@angular/material/form-field';
-import {MatOption, MatSelect} from '@angular/material/select';
 import {Observable, of} from 'rxjs';
 
 import {AuthService} from '@core/auth/auth.service';
@@ -16,17 +12,12 @@ import {ExpenseFindCriteria} from '../models/expense-find-criteria.model';
 import {Expense} from '../models/expense.model';
 import {ExpenseService} from '../expense.service';
 import {EXPENSES_COLUMNS} from './expenses-columns.config';
+import {map} from "rxjs/operators";
 
 @Component({
     standalone: true,
     selector: 'app-expenses',
     imports: [
-        AsyncPipe,
-        FormsModule,
-        MatFormField,
-        MatLabel,
-        MatSelect,
-        MatOption,
         FilterDateComponent,
         FilterInputComponent,
         TitleComponent,
@@ -38,7 +29,6 @@ export class ExpensesComponent {
     deleteVisibility = false;
     expenses = of([] as Expense[]);
     expense: Observable<Expense>;
-    categories: Observable<string[]>;
     criteria: ExpenseFindCriteria = {};
     columns = EXPENSES_COLUMNS;
 
@@ -48,7 +38,6 @@ export class ExpensesComponent {
         auth: AuthService
     ) {
         this.deleteVisibility = auth.isAdmin();
-        this.categories = this.expenseService.categories();
     }
 
     search(): void {
@@ -56,7 +45,14 @@ export class ExpensesComponent {
             ...this.criteria,
             fromDate: this.formatDateValue(this.criteria.fromDate)
         };
-        this.expenses = this.expenseService.search(criteria);
+        this.expenses = this.expenseService.search(criteria).pipe(
+            map(expenses => expenses.map(expense => ({
+                ...expense,
+                total: expense.baseAmount
+                    + expense.baseAmount * expense.vatRate / 100
+                    - (expense.withholdingTax ?? 0)
+            })))
+        );
     }
 
     create(): void {

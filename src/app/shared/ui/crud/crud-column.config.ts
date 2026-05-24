@@ -1,4 +1,4 @@
-export type CrudColumnFormat = 'text' | 'date' | 'boolean' | 'currency' | 'number';
+export type CrudColumnFormat = 'text' | 'date' | 'boolean' | 'currency' | 'number' | 'percent';
 
 export interface CrudBooleanConfig {
     trueLabel?: string;   // default: 'SI'

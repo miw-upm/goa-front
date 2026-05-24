@@ -214,6 +214,18 @@ body {
 }
 
 // --- Chips semánticos (booleanos, estados) ---
+.cell-primary {
+  display: block;
+  font-weight: 500;
+  color: var(--mat-sys-on-surface);
+}
+
+.cell-secondary {
+  margin-top: 2px;
+  font-size: 0.85rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
 .bool-chip {
   display: inline-block;
   padding: 2px 10px;
