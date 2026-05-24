@@ -26,6 +26,8 @@ import {ExpensesComponent} from "./expenses/pages/expenses.component";
 import {ExpenseService} from "./expenses/expense.service";
 import {PaymentsComponent} from "./payments/pages/payments.component";
 import {PaymentService} from "./payments/payment.service";
+import {InvoicesComponent} from "./invoices/pages/invoices.component";
+import {InvoiceService} from "./invoices/invoice.service";
 import {EngagementLetterFormComponent} from "./engagement-letter/pages/engagement-letter-form.component";
 import {ConsentsComponent} from "./consents/pages/consents.component";
 import {ConsentService} from "./consents/consent.service";
@@ -117,6 +119,13 @@ export const routes: Routes = [
                 providers: [CustomerFileDownloadService],
             },
 
+            {
+                path: 'invoices',
+                component: InvoicesComponent,
+                canActivate: [RoleGuard],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [InvoiceService],
+            },
             {
                 path: 'expenses',
                 component: ExpensesComponent,
