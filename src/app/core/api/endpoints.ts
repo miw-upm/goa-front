@@ -62,6 +62,8 @@ export const ENDPOINTS = {
     expenses: {
         root: EXPENSE_ROOT,
         byId: (id: string) => `${EXPENSE_ROOT}/${enc(id)}`,
+        categories: () => `${EXPENSE_ROOT}/categories`,
+        suppliers: () => `${EXPENSE_ROOT}/suppliers`,
     },
 
     incomes: {

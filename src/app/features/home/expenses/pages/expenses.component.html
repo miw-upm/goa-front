@@ -1,0 +1,29 @@
+<app-title (create)="create()" [createAction]="true" subtitle="Gestion" title="Gastos"></app-title>
+
+<div class="filters-card">
+    <mat-form-field>
+        <mat-label>Categoria</mat-label>
+        <mat-select (selectionChange)="search()" [(ngModel)]="criteria.category">
+            <mat-option [value]="undefined">Todas</mat-option>
+            @for (category of (categories | async); track category) {
+                <mat-option [value]="category">{{ category }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+    <app-filter-input (enter)="search()" [(value)]="criteria.supplier" title="Proveedor"></app-filter-input>
+    <app-filter-date (enter)="search()" [(date)]="criteria.fromDate" title="Desde"></app-filter-date>
+</div>
+
+<app-crud
+        (create)="create()"
+        (delete)="delete($event)"
+        (read)="read($event)"
+        (searchAll)="search()"
+        (update)="update($event)"
+        [columns]="columns"
+        [data]="expenses"
+        [deleteAction]="deleteVisibility"
+        [item]="expense"
+        [secureDelete]="true"
+        [title]="'Gastos'">
+</app-crud>

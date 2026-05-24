@@ -22,12 +22,8 @@ import {
     AdministrativeAuthorizationsComponent
 } from "./administrative-authorization/pages/administrative-authorizations.component";
 import {AdministrativeAuthorizationService} from "./administrative-authorization/administrative-authorization.service";
-import {InvoicesComponent} from "./billing/pages/invoices.component";
-import {IncomesComponent} from "./billing/pages/incomes.component";
-import {ExpensesComponent} from "./billing/pages/expenses.component";
-import {InvoiceService} from "./billing/invoice.service";
-import {IncomeService} from "./billing/income.service";
-import {ExpenseService} from "./billing/expense.service";
+import {ExpensesComponent} from "./expenses/pages/expenses.component";
+import {ExpenseService} from "./expenses/expense.service";
 import {PaymentsComponent} from "./payments/pages/payments.component";
 import {PaymentService} from "./payments/payment.service";
 import {EngagementLetterFormComponent} from "./engagement-letter/pages/engagement-letter-form.component";
@@ -121,20 +117,6 @@ export const routes: Routes = [
                 providers: [CustomerFileDownloadService],
             },
 
-            {
-                path: 'invoices',
-                component: InvoicesComponent,
-                canActivate: [RoleGuard],
-                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
-                providers: [InvoiceService],
-            },
-            {
-                path: 'incomes',
-                component: IncomesComponent,
-                canActivate: [RoleGuard],
-                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
-                providers: [IncomeService],
-            },
             {
                 path: 'expenses',
                 component: ExpensesComponent,
