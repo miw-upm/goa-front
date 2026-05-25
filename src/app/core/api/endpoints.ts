@@ -78,6 +78,7 @@ export const ENDPOINTS = {
         emission: (id: string) => `${INVOICE_ROOT}/${enc(id)}/emission`,
         view: (id: string) => `${INVOICE_ROOT}/${enc(id)}/view`,
         fromPayments: () => `${INVOICE_ROOT}/from-payments`,
+        fromEngagement: () => `${INVOICE_ROOT}/from-engagement`,
     },
 
     payments: {

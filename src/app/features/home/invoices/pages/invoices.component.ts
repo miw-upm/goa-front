@@ -9,6 +9,7 @@ import {FilterInputComponent} from '@shared/ui/inputs/filters/filter-input.compo
 import {TitleComponent} from '@shared/ui/title/title.component';
 import {WarningDialogComponent} from '@shared/ui/dialogs/warning-dialog.component';
 import {InvoiceCreationUpdatingDialogComponent} from '../dialogs/invoice-creation-updating-dialog.component';
+import {InvoiceFromEngagementDialogComponent} from '../dialogs/invoice-from-engagement-dialog.component';
 import {InvoiceFromPaymentsDialogComponent} from '../dialogs/invoice-from-payments-dialog.component';
 import {
     InvoiceCreationSource,
@@ -138,6 +139,11 @@ export class InvoicesComponent {
         }
         if (source === 'payments') {
             this.dialog.open(InvoiceFromPaymentsDialogComponent, {width: '720px'})
+                .afterClosed()
+                .subscribe(() => this.search());
+        }
+        if (source === 'engagement') {
+            this.dialog.open(InvoiceFromEngagementDialogComponent, {width: '720px'})
                 .afterClosed()
                 .subscribe(() => this.search());
         }

@@ -11,6 +11,8 @@ import {UppercaseWordsPipe} from '@shared/pipes/uppercase-words.pipe';
     imports: [DatePipe, DecimalPipe, CurrencyPipe, UppercaseWordsPipe]
 })
 export class DataCellComponent {
+    private static readonly MAX_FIELDS_TEXT_LENGTH = 50;
+
     @Input() row: any;
     @Input() config: CrudColumnConfig | undefined;
     /** Modo legacy: valor directo sin config */
@@ -49,10 +51,13 @@ export class DataCellComponent {
         const fields = this.effectiveFields;
         if (!fields.length || !this.row) return '';
         const sep = this.config?.separator ?? ' ';
-        return fields
+        const value = fields
             .map(f => this.resolve(this.row, f))
             .filter(v => v !== null && v !== undefined && v !== '')
             .join(sep);
+        return value.length > DataCellComponent.MAX_FIELDS_TEXT_LENGTH
+            ? `${value.slice(0, DataCellComponent.MAX_FIELDS_TEXT_LENGTH)}(...)`
+            : value;
     }
 
     /** Valor único para formatos especiales (boolean, date, currency, number).

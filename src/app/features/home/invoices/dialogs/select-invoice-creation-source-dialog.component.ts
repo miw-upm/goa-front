@@ -3,7 +3,7 @@ import {MatButton} from '@angular/material/button';
 import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
 import {MatIcon} from '@angular/material/icon';
 
-export type InvoiceCreationSource = 'manual' | 'payments' | 'third';
+export type InvoiceCreationSource = 'manual' | 'payments' | 'engagement';
 
 @Component({
     standalone: true,
