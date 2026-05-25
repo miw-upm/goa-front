@@ -1,0 +1,22 @@
+<h4 mat-dialog-title>Crear factura</h4>
+
+<mat-dialog-content>
+    <div class="zone-card zone-card--column">
+        <button (click)="select('manual')" mat-stroked-button type="button">
+            <mat-icon>edit_note</mat-icon>
+            Manual
+        </button>
+        <button (click)="select('payments')" mat-stroked-button type="button">
+            <mat-icon>payments</mat-icon>
+            Desde ingresos
+        </button>
+        <button disabled mat-stroked-button type="button">
+            <mat-icon>more_horiz</mat-icon>
+            Proximo origen
+        </button>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-dialog-close mat-button>Cancelar</button>
+</mat-dialog-actions>

@@ -54,7 +54,7 @@ export class InvoiceCreationUpdatingDialogComponent {
         private readonly dialogRef: MatDialogRef<InvoiceCreationUpdatingDialogComponent>,
         @Optional() @Inject(MAT_DIALOG_DATA) data?: Invoice
     ) {
-        this.title = data?.id ? 'Edicion de Factura' : 'Creacion de Factura';
+        this.title = data?.id ? 'Edicion de Factura' : 'Creacion manual de Factura';
         this.invoice = data ? {
             ...data,
             billingInfo: {...data.billingInfo},

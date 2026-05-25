@@ -7,8 +7,13 @@ import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {FilterDateComponent} from '@shared/ui/inputs/filters/filter-date.component';
 import {FilterInputComponent} from '@shared/ui/inputs/filters/filter-input.component';
 import {TitleComponent} from '@shared/ui/title/title.component';
-import {CancelYesDialogComponent} from '@shared/ui/dialogs/cancel-yes-dialog.component';
+import {WarningDialogComponent} from '@shared/ui/dialogs/warning-dialog.component';
 import {InvoiceCreationUpdatingDialogComponent} from '../dialogs/invoice-creation-updating-dialog.component';
+import {InvoiceFromPaymentsDialogComponent} from '../dialogs/invoice-from-payments-dialog.component';
+import {
+    InvoiceCreationSource,
+    SelectInvoiceCreationSourceDialogComponent
+} from '../dialogs/select-invoice-creation-source-dialog.component';
 import {InvoiceService} from '../invoice.service';
 import {InvoiceFindCriteria} from '../models/invoice-find-criteria.model';
 import {Invoice} from '../models/invoice.model';
@@ -48,9 +53,9 @@ export class InvoicesComponent {
     }
 
     create(): void {
-        this.dialog.open(InvoiceCreationUpdatingDialogComponent, {width: '720px'})
+        this.dialog.open(SelectInvoiceCreationSourceDialogComponent, {width: '460px'})
             .afterClosed()
-            .subscribe(() => this.search());
+            .subscribe((source?: InvoiceCreationSource) => this.openCreationDialog(source));
     }
 
     read(invoice: Invoice): void {
@@ -61,7 +66,7 @@ export class InvoicesComponent {
 
     update(invoice: Invoice): void {
         if (invoice.emissionDate) {
-            this.confirmIssuedInvoice('editar', () => this.executeUpdate(invoice));
+            this.warnIssuedInvoice();
             return;
         }
         this.executeUpdate(invoice);
@@ -74,10 +79,6 @@ export class InvoicesComponent {
     }
 
     delete(invoice: Invoice): void {
-        if (invoice.emissionDate) {
-            this.confirmIssuedInvoice('eliminar', () => this.executeDelete(invoice));
-            return;
-        }
         this.executeDelete(invoice);
     }
 
@@ -87,12 +88,15 @@ export class InvoicesComponent {
         }
     }
 
-    print(_invoice: Invoice): void {
+    print(invoice: Invoice): void {
+        if (invoice.id) {
+            this.invoiceService.print(invoice.id).subscribe();
+        }
     }
 
     run(invoice: Invoice): void {
         if (invoice.emissionDate) {
-            this.confirmIssuedInvoice('ejecutar', () => this.executeRun(invoice));
+            this.warnIssuedInvoice();
             return;
         }
         this.executeRun(invoice);
@@ -112,19 +116,30 @@ export class InvoicesComponent {
     }
 
     private executeRun(_invoice: Invoice): void {
-        // Pendiente de implementar la emision de la factura.
+        if (_invoice.id) {
+            this.invoiceService.emission(_invoice.id).subscribe(() => this.search());
+        }
     }
 
-    private confirmIssuedInvoice(action: string, onConfirmed: () => void): void {
-        this.dialog.open(CancelYesDialogComponent, {
+    private warnIssuedInvoice(): void {
+        this.dialog.open(WarningDialogComponent, {
             data: {
-                title: 'Factura ya emitida',
-                message: `Esta factura ya ha sido emitida. Continuar para ${action} puede afectar a un documento fiscal.`
-            }
-        }).afterClosed().subscribe((confirmed: boolean) => {
-            if (confirmed) {
-                onConfirmed();
+                title: 'Factura emitida',
+                message: 'Esta factura ya ha sido emitida y no puede modificarse ni volver a emitirse.'
             }
         });
+    }
+
+    private openCreationDialog(source?: InvoiceCreationSource): void {
+        if (source === 'manual') {
+            this.dialog.open(InvoiceCreationUpdatingDialogComponent, {width: '720px'})
+                .afterClosed()
+                .subscribe(() => this.search());
+        }
+        if (source === 'payments') {
+            this.dialog.open(InvoiceFromPaymentsDialogComponent, {width: '720px'})
+                .afterClosed()
+                .subscribe(() => this.search());
+        }
     }
 }

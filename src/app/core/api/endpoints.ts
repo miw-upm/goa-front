@@ -75,6 +75,9 @@ export const ENDPOINTS = {
         root: INVOICE_ROOT,
         byId: (id: string) => `${INVOICE_ROOT}/${enc(id)}`,
         breakdown: (id: string) => `${INVOICE_ROOT}/${enc(id)}/breakdown`,
+        emission: (id: string) => `${INVOICE_ROOT}/${enc(id)}/emission`,
+        view: (id: string) => `${INVOICE_ROOT}/${enc(id)}/view`,
+        fromPayments: () => `${INVOICE_ROOT}/from-payments`,
     },
 
     payments: {
