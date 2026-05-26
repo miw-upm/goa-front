@@ -106,7 +106,8 @@ export class InvoiceCreationUpdatingDialogComponent {
         if (!this.isCreate() || !this.canCreate()) {
             return;
         }
-        this.invoiceService.create(this.buildCreation()).subscribe(() => this.dialogRef.close());
+        this.invoiceService.create(this.buildCreation())
+            .subscribe(() => this.dialogRef.close(this.userFullName(this.selectedUser!)));
     }
 
     update(): void {
@@ -165,6 +166,10 @@ export class InvoiceCreationUpdatingDialogComponent {
 
     private userAddress(user: User): string {
         return [user.address, user.postalCode, user.city, user.province].filter(Boolean).join(', ');
+    }
+
+    private userFullName(user: User): string {
+        return `${user.firstName ?? ''} ${user.familyName ?? ''}`.trim();
     }
 
     private parseDate(value: Date | string | null | undefined): Date | null {

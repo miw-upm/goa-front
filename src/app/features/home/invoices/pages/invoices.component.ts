@@ -117,7 +117,9 @@ export class InvoicesComponent {
 
     private executeRun(_invoice: Invoice): void {
         if (_invoice.id) {
-            this.invoiceService.emission(_invoice.id).subscribe(() => this.search());
+            this.invoiceService.emission(_invoice.id).subscribe(() => {
+                this.setClientAndSearch(this.invoiceClientName(_invoice));
+            });
         }
     }
 
@@ -134,12 +136,33 @@ export class InvoicesComponent {
         if (source === 'manual') {
             this.dialog.open(InvoiceCreationUpdatingDialogComponent, {width: '720px'})
                 .afterClosed()
-                .subscribe(() => this.search());
+                .subscribe((client?: string) => {
+                    if (client) {
+                        this.setClientAndSearch(client);
+                    }
+                });
         }
         if (source === 'engagement') {
             this.dialog.open(InvoiceFromEngagementDialogComponent, {width: '720px'})
                 .afterClosed()
-                .subscribe(() => this.search());
+                .subscribe((client?: string) => {
+                    if (client) {
+                        this.setClientAndSearch(client);
+                    }
+                });
         }
+    }
+
+    private setClientAndSearch(client: string | undefined): void {
+        this.criteria.client = client;
+        this.search();
+    }
+
+    private invoiceClientName(invoice: Invoice): string | undefined {
+        if (invoice.billingInfo?.fullName) {
+            return invoice.billingInfo.fullName;
+        }
+        const owner = invoice.engagement?.owner;
+        return owner ? `${owner.firstName ?? ''} ${owner.familyName ?? ''}`.trim() : undefined;
     }
 }
