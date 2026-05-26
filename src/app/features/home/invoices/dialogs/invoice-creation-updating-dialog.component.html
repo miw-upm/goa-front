@@ -32,13 +32,12 @@
     <div class="zone-card zone-card--column">
         <span class="zone-title">Datos de factura</span>
 
-        <app-form-field
+        <app-form-textarea
                 #conceptNg
                 [(value)]="invoice.billingInfo.concept"
                 [required]="true"
                 errorMessage="Obligatorio"
                 label="Concepto"/>
-
         <app-form-field
                 #baseAmountNg
                 [(value)]="invoice.baseAmount"
@@ -56,7 +55,7 @@
 
     <div class="zone-card zone-card--column">
         <div class="zone-row">
-            <span class="zone-title">Descuentos</span>
+            <span class="zone-title">Descuentos (€)</span>
             <button (click)="addDiscount()" color="primary" mat-flat-button type="button">
                 <mat-icon>add</mat-icon>
                 Crear

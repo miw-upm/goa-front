@@ -1,4 +1,4 @@
-<h4 mat-dialog-title>Factura desde hoja de encargo</h4>
+<h4 mat-dialog-title>Factura por cierre de Hoja de Encargo</h4>
 
 <mat-dialog-content>
     <div class="zone-card zone-card--column">
@@ -39,7 +39,7 @@
     <div class="zone-card zone-card--column">
         <span class="zone-title">Datos de factura</span>
 
-        <app-form-field
+        <app-form-textarea
                 #conceptNg
                 [(value)]="concept"
                 [required]="true"
@@ -55,6 +55,28 @@
                 errorMessage="Obligatorio y mayor que 0"
                 label="Base imponible"
                 type="number"/>
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <div class="zone-row">
+            <span class="zone-title">Descuentos</span>
+            <button (click)="addDiscount()" color="primary" mat-flat-button type="button">
+                <mat-icon>add</mat-icon>
+                Crear
+            </button>
+        </div>
+
+        @for (discount of discounts; track $index; let i = $index) {
+            <div class="item-card">
+                <mat-form-field class="full-width">
+                    <mat-label>Descuento</mat-label>
+                    <input [(ngModel)]="discounts[i]" matInput min="0" step="0.01" type="number">
+                </mat-form-field>
+                <button (click)="removeDiscount(i)" aria-label="Eliminar descuento" mat-icon-button type="button">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        }
     </div>
 </mat-dialog-content>
 

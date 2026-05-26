@@ -35,12 +35,34 @@
             </div>
         }
     </div>
+
+    <div class="zone-card zone-card--column">
+        <div class="zone-row">
+            <span class="zone-title">Descuentos (€)</span>
+            <button (click)="addDiscount()" color="primary" mat-flat-button type="button">
+                <mat-icon>add</mat-icon>
+                Crear
+            </button>
+        </div>
+
+        @for (discount of discounts; track $index; let i = $index) {
+            <div class="item-card">
+                <mat-form-field class="full-width">
+                    <mat-label>Descuento</mat-label>
+                    <input [(ngModel)]="discounts[i]" matInput min="0" step="0.01" type="number">
+                </mat-form-field>
+                <button (click)="removeDiscount(i)" aria-label="Eliminar descuento" mat-icon-button type="button">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        }
+    </div>
 </mat-dialog-content>
 
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Cancelar</button>
     <button (click)="create()"
-            [disabled]="!selectedEngagementLetter?.id"
+            [disabled]="!canCreate()"
             color="primary"
             mat-raised-button>
         <mat-icon matButtonIcon>add</mat-icon>

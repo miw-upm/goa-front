@@ -21,6 +21,7 @@ import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
 import {InvoiceService} from '../invoice.service';
 import {InvoiceCreation} from '../models/invoice-creation.model';
 import {Invoice} from '../models/invoice.model';
+import {FormTextareaComponent} from "@shared/ui/inputs/forms/form-textarea.component";
 
 @Component({
     standalone: true,
@@ -40,6 +41,7 @@ import {Invoice} from '../models/invoice.model';
         FormCustomerComponent,
         AppDateFieldComponent,
         FormFieldComponent,
+        FormTextareaComponent,
     ],
     templateUrl: 'invoice-creation-updating-dialog.component.html'
 })
