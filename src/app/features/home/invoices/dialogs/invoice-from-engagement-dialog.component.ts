@@ -1,16 +1,33 @@
 import {Component} from '@angular/core';
-import {FormsModule, NgModel} from '@angular/forms';
+import {FormsModule} from '@angular/forms';
 import {MatButton, MatIconButton} from '@angular/material/button';
-import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
-import {MatFormField, MatLabel} from '@angular/material/form-field';
+import {
+    MatDialog,
+    MatDialogActions,
+    MatDialogClose,
+    MatDialogContent,
+    MatDialogRef,
+    MatDialogTitle
+} from '@angular/material/dialog';
+import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
 import {MatIcon} from '@angular/material/icon';
 import {MatInput} from '@angular/material/input';
+import {MatSlideToggle} from '@angular/material/slide-toggle';
 
+import {User} from '@features/shared/models/user.model';
 import {SearchByEngagementLetterComponent} from '@features/shared/ui/search-by-engagement-letter.component';
-import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';
+import {SearchByLegalProcedureTemplateComponent} from '@features/shared/ui/search-by-legal-procedure-template.component';
+import {FormListComponent} from '@shared/ui/inputs/forms/form-list.component';
+import {LegalProcedureEditDialogComponent} from '../../engagement-letter/dialogs/legal-procedure-edit-dialog.component';
 import {EngagementLetter} from '../../engagement-letter/models/engagement-letter.model';
+import {LegalProcedure} from '../../engagement-letter/models/legal-procedure.model';
+import {LegalProcedureTemplate} from '../../legal-procedure-templates/models/legal-procedure-template.model';
 import {InvoiceService} from '../invoice.service';
-import {FormTextareaComponent} from "@shared/ui/inputs/forms/form-textarea.component";
+
+interface CustomerBillingPercentage {
+    user: User;
+    percentage: number;
+}
 
 @Component({
     standalone: true,
@@ -25,51 +42,76 @@ import {FormTextareaComponent} from "@shared/ui/inputs/forms/form-textarea.compo
         MatIcon,
         MatFormField,
         MatLabel,
+        MatSuffix,
         MatInput,
+        MatSlideToggle,
         SearchByEngagementLetterComponent,
-        FormFieldComponent,
-        FormTextareaComponent,
+        SearchByLegalProcedureTemplateComponent,
+        FormListComponent,
     ],
     templateUrl: 'invoice-from-engagement-dialog.component.html'
 })
 export class InvoiceFromEngagementDialogComponent {
     selectedEngagementLetter?: EngagementLetter;
-    concept = '';
-    totalBaseAmount?: number;
-    discounts: number[] = [];
+    closeEngagement = false;
+    legalProcedures: LegalProcedure[] = [];
+    billingPercentages: CustomerBillingPercentage[] = [];
 
     constructor(
         private readonly invoiceService: InvoiceService,
+        private readonly dialog: MatDialog,
         private readonly dialogRef: MatDialogRef<InvoiceFromEngagementDialogComponent>
     ) {
     }
 
     setEngagementLetter(engagementLetter: EngagementLetter): void {
         this.selectedEngagementLetter = engagementLetter;
+        this.legalProcedures = (engagementLetter.legalProcedures ?? []).map(procedure => ({
+            ...procedure,
+            legalTasks: [...(procedure.legalTasks ?? [])]
+        }));
+        this.billingPercentages = this.createBillingPercentages(engagementLetter);
     }
 
     removeEngagementLetter(): void {
         this.selectedEngagementLetter = undefined;
+        this.legalProcedures = [];
+        this.billingPercentages = [];
     }
 
-    addDiscount(): void {
-        this.discounts = [...this.discounts, 0];
+    addProcedure(template: LegalProcedureTemplate): void {
+        const title = template?.title?.trim();
+        if (title && !this.legalProcedures.some(procedure => procedure.title === title)) {
+            this.legalProcedures = [...this.legalProcedures, {
+                title: template.title,
+                budget: template.budget,
+                vatIncluded: false,
+                legalTasks: template.legalTasks?.map(task => task.title) ?? []
+            }];
+        }
     }
 
-    removeDiscount(index: number): void {
-        this.discounts = this.discounts.filter((_, position) => position !== index);
+    editLegalProcedureDialog(procedure: LegalProcedure): void {
+        const index = this.legalProcedures.indexOf(procedure);
+        this.dialog.open(LegalProcedureEditDialogComponent, {
+            data: procedure,
+            width: '900px',
+        }).afterClosed().subscribe((result: LegalProcedure | undefined) => {
+            if (result && index !== -1) {
+                this.legalProcedures[index] = result;
+                this.legalProcedures = [...this.legalProcedures];
+            }
+        });
     }
 
     canCreate(): boolean {
         return !!this.selectedEngagementLetter?.id
-            && !!this.concept.trim()
-            && Number.isFinite(Number(this.totalBaseAmount))
-            && Number(this.totalBaseAmount) > 0
-            && this.validDiscounts();
+            && this.legalProcedures.length > 0
+            && this.validBillingPercentages();
     }
 
-    formInvalid(...controls: NgModel[]): boolean {
-        return controls.some(control => control.invalid && (control.dirty || control.touched));
+    billingPercentageTotal(): number {
+        return this.billingPercentages.reduce((total, item) => total + Number(item.percentage || 0), 0);
     }
 
     create(): void {
@@ -79,13 +121,53 @@ export class InvoiceFromEngagementDialogComponent {
         }
         this.invoiceService.createFromEngagement({
             engagementId,
-            totalBaseAmount: Number(this.totalBaseAmount),
-            concept: this.concept.trim(),
-            discounts: this.discounts.map(value => Number(value))
+            closeEngagement: this.closeEngagement,
+            legalProcedures: this.legalProcedures.map(procedure => ({
+                ...procedure,
+                startDate: this.formatDate(procedure.startDate),
+                closingDate: this.formatDate(procedure.closingDate)
+            })),
+            billingPercentages: this.billingPercentages.map(item => ({
+                userId: item.user.id!,
+                percentage: Number(item.percentage)
+            }))
         }).subscribe(() => this.dialogRef.close(true));
     }
 
-    private validDiscounts(): boolean {
-        return this.discounts.every(value => Number.isFinite(Number(value)) && Number(value) >= 0);
+    private createBillingPercentages(engagementLetter: EngagementLetter): CustomerBillingPercentage[] {
+        const clients = [engagementLetter.owner, ...(engagementLetter.attachments ?? [])]
+            .filter((user): user is User => !!user)
+            .filter((user, index, all) => all.findIndex(other => this.sameUser(other, user)) === index);
+
+        return clients.map((user, index) => ({
+            user,
+            percentage: index === 0 ? 100 : 0
+        }));
+    }
+
+    private validBillingPercentages(): boolean {
+        return this.billingPercentages.length > 0
+            && this.billingPercentages.every(item => !!item.user.id
+                && Number.isFinite(Number(item.percentage))
+                && Number(item.percentage) >= 0
+                && Number(item.percentage) <= 100)
+            && Math.abs(this.billingPercentageTotal() - 100) < 0.000001;
+    }
+
+    private sameUser(first: User, second: User): boolean {
+        return first.id && second.id ? first.id === second.id : first.mobile === second.mobile;
+    }
+
+    private formatDate(date: Date | string | null | undefined): string | undefined {
+        if (!date) {
+            return undefined;
+        }
+        if (date instanceof Date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+        return date.includes('T') ? date.split('T')[0] : date;
     }
 }

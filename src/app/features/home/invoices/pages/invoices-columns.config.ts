@@ -24,10 +24,9 @@ export const INVOICES_COLUMNS: CrudColumnConfig[] = [
     {
         key: 'customer',
         label: 'CLIENTE',
-        fieldsTitle: ['billingInfo.fullName'],
-        fields: ['billingInfo.identity']
+        fieldsTitle: ['billingInfo.fullName']
     },
-    {key: 'concept', label: 'CONCEPTO', fields: ['billingInfo.concept']},
+    {key: 'percentage', label: 'CLIENTE (%)', format: 'percent'},
     {key: 'baseAmount', label: 'BASE', format: 'currency'},
     {key: 'vatRate', label: 'IVA', format: 'percent'},
     {

@@ -13,7 +13,7 @@ export class HttpViewBuilder {
     static readonly CONNECTION_REFUSE = 0;
     static readonly UNAUTHORIZED = 401;
     private static readonly SNACK_SUCCESS_DURATION = 3000;
-    private static readonly SNACK_ERROR_DURATION = 3000;
+    private static readonly SNACK_ERROR_DURATION = 5000;
 
     private successNotification: string | undefined;
     private custonErrorNotification: string | undefined;

@@ -1,6 +1,13 @@
+import {LegalProcedure} from '../../engagement-letter/models/legal-procedure.model';
+
+export interface InvoiceBillingPercentage {
+    userId: string;
+    percentage: number;
+}
+
 export interface InvoiceCreationFromEngagement {
     engagementId: string;
-    totalBaseAmount: number;
-    concept: string;
-    discounts: number[];
+    closeEngagement: boolean;
+    legalProcedures: LegalProcedure[];
+    billingPercentages: InvoiceBillingPercentage[];
 }

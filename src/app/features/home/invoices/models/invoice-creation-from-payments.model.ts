@@ -1,4 +1,6 @@
+import {InvoiceBillingPercentage} from './invoice-creation-from-engagement.model';
+
 export interface InvoiceCreationFromPayments {
     engagementId: string;
-    discounts: number[];
+    billingPercentages: InvoiceBillingPercentage[];
 }

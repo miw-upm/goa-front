@@ -1,4 +1,4 @@
-<h4 mat-dialog-title>Factura por cierre de Hoja de Encargo</h4>
+<h4 mat-dialog-title>Factura desde Hoja de Encargo</h4>
 
 <mat-dialog-content>
     <div class="zone-card zone-card--column">
@@ -37,44 +37,50 @@
     </div>
 
     <div class="zone-card zone-card--column">
-        <span class="zone-title">Datos de factura</span>
-
-        <app-form-textarea
-                #conceptNg
-                [(value)]="concept"
-                [required]="true"
-                errorMessage="Obligatorio"
-                label="Concepto"/>
-
-        <app-form-field
-                #totalBaseAmountNg
-                [(value)]="totalBaseAmount"
-                [min]="0.01"
-                [required]="true"
-                [step]="0.01"
-                errorMessage="Obligatorio y mayor que 0"
-                label="Base imponible"
-                type="number"/>
+        <div class="zone-row">
+            <span class="zone-title">Cierre de Hoja de Encargo</span>
+            <mat-slide-toggle [(ngModel)]="closeEngagement"></mat-slide-toggle>
+        </div>
     </div>
 
     <div class="zone-card zone-card--column">
         <div class="zone-row">
-            <span class="zone-title">Descuentos</span>
-            <button (click)="addDiscount()" color="primary" mat-flat-button type="button">
-                <mat-icon>add</mat-icon>
-                Crear
-            </button>
+            <span class="zone-title">Procedimientos Legales</span>
+            <app-search-by-legal-procedure
+                    (procedureChange)="addProcedure($event)">
+            </app-search-by-legal-procedure>
         </div>
 
-        @for (discount of discounts; track $index; let i = $index) {
+        <app-form-list
+                (action)="editLegalProcedureDialog($event)"
+                [(items)]="legalProcedures"
+                [keyView]="['title']"
+                actionIcon="edit">
+        </app-form-list>
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <div class="zone-row">
+            <span class="zone-title">Porcentaje de facturación de clientes</span>
+            <span>Total: {{ billingPercentageTotal() }}%</span>
+        </div>
+
+        @for (item of billingPercentages; track item.user.id ?? item.user.mobile) {
             <div class="item-card">
-                <mat-form-field class="full-width">
-                    <mat-label>Descuento</mat-label>
-                    <input [(ngModel)]="discounts[i]" matInput min="0" step="0.01" type="number">
+                <span class="avatar avatar--primary">
+                    {{ item.user.firstName.charAt(0) }}{{ item.user.familyName?.charAt(0) }}
+                </span>
+                <div class="person-info">
+                    <span class="person-name">{{ item.user.firstName }} {{ item.user.familyName }}</span>
+                    @if (item.user.mobile) {
+                        <span class="person-detail">{{ item.user.mobile }}</span>
+                    }
+                </div>
+                <mat-form-field>
+                    <mat-label>Porcentaje</mat-label>
+                    <input [(ngModel)]="item.percentage" matInput max="100" min="0" step="0.01" type="number">
+                    <span matSuffix>%</span>
                 </mat-form-field>
-                <button (click)="removeDiscount(i)" aria-label="Eliminar descuento" mat-icon-button type="button">
-                    <mat-icon>close</mat-icon>
-                </button>
             </div>
         }
     </div>
@@ -83,7 +89,7 @@
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Cancelar</button>
     <button (click)="create()"
-            [disabled]="!canCreate() || formInvalid(conceptNg.ngModel, totalBaseAmountNg.ngModel)"
+            [disabled]="!canCreate()"
             color="primary"
             mat-raised-button>
         <mat-icon matButtonIcon>add</mat-icon>
