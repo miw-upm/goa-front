@@ -1,0 +1,125 @@
+<h4 mat-dialog-title>{{ title }}</h4>
+
+<mat-dialog-content>
+    <div class="zone-card zone-card--column">
+        <div class="zone-row">
+            <span class="zone-title">Hoja de Encargo</span>
+            <app-search-by-engagement-letter
+                    (engagementLetterChange)="setEngagementLetter($event)"
+                    title="Buscar por cliente">
+            </app-search-by-engagement-letter>
+        </div>
+
+        @if (selectedEngagementLetter) {
+            <div class="item-card">
+                <span class="avatar avatar--secondary">HE</span>
+                <div class="person-info">
+                    @if (selectedEngagementLetter.owner) {
+                        <span class="person-name">
+                            {{ selectedEngagementLetter.owner.firstName }} {{ selectedEngagementLetter.owner.familyName }}
+                            @if (selectedEngagementLetter.owner.mobile) {
+                                - {{ selectedEngagementLetter.owner.mobile }}
+                            }
+                        </span>
+                    }
+                    @if (selectedEngagementLetter.legalProcedures?.[0]?.title) {
+                        <span class="person-detail">{{ selectedEngagementLetter.legalProcedures[0].title }}</span>
+                    }
+                </div>
+                <button (click)="removeEngagementLetter()" aria-label="Quitar hoja de encargo" mat-icon-button
+                        type="button">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        }
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <div class="zone-row">
+            <span class="zone-title">Proveedor</span>
+            <app-search-by-supplier
+                    (supplierChange)="setSupplier($event)"
+                    title="Buscar proveedor">
+            </app-search-by-supplier>
+        </div>
+
+        @if (expense.supplier) {
+            <div class="item-card">
+                <span class="avatar avatar--primary">{{ expense.supplier.name.charAt(0) }}</span>
+                <div class="person-info">
+                    <span class="person-name">{{ expense.supplier.name }}</span>
+                    <span class="person-detail">{{ expense.supplier.identity }}</span>
+                </div>
+                <button (click)="removeSupplier()" aria-label="Quitar proveedor" mat-icon-button type="button">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        }
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <span class="zone-title">Datos del gasto</span>
+
+        <app-form-date [(value)]="issueDate" label="Fecha de emision"/>
+
+        <app-form-select
+                [(selected)]="expense.taxCategory"
+                [capitalize]="true"
+                [required]="true"
+                [values]="categories"
+                label="Categoria fiscal"/>
+
+        <app-form-field
+            #baseAmountNg
+            [(value)]="expense.baseAmount"
+            [min]="0.01"
+            [required]="true"
+            [step]="0.01"
+            errorMessage="Obligatorio y mayor que 0"
+            label="Base imponible"
+            type="number"/>
+
+        <app-form-field
+            #vatRateNg
+            [(value)]="expense.vatRate"
+            [min]="1"
+            [required]="true"
+            [step]="1"
+            errorMessage="Obligatorio y mayor que 0"
+            label="IVA (%)"
+            type="number"/>
+
+        <app-form-field
+            #withholdingTaxNg
+            [(value)]="expense.withholdingTax"
+            [min]="0"
+            [step]="0.01"
+            errorMessage="No puede ser negativo"
+            label="Retencion"
+            type="number"/>
+
+        <app-form-field
+                [(value)]="expense.description"
+                label="Descripcion"/>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Cancelar</button>
+    @if (isCreate()) {
+        <button (click)="create()"
+                [disabled]="!canSubmit() || formInvalid(baseAmountNg.ngModel, vatRateNg.ngModel, withholdingTaxNg.ngModel)"
+                color="primary"
+                mat-raised-button>
+            <mat-icon matButtonIcon>add</mat-icon>
+            Crear
+        </button>
+    } @else {
+        <button (click)="update()"
+                [disabled]="!canSubmit() || formInvalid(baseAmountNg.ngModel, vatRateNg.ngModel, withholdingTaxNg.ngModel)"
+                color="primary"
+                mat-raised-button>
+            Guardar
+        </button>
+    }
+</mat-dialog-actions>
