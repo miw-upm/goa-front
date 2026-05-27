@@ -3,8 +3,12 @@ import {CrudColumnConfig} from "@shared/ui/crud/crud-column.config";
 export const EXPENSES_COLUMNS: CrudColumnConfig[] = [
     {key: 'issueDate', label: 'FECHA EMISION / REGISTRO', format: 'date', dateFormat: 'dd/MM/yyyy'},
     {key: 'supplier', label: 'PROVEEDOR', fieldsTitle: ['supplier.name'], fields: ['supplier.identity']},
-    {key: 'amounts', label: 'BASE / TOTAL', fieldsTitle: ['baseAmount'], fields: ['total'], format: 'currency'},
-    {key: 'vatRate', label: 'IVA', format: 'percent'},
+    {key: 'amounts', label: ' (IVA) BASE / TOTAL',
+        fieldsRef: ['vatRate'],
+        fieldsTitle: ['baseAmount'],
+        fields: ['total'],
+        format: 'currency'},
+
     {key: 'taxCategory', label: 'CATEGORIA (Descripción)', fieldsTitle: ['taxCategory'], fields: ['description']},
     {
         key: 'engagement',

@@ -80,6 +80,15 @@ export class DataCellComponent {
         return field && this.row ? this.resolve(this.row, field) : '';
     }
 
+    get refValue(): string {
+        if (!this.config?.fieldsRef?.length || !this.row) return '';
+        const sep = this.config.separator ?? ' ';
+        return this.config.fieldsRef
+            .map(field => this.resolve(this.row, field))
+            .filter(value => value !== null && value !== undefined && value !== '')
+            .join(sep);
+    }
+
     get fieldSingleValue(): any {
         const field = this.effectiveFields[0];
         return field && this.row ? this.resolve(this.row, field) : '';

@@ -40,6 +40,9 @@
             @case ('currency') {
                 @if (hasTitle) {
                     <span class="cell-primary">
+                        @if (refValue) {
+                            ({{ refValue }})
+                        }
                         {{ titleSingleValue | currency: 'EUR' : 'symbol' : '1.2-2' : 'es' }}
                     </span>
                 }

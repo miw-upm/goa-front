@@ -626,3 +626,6 @@ app-search .mat-icon[matPrefix] {
   color: var(--mat-sys-outline);
 }
 
+.app-search-options .mat-mdc-option {
+  --mat-option-label-text-size: 0.82rem;
+}
