@@ -42,7 +42,8 @@ export class ReadDetailDialogComponent {
 
     /** Label para una propiedad: busca en columns config, si no usa el nombre raw */
     getLabelFor(key: string): string {
-        const col = this.columns.find(c => c.key === key || c.fieldsTitle?.includes(key) || c.fields?.includes(key));
+        const col = this.columns.find(c => c.key === key || c.fieldsRef?.includes(key)
+            || c.fieldsTitle?.includes(key) || c.fields?.includes(key));
         return col ? col.label : key;
     }
 }

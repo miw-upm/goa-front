@@ -11,6 +11,7 @@ export const ENGAGEMENT_LETTERS_COLUMNS: CrudColumnConfig[] = [
             showIcon: false
         }
     },
+    {key:'reference', label: 'REFERENCIA'},
     {
         key: 'owner',
         label: 'CLIENTE PRINCIPAL',

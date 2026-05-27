@@ -26,9 +26,9 @@ export class DataCellComponent {
         return !!this.config;
     }
 
-    /** Tiene fieldsTitle → línea resaltada */
+    /** Tiene campos para la línea resaltada. */
     get hasTitle(): boolean {
-        return !!this.config?.fieldsTitle?.length;
+        return this.primaryFields.length > 0;
     }
 
     /** Tiene fields → línea normal (secundaria si hay title, única si no) */
@@ -36,14 +36,21 @@ export class DataCellComponent {
         return this.effectiveFields.length > 0;
     }
 
-    /** Texto de fieldsTitle: campos concatenados con separator */
+    /** Texto principal: fieldsRef se antepone entre parentesis a fieldsTitle. */
     get titleValue(): string {
-        if (!this.config?.fieldsTitle?.length || !this.row) return '';
+        if (!this.primaryFields.length || !this.row) return '';
         const sep = this.config.separator ?? ' ';
-        return this.config.fieldsTitle
+        const refValue = (this.config?.fieldsRef ?? [])
             .map(f => this.resolve(this.row, f))
             .filter(v => v !== null && v !== undefined && v !== '')
             .join(sep);
+        const titleValue = (this.config?.fieldsTitle ?? [])
+            .map(f => this.resolve(this.row, f))
+            .filter(v => v !== null && v !== undefined && v !== '')
+            .join(sep);
+        return [refValue ? `(${refValue})` : '', titleValue]
+            .filter(Boolean)
+            .join(' ');
     }
 
     /** Texto de fields: campos concatenados con separator */
@@ -137,7 +144,11 @@ export class DataCellComponent {
 
     /** fields efectivos: si no hay ni fieldsTitle ni fields, se infiere [key] */
     private get effectiveFields(): string[] {
-        return this.config?.fields?.length ? this.config.fields : (!this.config?.fieldsTitle?.length ? [this.config?.key ?? ''] : []);
+        return this.config?.fields?.length ? this.config.fields : (!this.primaryFields.length ? [this.config?.key ?? ''] : []);
+    }
+
+    private get primaryFields(): string[] {
+        return [...(this.config?.fieldsRef ?? []), ...(this.config?.fieldsTitle ?? [])];
     }
 
     private get arrayItems(): string[] {

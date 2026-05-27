@@ -19,6 +19,9 @@ export interface CrudColumnConfig {
      *  Si no se define, no hay línea resaltada. */
     fieldsTitle?: string[];
 
+    /** Campos de referencia mostrados delante de fieldsTitle en la misma linea. */
+    fieldsRef?: string[];
+
     /** Campos secundarios (texto normal, gris si hay fieldsTitle). Se concatenan separados por separator. */
     fields?: string[];
 

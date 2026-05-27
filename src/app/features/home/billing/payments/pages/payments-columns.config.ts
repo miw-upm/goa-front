@@ -8,6 +8,7 @@ export const PAYMENTS_COLUMNS: CrudColumnConfig[] = [
     {
         key: 'engagement',
         label: 'HOJA DE ENCARGO (Responsable)',
+        fieldsRef: ['engagement.reference'],
         fieldsTitle: ['engagement.owner.firstName'],
         fields: ['engagement.lastUpdatedDate']
     },

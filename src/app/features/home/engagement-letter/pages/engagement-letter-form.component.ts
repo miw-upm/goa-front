@@ -87,6 +87,7 @@ export class EngagementLetterFormComponent implements OnInit {
             this.engagementLetterService.read(id).subscribe(data => {
                 this.engagementLetter = {
                     ...data,
+                    discounts: [...(data.discounts ?? [])],
                     lastUpdatedDate: data.lastUpdatedDate ? new Date(data.lastUpdatedDate) : undefined,
                     closingDate: data.closingDate ? new Date(data.closingDate) : undefined
                 };
@@ -140,6 +141,7 @@ export class EngagementLetterFormComponent implements OnInit {
     invalid(): boolean {
         return this.checkInvalid(this.engagementLetter.owner?.mobile) ||
             this.checkInvalid(this.engagementLetter.legalProcedures) ||
+            !this.validDiscounts() ||
             (this.engagementLetter.acceptanceEngagements != null && this.engagementLetter.acceptanceEngagements.length > 0);
     }
 
@@ -165,6 +167,14 @@ export class EngagementLetterFormComponent implements OnInit {
 
     addPaymentMethod(): void {
         this.engagementLetter.paymentMethods.push({percentage: '', description: ''});
+    }
+
+    addDiscount(): void {
+        this.engagementLetter.discounts = [...(this.engagementLetter.discounts ?? []), 0];
+    }
+
+    removeDiscount(index: number): void {
+        this.engagementLetter.discounts = this.engagementLetter.discounts?.filter((_, position) => position !== index) ?? [];
     }
 
     removePaymentMethod(index: number): void {
@@ -202,6 +212,7 @@ export class EngagementLetterFormComponent implements OnInit {
     private prepareForSend(): EngagementLetter {
         return {
             ...this.engagementLetter,
+            discounts: this.engagementLetter.discounts?.map(value => Number(value)) ?? [],
             lastUpdatedDate: this.formatDate(this.engagementLetter.lastUpdatedDate),
             closingDate: this.formatDate(this.engagementLetter.closingDate),
             legalProcedures: this.engagementLetter.legalProcedures.map(proc => ({
@@ -237,6 +248,7 @@ export class EngagementLetterFormComponent implements OnInit {
         return {
             budgetOnly: true,
             discount: 0,
+            discounts: [],
             attachments: [],
             legalProcedures: [],
             paymentMethods: [{description: 'Al finalizar el proceso', percentage: 'Resto'}]
@@ -248,5 +260,10 @@ export class EngagementLetterFormComponent implements OnInit {
         this.router.navigate(['/home/engagement-letters'], {
             queryParams: {client, opened: true}
         });
+    }
+
+    private validDiscounts(): boolean {
+        return (this.engagementLetter.discounts ?? [])
+            .every(value => Number.isFinite(Number(value)) && Number(value) >= 0);
     }
 }
