@@ -3,4 +3,5 @@ export enum PaymentMethod {
     CARD = 'CARD',
     TRANSFER = 'TRANSFER',
     BIZUM = 'BIZUM',
+    OTHER = 'OTHER',
 }

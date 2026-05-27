@@ -76,12 +76,16 @@
                 [(value)]="paymentDate"
                 label="Fecha"/>
 
-        <app-form-select
-                [(selected)]="payment.method"
-                [capitalize]="true"
-                [required]="true"
-                [values]="methods"
-                label="Metodo de pago"/>
+        <mat-form-field class="full-width">
+            <mat-label>Metodo de pago</mat-label>
+            <mat-select [(ngModel)]="payment.method" required>
+                <mat-option [value]="PaymentMethod.CASH">Efectivo</mat-option>
+                <mat-option [value]="PaymentMethod.CARD">Tarjeta</mat-option>
+                <mat-option [value]="PaymentMethod.TRANSFER">Transferencia</mat-option>
+                <mat-option [value]="PaymentMethod.BIZUM">Bizum</mat-option>
+                <mat-option [value]="PaymentMethod.OTHER">Otro</mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
 </mat-dialog-content>
 

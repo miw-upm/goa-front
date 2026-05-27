@@ -1,7 +1,13 @@
 import {Component} from '@angular/core';
 import {NgModel} from '@angular/forms';
 import {MatButton} from '@angular/material/button';
-import {MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle} from '@angular/material/dialog';
+import {
+    MatDialogActions,
+    MatDialogClose,
+    MatDialogContent,
+    MatDialogRef,
+    MatDialogTitle
+} from '@angular/material/dialog';
 import {MatIcon} from '@angular/material/icon';
 
 import {FormFieldComponent} from '@shared/ui/inputs/forms/form-field.component';

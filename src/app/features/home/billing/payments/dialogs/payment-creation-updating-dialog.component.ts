@@ -18,11 +18,12 @@ import {PaymentMethod} from '../models/payment-method.model';
 import {PaymentService} from '../payment.service';
 import {AppDateFieldComponent} from "@shared/ui/inputs/forms/data.component";
 import {FormFieldComponent} from "@shared/ui/inputs/forms/form-field.component";
-import {FormSelectComponent} from "@shared/ui/inputs/forms/form-select.component";
 import {FormCustomerComponent} from "@shared/ui/inputs/forms/form-customer.component";
 import {SearchByCustomerComponent} from "@features/shared/ui/search-by-customer.component";
 import {SearchByEngagementLetterComponent} from "@features/shared/ui/search-by-engagement-letter.component";
 import {User} from "@features/shared/models/user.model";
+import {MatFormField, MatLabel} from "@angular/material/input";
+import {MatOption, MatSelect} from "@angular/material/select";
 
 @Component({
     standalone: true,
@@ -37,10 +38,13 @@ import {User} from "@features/shared/models/user.model";
         MatIcon,
         AppDateFieldComponent,
         FormFieldComponent,
-        FormSelectComponent,
         FormCustomerComponent,
         SearchByCustomerComponent,
         SearchByEngagementLetterComponent,
+        MatFormField,
+        MatLabel,
+        MatSelect,
+        MatOption,
     ],
     templateUrl: 'payment-creation-updating-dialog.component.html'
 })
@@ -57,6 +61,7 @@ export class PaymentCreationUpdatingDialogComponent {
     };
     selectedEngagementLetter: EngagementLetter;
     selectedUser: User;
+    protected readonly PaymentMethod = PaymentMethod;
     private paymentDateValue: Date | null = null;
 
     constructor(
