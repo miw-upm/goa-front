@@ -3,6 +3,7 @@ import {FormsModule, NgModel} from '@angular/forms';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {
     MAT_DIALOG_DATA,
+    MatDialog,
     MatDialogActions,
     MatDialogClose,
     MatDialogContent,
@@ -21,6 +22,7 @@ import {SearchByEngagementLetterComponent} from "@features/shared/ui/search-by-e
 import {AppDateFieldComponent} from "@shared/ui/inputs/forms/data.component";
 import {FormFieldComponent} from "@shared/ui/inputs/forms/form-field.component";
 import {FormSelectComponent} from "@shared/ui/inputs/forms/form-select.component";
+import {SupplierCreationDialogComponent} from './supplier-creation-dialog.component';
 
 @Component({
     standalone: true,
@@ -50,6 +52,7 @@ export class ExpenseCreationUpdatingDialogComponent {
 
     constructor(
         private readonly expenseService: ExpenseService,
+        private readonly dialog: MatDialog,
         private readonly dialogRef: MatDialogRef<ExpenseCreationUpdatingDialogComponent>,
         @Optional() @Inject(MAT_DIALOG_DATA) data?: Expense
     ) {
@@ -97,6 +100,16 @@ export class ExpenseCreationUpdatingDialogComponent {
         this.expense.supplier = supplier;
     }
 
+    createSupplier(): void {
+        this.dialog.open(SupplierCreationDialogComponent, {width: '420px'})
+            .afterClosed()
+            .subscribe((supplier?: SupplierInfo) => {
+                if (supplier) {
+                    this.setSupplier(supplier);
+                }
+            });
+    }
+
     removeSupplier(): void {
         this.expense.supplier = undefined;
     }
@@ -117,7 +130,8 @@ export class ExpenseCreationUpdatingDialogComponent {
     }
 
     canSubmit(): boolean {
-        return !!this.expense.supplier
+        return !!this.expense.supplier?.name?.trim()
+            && !!this.expense.supplier?.identity?.trim()
             && !!this.expense.taxCategory
             && !!this.expense.issueDate
             && this.isPositive(this.expense.baseAmount)

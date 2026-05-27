@@ -41,6 +41,9 @@
                     (supplierChange)="setSupplier($event)"
                     title="Buscar proveedor">
             </app-search-by-supplier>
+            <button (click)="createSupplier()" color="primary" mat-flat-button type="button">
+                Nuevo
+            </button>
         </div>
 
         @if (expense.supplier) {
