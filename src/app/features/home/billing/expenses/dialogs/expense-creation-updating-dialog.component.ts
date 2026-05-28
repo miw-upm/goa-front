@@ -118,7 +118,8 @@ export class ExpenseCreationUpdatingDialogComponent {
         if (!this.isCreate() || !this.canSubmit()) {
             return;
         }
-        this.expenseService.create(this.buildExpense()).subscribe(() => this.dialogRef.close());
+        this.expenseService.create(this.buildExpense())
+            .subscribe(() => this.dialogRef.close(this.selectedEngagementLetter?.reference));
     }
 
     update(): void {
@@ -126,7 +127,8 @@ export class ExpenseCreationUpdatingDialogComponent {
             return;
         }
         const {id, recordedAt, documentPath, ...expense} = this.buildExpense();
-        this.expenseService.update(id, expense as Expense).subscribe(() => this.dialogRef.close());
+        this.expenseService.update(id, expense as Expense)
+            .subscribe(() => this.dialogRef.close(this.selectedEngagementLetter?.reference));
     }
 
     canSubmit(): boolean {

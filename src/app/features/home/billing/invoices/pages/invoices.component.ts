@@ -93,7 +93,7 @@ export class InvoicesComponent {
     private executeUpdate(invoice: Invoice): void {
         this.dialog.open(InvoiceCreationUpdatingDialogComponent, {width: '720px', data: invoice})
             .afterClosed()
-            .subscribe(() => this.search());
+            .subscribe((reference?: string) => this.setEngagementReferenceAndSearch(reference));
     }
 
     private executeDelete(invoice: Invoice): void {
@@ -136,25 +136,23 @@ export class InvoicesComponent {
         if (source === 'manual') {
             this.dialog.open(InvoiceCreationUpdatingDialogComponent, {width: '720px'})
                 .afterClosed()
-                .subscribe((client?: string) => {
-                    if (client) {
-                        this.setClientAndSearch(client);
-                    }
-                });
+                .subscribe((reference?: string) => this.setEngagementReferenceAndSearch(reference));
         }
         if (source === 'engagement') {
             this.dialog.open(InvoiceFromEngagementDialogComponent, {width: '720px'})
                 .afterClosed()
-                .subscribe((client?: string) => {
-                    if (client) {
-                        this.setClientAndSearch(client);
-                    }
-                });
+                .subscribe((reference?: string) => this.setEngagementReferenceAndSearch(reference));
         }
     }
 
     private setClientAndSearch(client: string | undefined): void {
         this.criteria.client = client;
+        this.search();
+    }
+
+    private setEngagementReferenceAndSearch(reference: string | undefined): void {
+        this.criteria.client = undefined;
+        this.criteria.engagementReference = reference;
         this.search();
     }
 

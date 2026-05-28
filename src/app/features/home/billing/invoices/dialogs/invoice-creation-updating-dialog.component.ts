@@ -107,14 +107,15 @@ export class InvoiceCreationUpdatingDialogComponent {
             return;
         }
         this.invoiceService.create(this.buildCreation())
-            .subscribe(() => this.dialogRef.close(this.userFullName(this.selectedUser!)));
+            .subscribe(() => this.dialogRef.close());
     }
 
     update(): void {
         if (this.isCreate() || !this.invoice.id || !this.canUpdate()) {
             return;
         }
-        this.invoiceService.update(this.invoice.id, this.buildInvoice()).subscribe(() => this.dialogRef.close());
+        this.invoiceService.update(this.invoice.id, this.buildInvoice())
+            .subscribe(invoice => this.dialogRef.close(invoice.engagement?.reference));
     }
 
     formInvalid(...controls: NgModel[]): boolean {
@@ -166,10 +167,6 @@ export class InvoiceCreationUpdatingDialogComponent {
 
     private userAddress(user: User): string {
         return [user.address, user.postalCode, user.city, user.province].filter(Boolean).join(', ');
-    }
-
-    private userFullName(user: User): string {
-        return `${user.firstName ?? ''} ${user.familyName ?? ''}`.trim();
     }
 
     private parseDate(value: Date | string | null | undefined): Date | null {

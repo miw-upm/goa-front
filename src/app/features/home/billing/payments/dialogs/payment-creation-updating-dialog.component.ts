@@ -3,10 +3,10 @@ import {FormsModule, NgModel} from '@angular/forms';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {
     MAT_DIALOG_DATA,
-    MatDialog,
     MatDialogActions,
     MatDialogClose,
     MatDialogContent,
+    MatDialogRef,
     MatDialogTitle
 } from '@angular/material/dialog';
 import {MatIcon} from '@angular/material/icon';
@@ -66,7 +66,7 @@ export class PaymentCreationUpdatingDialogComponent {
 
     constructor(
         private readonly paymentService: PaymentService,
-        private readonly dialog: MatDialog,
+        private readonly dialogRef: MatDialogRef<PaymentCreationUpdatingDialogComponent>,
         @Optional() @Inject(MAT_DIALOG_DATA) data?: Payment
     ) {
         this.title = data?.id ? 'Edicion de Ingreso' : 'Creacion de Ingreso';
@@ -99,7 +99,7 @@ export class PaymentCreationUpdatingDialogComponent {
         }
         this.paymentService
             .create(this.buildPayment())
-            .subscribe(() => this.dialog.closeAll());
+            .subscribe(payment => this.dialogRef.close(payment?.engagement?.reference ?? this.selectedEngagementLetter?.reference));
     }
 
     update(): void {
@@ -110,7 +110,7 @@ export class PaymentCreationUpdatingDialogComponent {
         const {id, ...payment} = this.buildPayment();
         this.paymentService
             .update(id, payment)
-            .subscribe(() => this.dialog.closeAll());
+            .subscribe(payment => this.dialogRef.close(payment?.engagement?.reference ?? this.selectedEngagementLetter?.reference));
     }
 
     isCreate(): boolean {

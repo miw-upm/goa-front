@@ -135,7 +135,7 @@ export class InvoiceFromEngagementDialogComponent {
                 userId: item.user.id!,
                 percentage: Number(item.percentage)
             }))
-        }).subscribe(() => this.dialogRef.close(this.ownerFullName()));
+        }).subscribe(() => this.dialogRef.close(this.selectedEngagementLetter?.reference));
     }
 
     private createBillingPercentages(engagementLetter: EngagementLetter): CustomerBillingPercentage[] {
@@ -160,11 +160,6 @@ export class InvoiceFromEngagementDialogComponent {
 
     private sameUser(first: User, second: User): boolean {
         return first.id && second.id ? first.id === second.id : first.mobile === second.mobile;
-    }
-
-    private ownerFullName(): string {
-        const owner = this.selectedEngagementLetter?.owner;
-        return owner ? `${owner.firstName ?? ''} ${owner.familyName ?? ''}`.trim() : '';
     }
 
     private formatDate(date: Date | string | null | undefined): string | undefined {

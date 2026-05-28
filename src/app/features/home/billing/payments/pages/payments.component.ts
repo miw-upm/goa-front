@@ -50,14 +50,14 @@ export class PaymentsComponent {
         this.dialog
             .open(PaymentCreationUpdatingDialogComponent, {width: '600px'})
             .afterClosed()
-            .subscribe(() => this.search());
+            .subscribe((reference?: string) => this.setEngagementReferenceAndSearch(reference));
     }
 
     update(payment: Payment): void {
         this.dialog
             .open(PaymentCreationUpdatingDialogComponent, {width: '600px', data: payment})
             .afterClosed()
-            .subscribe(() => this.search());
+            .subscribe((reference?: string) => this.setEngagementReferenceAndSearch(reference));
     }
 
     delete(payment: Payment): void {
@@ -85,5 +85,11 @@ export class PaymentsComponent {
         const month = String(value.getMonth() + 1).padStart(2, '0');
         const day = String(value.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
+    }
+
+    private setEngagementReferenceAndSearch(reference: string | undefined): void {
+        this.criteria.client = undefined;
+        this.criteria.engagementReference = reference;
+        this.search();
     }
 }
