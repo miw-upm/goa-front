@@ -43,9 +43,9 @@ export class EngagementLettersComponent implements OnInit {
             this.criteria = {
                 opened: this.parseBoolean(params['opened'], hasParams ? null : true),
                 budgetOnly: this.parseBoolean(params['budgetOnly'], null),
+                reference: params['reference'] ?? undefined,
                 client: params['client'] ?? undefined,
-                legalProcedureTitle: params['legalProcedureTitle'] ?? undefined,
-                taskTitle: params['taskTitle'] ?? undefined
+                legalProcedureTitle: params['legalProcedureTitle'] ?? undefined
             };
             if (hasParams) {
                 this.search();
@@ -127,9 +127,9 @@ export class EngagementLettersComponent implements OnInit {
         return {
             opened: this.criteria.opened,
             budgetOnly: this.criteria.budgetOnly,
+            reference: this.criteria.reference ?? null,
             client: this.criteria.client ?? null,
-            legalProcedureTitle: this.criteria.legalProcedureTitle ?? null,
-            taskTitle: this.criteria.taskTitle ?? null
+            legalProcedureTitle: this.criteria.legalProcedureTitle ?? null
         };
     }
 }

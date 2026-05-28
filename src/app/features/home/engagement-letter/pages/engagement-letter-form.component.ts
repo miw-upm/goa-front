@@ -106,14 +106,14 @@ export class EngagementLetterFormComponent implements OnInit {
     }
 
     create(): void {
-        this.engagementLetterService.create(this.prepareForSend()).subscribe(() => {
-            this.navigateBack();
+        this.engagementLetterService.create(this.prepareForSend()).subscribe(engagementLetter => {
+            this.navigateBack(engagementLetter);
         });
     }
 
     update(): void {
         this.engagementLetterService.update(this.engagementLetter.id, this.prepareForSend()).subscribe(() => {
-            this.navigateBack();
+            this.navigateBack(this.engagementLetter);
         });
     }
 
@@ -255,10 +255,10 @@ export class EngagementLetterFormComponent implements OnInit {
         };
     }
 
-    private navigateBack(): void {
-        const client = this.engagementLetter.owner?.mobile;
+    private navigateBack(engagementLetter: EngagementLetter): void {
+        const reference = engagementLetter.reference;
         this.router.navigate(['/home/engagement-letters'], {
-            queryParams: {client, opened: true}
+            queryParams: {reference, opened: true}
         });
     }
 
