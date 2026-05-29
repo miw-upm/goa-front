@@ -4,7 +4,9 @@
         <mat-option [value]="undefined">-- Selecciona --</mat-option>
         @for (type of (values | async); track type) {
             <mat-option [value]="type">
-                @if (capitalize) {
+                @if (labels[type]) {
+                    {{ labelFor(type) }}
+                } @else if (capitalize) {
                     {{ type | capitalizeEnumName }}
                 } @else {
                     {{ type }}

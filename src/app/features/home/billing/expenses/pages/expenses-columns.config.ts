@@ -1,7 +1,8 @@
 import {CrudColumnConfig} from "@shared/ui/crud/crud-column.config";
 
 export const EXPENSES_COLUMNS: CrudColumnConfig[] = [
-    {key: 'issueDate', label: 'FECHA EMISION / REGISTRO', format: 'date', dateFormat: 'dd/MM/yyyy'},
+    {key: 'issueDate', label: 'FECHA EMISION ', format: 'date', dateFormat: 'dd/MM/yyyy'},
+    {key: 'number', label: 'SERIE / NUMERO', fieldsTitle: ['series'], fields: ['number']},
     {key: 'supplier', label: 'PROVEEDOR', fieldsTitle: ['supplier.name'], fields: ['supplier.identity']},
     {
         key: 'amounts', label: ' (IVA) BASE / TOTAL',

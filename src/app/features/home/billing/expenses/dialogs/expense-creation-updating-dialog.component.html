@@ -74,6 +74,7 @@
         <app-form-select
                 [(selected)]="expense.expenseType"
                 [capitalize]="true"
+                [labels]="expenseTypeLabels"
                 [required]="true"
                 [values]="expenseTypes"
                 label="Tipo de gasto"/>

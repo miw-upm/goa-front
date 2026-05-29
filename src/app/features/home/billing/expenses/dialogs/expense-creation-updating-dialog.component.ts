@@ -23,7 +23,7 @@ import {AppDateFieldComponent} from "@shared/ui/inputs/forms/data.component";
 import {FormFieldComponent} from "@shared/ui/inputs/forms/form-field.component";
 import {FormSelectComponent} from "@shared/ui/inputs/forms/form-select.component";
 import {SupplierCreationDialogComponent} from './supplier-creation-dialog.component';
-import {EXPENSE_TYPES} from "../models/expense-type.model";
+import {EXPENSE_TYPE_LABELS, EXPENSE_TYPES} from "../models/expense-type.model";
 
 @Component({
     standalone: true,
@@ -48,6 +48,7 @@ export class ExpenseCreationUpdatingDialogComponent {
     title: string;
     categories: Observable<string[]>;
     expenseTypes = of(EXPENSE_TYPES);
+    expenseTypeLabels = EXPENSE_TYPE_LABELS;
     expense: Expense;
     selectedEngagementLetter?: EngagementLetter;
     private issueDateValue: Date | null = null;
@@ -69,7 +70,7 @@ export class ExpenseCreationUpdatingDialogComponent {
             vatRate: undefined,
             supplier: undefined,
             taxCategory: undefined,
-            expenseType: undefined,
+            expenseType: 'CURRENT',
             description: '',
             withholdingTax: 0,
         };

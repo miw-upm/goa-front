@@ -89,7 +89,7 @@ export class PaymentsComponent {
 
     private setEngagementIdAndSearch(id: string | undefined): void {
         this.criteria.client = undefined;
-        this.criteria.engagementId = id;
+        this.criteria.engagementId = id?.substring(0, 4);
         this.search();
     }
 }

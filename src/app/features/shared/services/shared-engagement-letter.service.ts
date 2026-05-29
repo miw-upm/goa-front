@@ -11,6 +11,11 @@ export class SharedEngagementLetterService {
     constructor(private readonly httpService: HttpService) {
     }
 
+    read(id: string): Observable<EngagementLetter> {
+        return this.httpService.request()
+            .get<EngagementLetter>(ENDPOINTS.engagementLetters.byId(id));
+    }
+
     searchByClient(client: string): Observable<EngagementLetter[]> {
         return this.httpService.request()
             .param('client', client ?? '')

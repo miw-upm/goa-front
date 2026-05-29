@@ -4,6 +4,8 @@ import {ExpenseType} from "./expense-type.model";
 
 export interface Expense {
     id?: string;
+    series?: string;
+    number?: number;
     recordedAt?: string;
     engagement?: EngagementLetter;
     issueDate: string;
