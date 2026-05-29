@@ -11,7 +11,7 @@ import {
     MatDialogTitle
 } from '@angular/material/dialog';
 import {MatIcon} from '@angular/material/icon';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 
 import {EngagementLetter} from '../../../engagement-letter/models/engagement-letter.model';
 import {ExpenseService} from '../expense.service';
@@ -23,6 +23,7 @@ import {AppDateFieldComponent} from "@shared/ui/inputs/forms/data.component";
 import {FormFieldComponent} from "@shared/ui/inputs/forms/form-field.component";
 import {FormSelectComponent} from "@shared/ui/inputs/forms/form-select.component";
 import {SupplierCreationDialogComponent} from './supplier-creation-dialog.component';
+import {EXPENSE_TYPES} from "../models/expense-type.model";
 
 @Component({
     standalone: true,
@@ -46,6 +47,7 @@ import {SupplierCreationDialogComponent} from './supplier-creation-dialog.compon
 export class ExpenseCreationUpdatingDialogComponent {
     title: string;
     categories: Observable<string[]>;
+    expenseTypes = of(EXPENSE_TYPES);
     expense: Expense;
     selectedEngagementLetter?: EngagementLetter;
     private issueDateValue: Date | null = null;
@@ -67,6 +69,7 @@ export class ExpenseCreationUpdatingDialogComponent {
             vatRate: undefined,
             supplier: undefined,
             taxCategory: undefined,
+            expenseType: undefined,
             description: '',
             withholdingTax: 0,
         };
@@ -135,6 +138,7 @@ export class ExpenseCreationUpdatingDialogComponent {
         return !!this.expense.supplier?.name?.trim()
             && !!this.expense.supplier?.identity?.trim()
             && !!this.expense.taxCategory
+            && !!this.expense.expenseType
             && !!this.expense.issueDate
             && this.isPositive(this.expense.baseAmount)
             && this.isPositive(this.expense.vatRate)
