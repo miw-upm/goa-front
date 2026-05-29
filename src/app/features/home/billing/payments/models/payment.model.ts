@@ -2,7 +2,6 @@ import {PaymentMethod} from './payment-method.model';
 
 export interface EngagementSnapshot {
     id?: string;
-    reference?: string;
 }
 
 export interface UserSnapshot {

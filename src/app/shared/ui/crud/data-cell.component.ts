@@ -43,6 +43,7 @@ export class DataCellComponent {
         const refValue = (this.config?.fieldsRef ?? [])
             .map(f => this.resolve(this.row, f))
             .filter(v => v !== null && v !== undefined && v !== '')
+            .map(v => this.formatRef(v))
             .join(sep);
         const titleValue = (this.config?.fieldsTitle ?? [])
             .map(f => this.resolve(this.row, f))
@@ -86,6 +87,7 @@ export class DataCellComponent {
         return this.config.fieldsRef
             .map(field => this.resolve(this.row, field))
             .filter(value => value !== null && value !== undefined && value !== '')
+            .map(value => this.formatRef(value))
             .join(sep);
     }
 
@@ -202,5 +204,9 @@ export class DataCellComponent {
     /** Resuelve un path con dot notation (ej: 'owner.firstName') sobre un objeto */
     private resolve(obj: any, path: string): any {
         return path.split('.').reduce((o, k) => o?.[k], obj);
+    }
+
+    private formatRef(value: any): string {
+        return String(value).substring(0, 4);
     }
 }

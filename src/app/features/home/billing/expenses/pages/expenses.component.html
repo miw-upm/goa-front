@@ -1,7 +1,7 @@
 <app-title (create)="create()" [createAction]="true" subtitle="Gestion" title="Gastos"></app-title>
 
 <div class="filters-card">
-    <app-filter-input (enter)="search()" [(value)]="criteria.engagementReference"
+    <app-filter-input (enter)="search()" [(value)]="criteria.engagementId"
                       title="Referencia hoja"></app-filter-input>
     <app-filter-input (enter)="search()" [(value)]="criteria.category" title="Categoria"></app-filter-input>
     <app-filter-input (enter)="search()" [(value)]="criteria.supplier" title="Proveedor"></app-filter-input>

@@ -1,5 +1,5 @@
 export interface ExpenseFindCriteria {
-    engagementReference?: string;
+    engagementId?: string;
     category?: string;
     supplier?: string;
     fromDate?: Date | string;

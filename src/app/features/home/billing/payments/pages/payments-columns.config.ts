@@ -8,7 +8,7 @@ export const PAYMENTS_COLUMNS: CrudColumnConfig[] = [
     {
         key: 'engagement',
         label: 'HOJA DE ENCARGO (Responsable)',
-        fieldsRef: ['engagement.reference'],
+        fieldsRef: ['pyment.engagement.id'],
         fieldsTitle: ['engagement.owner.firstName'],
         fields: ['engagement.lastUpdatedDate']
     },

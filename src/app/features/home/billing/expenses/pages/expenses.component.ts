@@ -58,7 +58,7 @@ export class ExpensesComponent {
     create(): void {
         this.dialog.open(ExpenseCreationUpdatingDialogComponent, {width: '720px'})
             .afterClosed()
-            .subscribe((reference?: string) => this.setEngagementReferenceAndSearch(reference));
+            .subscribe((id?: string) => this.setEngagementIdAndSearch(id));
     }
 
     read(expense: Expense): void {
@@ -70,7 +70,7 @@ export class ExpensesComponent {
     update(expense: Expense): void {
         this.dialog.open(ExpenseCreationUpdatingDialogComponent, {width: '720px', data: expense})
             .afterClosed()
-            .subscribe((reference?: string) => this.setEngagementReferenceAndSearch(reference));
+            .subscribe((id?: string) => this.setEngagementIdAndSearch(id));
     }
 
     delete(expense: Expense): void {
@@ -92,8 +92,8 @@ export class ExpensesComponent {
         return `${year}-${month}-${day}`;
     }
 
-    private setEngagementReferenceAndSearch(reference: string | undefined): void {
-        this.criteria.engagementReference = reference;
+    private setEngagementIdAndSearch(id: string | undefined): void {
+        this.criteria.engagementId = id;
         this.search();
     }
 }

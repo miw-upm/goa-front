@@ -16,7 +16,6 @@ import {EngagementLetterService} from '../engagement-letter.service';
 import {EngagementLetterFindCriteria} from '../models/engagement-letter-find-criteria.model';
 import {EngagementLetter} from '../models/engagement-letter.model';
 import {ENGAGEMENT_LETTERS_COLUMNS} from './engagement-letters-columns.config';
-import {map} from "rxjs/operators";
 
 @Component({
     standalone: true,
@@ -55,12 +54,7 @@ export class EngagementLettersComponent implements OnInit {
     }
 
     search(): void {
-        this.engagementLetters = this.engagementLettersService.search(this.criteria).pipe(
-            map(letters => letters.map(letter => ({
-                ...letter,
-                reference: letter.id?.substring(0, 4)
-            })))
-        );
+        this.engagementLetters = this.engagementLettersService.search(this.criteria);
     }
 
     create(): void {
