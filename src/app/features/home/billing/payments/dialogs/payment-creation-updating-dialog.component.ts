@@ -158,8 +158,10 @@ export class PaymentCreationUpdatingDialogComponent {
     }
 
     private buildPayment(): Payment {
+        const amount = Number(this.payment.amount);
         return {
             ...this.payment,
+            amount: Number(amount.toFixed(2)),
             engagement: this.selectedEngagementLetter?.id ? {id: this.selectedEngagementLetter.id} : undefined,
             user: {
                 id: this.selectedUser.id,

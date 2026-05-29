@@ -129,6 +129,17 @@ export class DataCellComponent {
         return `bool-chip--${color}`;
     }
 
+    get selectLabel(): string {
+        const value = this.singleValue;
+        return this.config?.selectConfig?.[value]?.label ?? '';
+    }
+
+    get selectColorClass(): string {
+        const value = this.singleValue;
+        const color = this.config?.selectConfig?.[value]?.color ?? 'default';
+        return `bool-chip--${color}`;
+    }
+
     get isArrayMode(): boolean {
         if (!this.config?.arrayField || !this.row) return false;
         const val = this.resolve(this.row, this.config.key);

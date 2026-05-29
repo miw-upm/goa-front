@@ -21,6 +21,11 @@
                     {{ booleanIcon }}
                 }{{ booleanLabel }}</span>
             }
+            @case ('select') {
+                @if (selectLabel) {
+                    <span class="bool-chip {{ selectColorClass }}">{{ selectLabel }}</span>
+                }
+            }
             @case ('date') {
                 @if (hasTitle) {
                     <span class="cell-primary">

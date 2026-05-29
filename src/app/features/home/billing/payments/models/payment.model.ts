@@ -18,7 +18,7 @@ export interface Payment {
     date: string;
     engagement?: EngagementSnapshot;
     user: UserSnapshot;
-    amount: number;
+    amount: number | string;
     method: PaymentMethod;
     invoiced?: boolean;
 }
