@@ -6,7 +6,7 @@
         <mat-button-toggle [value]="false">No Facturado</mat-button-toggle>
         <mat-button-toggle [value]="true">Facturado</mat-button-toggle>
     </mat-button-toggle-group>
-    <app-filter-input (enter)="search()" [(value)]="criteria.engagementReference"
+    <app-filter-input (enter)="search()" [(value)]="criteria.engagementId"
                       title="Referencia hoja"></app-filter-input>
     <app-filter-input (enter)="search()" [(value)]="criteria.client" title="Cliente"></app-filter-input>
     <app-filter-date (enter)="search()" [(date)]="criteria.fromDate" title="Desde"></app-filter-date>

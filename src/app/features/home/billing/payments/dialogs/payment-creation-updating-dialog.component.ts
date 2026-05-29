@@ -99,7 +99,7 @@ export class PaymentCreationUpdatingDialogComponent {
         }
         this.paymentService
             .create(this.buildPayment())
-            .subscribe(payment => this.dialogRef.close(payment?.engagement?.reference ?? this.selectedEngagementLetter?.reference));
+            .subscribe(payment => this.dialogRef.close(payment?.engagement?.id ?? this.selectedEngagementLetter?.id));
     }
 
     update(): void {
@@ -110,7 +110,7 @@ export class PaymentCreationUpdatingDialogComponent {
         const {id, ...payment} = this.buildPayment();
         this.paymentService
             .update(id, payment)
-            .subscribe(payment => this.dialogRef.close(payment?.engagement?.reference ?? this.selectedEngagementLetter?.reference));
+            .subscribe(payment => this.dialogRef.close(payment?.engagement?.id ?? this.selectedEngagementLetter?.id));
     }
 
     isCreate(): boolean {

@@ -50,14 +50,14 @@ export class PaymentsComponent {
         this.dialog
             .open(PaymentCreationUpdatingDialogComponent, {width: '600px'})
             .afterClosed()
-            .subscribe((reference?: string) => this.setEngagementReferenceAndSearch(reference));
+            .subscribe((id?: string) => this.setEngagementIdAndSearch(id));
     }
 
     update(payment: Payment): void {
         this.dialog
             .open(PaymentCreationUpdatingDialogComponent, {width: '600px', data: payment})
             .afterClosed()
-            .subscribe((reference?: string) => this.setEngagementReferenceAndSearch(reference));
+            .subscribe((id?: string) => this.setEngagementIdAndSearch(id));
     }
 
     delete(payment: Payment): void {
@@ -87,9 +87,9 @@ export class PaymentsComponent {
         return `${year}-${month}-${day}`;
     }
 
-    private setEngagementReferenceAndSearch(reference: string | undefined): void {
+    private setEngagementIdAndSearch(id: string | undefined): void {
         this.criteria.client = undefined;
-        this.criteria.engagementReference = reference;
+        this.criteria.engagementId = id;
         this.search();
     }
 }

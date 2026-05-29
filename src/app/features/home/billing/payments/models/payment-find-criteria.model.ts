@@ -1,6 +1,6 @@
 export interface PaymentFindCriteria {
     invoiced?: boolean;
-    engagementReference?: string;
+    engagementId?: string;
     client?: string;
     fromDate?: string;
 }
