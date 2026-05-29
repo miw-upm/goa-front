@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 import {ENDPOINTS} from '@core/api/endpoints';
 import {HttpService} from '@shared/ui/api/http.service';
@@ -13,6 +14,10 @@ export class SharedEngagementLetterService {
     searchByClient(client: string): Observable<EngagementLetter[]> {
         return this.httpService.request()
             .param('client', client ?? '')
-            .get(ENDPOINTS.engagementLetters.root);
+            .get<EngagementLetter[]>(ENDPOINTS.engagementLetters.root)
+            .pipe(map(letters => letters.map(letter => ({
+                ...letter,
+                reference: letter.reference ?? letter.id?.substring(0, 4)
+            }))));
     }
 }

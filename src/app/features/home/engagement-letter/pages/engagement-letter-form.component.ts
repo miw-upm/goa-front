@@ -107,13 +107,13 @@ export class EngagementLetterFormComponent implements OnInit {
 
     create(): void {
         this.engagementLetterService.create(this.prepareForSend()).subscribe(engagementLetter => {
-            this.navigateBack(engagementLetter);
+            this.navigateBack(this.resolveEngagementId(engagementLetter));
         });
     }
 
     update(): void {
         this.engagementLetterService.update(this.engagementLetter.id, this.prepareForSend()).subscribe(() => {
-            this.navigateBack(this.engagementLetter);
+            this.navigateBack(this.engagementLetter.id);
         });
     }
 
@@ -255,11 +255,17 @@ export class EngagementLetterFormComponent implements OnInit {
         };
     }
 
-    private navigateBack(engagementLetter: EngagementLetter): void {
-        const reference = engagementLetter.reference;
+    private navigateBack(id?: string): void {
         this.router.navigate(['/home/engagement-letters'], {
-            queryParams: {reference, opened: true}
+            queryParams: {id: id?.substring(0, 4), opened: true}
         });
+    }
+
+    private resolveEngagementId(response: EngagementLetter | string | null | undefined): string | undefined {
+        if (typeof response === 'string') {
+            return response;
+        }
+        return response?.id ?? this.engagementLetter.id;
     }
 
     private validDiscounts(): boolean {

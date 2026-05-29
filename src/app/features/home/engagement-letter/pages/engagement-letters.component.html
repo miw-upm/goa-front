@@ -13,7 +13,7 @@
         <mat-button-toggle [value]="false">Hoja</mat-button-toggle>
     </mat-button-toggle-group>
 
-    <app-filter-input (enter)="search()" [(value)]="criteria.reference" title="Referencia"></app-filter-input>
+    <app-filter-input (enter)="search()" [(value)]="criteria.id" title="Id"></app-filter-input>
     <app-filter-input (enter)="search()" [(value)]="criteria.client" title="Cliente"></app-filter-input>
     <app-filter-input (enter)="search()" [(value)]="criteria.legalProcedureTitle"
                       title="Titulo del Procedimiento"></app-filter-input>

@@ -16,6 +16,7 @@ import {EngagementLetterService} from '../engagement-letter.service';
 import {EngagementLetterFindCriteria} from '../models/engagement-letter-find-criteria.model';
 import {EngagementLetter} from '../models/engagement-letter.model';
 import {ENGAGEMENT_LETTERS_COLUMNS} from './engagement-letters-columns.config';
+import {map} from "rxjs/operators";
 
 @Component({
     standalone: true,
@@ -43,7 +44,7 @@ export class EngagementLettersComponent implements OnInit {
             this.criteria = {
                 opened: this.parseBoolean(params['opened'], hasParams ? null : true),
                 budgetOnly: this.parseBoolean(params['budgetOnly'], null),
-                reference: params['reference'] ?? undefined,
+                id: params['id'] ?? params['reference'] ?? undefined,
                 client: params['client'] ?? undefined,
                 legalProcedureTitle: params['legalProcedureTitle'] ?? undefined
             };
@@ -54,7 +55,12 @@ export class EngagementLettersComponent implements OnInit {
     }
 
     search(): void {
-        this.engagementLetters = this.engagementLettersService.search(this.criteria);
+        this.engagementLetters = this.engagementLettersService.search(this.criteria).pipe(
+            map(letters => letters.map(letter => ({
+                ...letter,
+                reference: letter.id?.substring(0, 4)
+            })))
+        );
     }
 
     create(): void {
@@ -127,7 +133,7 @@ export class EngagementLettersComponent implements OnInit {
         return {
             opened: this.criteria.opened,
             budgetOnly: this.criteria.budgetOnly,
-            reference: this.criteria.reference ?? null,
+            id: this.criteria.id ?? null,
             client: this.criteria.client ?? null,
             legalProcedureTitle: this.criteria.legalProcedureTitle ?? null
         };

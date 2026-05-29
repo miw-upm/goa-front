@@ -1,7 +1,7 @@
 export interface EngagementLetterFindCriteria {
     opened?: boolean;
     budgetOnly?: boolean;
-    reference?: string;
+    id?: string;
     client?: string;
     legalProcedureTitle?: string;
 }
