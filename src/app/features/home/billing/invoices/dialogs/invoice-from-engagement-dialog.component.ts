@@ -143,10 +143,24 @@ export class InvoiceFromEngagementDialogComponent {
             .filter((user): user is User => !!user)
             .filter((user, index, all) => all.findIndex(other => this.sameUser(other, user)) === index);
 
+        const percentages = this.distributePercentages(clients.length);
         return clients.map((user, index) => ({
             user,
-            percentage: index === 0 ? 100 : 0
+            percentage: percentages[index]
         }));
+    }
+
+    private distributePercentages(count: number): number[] {
+        if (count <= 0) {
+            return [];
+        }
+        const percentage = Number((100 / count).toFixed(4));
+        const percentages = Array(count).fill(percentage);
+        const accumulated = percentages
+            .slice(0, count - 1)
+            .reduce((total, value) => total + value, 0);
+        percentages[count - 1] = Number((100 - accumulated).toFixed(4));
+        return percentages;
     }
 
     private validBillingPercentages(): boolean {
