@@ -71,13 +71,16 @@
                 [required]="true"
                 [values]="categories"
                 label="Categoria fiscal"/>
-        <app-form-select
-                [(selected)]="expense.expenseType"
-                [capitalize]="true"
-                [labels]="expenseTypeLabels"
+        <app-form-field
+                #depreciationRateNg
+                [(value)]="expense.depreciationRate"
+                [max]="100"
+                [min]="1"
                 [required]="true"
-                [values]="expenseTypes"
-                label="Tipo de gasto"/>
+                [step]="1"
+                errorMessage="Obligatorio entre 1 y 100"
+                label="Amortización (%)"
+                type="number"/>
 
         <app-form-field
             #baseAmountNg
@@ -111,6 +114,26 @@
         <app-form-field
                 [(value)]="expense.description"
                 label="Descripcion"/>
+
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <span class="zone-title">Serie y número (solo para antiguos)</span>
+
+        <app-form-select
+                [(selected)]="expense.series"
+                [values]="seriesOptions"
+                label="Serie"/>
+
+        <app-form-field
+                #numberNg
+                [(value)]="expense.number"
+                [max]="10000"
+                [min]="1"
+                [step]="1"
+                errorMessage="Entero entre 1 y 10000"
+                label="Número"
+                type="number"/>
     </div>
 </mat-dialog-content>
 
@@ -118,7 +141,7 @@
     <button mat-dialog-close mat-raised-button>Cancelar</button>
     @if (isCreate()) {
         <button (click)="create()"
-                [disabled]="!canSubmit() || formInvalid(baseAmountNg.ngModel, vatRateNg.ngModel, withholdingTaxNg.ngModel)"
+                [disabled]="!canSubmit() || formInvalid(baseAmountNg.ngModel, vatRateNg.ngModel, depreciationRateNg.ngModel, withholdingTaxNg.ngModel, numberNg.ngModel)"
                 color="primary"
                 mat-raised-button>
             <mat-icon matButtonIcon>add</mat-icon>
@@ -126,7 +149,7 @@
         </button>
     } @else {
         <button (click)="update()"
-                [disabled]="!canSubmit() || formInvalid(baseAmountNg.ngModel, vatRateNg.ngModel, withholdingTaxNg.ngModel)"
+                [disabled]="!canSubmit() || formInvalid(baseAmountNg.ngModel, vatRateNg.ngModel, depreciationRateNg.ngModel, withholdingTaxNg.ngModel, numberNg.ngModel)"
                 color="primary"
                 mat-raised-button>
             Guardar

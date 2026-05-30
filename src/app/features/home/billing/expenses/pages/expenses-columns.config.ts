@@ -1,17 +1,17 @@
 import {CrudColumnConfig} from "@shared/ui/crud/crud-column.config";
-import {EXPENSE_TYPE_LABELS} from "../models/expense-type.model";
 
 export const EXPENSES_COLUMNS: CrudColumnConfig[] = [
-    {key: 'issueDate', label: 'FECHA EMISION ', format: 'date', dateFormat: 'dd/MM/yyyy'},
-    {key: 'number', label: 'SERIE / NUMERO', fieldsTitle: ['series'], fields: ['number']},
     {
-        key: 'expenseType',
-        label: 'TIPO',
+        key: 'capital',
+        label: 'TIPO GASTO',
         format: 'select',
         selectConfig: {
-            CAPITAL: {label: EXPENSE_TYPE_LABELS.CAPITAL, color: 'primary'}
+            true: {label: 'Inversión', color: 'primary'},
+            false: {label: 'Corriente', color: 'default'}
         }
     },
+    {key: 'issueDate', label: 'FECHA EMISION ', format: 'date', dateFormat: 'dd/MM/yyyy'},
+    {key: 'number', label: 'NUMERO / SERIE', fieldsTitle: ['number'], fields: ['series']},
     {key: 'supplier', label: 'PROVEEDOR', fieldsTitle: ['supplier.name'], fields: ['supplier.identity']},
     {
         key: 'amounts', label: ' (IVA) BASE / TOTAL',
@@ -21,13 +21,12 @@ export const EXPENSES_COLUMNS: CrudColumnConfig[] = [
         format: 'currency'
     },
 
-    {key: 'taxCategory', label: 'CATEGORIA (Descripción)', fieldsTitle: ['taxCategory'], fields: ['description']},
+    {key: 'taxCategory', label: 'DESCRIPCIÓN (Categoria)', fieldsTitle: ['description'], fields: ['taxCategory']},
     {
         key: 'engagement',
         label: 'HOJA DE ENCARGO',
         fieldsRef: ['engagement.id'],
-        fieldsTitle: ['engagement.owner.firstName'],
-        fields: ['engagement.legalProcedures.0.title']
+        fields: ['engagement.owner.firstName']
     },
     {key: 'withholdingTax', label: 'RETENCION', format: 'currency'}
 ];

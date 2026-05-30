@@ -23,7 +23,6 @@ import {AppDateFieldComponent} from "@shared/ui/inputs/forms/data.component";
 import {FormFieldComponent} from "@shared/ui/inputs/forms/form-field.component";
 import {FormSelectComponent} from "@shared/ui/inputs/forms/form-select.component";
 import {SupplierCreationDialogComponent} from './supplier-creation-dialog.component';
-import {EXPENSE_TYPE_LABELS, EXPENSE_TYPES} from "../models/expense-type.model";
 
 @Component({
     standalone: true,
@@ -47,8 +46,7 @@ import {EXPENSE_TYPE_LABELS, EXPENSE_TYPES} from "../models/expense-type.model";
 export class ExpenseCreationUpdatingDialogComponent {
     title: string;
     categories: Observable<string[]>;
-    expenseTypes = of(EXPENSE_TYPES);
-    expenseTypeLabels = EXPENSE_TYPE_LABELS;
+    seriesOptions = of(this.createSeriesOptions());
     expense: Expense;
     selectedEngagementLetter?: EngagementLetter;
     private issueDateValue: Date | null = null;
@@ -63,14 +61,17 @@ export class ExpenseCreationUpdatingDialogComponent {
         this.categories = this.expenseService.categories();
         this.expense = data ? {
             ...data,
-            supplier: {...data.supplier}
+            supplier: {...data.supplier},
+            depreciationRate: data.depreciationRate ?? 100
         } : {
             issueDate: undefined,
             baseAmount: undefined,
             vatRate: undefined,
             supplier: undefined,
             taxCategory: undefined,
-            expenseType: 'CURRENT',
+            depreciationRate: 100,
+            series: String(new Date().getFullYear()),
+            number: undefined,
             description: '',
             withholdingTax: 0,
         };
@@ -139,11 +140,12 @@ export class ExpenseCreationUpdatingDialogComponent {
         return !!this.expense.supplier?.name?.trim()
             && !!this.expense.supplier?.identity?.trim()
             && !!this.expense.taxCategory
-            && !!this.expense.expenseType
+            && this.validDepreciationRate()
             && !!this.expense.issueDate
             && this.isPositive(this.expense.baseAmount)
             && this.isPositive(this.expense.vatRate)
-            && this.isPositiveOrZero(this.expense.withholdingTax);
+            && this.isPositiveOrZero(this.expense.withholdingTax)
+            && this.validNumber();
     }
 
     formInvalid(...controls: NgModel[]): boolean {
@@ -157,8 +159,29 @@ export class ExpenseCreationUpdatingDialogComponent {
                 ? {id: this.selectedEngagementLetter.id} as EngagementLetter
                 : undefined,
             supplier: {...this.expense.supplier},
+            depreciationRate: Number(this.expense.depreciationRate),
+            series: this.expense.series || undefined,
+            number: this.expense.number ? Number(this.expense.number) : undefined,
             withholdingTax: Number(this.expense.withholdingTax ?? 0)
         };
+    }
+
+    private createSeriesOptions(): string[] {
+        const currentYear = new Date().getFullYear();
+        return Array.from({length: 10}, (_, index) => String(currentYear - index));
+    }
+
+    private validNumber(): boolean {
+        if (this.expense.number === undefined || this.expense.number === null || this.expense.number === '') {
+            return true;
+        }
+        const value = Number(this.expense.number);
+        return Number.isInteger(value) && value >= 1 && value <= 10000;
+    }
+
+    private validDepreciationRate(): boolean {
+        const value = Number(this.expense.depreciationRate);
+        return Number.isFinite(value) && value >= 1 && value <= 100;
     }
 
     private isPositive(value: number | undefined): boolean {
