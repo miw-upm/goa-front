@@ -118,7 +118,7 @@ export class InvoicesComponent {
     private executeRun(_invoice: Invoice): void {
         if (_invoice.id) {
             this.invoiceService.emission(_invoice.id).subscribe(() => {
-                this.setClientAndSearch(this.invoiceClientName(_invoice));
+                this.setEngagementReferenceAndSearch(_invoice.engagement?.id?.substring(0, 4));
             });
         }
     }
@@ -145,22 +145,9 @@ export class InvoicesComponent {
         }
     }
 
-    private setClientAndSearch(client: string | undefined): void {
-        this.criteria.client = client;
-        this.search();
-    }
-
     private setEngagementReferenceAndSearch(reference: string | undefined): void {
         this.criteria.client = undefined;
         this.criteria.engagementReference = reference;
         this.search();
-    }
-
-    private invoiceClientName(invoice: Invoice): string | undefined {
-        if (invoice.billingInfo?.fullName) {
-            return invoice.billingInfo.fullName;
-        }
-        const owner = invoice.engagement?.owner;
-        return owner ? `${owner.firstName ?? ''} ${owner.familyName ?? ''}`.trim() : undefined;
     }
 }

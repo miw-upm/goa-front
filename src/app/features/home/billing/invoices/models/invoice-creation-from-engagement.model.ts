@@ -7,6 +7,7 @@ export interface InvoiceBillingPercentage {
 
 export interface InvoiceCreationFromEngagement {
     engagementId: string;
+    concept: string;
     closeEngagement: boolean;
     legalProcedures: LegalProcedure[];
     billingPercentages: InvoiceBillingPercentage[];

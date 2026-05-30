@@ -76,7 +76,7 @@ export class PaymentCreationUpdatingDialogComponent {
             engagement: data?.engagement,
             user: data?.user ?? {},
             amount: data?.amount,
-            method: data?.method,
+            method: data?.method ?? PaymentMethod.TRANSFER,
         };
         this.selectedEngagementLetter = data?.engagement as EngagementLetter;
         this.selectedUser = data?.user as User;

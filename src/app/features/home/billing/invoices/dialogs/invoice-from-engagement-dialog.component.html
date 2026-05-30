@@ -60,6 +60,14 @@
     </div>
 
     <div class="zone-card zone-card--column">
+        <span class="zone-title">Concepto</span>
+        <app-form-textarea
+                #conceptNg
+                errorMessage="Obligatorio"
+                label="Concepto"/>
+    </div>
+
+    <div class="zone-card zone-card--column">
         <div class="zone-row">
             <span class="zone-title">Porcentaje de facturación de clientes</span>
             <span>Total: {{ billingPercentageTotal() }}%</span>
@@ -89,7 +97,7 @@
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Cancelar</button>
     <button (click)="create()"
-            [disabled]="!canCreate()"
+            [disabled]="!canCreate() || formInvalid(conceptNg.ngModel)"
             color="primary"
             mat-raised-button>
         <mat-icon matButtonIcon>add</mat-icon>

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, NgModel} from '@angular/forms';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {
     MatDialog,
@@ -27,6 +27,7 @@ import {
     SearchByLegalProcedureTemplateComponent
 } from "@features/shared/ui/search-by-legal-procedure-template.component";
 import {FormListComponent} from "@shared/ui/inputs/forms/form-list.component";
+import {FormTextareaComponent} from "@shared/ui/inputs/forms/form-textarea.component";
 
 interface CustomerBillingPercentage {
     user: User;
@@ -52,12 +53,14 @@ interface CustomerBillingPercentage {
         SearchByEngagementLetterComponent,
         SearchByLegalProcedureTemplateComponent,
         FormListComponent,
+        FormTextareaComponent,
     ],
     templateUrl: 'invoice-from-engagement-dialog.component.html'
 })
 export class InvoiceFromEngagementDialogComponent {
     selectedEngagementLetter?: EngagementLetter;
     closeEngagement = false;
+    concept = '';
     legalProcedures: LegalProcedure[] = [];
     billingPercentages: CustomerBillingPercentage[] = [];
 
@@ -79,6 +82,7 @@ export class InvoiceFromEngagementDialogComponent {
 
     removeEngagementLetter(): void {
         this.selectedEngagementLetter = undefined;
+        this.concept = '';
         this.legalProcedures = [];
         this.billingPercentages = [];
     }
@@ -110,8 +114,13 @@ export class InvoiceFromEngagementDialogComponent {
 
     canCreate(): boolean {
         return !!this.selectedEngagementLetter?.id
+            && !!this.concept.trim()
             && this.legalProcedures.length > 0
             && this.validBillingPercentages();
+    }
+
+    formInvalid(...controls: NgModel[]): boolean {
+        return controls.some(control => control.invalid && (control.dirty || control.touched));
     }
 
     billingPercentageTotal(): number {
@@ -125,6 +134,7 @@ export class InvoiceFromEngagementDialogComponent {
         }
         this.invoiceService.createFromEngagement({
             engagementId,
+            concept: this.concept,
             closeEngagement: this.closeEngagement,
             legalProcedures: this.legalProcedures.map(procedure => ({
                 ...procedure,
