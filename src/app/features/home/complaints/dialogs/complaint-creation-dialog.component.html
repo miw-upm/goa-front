@@ -1,0 +1,71 @@
+<h4 mat-dialog-title>{{ title }}</h4>
+<mat-dialog-content>
+    <mat-form-field class="full-width">
+        <mat-label>Id de Hoja de Encargo</mat-label>
+        <mat-select [(ngModel)]="complaint.engagementId">
+            @for (engagementId of (engagementIds | async); track engagementId) {
+                <mat-option [value]="engagementId">{{ engagementId }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
+    <app-form-field
+        #descriptionNg
+        [(value)]="complaint.description"
+        [required]="true"
+        errorMessage="Obligatorio"
+        label="Descripción"/>
+
+    <mat-form-field class="full-width">
+        <mat-label>Estado</mat-label>
+        <mat-select [(ngModel)]="complaint.status">
+            <mat-option value="OPEN">OPEN</mat-option>
+            <mat-option value="IN_PROGRESS">IN_PROGRESS</mat-option>
+            <mat-option value="RESOLVED">RESOLVED</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <app-form-field
+        #createdAtNg
+        [(value)]="complaint.createdAt"
+        [required]="true"
+        errorMessage="Obligatorio"
+        label="Fecha de Creación"
+        type="datetime-local"/>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Cerrar</button>
+
+    <button
+            (click)="create()"
+            [disabled]="!canSubmit() || formInvalid(descriptionNg.ngModel, createdAtNg.ngModel)"
+            color="primary"
+            mat-raised-button>
+        Crear
+    </button>
+</mat-dialog-actions>
+
+<!--
+Para actualizar
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Cerrar</button>
+
+    @if (isCreate()) {
+        <button
+                (click)="create()"
+                [disabled]="!canSubmit() || formInvalid(descriptionNg.ngModel, createdAtNg.ngModel)"
+                color="primary"
+                mat-raised-button>
+            Crear
+        </button>
+    } @else {
+        <button
+                (click)="update()"
+                [disabled]="!canSubmit() || formInvalid(descriptionNg.ngModel, createdAtNg.ngModel)"
+                color="primary"
+                mat-raised-button>
+            Actualizar
+        </button>
+    }
+</mat-dialog-actions>-->

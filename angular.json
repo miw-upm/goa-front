@@ -67,7 +67,8 @@
               "buildTarget": "goa-front:build:production"
             },
             "development": {
-              "buildTarget": "goa-front:build:development"
+              "buildTarget": "goa-front:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
