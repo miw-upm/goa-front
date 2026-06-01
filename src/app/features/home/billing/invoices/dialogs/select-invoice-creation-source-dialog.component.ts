@@ -9,7 +9,7 @@ import {
 } from '@angular/material/dialog';
 import {MatIcon} from '@angular/material/icon';
 
-export type InvoiceCreationSource = 'manual' | 'payments' | 'engagement';
+export type InvoiceCreationSource = 'manual' | 'payments' | 'engagement' | 'rectification';
 
 @Component({
     standalone: true,

@@ -79,6 +79,7 @@ export const ENDPOINTS = {
         view: (id: string) => `${INVOICE_ROOT}/${enc(id)}/view`,
         fromPayments: () => `${INVOICE_ROOT}/from-payments`,
         fromEngagement: () => `${INVOICE_ROOT}/from-engagement`,
+        rectification: () => `${INVOICE_ROOT}/rectification`,
     },
 
     payments: {

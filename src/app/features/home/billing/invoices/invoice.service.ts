@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {InvoiceCreation} from './models/invoice-creation.model';
 import {InvoiceCreationFromEngagement} from './models/invoice-creation-from-engagement.model';
 import {InvoiceCreationFromPayments} from './models/invoice-creation-from-payments.model';
+import {InvoiceCreationRectification} from './models/invoice-creation-rectification.model';
 import {InvoiceFindCriteria} from './models/invoice-find-criteria.model';
 import {Invoice} from './models/invoice.model';
 import {HttpService} from "@shared/ui/api/http.service";
@@ -30,6 +31,12 @@ export class InvoiceService {
         return this.httpService.request()
             .success()
             .post<void>(ENDPOINTS.invoices.fromEngagement(), creation);
+    }
+
+    createRectification(creation: InvoiceCreationRectification): Observable<Invoice> {
+        return this.httpService.request()
+            .success()
+            .post<Invoice>(ENDPOINTS.invoices.rectification(), creation);
     }
 
     read(id: string): Observable<Invoice> {

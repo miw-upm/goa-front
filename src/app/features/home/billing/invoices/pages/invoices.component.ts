@@ -4,6 +4,7 @@ import {Observable, of} from 'rxjs';
 
 import {InvoiceCreationUpdatingDialogComponent} from '../dialogs/invoice-creation-updating-dialog.component';
 import {InvoiceFromEngagementDialogComponent} from '../dialogs/invoice-from-engagement-dialog.component';
+import {InvoiceRectificationDialogComponent} from '../dialogs/invoice-rectification-dialog.component';
 import {
     InvoiceCreationSource,
     SelectInvoiceCreationSourceDialogComponent
@@ -142,6 +143,15 @@ export class InvoicesComponent {
             this.dialog.open(InvoiceFromEngagementDialogComponent, {width: '720px'})
                 .afterClosed()
                 .subscribe((reference?: string) => this.setEngagementReferenceAndSearch(reference));
+        }
+        if (source === 'rectification') {
+            this.dialog.open(InvoiceRectificationDialogComponent, {width: '720px'})
+                .afterClosed()
+                .subscribe(result => {
+                    if (result) {
+                        this.search();
+                    }
+                });
         }
     }
 
