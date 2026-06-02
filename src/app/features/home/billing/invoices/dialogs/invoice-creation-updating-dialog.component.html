@@ -2,24 +2,39 @@
 
 <mat-dialog-content>
     <div class="zone-card zone-card--column">
-        <div class="zone-row">
-            <span class="zone-title">Cliente de facturacion</span>
-            <app-search-by-customer
-                    (userChange)="setUser($event)"
-                    title="Buscar cliente">
-            </app-search-by-customer>
-        </div>
+        <span class="zone-title">Cliente de facturacion</span>
 
-        @if (selectedUser) {
-            <app-form-customer
-                    (remove)="removeUser()"
-                    [fullName]="(selectedUser.firstName ?? '') + ' ' + (selectedUser.familyName ?? '')"
-                    [mobile]="selectedUser.mobile">
-            </app-form-customer>
-        } @else if (!isCreate() && invoice.billingInfo) {
-            <app-form-customer
-                    [fullName]="invoice.billingInfo.fullName">
-            </app-form-customer>
+        @if (isCreate()) {
+            <div class="zone-row">
+                <app-search-by-customer
+                        (userChange)="setUser($event)"
+                        title="Buscar cliente">
+                </app-search-by-customer>
+            </div>
+
+            @if (selectedUser) {
+                <app-form-customer
+                        (remove)="removeUser()"
+                        [fullName]="(selectedUser.firstName ?? '') + ' ' + (selectedUser.familyName ?? '')"
+                        [mobile]="selectedUser.mobile">
+                </app-form-customer>
+            }
+        } @else {
+            <app-form-field
+                    [(value)]="invoice.billingInfo.fullName"
+                    [required]="true"
+                    errorMessage="Obligatorio"
+                    label="Nombre fiscal"/>
+            <app-form-field
+                    [(value)]="invoice.billingInfo.identity"
+                    [required]="true"
+                    errorMessage="Obligatorio"
+                    label="Identidad"/>
+            <app-form-textarea
+                    [(value)]="invoice.billingInfo.fullAddress"
+                    [required]="true"
+                    errorMessage="Obligatorio"
+                    label="Direccion fiscal"/>
         }
     </div>
 

@@ -130,7 +130,7 @@ export class InvoiceCreationUpdatingDialogComponent {
     }
 
     canUpdate(): boolean {
-        return !!this.invoice.billingInfo && this.hasRequiredValues() && this.validDiscounts();
+        return this.validBillingInfo() && this.hasRequiredValues() && this.validDiscounts();
     }
 
     private buildCreation(): InvoiceCreation {
@@ -145,16 +145,8 @@ export class InvoiceCreationUpdatingDialogComponent {
     }
 
     private buildInvoice(): Invoice {
-        const selectedUser = this.selectedUser;
         return {
             ...this.invoice,
-            billingInfo: selectedUser ? {
-                userId: selectedUser.id!,
-                fullName: `${selectedUser.firstName ?? ''} ${selectedUser.familyName ?? ''}`.trim(),
-                identity: selectedUser.identity,
-                fullAddress: this.userAddress(selectedUser),
-
-            } : this.invoice.billingInfo,
             baseAmount: Number(this.invoice.baseAmount),
             concept: this.invoice.concept,
             discounts: this.invoice.discounts?.map(value => Number(value)) ?? []
@@ -171,6 +163,12 @@ export class InvoiceCreationUpdatingDialogComponent {
 
     private validDiscounts(): boolean {
         return (this.invoice.discounts ?? []).every(value => Number.isFinite(Number(value)) && Number(value) >= 0);
+    }
+
+    private validBillingInfo(): boolean {
+        return !!this.invoice.billingInfo?.fullName?.trim()
+            && !!this.invoice.billingInfo?.identity?.trim()
+            && !!this.invoice.billingInfo?.fullAddress?.trim();
     }
 
     private validOptionalAmount(value: string | number | undefined): boolean {
