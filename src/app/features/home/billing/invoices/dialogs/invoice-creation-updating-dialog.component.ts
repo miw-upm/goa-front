@@ -66,8 +66,9 @@ export class InvoiceCreationUpdatingDialogComponent {
         } : {
             billingInfo: {
                 userId: undefined,
-                concept: ''
+
             },
+            concept: '',
             baseAmount: undefined,
             discounts: [],
         };
@@ -135,7 +136,7 @@ export class InvoiceCreationUpdatingDialogComponent {
     private buildCreation(): InvoiceCreation {
         return {
             userId: this.selectedUser!.id!,
-            concept: this.invoice.billingInfo.concept,
+            concept: this.invoice.concept,
             baseAmount: Number(this.invoice.baseAmount),
             baseExpense: this.optionalNumber(this.baseExpense),
             vatExpense: this.optionalNumber(this.vatExpense),
@@ -152,15 +153,16 @@ export class InvoiceCreationUpdatingDialogComponent {
                 fullName: `${selectedUser.firstName ?? ''} ${selectedUser.familyName ?? ''}`.trim(),
                 identity: selectedUser.identity,
                 fullAddress: this.userAddress(selectedUser),
-                concept: this.invoice.billingInfo.concept
+
             } : this.invoice.billingInfo,
             baseAmount: Number(this.invoice.baseAmount),
+            concept: this.invoice.concept,
             discounts: this.invoice.discounts?.map(value => Number(value)) ?? []
         };
     }
 
     private hasRequiredValues(): boolean {
-        return !!this.invoice.billingInfo.concept?.trim()
+        return !!this.invoice.concept?.trim()
             && Number.isFinite(Number(this.invoice.baseAmount))
             && Number(this.invoice.baseAmount) > 0
             && this.validOptionalAmount(this.baseExpense)

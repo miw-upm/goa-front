@@ -92,9 +92,11 @@ export class InvoicesComponent {
     }
 
     private executeUpdate(invoice: Invoice): void {
-        this.dialog.open(InvoiceCreationUpdatingDialogComponent, {width: '720px', data: invoice})
-            .afterClosed()
-            .subscribe((reference?: string) => this.setEngagementReferenceAndSearch(reference));
+        this.invoiceService.read(invoice.id).subscribe(fullInvoice => {
+            this.dialog.open(InvoiceCreationUpdatingDialogComponent, {width: '720px', data: fullInvoice})
+                .afterClosed()
+                .subscribe((reference?: string) => this.setEngagementReferenceAndSearch(reference));
+        });
     }
 
     private executeDelete(invoice: Invoice): void {

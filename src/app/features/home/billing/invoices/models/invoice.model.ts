@@ -9,6 +9,7 @@ export interface Rectification {
 export interface Invoice {
     id?: string;
     billingInfo: BillingInfo;
+    concept?: string;
     emissionDate?: string;
     operationDate?: string;
     series?: string;

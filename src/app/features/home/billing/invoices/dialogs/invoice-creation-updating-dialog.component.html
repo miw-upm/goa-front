@@ -17,15 +17,9 @@
                     [mobile]="selectedUser.mobile">
             </app-form-customer>
         } @else if (!isCreate() && invoice.billingInfo) {
-            <div class="item-card">
-                <span class="avatar avatar--primary">
-                    {{ invoice.billingInfo.fullName?.charAt(0) }}
-                </span>
-                <div class="person-info">
-                    <span class="person-name">{{ invoice.billingInfo.fullName }}</span>
-                    <span class="person-detail">{{ invoice.billingInfo.identity }}</span>
-                </div>
-            </div>
+            <app-form-customer
+                    [fullName]="invoice.billingInfo.fullName">
+            </app-form-customer>
         }
     </div>
 
@@ -34,7 +28,7 @@
 
         <app-form-textarea
             #conceptNg
-            [(value)]="invoice.billingInfo.concept"
+            [(value)]="invoice.concept"
             [required]="true"
             errorMessage="Obligatorio"
             label="Concepto"/>
@@ -48,22 +42,21 @@
             label="Base imponible"
             type="number"/>
 
-        @if (isCreate()) {
-            <app-form-field
+        <app-form-field
                 [(value)]="baseExpense"
                 [min]="0"
                 [step]="0.01"
                 errorMessage="Debe ser mayor o igual que 0"
                 label="Base gastos"
                 type="number"/>
-            <app-form-field
+        <app-form-field
                 [(value)]="vatExpense"
                 [min]="0"
                 [step]="0.01"
                 errorMessage="Debe ser mayor o igual que 0"
                 label="IVA gastos"
                 type="number"/>
-        }
+
 
         @if (!isCreate()) {
             <app-form-date [(value)]="operationDate" label="Fecha de operacion"/>

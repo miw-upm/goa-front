@@ -3,5 +3,4 @@ export interface BillingInfo {
     fullName?: string;
     identity?: string;
     fullAddress?: string;
-    concept: string;
 }
