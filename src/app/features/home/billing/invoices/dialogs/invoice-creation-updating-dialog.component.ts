@@ -49,6 +49,8 @@ export class InvoiceCreationUpdatingDialogComponent {
     title: string;
     invoice: Invoice;
     selectedUser?: User;
+    baseExpense?: string | number;
+    vatExpense?: string | number;
     private operationDateValue: Date | null = null;
 
     constructor(
@@ -135,6 +137,8 @@ export class InvoiceCreationUpdatingDialogComponent {
             userId: this.selectedUser!.id!,
             concept: this.invoice.billingInfo.concept,
             baseAmount: Number(this.invoice.baseAmount),
+            baseExpense: this.optionalNumber(this.baseExpense),
+            vatExpense: this.optionalNumber(this.vatExpense),
             discounts: this.invoice.discounts?.map(value => Number(value)) ?? []
         };
     }
@@ -158,11 +162,25 @@ export class InvoiceCreationUpdatingDialogComponent {
     private hasRequiredValues(): boolean {
         return !!this.invoice.billingInfo.concept?.trim()
             && Number.isFinite(Number(this.invoice.baseAmount))
-            && Number(this.invoice.baseAmount) > 0;
+            && Number(this.invoice.baseAmount) > 0
+            && this.validOptionalAmount(this.baseExpense)
+            && this.validOptionalAmount(this.vatExpense);
     }
 
     private validDiscounts(): boolean {
         return (this.invoice.discounts ?? []).every(value => Number.isFinite(Number(value)) && Number(value) >= 0);
+    }
+
+    private validOptionalAmount(value: string | number | undefined): boolean {
+        return this.emptyValue(value) || (Number.isFinite(Number(value)) && Number(value) >= 0);
+    }
+
+    private optionalNumber(value: string | number | undefined): number | undefined {
+        return this.emptyValue(value) ? undefined : Number(value);
+    }
+
+    private emptyValue(value: string | number | undefined): boolean {
+        return value === undefined || value === '';
     }
 
     private userAddress(user: User): string {

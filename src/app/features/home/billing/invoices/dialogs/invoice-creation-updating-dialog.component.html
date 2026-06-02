@@ -48,6 +48,23 @@
             label="Base imponible"
             type="number"/>
 
+        @if (isCreate()) {
+            <app-form-field
+                [(value)]="baseExpense"
+                [min]="0"
+                [step]="0.01"
+                errorMessage="Debe ser mayor o igual que 0"
+                label="Base gastos"
+                type="number"/>
+            <app-form-field
+                [(value)]="vatExpense"
+                [min]="0"
+                [step]="0.01"
+                errorMessage="Debe ser mayor o igual que 0"
+                label="IVA gastos"
+                type="number"/>
+        }
+
         @if (!isCreate()) {
             <app-form-date [(value)]="operationDate" label="Fecha de operacion"/>
         }

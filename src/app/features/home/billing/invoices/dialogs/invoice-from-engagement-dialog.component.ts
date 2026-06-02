@@ -114,7 +114,6 @@ export class InvoiceFromEngagementDialogComponent {
 
     canCreate(): boolean {
         return !!this.selectedEngagementLetter?.id
-            && !!this.concept.trim()
             && this.legalProcedures.length > 0
             && this.validBillingPercentages();
     }

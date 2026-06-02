@@ -3,13 +3,25 @@ import {CrudColumnConfig} from "@shared/ui/crud/crud-column.config";
 export const INVOICES_COLUMNS: CrudColumnConfig[] = [
     {
         key: 'issued',
-        label: 'TIPO',
+        label: 'ESTADO',
         format: 'boolean',
         booleanConfig: {
             trueLabel: 'FACTURA',
             falseLabel: 'PROFORMA',
             trueColor: 'success',
             falseColor: 'primary',
+            showIcon: false
+        }
+    },
+    {
+        key: 'rectification',
+        label: 'TIPO',
+        format: 'boolean',
+        booleanConfig: {
+            trueLabel: 'RECTIFICATIVA',
+            falseLabel: '',
+            trueColor: 'success',
+            falseColor: 'success',
             showIcon: false
         }
     },

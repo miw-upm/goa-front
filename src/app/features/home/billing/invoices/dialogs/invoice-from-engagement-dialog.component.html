@@ -63,6 +63,7 @@
         <span class="zone-title">Concepto</span>
         <app-form-textarea
                 #conceptNg
+                [(value)]="concept"
                 errorMessage="Obligatorio"
                 label="Concepto"/>
     </div>
@@ -97,7 +98,7 @@
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Cancelar</button>
     <button (click)="create()"
-            [disabled]="!canCreate() || formInvalid(conceptNg.ngModel)"
+            [disabled]="!canCreate()"
             color="primary"
             mat-raised-button>
         <mat-icon matButtonIcon>add</mat-icon>
