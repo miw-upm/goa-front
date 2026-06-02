@@ -1,0 +1,91 @@
+<h4 mat-dialog-title>Edicion de Factura</h4>
+
+<mat-dialog-content>
+    <div class="zone-card zone-card--column">
+        <span class="zone-title">Cliente de facturacion</span>
+
+        <app-form-field
+                #fullNameNg
+                [(value)]="invoice.billingInfo.fullName"
+                [required]="true"
+                errorMessage="Obligatorio"
+                label="Nombre fiscal"/>
+        <app-form-field
+                #identityNg
+                [(value)]="invoice.billingInfo.identity"
+                [required]="true"
+                errorMessage="Obligatorio"
+                label="Identidad"/>
+        <app-form-textarea
+                #fullAddressNg
+                [(value)]="invoice.billingInfo.fullAddress"
+                [required]="true"
+                errorMessage="Obligatorio"
+                label="Direccion fiscal"/>
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <span class="zone-title">Datos de factura</span>
+
+        <app-form-textarea
+                #conceptNg
+                [(value)]="invoice.concept"
+                [required]="true"
+                errorMessage="Obligatorio"
+                label="Concepto"/>
+        <app-form-field
+                #baseAmountNg
+                [(value)]="invoice.baseAmount"
+                [min]="0.01"
+                [required]="true"
+                [step]="0.01"
+                errorMessage="Obligatorio y mayor que 0"
+                label="Base imponible"
+                type="number"/>
+        <app-form-date [(value)]="operationDate" label="Fecha de operacion"/>
+    </div>
+
+    @if (invoice.rectification) {
+        <div class="zone-card zone-card--column">
+            <span class="zone-title">Rectificacion</span>
+
+            <app-form-textarea
+                    [(value)]="invoice.originalInvoice.reason"
+                    [required]="true"
+                    errorMessage="Obligatorio"
+                    label="Motivo"/>
+        </div>
+    }
+
+    <div class="zone-card zone-card--column">
+        <div class="zone-row">
+            <span class="zone-title">Descuentos (€)</span>
+            <button (click)="addDiscount()" color="primary" mat-flat-button type="button">
+                <mat-icon>add</mat-icon>
+                Crear
+            </button>
+        </div>
+
+        @for (discount of invoice.discounts; track $index; let i = $index) {
+            <div class="item-card">
+                <mat-form-field class="full-width">
+                    <mat-label>Descuento</mat-label>
+                    <input [(ngModel)]="invoice.discounts[i]" matInput min="0" step="0.01" type="number">
+                </mat-form-field>
+                <button (click)="removeDiscount(i)" aria-label="Eliminar descuento" mat-icon-button type="button">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        }
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Cancelar</button>
+    <button (click)="update()"
+            [disabled]="!canUpdate() || formInvalid(fullNameNg.ngModel, identityNg.ngModel, fullAddressNg.ngModel, conceptNg.ngModel, baseAmountNg.ngModel)"
+            color="primary"
+            mat-raised-button>
+        Guardar
+    </button>
+</mat-dialog-actions>

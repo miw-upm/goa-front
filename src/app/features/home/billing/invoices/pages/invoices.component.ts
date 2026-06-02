@@ -2,9 +2,10 @@ import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {Observable, of} from 'rxjs';
 
-import {InvoiceCreationUpdatingDialogComponent} from '../dialogs/invoice-creation-updating-dialog.component';
+import {InvoiceCreationDialogComponent} from '../dialogs/invoice-creation-dialog.component';
 import {InvoiceFromEngagementDialogComponent} from '../dialogs/invoice-from-engagement-dialog.component';
 import {InvoiceRectificationDialogComponent} from '../dialogs/invoice-rectification-dialog.component';
+import {InvoiceUpdatingDialogComponent} from '../dialogs/invoice-updating-dialog.component';
 import {
     InvoiceCreationSource,
     SelectInvoiceCreationSourceDialogComponent
@@ -92,8 +93,11 @@ export class InvoicesComponent {
     }
 
     private executeUpdate(invoice: Invoice): void {
+        if (!invoice.id) {
+            return;
+        }
         this.invoiceService.read(invoice.id).subscribe(fullInvoice => {
-            this.dialog.open(InvoiceCreationUpdatingDialogComponent, {width: '720px', data: fullInvoice})
+            this.dialog.open(InvoiceUpdatingDialogComponent, {width: '720px', data: fullInvoice})
                 .afterClosed()
                 .subscribe((reference?: string) => this.setEngagementReferenceAndSearch(reference));
         });
@@ -137,7 +141,7 @@ export class InvoicesComponent {
 
     private openCreationDialog(source?: InvoiceCreationSource): void {
         if (source === 'manual') {
-            this.dialog.open(InvoiceCreationUpdatingDialogComponent, {width: '720px'})
+            this.dialog.open(InvoiceCreationDialogComponent, {width: '720px'})
                 .afterClosed()
                 .subscribe((reference?: string) => this.setEngagementReferenceAndSearch(reference));
         }

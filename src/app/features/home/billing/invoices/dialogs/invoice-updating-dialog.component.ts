@@ -1,4 +1,4 @@
-import {Component, Inject, Optional} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {FormsModule, NgModel} from '@angular/forms';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {
@@ -13,15 +13,11 @@ import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatIcon} from '@angular/material/icon';
 import {MatInput} from '@angular/material/input';
 
-import {InvoiceService} from '../invoice.service';
-import {InvoiceCreation} from '../models/invoice-creation.model';
-import {Invoice} from '../models/invoice.model';
-import {SearchByCustomerComponent} from "@features/shared/ui/search-by-customer.component";
-import {FormCustomerComponent} from "@shared/ui/inputs/forms/form-customer.component";
 import {AppDateFieldComponent} from "@shared/ui/inputs/forms/data.component";
 import {FormFieldComponent} from "@shared/ui/inputs/forms/form-field.component";
 import {FormTextareaComponent} from "@shared/ui/inputs/forms/form-textarea.component";
-import {User} from "@features/shared/models/user.model";
+import {InvoiceService} from '../invoice.service';
+import {Invoice} from '../models/invoice.model';
 
 @Component({
     standalone: true,
@@ -37,42 +33,28 @@ import {User} from "@features/shared/models/user.model";
         MatFormField,
         MatLabel,
         MatInput,
-        SearchByCustomerComponent,
-        FormCustomerComponent,
         AppDateFieldComponent,
         FormFieldComponent,
         FormTextareaComponent,
     ],
-    templateUrl: 'invoice-creation-updating-dialog.component.html'
+    templateUrl: 'invoice-updating-dialog.component.html'
 })
-export class InvoiceCreationUpdatingDialogComponent {
-    title: string;
+export class InvoiceUpdatingDialogComponent {
     invoice: Invoice;
-    selectedUser?: User;
-    baseExpense?: string | number;
-    vatExpense?: string | number;
     private operationDateValue: Date | null = null;
 
     constructor(
         private readonly invoiceService: InvoiceService,
-        private readonly dialogRef: MatDialogRef<InvoiceCreationUpdatingDialogComponent>,
-        @Optional() @Inject(MAT_DIALOG_DATA) data?: Invoice
+        private readonly dialogRef: MatDialogRef<InvoiceUpdatingDialogComponent>,
+        @Inject(MAT_DIALOG_DATA) data: Invoice
     ) {
-        this.title = data?.id ? 'Edicion de Factura' : 'Creacion manual de Factura';
-        this.invoice = data ? {
+        this.invoice = {
             ...data,
             billingInfo: {...data.billingInfo},
+            originalInvoice: data.originalInvoice ? {...data.originalInvoice} : undefined,
             discounts: [...(data.discounts ?? [])],
-        } : {
-            billingInfo: {
-                userId: undefined,
-
-            },
-            concept: '',
-            baseAmount: undefined,
-            discounts: [],
         };
-        this.operationDate = data?.operationDate;
+        this.operationDate = data.operationDate;
     }
 
     get operationDate(): Date | null {
@@ -85,18 +67,6 @@ export class InvoiceCreationUpdatingDialogComponent {
         this.invoice.operationDate = date ? this.formatDate(date) : undefined;
     }
 
-    isCreate(): boolean {
-        return !this.invoice.id;
-    }
-
-    setUser(user: User): void {
-        this.selectedUser = user;
-    }
-
-    removeUser(): void {
-        this.selectedUser = undefined;
-    }
-
     addDiscount(): void {
         this.invoice.discounts = [...(this.invoice.discounts ?? []), 0];
     }
@@ -105,16 +75,8 @@ export class InvoiceCreationUpdatingDialogComponent {
         this.invoice.discounts = this.invoice.discounts?.filter((_, position) => position !== index) ?? [];
     }
 
-    create(): void {
-        if (!this.isCreate() || !this.canCreate()) {
-            return;
-        }
-        this.invoiceService.create(this.buildCreation())
-            .subscribe(() => this.dialogRef.close());
-    }
-
     update(): void {
-        if (this.isCreate() || !this.invoice.id || !this.canUpdate()) {
+        if (!this.invoice.id || !this.canUpdate()) {
             return;
         }
         this.invoiceService.update(this.invoice.id, this.buildInvoice())
@@ -125,23 +87,11 @@ export class InvoiceCreationUpdatingDialogComponent {
         return controls.some(control => control.invalid && (control.dirty || control.touched));
     }
 
-    canCreate(): boolean {
-        return !!this.selectedUser?.id && this.hasRequiredValues() && this.validDiscounts();
-    }
-
     canUpdate(): boolean {
-        return this.validBillingInfo() && this.hasRequiredValues() && this.validDiscounts();
-    }
-
-    private buildCreation(): InvoiceCreation {
-        return {
-            userId: this.selectedUser!.id!,
-            concept: this.invoice.concept,
-            baseAmount: Number(this.invoice.baseAmount),
-            baseExpense: this.optionalNumber(this.baseExpense),
-            vatExpense: this.optionalNumber(this.vatExpense),
-            discounts: this.invoice.discounts?.map(value => Number(value)) ?? []
-        };
+        return this.validBillingInfo()
+            && this.hasRequiredValues()
+            && this.validRectification()
+            && this.validDiscounts();
     }
 
     private buildInvoice(): Invoice {
@@ -156,13 +106,7 @@ export class InvoiceCreationUpdatingDialogComponent {
     private hasRequiredValues(): boolean {
         return !!this.invoice.concept?.trim()
             && Number.isFinite(Number(this.invoice.baseAmount))
-            && Number(this.invoice.baseAmount) > 0
-            && this.validOptionalAmount(this.baseExpense)
-            && this.validOptionalAmount(this.vatExpense);
-    }
-
-    private validDiscounts(): boolean {
-        return (this.invoice.discounts ?? []).every(value => Number.isFinite(Number(value)) && Number(value) >= 0);
+            && Number(this.invoice.baseAmount) > 0;
     }
 
     private validBillingInfo(): boolean {
@@ -171,20 +115,12 @@ export class InvoiceCreationUpdatingDialogComponent {
             && !!this.invoice.billingInfo?.fullAddress?.trim();
     }
 
-    private validOptionalAmount(value: string | number | undefined): boolean {
-        return this.emptyValue(value) || (Number.isFinite(Number(value)) && Number(value) >= 0);
+    private validRectification(): boolean {
+        return !this.invoice.rectification || !!this.invoice.originalInvoice?.reason?.trim();
     }
 
-    private optionalNumber(value: string | number | undefined): number | undefined {
-        return this.emptyValue(value) ? undefined : Number(value);
-    }
-
-    private emptyValue(value: string | number | undefined): boolean {
-        return value === undefined || value === '';
-    }
-
-    private userAddress(user: User): string {
-        return [user.address, user.postalCode, user.city, user.province].filter(Boolean).join(', ');
+    private validDiscounts(): boolean {
+        return (this.invoice.discounts ?? []).every(value => Number.isFinite(Number(value)) && Number(value) >= 0);
     }
 
     private parseDate(value: Date | string | null | undefined): Date | null {

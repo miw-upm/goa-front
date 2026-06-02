@@ -2,7 +2,10 @@ import {EngagementLetter} from '../../../engagement-letter/models/engagement-let
 import {Payment} from '../../payments/models/payment.model';
 import {BillingInfo} from './billing-info.model';
 
-export interface Rectification {
+export interface OriginalInvoice {
+    series?: string;
+    number?: number;
+    emissionDate?: string;
     reason?: string;
 }
 
@@ -20,5 +23,6 @@ export interface Invoice {
     payments?: Payment[];
     discounts?: number[];
     pdfPath?: string;
-    rectification?: Rectification;
+    originalInvoice?: OriginalInvoice;
+    rectification?: boolean;
 }
