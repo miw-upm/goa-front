@@ -15,6 +15,7 @@ import {InvoiceCreation} from '../models/invoice-creation.model';
 import {Invoice} from '../models/invoice.model';
 import {SearchByCustomerComponent} from "@features/shared/ui/search-by-customer.component";
 import {FormCustomerComponent} from "@shared/ui/inputs/forms/form-customer.component";
+import {AppDateFieldComponent} from "@shared/ui/inputs/forms/data.component";
 import {FormFieldComponent} from "@shared/ui/inputs/forms/form-field.component";
 import {FormTextareaComponent} from "@shared/ui/inputs/forms/form-textarea.component";
 import {User} from "@features/shared/models/user.model";
@@ -31,6 +32,7 @@ import {User} from "@features/shared/models/user.model";
         MatIcon,
         SearchByCustomerComponent,
         FormCustomerComponent,
+        AppDateFieldComponent,
         FormFieldComponent,
         FormTextareaComponent,
     ],
@@ -41,6 +43,7 @@ export class InvoiceCreationDialogComponent {
     selectedUser?: User;
     baseExpense?: string | number;
     vatExpense?: string | number;
+    private operationDateValue: Date | null = null;
 
     constructor(
         private readonly invoiceService: InvoiceService,
@@ -62,6 +65,14 @@ export class InvoiceCreationDialogComponent {
 
     removeUser(): void {
         this.selectedUser = undefined;
+    }
+
+    get operationDate(): Date | null {
+        return this.operationDateValue;
+    }
+
+    set operationDate(value: Date | string | null | undefined) {
+        this.operationDateValue = value instanceof Date ? value : this.parseDate(value);
     }
 
     addDiscount(): void {
@@ -95,6 +106,7 @@ export class InvoiceCreationDialogComponent {
             baseAmount: Number(this.invoice.baseAmount),
             baseExpense: this.optionalNumber(this.baseExpense),
             vatExpense: this.optionalNumber(this.vatExpense),
+            operationDate: this.operationDate ? this.formatDate(this.operationDate) : undefined,
         };
     }
 
@@ -120,5 +132,20 @@ export class InvoiceCreationDialogComponent {
 
     private emptyValue(value: string | number | undefined): boolean {
         return value === undefined || value === '';
+    }
+
+    private parseDate(value: Date | string | null | undefined): Date | null {
+        if (!value) {
+            return null;
+        }
+        const date = new Date(value);
+        return Number.isNaN(date.getTime()) ? null : date;
+    }
+
+    private formatDate(date: Date): string {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
     }
 }
