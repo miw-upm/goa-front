@@ -46,6 +46,6 @@ export const INVOICES_COLUMNS: CrudColumnConfig[] = [
         key: 'engagement',
         label: 'HOJA DE ENCARGO',
         fieldsRef: ['engagement.id'],
-        fieldsTitle: ['engagement.owner.firstName','engagement.owner.familyName'],
+        fieldsTitle: ['engagement.owner.firstName', 'engagement.owner.familyName'],
     }
 ];

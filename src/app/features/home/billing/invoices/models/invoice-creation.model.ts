@@ -4,5 +4,4 @@ export interface InvoiceCreation {
     baseAmount: number;
     baseExpense?: number;
     vatExpense?: number;
-    discounts: number[];
 }

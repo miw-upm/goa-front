@@ -1,4 +1,5 @@
 import {EngagementLetter} from '../../../engagement-letter/models/engagement-letter.model';
+import {LegalProcedure} from '../../../engagement-letter/models/legal-procedure.model';
 import {Payment} from '../../payments/models/payment.model';
 import {BillingInfo} from './billing-info.model';
 
@@ -19,7 +20,11 @@ export interface Invoice {
     number?: number;
     baseAmount: number;
     vatRate?: number;
+    baseExpense?: number | string;
+    vatExpense?: number | string;
+    percentage?: number | string;
     engagement?: EngagementLetter;
+    legalProcedures?: LegalProcedure[];
     payments?: Payment[];
     discounts?: number[];
     pdfPath?: string;

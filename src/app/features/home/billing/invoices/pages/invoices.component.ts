@@ -97,9 +97,13 @@ export class InvoicesComponent {
             return;
         }
         this.invoiceService.read(invoice.id).subscribe(fullInvoice => {
-            this.dialog.open(InvoiceUpdatingDialogComponent, {width: '720px', data: fullInvoice})
-                .afterClosed()
-                .subscribe((reference?: string) => this.setEngagementReferenceAndSearch(reference));
+            if (fullInvoice.engagement) {
+                this.warnEngagementInvoiceUpdate();
+            } else {
+                this.dialog.open(InvoiceUpdatingDialogComponent, {width: '720px', data: fullInvoice})
+                    .afterClosed()
+                    .subscribe((reference?: string) => this.setEngagementReferenceAndSearch(reference));
+            }
         });
     }
 
@@ -135,6 +139,16 @@ export class InvoicesComponent {
             data: {
                 title: 'Factura emitida',
                 message: 'Esta factura ya ha sido emitida y no puede modificarse ni volver a emitirse.'
+            }
+        });
+    }
+
+    private warnEngagementInvoiceUpdate(): void {
+        this.dialog.open(WarningDialogComponent, {
+            data: {
+                title: 'Factura con hoja de encargo',
+                message: 'Modificar una factura suelta asociada a una Hoja de Encargo puede crear inconsistencias.' +
+                    ' Es mejor eliminar todas las facturas proformas y volver a crearlas desde la hoja de encargo.'
             }
         });
     }

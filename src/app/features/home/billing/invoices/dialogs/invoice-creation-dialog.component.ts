@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FormsModule, NgModel} from '@angular/forms';
-import {MatButton, MatIconButton} from '@angular/material/button';
+import {MatButton} from '@angular/material/button';
 import {
     MatDialogActions,
     MatDialogClose,
@@ -8,9 +8,7 @@ import {
     MatDialogRef,
     MatDialogTitle
 } from '@angular/material/dialog';
-import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatIcon} from '@angular/material/icon';
-import {MatInput} from '@angular/material/input';
 
 import {InvoiceService} from '../invoice.service';
 import {InvoiceCreation} from '../models/invoice-creation.model';
@@ -30,11 +28,7 @@ import {User} from "@features/shared/models/user.model";
         MatDialogActions,
         MatDialogClose,
         MatButton,
-        MatIconButton,
         MatIcon,
-        MatFormField,
-        MatLabel,
-        MatInput,
         SearchByCustomerComponent,
         FormCustomerComponent,
         FormFieldComponent,
@@ -101,7 +95,6 @@ export class InvoiceCreationDialogComponent {
             baseAmount: Number(this.invoice.baseAmount),
             baseExpense: this.optionalNumber(this.baseExpense),
             vatExpense: this.optionalNumber(this.vatExpense),
-            discounts: this.invoice.discounts?.map(value => Number(value)) ?? []
         };
     }
 

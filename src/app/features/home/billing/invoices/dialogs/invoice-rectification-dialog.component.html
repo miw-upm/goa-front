@@ -5,32 +5,32 @@
         <span class="zone-title">Factura original</span>
 
         <app-form-field
-                #seriesNg
-                [(value)]="series"
-                [required]="true"
-                errorMessage="Obligatorio"
-                label="Serie"/>
+            #seriesNg
+            [(value)]="series"
+            [required]="true"
+            errorMessage="Obligatorio"
+            label="Serie"/>
 
         <app-form-field
-                #numberNg
-                [(value)]="number"
-                [max]="10000"
-                [min]="1"
-                [required]="true"
-                [step]="1"
-                errorMessage="Obligatorio, entero entre 1 y 10000"
-                label="Número"
-                type="number"/>
+            #numberNg
+            [(value)]="number"
+            [max]="10000"
+            [min]="1"
+            [required]="true"
+            [step]="1"
+            errorMessage="Obligatorio, entero entre 1 y 10000"
+            label="Número"
+            type="number"/>
     </div>
 
     <div class="zone-card zone-card--column">
         <span class="zone-title">Motivo</span>
         <app-form-textarea
-                #reasonNg
-                [(value)]="reason"
-                [required]="true"
-                errorMessage="Obligatorio"
-                label="Motivo"/>
+            #reasonNg
+            [(value)]="reason"
+            [required]="true"
+            errorMessage="Obligatorio"
+            label="Motivo"/>
     </div>
 </mat-dialog-content>
 

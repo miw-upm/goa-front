@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {FormsModule, NgModel} from '@angular/forms';
-import {MatButton, MatIconButton} from '@angular/material/button';
+import {MatButton} from '@angular/material/button';
 import {
     MAT_DIALOG_DATA,
     MatDialogActions,
@@ -9,9 +9,6 @@ import {
     MatDialogRef,
     MatDialogTitle
 } from '@angular/material/dialog';
-import {MatFormField, MatLabel} from '@angular/material/form-field';
-import {MatIcon} from '@angular/material/icon';
-import {MatInput} from '@angular/material/input';
 
 import {AppDateFieldComponent} from "@shared/ui/inputs/forms/data.component";
 import {FormFieldComponent} from "@shared/ui/inputs/forms/form-field.component";
@@ -28,11 +25,6 @@ import {Invoice} from '../models/invoice.model';
         MatDialogActions,
         MatDialogClose,
         MatButton,
-        MatIconButton,
-        MatIcon,
-        MatFormField,
-        MatLabel,
-        MatInput,
         AppDateFieldComponent,
         FormFieldComponent,
         FormTextareaComponent,
@@ -98,6 +90,8 @@ export class InvoiceUpdatingDialogComponent {
         return {
             ...this.invoice,
             baseAmount: Number(this.invoice.baseAmount),
+            baseExpense: this.optionalNumber(this.invoice.baseExpense),
+            vatExpense: this.optionalNumber(this.invoice.vatExpense),
             concept: this.invoice.concept,
             discounts: this.invoice.discounts?.map(value => Number(value)) ?? []
         };
@@ -106,7 +100,9 @@ export class InvoiceUpdatingDialogComponent {
     private hasRequiredValues(): boolean {
         return !!this.invoice.concept?.trim()
             && Number.isFinite(Number(this.invoice.baseAmount))
-            && Number(this.invoice.baseAmount) > 0;
+            && Number(this.invoice.baseAmount) > 0
+            && this.validOptionalAmount(this.invoice.baseExpense)
+            && this.validOptionalAmount(this.invoice.vatExpense);
     }
 
     private validBillingInfo(): boolean {
@@ -121,6 +117,18 @@ export class InvoiceUpdatingDialogComponent {
 
     private validDiscounts(): boolean {
         return (this.invoice.discounts ?? []).every(value => Number.isFinite(Number(value)) && Number(value) >= 0);
+    }
+
+    private validOptionalAmount(value: string | number | undefined): boolean {
+        return this.emptyValue(value) || (Number.isFinite(Number(value)) && Number(value) >= 0);
+    }
+
+    private optionalNumber(value: string | number | undefined): number | undefined {
+        return this.emptyValue(value) ? undefined : Number(value);
+    }
+
+    private emptyValue(value: string | number | undefined): boolean {
+        return value === undefined || value === '';
     }
 
     private parseDate(value: Date | string | null | undefined): Date | null {

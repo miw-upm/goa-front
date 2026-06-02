@@ -71,16 +71,6 @@
                 [required]="true"
                 [values]="categories"
                 label="Categoria fiscal"/>
-        <app-form-field
-                #depreciationRateNg
-                [(value)]="expense.depreciationRate"
-                [max]="100"
-                [min]="1"
-                [required]="true"
-                [step]="1"
-                errorMessage="Obligatorio entre 1 y 100"
-                label="Amortización (%)"
-                type="number"/>
 
         <app-form-field
             #baseAmountNg
@@ -115,6 +105,17 @@
                 [(value)]="expense.description"
                 label="Descripcion"/>
 
+        <app-form-field
+            #depreciationRateNg
+            [(value)]="expense.depreciationRate"
+            [max]="100"
+            [min]="1"
+            [required]="true"
+            [step]="1"
+            errorMessage="Obligatorio entre 1 y 100"
+            label="Corriente (100%) Inversión (1..99%)"
+            type="number"/>
+
     </div>
 
     <div class="zone-card zone-card--column">
@@ -126,14 +127,14 @@
                 label="Serie"/>
 
         <app-form-field
-                #numberNg
-                [(value)]="expense.number"
-                [max]="10000"
-                [min]="1"
-                [step]="1"
-                errorMessage="Entero entre 1 y 10000"
-                label="Número"
-                type="number"/>
+            #numberNg
+            [(value)]="expense.number"
+            [max]="10000"
+            [min]="1"
+            [step]="1"
+            errorMessage="Entero entre 1 y 10000"
+            label="Número"
+            type="number"/>
     </div>
 </mat-dialog-content>
 
