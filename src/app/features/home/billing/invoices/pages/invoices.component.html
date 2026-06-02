@@ -1,8 +1,8 @@
 <app-title (create)="create()" [createAction]="true" subtitle="Gestion" title="Facturas"></app-title>
 
 <div class="filters-card">
-    <app-filter-input (enter)="search()" [(value)]="criteria.engagementReference"
-                      title="Referencia hoja"></app-filter-input>
+    <app-filter-input (enter)="search()" [(value)]="criteria.engagementId"
+                      title="Id de Hoja de Encargo"></app-filter-input>
     <app-filter-input (enter)="search()" [(value)]="criteria.client" title="Cliente"></app-filter-input>
     <app-filter-date (enter)="search()" [(date)]="criteria.fromDate" title="Desde"></app-filter-date>
 </div>

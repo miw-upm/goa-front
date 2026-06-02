@@ -1,0 +1,8 @@
+<h3 mat-dialog-title>{{ data?.title ?? 'Procesando' }}</h3>
+
+<mat-dialog-content>
+    <div class="zone-row">
+        <mat-spinner diameter="32"></mat-spinner>
+        <span>{{ data?.message ?? 'Espere un momento...' }}</span>
+    </div>
+</mat-dialog-content>

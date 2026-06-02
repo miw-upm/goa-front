@@ -14,11 +14,12 @@ import {InvoiceService} from '../invoice.service';
 import {InvoiceFindCriteria} from '../models/invoice-find-criteria.model';
 import {Invoice} from '../models/invoice.model';
 import {INVOICES_COLUMNS} from './invoices-columns.config';
-import {map} from "rxjs/operators";
+import {finalize, map} from "rxjs/operators";
 import {FilterDateComponent} from "@shared/ui/inputs/filters/filter-date.component";
 import {FilterInputComponent} from "@shared/ui/inputs/filters/filter-input.component";
 import {TitleComponent} from "@shared/ui/title/title.component";
 import {CrudComponent} from "@shared/ui/crud/crud.component";
+import {WaitingDialogComponent} from "@shared/ui/dialogs/waiting-dialog.component";
 import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
 import {AuthService} from "@core/auth/auth.service";
 
@@ -128,9 +129,19 @@ export class InvoicesComponent {
 
     private executeRun(_invoice: Invoice): void {
         if (_invoice.id) {
-            this.invoiceService.emission(_invoice.id).subscribe(() => {
-                this.setEngagementReferenceAndSearch(_invoice.engagement?.id?.substring(0, 4));
+            const waitingDialogRef = this.dialog.open(WaitingDialogComponent, {
+                disableClose: true,
+                width: '360px',
+                data: {
+                    title: 'Emitiendo factura',
+                    message: 'Procesando...'
+                }
             });
+            this.invoiceService.emission(_invoice.id)
+                .pipe(finalize(() => waitingDialogRef.close()))
+                .subscribe(() => {
+                    this.setEngagementReferenceAndSearch(_invoice.engagement?.id?.substring(0, 4));
+                });
         }
     }
 
@@ -177,7 +188,7 @@ export class InvoicesComponent {
 
     private setEngagementReferenceAndSearch(reference: string | undefined): void {
         this.criteria.client = undefined;
-        this.criteria.engagementReference = reference;
+        this.criteria.engagementId = reference;
         this.search();
     }
 }

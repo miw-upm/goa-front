@@ -1,5 +1,5 @@
 export interface InvoiceFindCriteria {
-    engagementReference?: string;
+    engagementId?: string;
     client?: string;
     fromDate?: Date | string;
 }
