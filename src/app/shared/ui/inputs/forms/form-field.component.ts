@@ -29,6 +29,13 @@ export class FormFieldComponent implements AfterViewInit {
     @Output() valueChange = new EventEmitter<string>();
     @ViewChild('ctrl', {static: true}) ngModel!: NgModel;
 
+    onWheel(event: WheelEvent): void {
+        if (this.type === 'number') {
+            event.preventDefault();
+            (event.target as HTMLInputElement).blur();
+        }
+    }
+
     ngAfterViewInit(): void {
         setTimeout(() => {
             const validators = [];

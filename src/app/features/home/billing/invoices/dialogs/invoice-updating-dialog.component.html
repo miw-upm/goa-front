@@ -1,0 +1,85 @@
+<h4 mat-dialog-title>Edicion de Factura</h4>
+
+<mat-dialog-content>
+    <div class="zone-card zone-card--column">
+        <span class="zone-title">Cliente de facturacion</span>
+
+        <app-form-field
+            #fullNameNg
+            [(value)]="invoice.billingInfo.fullName"
+            [required]="true"
+            errorMessage="Obligatorio"
+            label="Nombre fiscal"/>
+        <app-form-field
+            #identityNg
+            [(value)]="invoice.billingInfo.identity"
+            [required]="true"
+            errorMessage="Obligatorio"
+            label="Identidad"/>
+        <app-form-textarea
+            #fullAddressNg
+            [(value)]="invoice.billingInfo.fullAddress"
+            [required]="true"
+            errorMessage="Obligatorio"
+            label="Direccion fiscal"/>
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <span class="zone-title">Datos de factura</span>
+
+        <app-form-textarea
+            #conceptNg
+            [(value)]="invoice.concept"
+            [required]="true"
+            errorMessage="Obligatorio"
+            label="Concepto"/>
+        <app-form-field
+            #baseAmountNg
+            [(value)]="invoice.baseAmount"
+            [min]="0.01"
+            [required]="true"
+            [step]="0.01"
+            errorMessage="Obligatorio y mayor que 0"
+            label="Base imponible"
+            type="number"/>
+        <app-form-field
+            #baseExpenseNg
+            [(value)]="invoice.baseExpense"
+            [min]="0"
+            [step]="0.01"
+            errorMessage="Debe ser mayor o igual que 0"
+            label="Base gastos"
+            type="number"/>
+        <app-form-field
+            #vatExpenseNg
+            [(value)]="invoice.vatExpense"
+            [min]="0"
+            [step]="0.01"
+            errorMessage="Debe ser mayor o igual que 0"
+            label="IVA gastos"
+            type="number"/>
+        <app-form-date [(value)]="operationDate" label="Fecha de operacion"/>
+    </div>
+
+    @if (invoice.rectification) {
+        <div class="zone-card zone-card--column">
+            <span class="zone-title">Rectificacion</span>
+
+            <app-form-textarea
+                    [(value)]="invoice.originalInvoice.reason"
+                    [required]="true"
+                    errorMessage="Obligatorio"
+                    label="Motivo"/>
+        </div>
+    }
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Cancelar</button>
+    <button (click)="update()"
+            [disabled]="!canUpdate() || formInvalid(fullNameNg.ngModel, identityNg.ngModel, fullAddressNg.ngModel, conceptNg.ngModel, baseAmountNg.ngModel, baseExpenseNg.ngModel, vatExpenseNg.ngModel)"
+            color="primary"
+            mat-raised-button>
+        Guardar
+    </button>
+</mat-dialog-actions>

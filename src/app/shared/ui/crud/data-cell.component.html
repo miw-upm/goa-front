@@ -21,14 +21,51 @@
                     {{ booleanIcon }}
                 }{{ booleanLabel }}</span>
             }
+            @case ('select') {
+                @if (selectLabel) {
+                    <span class="bool-chip {{ selectColorClass }}">{{ selectLabel }}</span>
+                }
+            }
             @case ('date') {
-                <span>{{ singleValue | date: dateFormat : '' : 'es' }}</span>
+                @if (hasTitle) {
+                    <span class="cell-primary">
+                        {{ titleSingleValue | date: dateFormat : '' : 'es' }}
+                    </span>
+                }
+                @if (hasFields) {
+                    @if (hasTitle) {
+                        <div class="cell-secondary">
+                            {{ fieldSingleValue | date: dateFormat : '' : 'es' }}
+                        </div>
+                    } @else {
+                        <span>{{ fieldSingleValue | date: dateFormat : '' : 'es' }}</span>
+                    }
+                }
             }
             @case ('currency') {
-                <span>{{ singleValue | currency: 'EUR' : 'symbol' : '1.2-2' : 'es' }}</span>
+                @if (hasTitle) {
+                    <span class="cell-primary">
+                        @if (refValue) {
+                            ({{ refValue }})
+                        }
+                        {{ titleSingleValue | currency: 'EUR' : 'symbol' : '1.2-2' : 'es' }}
+                    </span>
+                }
+                @if (hasFields) {
+                    @if (hasTitle) {
+                        <div class="cell-secondary">
+                            {{ fieldSingleValue | currency: 'EUR' : 'symbol' : '1.2-2' : 'es' }}
+                        </div>
+                    } @else {
+                        <span>{{ fieldSingleValue | currency: 'EUR' : 'symbol' : '1.2-2' : 'es' }}</span>
+                    }
+                }
             }
             @case ('number') {
                 <span>{{ singleValue | number: '1.0-2' : 'es' }}</span>
+            }
+            @case ('percent') {
+                <span>{{ singleValue | number: '1.0-2' : 'es' }} %</span>
             }
             @default {
                 <!-- fieldsTitle: línea resaltada -->

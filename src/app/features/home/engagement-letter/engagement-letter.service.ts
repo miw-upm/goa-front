@@ -21,7 +21,7 @@ export class EngagementLetterService {
                 private readonly dialog: MatDialog) {
     }
 
-    create(engagement: EngagementLetter): Observable<EngagementLetter> {
+    create(engagement: EngagementLetter): Observable<EngagementLetter | string | null> {
         return this.httpService.request()
             .post(ENDPOINTS.engagementLetters.root, engagement);
     }

@@ -1,0 +1,27 @@
+<h4 mat-dialog-title>Crear proveedor</h4>
+
+<mat-dialog-content>
+    <app-form-field
+        #nameNg
+        [(value)]="supplier.name"
+        [required]="true"
+        errorMessage="Obligatorio"
+        label="Nombre"/>
+    <app-form-field
+        #identityNg
+        [(value)]="supplier.identity"
+        [required]="true"
+        errorMessage="Obligatorio"
+        label="Identificacion"/>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Cancelar</button>
+    <button (click)="create()"
+            [disabled]="!canCreate() || formInvalid(nameNg.ngModel, identityNg.ngModel)"
+            color="primary"
+            mat-raised-button>
+        <mat-icon matButtonIcon>add</mat-icon>
+        Crear
+    </button>
+</mat-dialog-actions>

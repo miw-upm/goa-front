@@ -11,6 +11,7 @@ export const ENGAGEMENT_LETTERS_COLUMNS: CrudColumnConfig[] = [
             showIcon: false
         }
     },
+    {key: 'reference', label: 'REFERENCIA', fieldsRef: ['id']},
     {
         key: 'owner',
         label: 'CLIENTE PRINCIPAL',
@@ -20,6 +21,6 @@ export const ENGAGEMENT_LETTERS_COLUMNS: CrudColumnConfig[] = [
     {key: 'attachments', label: 'OTROS CLIENTES', arrayField: 'firstName'},
     {key: 'legalProcedures', label: 'PROCEDIMIENTOS', arrayField: 'title'},
     {key: 'acceptanceEngagements', label: 'FIRMANTES', arrayField: 'signerFullName'},
-    {key: 'signed', label: 'ACEPTDO Y FIRMADO'},
+    {key: 'signed', label: 'ACEPTADO Y FIRMADO'},
     {key: 'lastUpdatedDate', label: 'ÚLTIMA ACTUALIZACIÓN'}
 ];

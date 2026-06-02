@@ -5,8 +5,10 @@ import {AcceptanceEngagement} from "./acceptance-engagement.model";
 
 export interface EngagementLetter {
     id?: string;
+    reference?: string;
     budgetOnly?: boolean;
     discount?: number;
+    discounts?: number[];
     lastUpdatedDate?: Date | string;
     closingDate?: Date | string;
     owner?: User;

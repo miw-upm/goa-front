@@ -11,6 +11,8 @@ import {UppercaseWordsPipe} from '@shared/pipes/uppercase-words.pipe';
     imports: [DatePipe, DecimalPipe, CurrencyPipe, UppercaseWordsPipe]
 })
 export class DataCellComponent {
+    private static readonly MAX_FIELDS_TEXT_LENGTH = 50;
+
     @Input() row: any;
     @Input() config: CrudColumnConfig | undefined;
     /** Modo legacy: valor directo sin config */
@@ -24,9 +26,9 @@ export class DataCellComponent {
         return !!this.config;
     }
 
-    /** Tiene fieldsTitle → línea resaltada */
+    /** Tiene campos para la línea resaltada. */
     get hasTitle(): boolean {
-        return !!this.config?.fieldsTitle?.length;
+        return this.primaryFields.length > 0;
     }
 
     /** Tiene fields → línea normal (secundaria si hay title, única si no) */
@@ -34,14 +36,22 @@ export class DataCellComponent {
         return this.effectiveFields.length > 0;
     }
 
-    /** Texto de fieldsTitle: campos concatenados con separator */
+    /** Texto principal: fieldsRef se antepone entre parentesis a fieldsTitle. */
     get titleValue(): string {
-        if (!this.config?.fieldsTitle?.length || !this.row) return '';
+        if (!this.primaryFields.length || !this.row) return '';
         const sep = this.config.separator ?? ' ';
-        return this.config.fieldsTitle
+        const refValue = (this.config?.fieldsRef ?? [])
+            .map(f => this.resolve(this.row, f))
+            .filter(v => v !== null && v !== undefined && v !== '')
+            .map(v => this.formatRef(v))
+            .join(sep);
+        const titleValue = (this.config?.fieldsTitle ?? [])
             .map(f => this.resolve(this.row, f))
             .filter(v => v !== null && v !== undefined && v !== '')
             .join(sep);
+        return [refValue ? `(${refValue})` : '', titleValue]
+            .filter(Boolean)
+            .join(' ');
     }
 
     /** Texto de fields: campos concatenados con separator */
@@ -49,10 +59,13 @@ export class DataCellComponent {
         const fields = this.effectiveFields;
         if (!fields.length || !this.row) return '';
         const sep = this.config?.separator ?? ' ';
-        return fields
+        const value = fields
             .map(f => this.resolve(this.row, f))
             .filter(v => v !== null && v !== undefined && v !== '')
             .join(sep);
+        return value.length > DataCellComponent.MAX_FIELDS_TEXT_LENGTH
+            ? `${value.slice(0, DataCellComponent.MAX_FIELDS_TEXT_LENGTH)}(...)`
+            : value;
     }
 
     /** Valor único para formatos especiales (boolean, date, currency, number).
@@ -61,6 +74,26 @@ export class DataCellComponent {
         if (!this.config || !this.row) return '';
         const field = this.config.fieldsTitle?.[0] ?? this.effectiveFields[0];
         return field ? this.resolve(this.row, field) : '';
+    }
+
+    get titleSingleValue(): any {
+        const field = this.config?.fieldsTitle?.[0];
+        return field && this.row ? this.resolve(this.row, field) : '';
+    }
+
+    get refValue(): string {
+        if (!this.config?.fieldsRef?.length || !this.row) return '';
+        const sep = this.config.separator ?? ' ';
+        return this.config.fieldsRef
+            .map(field => this.resolve(this.row, field))
+            .filter(value => value !== null && value !== undefined && value !== '')
+            .map(value => this.formatRef(value))
+            .join(sep);
+    }
+
+    get fieldSingleValue(): any {
+        const field = this.effectiveFields[0];
+        return field && this.row ? this.resolve(this.row, field) : '';
     }
 
     get format(): CrudColumnFormat {
@@ -96,6 +129,17 @@ export class DataCellComponent {
         return `bool-chip--${color}`;
     }
 
+    get selectLabel(): string {
+        const value = this.singleValue;
+        return this.config?.selectConfig?.[value]?.label ?? '';
+    }
+
+    get selectColorClass(): string {
+        const value = this.singleValue;
+        const color = this.config?.selectConfig?.[value]?.color ?? 'default';
+        return `bool-chip--${color}`;
+    }
+
     get isArrayMode(): boolean {
         if (!this.config?.arrayField || !this.row) return false;
         const val = this.resolve(this.row, this.config.key);
@@ -122,7 +166,11 @@ export class DataCellComponent {
 
     /** fields efectivos: si no hay ni fieldsTitle ni fields, se infiere [key] */
     private get effectiveFields(): string[] {
-        return this.config?.fields?.length ? this.config.fields : (!this.config?.fieldsTitle?.length ? [this.config?.key ?? ''] : []);
+        return this.config?.fields?.length ? this.config.fields : (!this.primaryFields.length ? [this.config?.key ?? ''] : []);
+    }
+
+    private get primaryFields(): string[] {
+        return [...(this.config?.fieldsRef ?? []), ...(this.config?.fieldsTitle ?? [])];
     }
 
     private get arrayItems(): string[] {
@@ -167,5 +215,9 @@ export class DataCellComponent {
     /** Resuelve un path con dot notation (ej: 'owner.firstName') sobre un objeto */
     private resolve(obj: any, path: string): any {
         return path.split('.').reduce((o, k) => o?.[k], obj);
+    }
+
+    private formatRef(value: any): string {
+        return String(value).substring(0, 4);
     }
 }

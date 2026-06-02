@@ -25,8 +25,13 @@ export class FormSelectComponent {
     @Input() label = 'Select';
     @Input() values: Observable<string[]> = new Observable<string[]>();
     @Input() selected: string | undefined;
+    @Input() labels: Record<string, string> = {};
     @Input() capitalize = false;
     @Input() required = false;
     @Output() selectedChange = new EventEmitter<string>();
+
+    labelFor(value: string): string {
+        return this.labels[value] ?? value;
+    }
 }
 

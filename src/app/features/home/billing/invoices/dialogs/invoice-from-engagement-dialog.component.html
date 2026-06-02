@@ -1,0 +1,107 @@
+<h4 mat-dialog-title>Factura desde Hoja de Encargo</h4>
+
+<mat-dialog-content>
+    <div class="zone-card zone-card--column">
+        <div class="zone-row">
+            <span class="zone-title">Hoja de Encargo</span>
+            <app-search-by-engagement-letter
+                    (engagementLetterChange)="setEngagementLetter($event)"
+                    title="Buscar por cliente">
+            </app-search-by-engagement-letter>
+        </div>
+
+        @if (selectedEngagementLetter) {
+            <div class="item-card">
+                <span class="avatar avatar--secondary">HE</span>
+                <div class="person-info">
+                    @if (selectedEngagementLetter.owner) {
+                        <span class="person-name">
+                            {{ selectedEngagementLetter.owner.firstName }} {{ selectedEngagementLetter.owner.familyName }}
+                            @if (selectedEngagementLetter.owner.mobile) {
+                                - {{ selectedEngagementLetter.owner.mobile }}
+                            }
+                        </span>
+                    }
+                    @if (selectedEngagementLetter.legalProcedures?.[0]?.title) {
+                        <span class="person-detail">{{ selectedEngagementLetter.legalProcedures[0].title }}</span>
+                    }
+                </div>
+                <button (click)="removeEngagementLetter()"
+                        aria-label="Quitar hoja de encargo"
+                        mat-icon-button
+                        type="button">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        }
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <div class="zone-row">
+            <span class="zone-title">Cierre de Hoja de Encargo</span>
+            <mat-slide-toggle [(ngModel)]="closeEngagement"></mat-slide-toggle>
+        </div>
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <div class="zone-row">
+            <span class="zone-title">Procedimientos Legales</span>
+            <app-search-by-legal-procedure
+                    (procedureChange)="addProcedure($event)">
+            </app-search-by-legal-procedure>
+        </div>
+
+        <app-form-list
+                (action)="editLegalProcedureDialog($event)"
+                [(items)]="legalProcedures"
+                [keyView]="['title']"
+                actionIcon="edit">
+        </app-form-list>
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <span class="zone-title">Concepto</span>
+        <app-form-textarea
+            #conceptNg
+            [(value)]="concept"
+            errorMessage="Obligatorio"
+            label="Concepto"/>
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <div class="zone-row">
+            <span class="zone-title">Porcentaje de facturación de clientes</span>
+            <span>Total: {{ billingPercentageTotal() }}%</span>
+        </div>
+
+        @for (item of billingPercentages; track item.user.id ?? item.user.mobile) {
+            <div class="item-card">
+                <span class="avatar avatar--primary">
+                    {{ item.user.firstName.charAt(0) }}{{ item.user.familyName?.charAt(0) }}
+                </span>
+                <div class="person-info">
+                    <span class="person-name">{{ item.user.firstName }} {{ item.user.familyName }}</span>
+                    @if (item.user.mobile) {
+                        <span class="person-detail">{{ item.user.mobile }}</span>
+                    }
+                </div>
+                <mat-form-field>
+                    <mat-label>Porcentaje</mat-label>
+                    <input [(ngModel)]="item.percentage" matInput max="100" min="0" step="0.0001" type="number">
+                    <span matSuffix>%</span>
+                </mat-form-field>
+            </div>
+        }
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Cancelar</button>
+    <button (click)="create()"
+            [disabled]="!canCreate()"
+            color="primary"
+            mat-raised-button>
+        <mat-icon matButtonIcon>add</mat-icon>
+        Crear
+    </button>
+</mat-dialog-actions>

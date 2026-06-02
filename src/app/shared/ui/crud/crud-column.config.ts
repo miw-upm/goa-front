@@ -1,4 +1,4 @@
-export type CrudColumnFormat = 'text' | 'date' | 'boolean' | 'currency' | 'number';
+export type CrudColumnFormat = 'text' | 'date' | 'boolean' | 'currency' | 'number' | 'percent' | 'select';
 
 export interface CrudBooleanConfig {
     trueLabel?: string;   // default: 'SI'
@@ -7,6 +7,13 @@ export interface CrudBooleanConfig {
     falseColor?: string;  // default: 'primary'  → bool-chip--primary
     showIcon?: boolean;   // default: true
 }
+
+export interface CrudSelectOptionConfig {
+    label: string;
+    color?: 'success' | 'error' | 'primary' | 'warn' | 'default';
+}
+
+export type CrudSelectConfig = Record<string, CrudSelectOptionConfig>;
 
 export interface CrudColumnConfig {
     /** Clave interna (o nombre virtual para columnas compuestas) */
@@ -19,6 +26,9 @@ export interface CrudColumnConfig {
      *  Si no se define, no hay línea resaltada. */
     fieldsTitle?: string[];
 
+    /** Campos de referencia mostrados delante de fieldsTitle en la misma linea. */
+    fieldsRef?: string[];
+
     /** Campos secundarios (texto normal, gris si hay fieldsTitle). Se concatenan separados por separator. */
     fields?: string[];
 
@@ -27,6 +37,9 @@ export interface CrudColumnConfig {
 
     /** Para format='boolean': textos y colores personalizados */
     booleanConfig?: CrudBooleanConfig;
+
+    /** Para format='select': chips por valor */
+    selectConfig?: CrudSelectConfig;
 
     /** Para format='date': patrón DatePipe (default: 'd MMM yyyy') */
     dateFormat?: string;

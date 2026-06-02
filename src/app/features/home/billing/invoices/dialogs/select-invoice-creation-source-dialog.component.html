@@ -1,0 +1,22 @@
+<h4 mat-dialog-title>Crear Factura</h4>
+
+<mat-dialog-content>
+    <div class="zone-card zone-card--column">
+        <button (click)="select('manual')" mat-stroked-button type="button">
+            <mat-icon>edit_note</mat-icon>
+            Factura Manual
+        </button>
+        <button (click)="select('engagement')" mat-stroked-button type="button">
+            <mat-icon>description</mat-icon>
+            Factura desde Hoja de Encargo
+        </button>
+        <button (click)="select('rectification')" mat-stroked-button type="button">
+            <mat-icon>undo</mat-icon>
+            Factura Rectificativa
+        </button>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+</mat-dialog-actions>

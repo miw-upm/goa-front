@@ -22,12 +22,12 @@ import {
     AdministrativeAuthorizationsComponent
 } from "./administrative-authorization/pages/administrative-authorizations.component";
 import {AdministrativeAuthorizationService} from "./administrative-authorization/administrative-authorization.service";
-import {InvoicesComponent} from "./billing/pages/invoices.component";
-import {IncomesComponent} from "./billing/pages/incomes.component";
-import {ExpensesComponent} from "./billing/pages/expenses.component";
-import {InvoiceService} from "./billing/invoice.service";
-import {IncomeService} from "./billing/income.service";
-import {ExpenseService} from "./billing/expense.service";
+import {ExpensesComponent} from "./billing/expenses/pages/expenses.component";
+import {ExpenseService} from "./billing/expenses/expense.service";
+import {PaymentsComponent} from "./billing/payments/pages/payments.component";
+import {PaymentService} from "./billing/payments/payment.service";
+import {InvoicesComponent} from "./billing/invoices/pages/invoices.component";
+import {InvoiceService} from "./billing/invoices/invoice.service";
 import {EngagementLetterFormComponent} from "./engagement-letter/pages/engagement-letter-form.component";
 import {ConsentsComponent} from "./consents/pages/consents.component";
 import {ConsentService} from "./consents/consent.service";
@@ -127,18 +127,18 @@ export const routes: Routes = [
                 providers: [InvoiceService],
             },
             {
-                path: 'incomes',
-                component: IncomesComponent,
-                canActivate: [RoleGuard],
-                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
-                providers: [IncomeService],
-            },
-            {
                 path: 'expenses',
                 component: ExpensesComponent,
                 canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
                 providers: [ExpenseService],
+            },
+            {
+                path: 'payments',
+                component: PaymentsComponent,
+                canActivate: [RoleGuard],
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                providers: [PaymentService],
             },
             {
                 path: 'chatbot',

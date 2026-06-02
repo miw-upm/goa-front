@@ -10,6 +10,7 @@ const AUTHORIZATION_PURPOSE_TEMPLATE_ROOT = `${environment.REST_ENGAGEMENT}/auth
 const EXPENSE_ROOT = `${environment.REST_BILLING}/expenses`;
 const INCOME_ROOT = `${environment.REST_BILLING}/incomes`;
 const INVOICE_ROOT = `${environment.REST_BILLING}/invoices`;
+const PAYMENT_ROOT = `${environment.REST_BILLING}/payments`;
 const ADMINISTRATIVE_AUTHORIZATION_ROOT = `${environment.REST_ENGAGEMENT}/administrative-authorizations`;
 const CUSTOMER_FILE_DOWNLOAD_ROOT = `${environment.REST_ENGAGEMENT}/customer-file-downloads`;
 const CHATBOT_ROOT = `${environment.REST_CHATBOT}/chatbot`;
@@ -61,6 +62,8 @@ export const ENDPOINTS = {
     expenses: {
         root: EXPENSE_ROOT,
         byId: (id: string) => `${EXPENSE_ROOT}/${enc(id)}`,
+        categories: () => `${EXPENSE_ROOT}/categories`,
+        suppliers: () => `${EXPENSE_ROOT}/suppliers`,
     },
 
     incomes: {
@@ -72,6 +75,16 @@ export const ENDPOINTS = {
         root: INVOICE_ROOT,
         byId: (id: string) => `${INVOICE_ROOT}/${enc(id)}`,
         breakdown: (id: string) => `${INVOICE_ROOT}/${enc(id)}/breakdown`,
+        emission: (id: string) => `${INVOICE_ROOT}/${enc(id)}/emission`,
+        view: (id: string) => `${INVOICE_ROOT}/${enc(id)}/view`,
+        fromPayments: () => `${INVOICE_ROOT}/from-payments`,
+        fromEngagement: () => `${INVOICE_ROOT}/from-engagement`,
+        rectification: () => `${INVOICE_ROOT}/rectification`,
+    },
+
+    payments: {
+        root: PAYMENT_ROOT,
+        byId: (id: string) => `${PAYMENT_ROOT}/${enc(id)}`,
     },
 
     administrativeAuthorizations: {

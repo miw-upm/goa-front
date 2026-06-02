@@ -3,6 +3,7 @@
     <input
         #ctrl="ngModel"
         (ngModelChange)="valueChange.emit($event)"
+        (wheel)="onWheel($event)"
         [attr.max]="max"
         [attr.min]="min"
         [attr.name]="label"

@@ -13,10 +13,10 @@
         <mat-button-toggle [value]="false">Hoja</mat-button-toggle>
     </mat-button-toggle-group>
 
+    <app-filter-input (enter)="search()" [(value)]="criteria.id" title="Id"></app-filter-input>
     <app-filter-input (enter)="search()" [(value)]="criteria.client" title="Cliente"></app-filter-input>
     <app-filter-input (enter)="search()" [(value)]="criteria.legalProcedureTitle"
                       title="Titulo del Procedimiento"></app-filter-input>
-    <app-filter-input (enter)="search()" [(value)]="criteria.taskTitle" title="Tarea"></app-filter-input>
 </div>
 
 <app-crud (assistant)="openAssistant($event)"

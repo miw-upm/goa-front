@@ -1,0 +1,71 @@
+<h4 mat-dialog-title>Creacion manual de Factura</h4>
+
+<mat-dialog-content>
+    <div class="zone-card zone-card--column">
+        <span class="zone-title">Cliente de facturacion</span>
+
+        <div class="zone-row">
+            <app-search-by-customer
+                    (userChange)="setUser($event)"
+                    title="Buscar cliente">
+            </app-search-by-customer>
+        </div>
+
+        @if (selectedUser) {
+            <app-form-customer
+                    (remove)="removeUser()"
+                    [fullName]="(selectedUser.firstName ?? '') + ' ' + (selectedUser.familyName ?? '')"
+                    [mobile]="selectedUser.mobile">
+            </app-form-customer>
+        }
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <span class="zone-title">Datos de factura</span>
+
+        <app-form-textarea
+            #conceptNg
+            [(value)]="invoice.concept"
+            [required]="true"
+            errorMessage="Obligatorio"
+            label="Concepto"/>
+        <app-form-field
+            #baseAmountNg
+            [(value)]="invoice.baseAmount"
+            [min]="0.01"
+            [required]="true"
+            [step]="0.01"
+            errorMessage="Obligatorio y mayor que 0"
+            label="Base imponible"
+            type="number"/>
+
+        <app-form-field
+                [(value)]="baseExpense"
+                [min]="0"
+                [step]="0.01"
+                errorMessage="Debe ser mayor o igual que 0"
+                label="Base gastos"
+                type="number"/>
+        <app-form-field
+                [(value)]="vatExpense"
+                [min]="0"
+                [step]="0.01"
+                errorMessage="Debe ser mayor o igual que 0"
+                label="IVA gastos"
+                type="number"/>
+        <app-form-date [(value)]="operationDate" label="Fecha de operacion"/>
+
+
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Cancelar</button>
+    <button (click)="create()"
+            [disabled]="!canCreate() || formInvalid(conceptNg.ngModel, baseAmountNg.ngModel)"
+            color="primary"
+            mat-raised-button>
+        <mat-icon matButtonIcon>add</mat-icon>
+        Crear
+    </button>
+</mat-dialog-actions>

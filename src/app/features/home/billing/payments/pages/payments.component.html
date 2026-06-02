@@ -1,0 +1,27 @@
+<app-title (create)="create()" [createAction]="true" subtitle="Gestion" title="Ingresos"></app-title>
+
+<div class="filters-card">
+    <mat-button-toggle-group (change)="search()" [(ngModel)]="criteria.invoiced">
+        <mat-button-toggle [value]="null">Todos</mat-button-toggle>
+        <mat-button-toggle [value]="false">No Facturado</mat-button-toggle>
+        <mat-button-toggle [value]="true">Facturado</mat-button-toggle>
+    </mat-button-toggle-group>
+    <app-filter-input (enter)="search()" [(value)]="criteria.engagementId"
+                      title="Id de Hoja de Encargo"></app-filter-input>
+    <app-filter-input (enter)="search()" [(value)]="criteria.client" title="Cliente"></app-filter-input>
+    <app-filter-date (enter)="search()" [(date)]="criteria.fromDate" title="Desde"></app-filter-date>
+</div>
+
+<app-crud
+        (create)="create()"
+        (delete)="delete($event)"
+        (read)="read($event)"
+        (searchAll)="search()"
+        (update)="update($event)"
+        [columns]="columns"
+        [data]="payments"
+        [deleteAction]="deleteVisibility"
+        [item]="payment"
+        [secureDelete]="true"
+        [title]="'Pagos'">
+</app-crud>

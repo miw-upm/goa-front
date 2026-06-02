@@ -11,7 +11,7 @@
     <button (click)="resetKey()" [disabled]="!inputValue" aria-label="Clear" mat-icon-button matSuffix>
         <mat-icon>close</mat-icon>
     </button>
-    <mat-autocomplete #auto="matAutocomplete">
+    <mat-autocomplete #auto="matAutocomplete" class="app-search-options">
         @if (keys | async; as options) {
             @for (option of options; track $index) {
                 <mat-option (click)="onClick(option)" [value]="option">
@@ -19,7 +19,7 @@
                         {{ option }}
                     } @else {
                         @for (key of keyView; track $index; let last = $last) {
-                            {{ option[key] }}@if (!last) {
+                            {{ resolve(option, key) }}@if (!last) {
                                 ,
                             }
                         }

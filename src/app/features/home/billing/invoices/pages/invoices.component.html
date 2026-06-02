@@ -1,0 +1,26 @@
+<app-title (create)="create()" [createAction]="true" subtitle="Gestion" title="Facturas"></app-title>
+
+<div class="filters-card">
+    <app-filter-input (enter)="search()" [(value)]="criteria.engagementId"
+                      title="Id de Hoja de Encargo"></app-filter-input>
+    <app-filter-input (enter)="search()" [(value)]="criteria.client" title="Cliente"></app-filter-input>
+    <app-filter-date (enter)="search()" [(date)]="criteria.fromDate" title="Desde"></app-filter-date>
+</div>
+
+<app-crud
+        (create)="create()"
+        (delete)="delete($event)"
+        (print)="print($event)"
+        (read)="read($event)"
+        (run)="run($event)"
+        (searchAll)="search()"
+        (update)="update($event)"
+        [columns]="columns"
+        [data]="invoices"
+        [deleteAction]="deleteVisibility"
+        [item]="invoice"
+        [printAction]="true"
+        [runAction]="true"
+        [secureDelete]="true"
+        [title]="'Facturas'">
+</app-crud>
