@@ -19,6 +19,7 @@ export class SharedEngagementLetterService {
     searchByClient(client: string): Observable<EngagementLetter[]> {
         return this.httpService.request()
             .param('client', client ?? '')
+            .param('opened', 'true')
             .get<EngagementLetter[]>(ENDPOINTS.engagementLetters.root)
             .pipe(map(letters => letters.map(letter => ({
                 ...letter,

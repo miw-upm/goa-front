@@ -59,20 +59,20 @@ export class InvoiceCreationDialogComponent {
         };
     }
 
-    setUser(user: User): void {
-        this.selectedUser = user;
-    }
-
-    removeUser(): void {
-        this.selectedUser = undefined;
-    }
-
     get operationDate(): Date | null {
         return this.operationDateValue;
     }
 
     set operationDate(value: Date | string | null | undefined) {
         this.operationDateValue = value instanceof Date ? value : this.parseDate(value);
+    }
+
+    setUser(user: User): void {
+        this.selectedUser = user;
+    }
+
+    removeUser(): void {
+        this.selectedUser = undefined;
     }
 
     addDiscount(): void {

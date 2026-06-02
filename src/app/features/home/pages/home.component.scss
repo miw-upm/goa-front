@@ -74,8 +74,6 @@
   position: fixed;
   right: 24px;
   bottom: 24px;
-  width: 84px;
-  height: 84px;
   z-index: 1100;
   border-radius: 50%;
   --mdc-fab-container-color: var(--mat-sys-secondary);
@@ -85,9 +83,9 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   mat-icon {
-    width: 33px;
-    height: 33px;
-    font-size: 33px;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
   }
 
   &:hover,
@@ -102,13 +100,11 @@
   .chatbot-fab {
     right: 16px;
     bottom: 16px;
-    width: 63px;
-    height: 63px;
 
     mat-icon {
-      width: 25.5px;
-      height: 25.5px;
-      font-size: 25.5px;
+      width: 18px;
+      height: 18px;
+      font-size: 18px;
     }
   }
 }
