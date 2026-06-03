@@ -87,7 +87,7 @@ export class ExpensesComponent {
     }
 
     private setEngagementIdAndSearch(id: string | undefined): void {
-        this.criteria.engagementId =  id?.slice(0, 4);
+        this.criteria.engagementId = id?.slice(0, 4);
         this.search();
     }
 }

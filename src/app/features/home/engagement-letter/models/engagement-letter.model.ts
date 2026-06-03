@@ -17,4 +17,5 @@ export interface EngagementLetter {
     paymentMethods?: PaymentMethod[];
     legalClause?: string;
     acceptanceEngagements?: AcceptanceEngagement[];
+    wetSignature?: boolean;
 }
