@@ -30,4 +30,5 @@ export interface Invoice {
     pdfPath?: string;
     originalInvoice?: OriginalInvoice;
     rectification?: boolean;
+    issued?: boolean;
 }

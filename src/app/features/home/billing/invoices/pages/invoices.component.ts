@@ -72,31 +72,6 @@ export class InvoicesComponent {
             this.warnIssuedInvoice();
             return;
         }
-        this.executeUpdate(invoice);
-    }
-
-    delete(invoice: Invoice): void {
-        this.executeDelete(invoice);
-    }
-
-    print(invoice: Invoice): void {
-        if (invoice.id) {
-            this.invoiceService.print(invoice.id).subscribe();
-        }
-    }
-
-    run(invoice: Invoice): void {
-        if (invoice.emissionDate) {
-            this.warnIssuedInvoice();
-            return;
-        }
-        this.executeRun(invoice);
-    }
-
-    private executeUpdate(invoice: Invoice): void {
-        if (!invoice.id) {
-            return;
-        }
         this.invoiceService.read(invoice.id).subscribe(fullInvoice => {
             if (fullInvoice.engagement) {
                 this.warnEngagementInvoiceUpdate();
@@ -108,10 +83,36 @@ export class InvoicesComponent {
         });
     }
 
-    private executeDelete(invoice: Invoice): void {
-        if (invoice.id) {
-            this.invoiceService.delete(invoice.id).subscribe(() => this.search());
+    delete(invoice: Invoice): void {
+        if (invoice.issued) {
+            this.warnIssuedInvoice();
+            return;
         }
+        this.invoiceService.delete(invoice.id).subscribe(() => this.search());
+    }
+
+    print(invoice: Invoice): void {
+        this.invoiceService.print(invoice.id).subscribe();
+    }
+
+    run(invoice: Invoice): void {
+        if (invoice.emissionDate) {
+            this.warnIssuedInvoice();
+            return;
+        }
+        const waitingDialogRef = this.dialog.open(WaitingDialogComponent, {
+            disableClose: true,
+            width: '360px',
+            data: {
+                title: 'Emitiendo factura',
+                message: 'Procesando...'
+            }
+        });
+        this.invoiceService.emission(invoice.id)
+            .pipe(finalize(() => waitingDialogRef.close()))
+            .subscribe(() => {
+                this.setEngagementReferenceAndSearch(invoice.engagement?.id?.substring(0, 4));
+            });
     }
 
     private formatDateValue(value: Date | string | undefined): string | undefined {
@@ -127,29 +128,11 @@ export class InvoicesComponent {
         return `${year}-${month}-${day}`;
     }
 
-    private executeRun(_invoice: Invoice): void {
-        if (_invoice.id) {
-            const waitingDialogRef = this.dialog.open(WaitingDialogComponent, {
-                disableClose: true,
-                width: '360px',
-                data: {
-                    title: 'Emitiendo factura',
-                    message: 'Procesando...'
-                }
-            });
-            this.invoiceService.emission(_invoice.id)
-                .pipe(finalize(() => waitingDialogRef.close()))
-                .subscribe(() => {
-                    this.setEngagementReferenceAndSearch(_invoice.engagement?.id?.substring(0, 4));
-                });
-        }
-    }
-
     private warnIssuedInvoice(): void {
         this.dialog.open(WarningDialogComponent, {
             data: {
                 title: 'Factura emitida',
-                message: 'Esta factura ya ha sido emitida y no puede modificarse ni volver a emitirse.'
+                message: 'Esta factura ya ha sido emitida y no puede borrarse, ni modificarse, ni volver a emitirse.'
             }
         });
     }
