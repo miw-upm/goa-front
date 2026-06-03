@@ -73,12 +73,6 @@ export class ExpensesComponent {
             .subscribe((id?: string) => this.setEngagementIdAndSearch(id));
     }
 
-    delete(expense: Expense): void {
-        if (expense.id) {
-            this.expenseService.delete(expense.id).subscribe(() => this.search());
-        }
-    }
-
     private formatDateValue(value: Date | string | undefined): string | undefined {
         if (!value) {
             return undefined;

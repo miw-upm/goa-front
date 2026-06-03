@@ -10,13 +10,12 @@
 
 <app-crud
         (create)="create()"
-        (delete)="delete($event)"
         (read)="read($event)"
         (searchAll)="search()"
         (update)="update($event)"
         [columns]="columns"
         [data]="expenses"
-        [deleteAction]="deleteVisibility"
+        [deleteAction]="false"
         [item]="expense"
         [secureDelete]="true"
         [title]="'Gastos'">
