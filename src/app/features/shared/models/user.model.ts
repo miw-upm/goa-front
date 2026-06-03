@@ -15,4 +15,5 @@ export interface User {
     role?: Role;
     registrationDate?: Date;
     active?: boolean;
+    billable?: boolean;
 }
