@@ -11,7 +11,7 @@ import {UppercaseWordsPipe} from '@shared/pipes/uppercase-words.pipe';
     imports: [DatePipe, DecimalPipe, CurrencyPipe, UppercaseWordsPipe]
 })
 export class DataCellComponent {
-    private static readonly MAX_FIELDS_TEXT_LENGTH = 50;
+    private static readonly MAX_FIELDS_TEXT_LENGTH = 100;
 
     @Input() row: any;
     @Input() config: CrudColumnConfig | undefined;
