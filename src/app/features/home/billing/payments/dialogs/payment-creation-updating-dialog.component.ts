@@ -24,6 +24,7 @@ import {SearchByEngagementLetterComponent} from "@features/shared/ui/search-by-e
 import {User} from "@features/shared/models/user.model";
 import {MatFormField, MatLabel} from "@angular/material/input";
 import {MatOption, MatSelect} from "@angular/material/select";
+import {MatSlideToggle} from "@angular/material/slide-toggle";
 
 @Component({
     standalone: true,
@@ -45,6 +46,7 @@ import {MatOption, MatSelect} from "@angular/material/select";
         MatLabel,
         MatSelect,
         MatOption,
+        MatSlideToggle,
     ],
     templateUrl: 'payment-creation-updating-dialog.component.html'
 })
@@ -77,6 +79,7 @@ export class PaymentCreationUpdatingDialogComponent {
             user: data?.user ?? {},
             amount: data?.amount,
             method: data?.method ?? PaymentMethod.TRANSFER,
+            invoiced: data?.invoiced ?? false,
         };
         this.selectedEngagementLetter = data?.engagement as EngagementLetter;
         this.selectedUser = data?.user as User;

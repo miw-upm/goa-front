@@ -87,6 +87,16 @@
             </mat-select>
         </mat-form-field>
     </div>
+
+    @if (!isCreate()) {
+        <div class="zone-card zone-card--column">
+            <span class="zone-title">Compatibilidad con ingresos ya facturados antiguos</span>
+
+            <mat-slide-toggle [(ngModel)]="payment.invoiced">
+                Facturado
+            </mat-slide-toggle>
+        </div>
+    }
 </mat-dialog-content>
 
 <mat-dialog-actions>
