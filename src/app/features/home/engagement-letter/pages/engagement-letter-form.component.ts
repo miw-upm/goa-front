@@ -251,6 +251,7 @@ export class EngagementLetterFormComponent implements OnInit {
             discounts: [],
             attachments: [],
             legalProcedures: [],
+            wetSignature: false,
             paymentMethods: [{description: 'Al finalizar el proceso', percentage: 'Resto'}]
         };
     }
