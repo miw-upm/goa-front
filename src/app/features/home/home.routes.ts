@@ -8,8 +8,12 @@ import {AccessLinksComponent} from "./users/access-links/pages/access-links.comp
 import {AccessLinkService} from "./users/access-links/access-link.service";
 import {LegalTasksComponent} from "./engagement-letter/legal-tasks/pages/legal-tasks.component";
 import {LegalTaskService} from "./engagement-letter/legal-tasks/legal-task.service";
-import {LegalProcedureTemplatesComponent} from "./engagement-letter/legal-procedure-templates/pages/legal-procedure-templates.component";
-import {LegalProcedureTemplateService} from "./engagement-letter/legal-procedure-templates/legal-procedure-template.service";
+import {
+    LegalProcedureTemplatesComponent
+} from "./engagement-letter/legal-procedure-templates/pages/legal-procedure-templates.component";
+import {
+    LegalProcedureTemplateService
+} from "./engagement-letter/legal-procedure-templates/legal-procedure-template.service";
 import {
     AuthorizationPurposeTemplatesComponent
 } from "./authorization-purpose-templates/pages/authorization-purpose-templates.component";
@@ -28,7 +32,9 @@ import {PaymentsComponent} from "./billing/payments/pages/payments.component";
 import {PaymentService} from "./billing/payments/payment.service";
 import {InvoicesComponent} from "./billing/invoices/pages/invoices.component";
 import {InvoiceService} from "./billing/invoices/invoice.service";
-import {EngagementLetterFormComponent} from "./engagement-letter/engagement-letter/pages/engagement-letter-form.component";
+import {
+    EngagementLetterFormComponent
+} from "./engagement-letter/engagement-letter/pages/engagement-letter-form.component";
 import {ConsentsComponent} from "./users/consents/pages/consents.component";
 import {ConsentService} from "./users/consents/consent.service";
 import {CustomerFileDownloadComponent} from "./customer-file-download/pages/customer-file-download.component";

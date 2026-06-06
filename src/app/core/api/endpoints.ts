@@ -80,6 +80,7 @@ export const ENDPOINTS = {
         fromPayments: () => `${INVOICE_ROOT}/from-payments`,
         fromEngagement: () => `${INVOICE_ROOT}/from-engagement`,
         rectification: () => `${INVOICE_ROOT}/rectification`,
+        manualRectification: () => `${INVOICE_ROOT}/rectification/manual`,
     },
 
     payments: {

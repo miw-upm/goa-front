@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 
 
-
 import {ConsentSearch} from './consent-search.model';
 import {Consent} from "./consent.model";
 import {HttpService} from "@shared/ui/api/http.service";
