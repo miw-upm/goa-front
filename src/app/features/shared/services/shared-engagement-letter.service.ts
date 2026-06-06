@@ -4,7 +4,7 @@ import {map} from 'rxjs/operators';
 
 import {ENDPOINTS} from '@core/api/endpoints';
 import {HttpService} from '@shared/ui/api/http.service';
-import {EngagementLetter} from '../../home/engagement-letter/models/engagement-letter.model';
+import {EngagementLetter} from '../../home/engagement-letter/engagement-letter/models/engagement-letter.model';
 
 @Injectable({providedIn: 'root'})
 export class SharedEngagementLetterService {

@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Observable, of} from 'rxjs';
 
 import {SearchComponent} from '@shared/ui/inputs/filters/search.component';
-import {EngagementLetter} from '../../home/engagement-letter/models/engagement-letter.model';
+import {EngagementLetter} from '../../home/engagement-letter/engagement-letter/models/engagement-letter.model';
 import {SharedEngagementLetterService} from '../services/shared-engagement-letter.service';
 
 @Component({

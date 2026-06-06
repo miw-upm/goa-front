@@ -1,4 +1,4 @@
-import {EngagementLetter} from '../../../engagement-letter/models/engagement-letter.model';
+import {EngagementLetter} from '../../../engagement-letter/engagement-letter/models/engagement-letter.model';
 import {SupplierInfo} from './supplier-info.model';
 
 export interface Expense {

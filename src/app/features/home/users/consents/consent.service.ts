@@ -1,0 +1,26 @@
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+
+
+
+import {ConsentSearch} from './consent-search.model';
+import {Consent} from "./consent.model";
+import {HttpService} from "@shared/ui/api/http.service";
+import {ENDPOINTS} from "@core/api/endpoints";
+
+@Injectable({providedIn: 'root'})
+export class ConsentService {
+    constructor(private readonly httpService: HttpService) {
+    }
+
+    read(id: string): Observable<Consent> {
+        return this.httpService.request()
+            .get(ENDPOINTS.consents.byId(id));
+    }
+
+    search(criteria: ConsentSearch): Observable<Consent[]> {
+        return this.httpService.request()
+            .paramsFrom(criteria)
+            .get(ENDPOINTS.consents.root);
+    }
+}

@@ -21,7 +21,6 @@ import {TitleComponent} from "@shared/ui/title/title.component";
 import {CrudComponent} from "@shared/ui/crud/crud.component";
 import {WaitingDialogComponent} from "@shared/ui/dialogs/waiting-dialog.component";
 import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
-import {AuthService} from "@core/auth/auth.service";
 
 @Component({
     standalone: true,
@@ -29,18 +28,12 @@ import {AuthService} from "@core/auth/auth.service";
     templateUrl: 'invoices.component.html'
 })
 export class InvoicesComponent {
-    deleteVisibility = false;
     invoices = of([] as Invoice[]);
     invoice: Observable<Invoice>;
     criteria: InvoiceFindCriteria = {};
     columns = INVOICES_COLUMNS;
 
-    constructor(
-        private readonly dialog: MatDialog,
-        private readonly invoiceService: InvoiceService,
-        auth: AuthService
-    ) {
-        this.deleteVisibility = auth.isAdmin();
+    constructor(private readonly dialog: MatDialog, private readonly invoiceService: InvoiceService) {
     }
 
     search(): void {
