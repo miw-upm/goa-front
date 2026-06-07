@@ -20,6 +20,7 @@ const enc = encodeURIComponent;
 export const ENDPOINTS = {
     users: {
         root: USERS_ROOT,
+        byId: (id: string) => `${USERS_ROOT}/${enc(id)}`,
         byMobile: (mobile: string) => `${USERS_ROOT}/${enc(mobile)}`,
         byToken: (scope: string, urlId: string, token: string) => `${USERS_ROOT}/${enc(scope)}/${enc(urlId)}/${enc(token)}`,
         provinces: () => `${USERS_ROOT}/provinces`,

@@ -25,15 +25,20 @@ export class UserService {
             .post(ENDPOINTS.users.root, user);
     }
 
-    read(mobile: string): Observable<User> {
+    read(id: string): Observable<User> {
+        return this.httpService.request()
+            .get(ENDPOINTS.users.byId(id));
+    }
+
+    readByMobile(mobile: string): Observable<User> {
         return this.httpService.request()
             .get(ENDPOINTS.users.byMobile(mobile));
     }
 
-    update(oldMobile: string, user: User): Observable<User> {
+    update(id: string, user: User): Observable<User> {
         return this.httpService.request()
             .success()
-            .put(ENDPOINTS.users.byMobile(oldMobile), user);
+            .put(ENDPOINTS.users.byId(id), user);
     }
 
     search(criteria: UserFindCriteria): Observable<User[]> {
@@ -43,7 +48,7 @@ export class UserService {
     }
 
     createAccessLink(user: User): Observable<string> {
-        return this.read(user.mobile)
+        return this.read(user.id)
             .pipe(
                 switchMap(retrievedUser => {
                     if (retrievedUser.role !== Role.CUSTOMER) {

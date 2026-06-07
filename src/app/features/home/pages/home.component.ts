@@ -45,7 +45,7 @@ export class HomeComponent {
     }
 
     update() {
-        this.userService.read(this.authService.mobile)
+        this.userService.readByMobile(this.authService.mobile)
             .subscribe(fullUser => this.dialog.open(UserCreationUpdatingDialogComponent, {data: fullUser}));
 
     }

@@ -56,12 +56,12 @@ export class UsersComponent {
     }
 
     read(user: User): void {
-        this.user = this.userService.read(user.mobile)
+        this.user = this.userService.read(user.id!);
     }
 
     update(user: User): void {
         this.userService
-            .read(user.mobile)
+            .read(user.id!)
             .subscribe(fullUser => this.dialog.open(UserCreationUpdatingDialogComponent, {data: fullUser})
                 .afterClosed()
                 .subscribe((mobile: string | undefined) => {
