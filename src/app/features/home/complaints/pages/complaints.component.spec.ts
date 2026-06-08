@@ -1,6 +1,8 @@
 import {of} from 'rxjs';
 import {ComplaintCreationDialogComponent} from '../dialogs/complaint-creation-dialog.component';
 import {ComplaintsComponent} from './complaints.component';
+import {Complaint} from '../models/complaint.model';
+import {Status} from "../models/status.enum";
 
 describe('ComplaintsComponent', () => {
     let dialogSpy: {
@@ -16,7 +18,9 @@ describe('ComplaintsComponent', () => {
             })
         };
 
-        complaintServiceSpy = {};
+        complaintServiceSpy = {
+            search: jasmine.createSpy('search').and.returnValue(of([]))
+        };
     });
 
     it('should initialize title and empty list', (done) => {
@@ -45,5 +49,34 @@ describe('ComplaintsComponent', () => {
 
         const dialogRef = dialogSpy.open.calls.mostRecent().returnValue;
         expect(dialogRef.afterClosed).toHaveBeenCalled();
+    });
+
+    it('should call search on complaint service', () => {
+        const component = new ComplaintsComponent(dialogSpy as any, complaintServiceSpy as any);
+
+        component.search();
+
+        expect((complaintServiceSpy as any).search).toHaveBeenCalled();
+    });
+
+    it('should update complaints on search', (done) => {
+        const expectedComplaints: Complaint[] = [{
+            id: '11111111-1111-1111-1111-111111111111',
+            engagementId: '22222222-2222-2222-2222-222222222222',
+            mobile: '600123456',
+            description: 'Test Complaint',
+            status: Status.OPEN,
+            createdAt: '2026-03-24T10:00:00'
+        }];
+
+        (complaintServiceSpy as any).search.and.returnValue(of(expectedComplaints));
+        const component = new ComplaintsComponent(dialogSpy as any, complaintServiceSpy as any);
+
+        component.search();
+
+        component.complaints.subscribe(items => {
+            expect(items).toEqual(expectedComplaints);
+            done();
+        });
     });
 });
