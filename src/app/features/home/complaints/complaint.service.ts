@@ -15,6 +15,11 @@ export class ComplaintService {
             .post(ENDPOINTS.complaints.root, complaint);
     }
 
+    read(id: string): Observable<Complaint> {
+        return this.httpService.request()
+            .get(ENDPOINTS.complaints.byId(id));
+    }
+
     search(): Observable<Complaint[]> {
         return this.httpService.request()
             .get(ENDPOINTS.complaints.root);
