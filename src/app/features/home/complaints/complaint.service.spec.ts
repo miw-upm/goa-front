@@ -9,6 +9,7 @@ describe('ComplaintService', () => {
 
     let requestBuilderSpy: {
         success: jasmine.Spy;
+        get: jasmine.Spy;
         post: jasmine.Spy;
     };
 
@@ -20,6 +21,7 @@ describe('ComplaintService', () => {
         // Configuramos el espía del builder para que devuelva 'this' en cada llamada
         requestBuilderSpy = {
             success: jasmine.createSpy('success'),
+            get: jasmine.createSpy('get'),
             post: jasmine.createSpy('post')
         };
 
@@ -30,6 +32,26 @@ describe('ComplaintService', () => {
         };
 
         service = new ComplaintService(httpServiceSpy as any);
+    });
+
+    it('should read complaint with GET to complaint by id endpoint', () => {
+        const response: Complaint = {
+            id: 'complaint-1',
+            engagementId: 'eng-1',
+            mobile: '600123456',
+            description: 'Problema técnico',
+            status: Status.OPEN,
+            createdAt: '2026-03-20T10:00:00'
+        };
+
+        requestBuilderSpy.get.and.returnValue(of(response));
+
+        service.read('complaint-1').subscribe(complaint => {
+            expect(complaint).toEqual(response);
+        });
+
+        expect(httpServiceSpy.request).toHaveBeenCalled();
+        expect(requestBuilderSpy.get).toHaveBeenCalledWith(ENDPOINTS.complaints.byId('complaint-1'));
     });
 
     it('should create complaint with POST to complaints endpoint', () => {

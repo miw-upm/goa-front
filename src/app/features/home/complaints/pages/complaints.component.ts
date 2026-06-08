@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 
 import {CrudComponent} from '@shared/ui/crud/crud.component';
 import {Complaint} from '../models/complaint.model';
@@ -16,6 +16,7 @@ import {ComplaintCreationDialogComponent} from '../dialogs/complaint-creation-di
 export class ComplaintsComponent {
     title = 'Quejas';
     complaints = of([] as Complaint[]);
+    complaint: Observable<Complaint>;
 
     constructor(
         private readonly dialog: MatDialog,
@@ -34,5 +35,9 @@ export class ComplaintsComponent {
                 // recargar los datos si fuera necesario
                 // this.complaints = this.complaintService.readAll();
             });
+    }
+
+    read(complaint: Complaint): void {
+        this.complaint = this.complaintService.read(complaint.id);
     }
 }
