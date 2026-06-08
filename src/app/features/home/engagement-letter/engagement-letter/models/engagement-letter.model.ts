@@ -1,0 +1,21 @@
+import {User} from "@features/shared/models/user.model";
+import {LegalProcedure} from "./legal-procedure.model";
+import {PaymentMethod} from "./payment-method.model";
+import {AcceptanceEngagement} from "./acceptance-engagement.model";
+
+export interface EngagementLetter {
+    id?: string;
+    reference?: string;
+    budgetOnly?: boolean;
+    discount?: number;
+    discounts?: number[];
+    lastUpdatedDate?: Date | string;
+    closingDate?: Date | string;
+    owner?: User;
+    attachments?: User[];
+    legalProcedures?: LegalProcedure[];
+    paymentMethods?: PaymentMethod[];
+    legalClause?: string;
+    acceptanceEngagements?: AcceptanceEngagement[];
+    wetSignature?: boolean;
+}

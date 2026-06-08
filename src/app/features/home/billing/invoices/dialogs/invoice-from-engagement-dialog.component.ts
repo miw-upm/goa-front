@@ -16,10 +16,12 @@ import {MatSlideToggle} from '@angular/material/slide-toggle';
 
 import {
     LegalProcedureEditDialogComponent
-} from '../../../engagement-letter/dialogs/legal-procedure-edit-dialog.component';
-import {EngagementLetter} from '../../../engagement-letter/models/engagement-letter.model';
-import {LegalProcedure} from '../../../engagement-letter/models/legal-procedure.model';
-import {LegalProcedureTemplate} from '../../../legal-procedure-templates/models/legal-procedure-template.model';
+} from '../../../engagement-letter/engagement-letter/dialogs/legal-procedure-edit-dialog.component';
+import {EngagementLetter} from '../../../engagement-letter/engagement-letter/models/engagement-letter.model';
+import {LegalProcedure} from '../../../engagement-letter/engagement-letter/models/legal-procedure.model';
+import {
+    LegalProcedureTemplate
+} from '../../../engagement-letter/legal-procedure-templates/models/legal-procedure-template.model';
 import {InvoiceService} from '../invoice.service';
 import {User} from "@features/shared/models/user.model";
 import {SearchByEngagementLetterComponent} from "@features/shared/ui/search-by-engagement-letter.component";

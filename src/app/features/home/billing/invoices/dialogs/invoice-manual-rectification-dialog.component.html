@@ -1,0 +1,116 @@
+<h4 mat-dialog-title>Rectificativa Manual</h4>
+
+<mat-dialog-content>
+    <div class="zone-card zone-card--column">
+        <span class="zone-title">Factura original</span>
+
+        <app-form-field
+            #seriesNg
+            [(value)]="originalInvoice.series"
+            [required]="true"
+            errorMessage="Obligatorio"
+            label="Serie"/>
+        <app-form-field
+            #numberNg
+            [(value)]="originalInvoice.number"
+            [min]="1"
+            [required]="true"
+            [step]="1"
+            errorMessage="Obligatorio y entero positivo"
+            label="Numero"
+            type="number"/>
+        <app-form-date [(value)]="originalEmissionDate" label="Fecha de emision original"/>
+        <app-form-textarea
+            #reasonNg
+            [(value)]="originalInvoice.reason"
+            [required]="true"
+            errorMessage="Obligatorio"
+            label="Motivo"/>
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <div class="zone-row">
+            <span class="zone-title">Cliente de facturacion</span>
+            <app-search-by-customer
+                    (userChange)="setUser($event)"
+                    title="Buscar cliente">
+            </app-search-by-customer>
+        </div>
+
+        @if (selectedUser) {
+            <app-form-customer
+                    (remove)="removeUser()"
+                    [fullName]="(selectedUser.firstName ?? '') + ' ' + (selectedUser.familyName ?? '')"
+                    [mobile]="selectedUser.mobile">
+            </app-form-customer>
+        }
+    </div>
+
+    <div class="zone-card zone-card--column">
+        <span class="zone-title">Datos de factura</span>
+
+        <app-form-textarea
+            #conceptNg
+            [(value)]="concept"
+            [required]="true"
+            errorMessage="Obligatorio"
+            label="Concepto"/>
+        <app-form-field
+            #percentageNg
+            [(value)]="percentage"
+            [step]="0.0001"
+            errorMessage="Numero invalido"
+            label="Porcentaje"
+            type="number"/>
+        <app-form-date [(value)]="operationDate" label="Fecha de operacion"/>
+        <app-form-field
+            #baseAmountNg
+            [(value)]="baseAmount"
+            [required]="true"
+            [step]="0.01"
+            errorMessage="Obligatorio"
+            label="Base imponible"
+            type="number"/>
+        <app-form-field
+            #vatAmountNg
+            [(value)]="vatAmount"
+            [required]="true"
+            [step]="0.01"
+            errorMessage="Obligatorio"
+            label="IVA"
+            type="number"/>
+        <app-form-field
+            #vatRateNg
+            [(value)]="vatRate"
+            [required]="true"
+            [step]="0.01"
+            errorMessage="Obligatorio"
+            label="Tipo IVA"
+            type="number"/>
+        <app-form-field
+            #baseExpenseNg
+            [(value)]="baseExpense"
+            [step]="0.01"
+            errorMessage="Numero invalido"
+            label="Base gastos"
+            type="number"/>
+        <app-form-field
+            #vatExpenseNg
+            [(value)]="vatExpense"
+            [step]="0.01"
+            errorMessage="Numero invalido"
+            label="IVA gastos"
+            type="number"/>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Cancelar</button>
+    <button (click)="create()"
+            [disabled]="!canCreate() || formInvalid(seriesNg.ngModel, numberNg.ngModel, reasonNg.ngModel, conceptNg.ngModel, percentageNg.ngModel, baseAmountNg.ngModel, vatAmountNg.ngModel, vatRateNg.ngModel, baseExpenseNg.ngModel, vatExpenseNg.ngModel)"
+            color="primary"
+            mat-raised-button>
+        <mat-icon matButtonIcon>add</mat-icon>
+        Crear
+    </button>
+</mat-dialog-actions>

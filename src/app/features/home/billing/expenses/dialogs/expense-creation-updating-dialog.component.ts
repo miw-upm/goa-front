@@ -13,7 +13,7 @@ import {
 import {MatIcon} from '@angular/material/icon';
 import {Observable, of} from 'rxjs';
 
-import {EngagementLetter} from '../../../engagement-letter/models/engagement-letter.model';
+import {EngagementLetter} from '../../../engagement-letter/engagement-letter/models/engagement-letter.model';
 import {ExpenseService} from '../expense.service';
 import {Expense} from '../models/expense.model';
 import {SupplierInfo} from '../models/supplier-info.model';

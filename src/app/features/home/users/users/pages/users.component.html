@@ -1,0 +1,25 @@
+<app-title (create)="create()" [createAction]="true" subtitle="Gestion" title="Clientes"></app-title>
+
+<div class="filters-card">
+    <mat-button-toggle-group (change)="search()" [(ngModel)]="criteria.active">
+        <mat-button-toggle [value]="null">Todos</mat-button-toggle>
+        <mat-button-toggle [value]="true">Activo</mat-button-toggle>
+        <mat-button-toggle [value]="false">Inactivo</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <mat-button-toggle-group (change)="search()" [(ngModel)]="criteria.billable">
+        <mat-button-toggle [value]="null">Todos</mat-button-toggle>
+        <mat-button-toggle [value]="true">Facturable</mat-button-toggle>
+        <mat-button-toggle [value]="false">No facturable</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <app-filter-input (enter)="search()" [(value)]="criteria.customer"
+                      title="Buscar por nombre, apellido, movil..."></app-filter-input>
+</div>
+
+<app-crud (create)="create()" (json)="json()" (link)="link($event)" (read)="read($event)"
+          (searchAll)="search()" (update)="update($event)"
+          [columns]="columns"
+          [data]="users" [deleteAction]=visible [item]="user" [jsonAction]="true" [linkAction]="true"
+          [title]="title">
+</app-crud>

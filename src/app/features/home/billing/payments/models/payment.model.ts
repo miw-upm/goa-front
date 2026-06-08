@@ -1,5 +1,5 @@
 import {PaymentMethod} from './payment-method.model';
-import {LegalProcedure} from '../../../engagement-letter/models/legal-procedure.model';
+import {LegalProcedure} from '../../../engagement-letter/engagement-letter/models/legal-procedure.model';
 
 export interface EngagementSnapshot {
     id?: string;

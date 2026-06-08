@@ -12,7 +12,7 @@ import {
 import {MatIcon} from '@angular/material/icon';
 import {of} from 'rxjs';
 
-import {EngagementLetter} from '../../../engagement-letter/models/engagement-letter.model';
+import {EngagementLetter} from '../../../engagement-letter/engagement-letter/models/engagement-letter.model';
 import {Payment} from '../models/payment.model';
 import {PaymentMethod} from '../models/payment-method.model';
 import {PaymentService} from '../payment.service';

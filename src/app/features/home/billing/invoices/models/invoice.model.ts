@@ -1,5 +1,5 @@
-import {EngagementLetter} from '../../../engagement-letter/models/engagement-letter.model';
-import {LegalProcedure} from '../../../engagement-letter/models/legal-procedure.model';
+import {EngagementLetter} from '../../../engagement-letter/engagement-letter/models/engagement-letter.model';
+import {LegalProcedure} from '../../../engagement-letter/engagement-letter/models/legal-procedure.model';
 import {Payment} from '../../payments/models/payment.model';
 import {BillingInfo} from './billing-info.model';
 

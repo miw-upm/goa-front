@@ -9,8 +9,8 @@ import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
 
 import {AuthService} from "@core/auth/auth.service";
 import {FooterComponent} from '@core/layout/footer/footer.component';
-import {UserService} from "../users/user.service";
-import {UserCreationUpdatingDialogComponent} from "../users/dialogs/user-creation-updating-dialog.component";
+import {UserService} from "../users/users/user.service";
+import {UserCreationUpdatingDialogComponent} from "../users/users/dialogs/user-creation-updating-dialog.component";
 import {ChatbotComponent} from "../chatbot/pages/chatbot.component";
 
 @Component({
@@ -45,7 +45,7 @@ export class HomeComponent {
     }
 
     update() {
-        this.userService.read(this.authService.mobile)
+        this.userService.readByMobile(this.authService.mobile)
             .subscribe(fullUser => this.dialog.open(UserCreationUpdatingDialogComponent, {data: fullUser}));
 
     }

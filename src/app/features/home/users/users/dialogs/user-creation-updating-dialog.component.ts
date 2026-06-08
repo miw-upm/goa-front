@@ -1,0 +1,90 @@
+import {Component, Inject} from '@angular/core';
+import {FormsModule, NgModel} from '@angular/forms';
+import {
+    MAT_DIALOG_DATA,
+    MatDialogActions,
+    MatDialogClose,
+    MatDialogContent,
+    MatDialogRef,
+    MatDialogTitle
+} from '@angular/material/dialog';
+import {MatSlideToggle} from '@angular/material/slide-toggle';
+import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+import {Observable, of} from "rxjs";
+
+import {AuthService} from "@core/auth/auth.service";
+import {FormSelectComponent} from "@shared/ui/inputs/forms/form-select.component";
+import {FormFieldComponent} from "@shared/ui/inputs/forms/form-field.component";
+import {AppDateFieldComponent} from "@shared/ui/inputs/forms/data.component";
+import {FormNifComponent} from "@shared/ui/inputs/forms/form-nif.component";
+import {User} from "@features/shared/models/user.model";
+import {SharedUserService} from "@features/shared/services/shared-user.service";
+
+import {UserService} from '../user.service';
+
+@Component({
+    standalone: true,
+    imports: [
+        FormsModule,
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatDialogClose,
+        MatSlideToggle,
+        MatButton,
+        MatIcon,
+        FormSelectComponent,
+        FormFieldComponent,
+        AppDateFieldComponent,
+        FormNifComponent,
+    ],
+    templateUrl: 'user-creation-updating-dialog.component.html'
+})
+
+export class UserCreationUpdatingDialogComponent {
+    user: User;
+    title: string;
+    roles: Observable<string[]>;
+    oldMobile: string;
+    enablePasswordChange: boolean;
+    provinces: Observable<string[]>;
+
+    constructor(
+        @Inject(MAT_DIALOG_DATA) data: User,
+        private readonly userService: UserService,
+        private readonly sharedUserService: SharedUserService,
+        private readonly authService: AuthService,
+        private readonly dialogRef: MatDialogRef<UserCreationUpdatingDialogComponent, string>
+    ) {
+        this.title = data ? 'Edición de Clientes' : 'Creación de Clientes';
+        this.user = data || {mobile: undefined, firstName: undefined, active: true};
+        this.oldMobile = data ? data.mobile : undefined;
+        this.enablePasswordChange = false;
+        this.roles = of(this.authService.allowedRoles());
+        this.provinces = this.sharedUserService.findProvinces();
+    }
+
+    isCreate(): boolean {
+        return this.oldMobile === undefined;
+    }
+
+    create(): void {
+        this.userService
+            .create(this.user)
+            .subscribe(() => this.dialogRef.close(this.user.mobile));
+    }
+
+    update(): void {
+        if (!this.enablePasswordChange) {
+            this.user.password = null;
+        }
+        this.userService
+            .update(this.user.id, this.user)
+            .subscribe(() => this.dialogRef.close(this.user.mobile));
+    }
+
+    formInvalid(...controls: NgModel[]): boolean {
+        return controls.some(ctrl => ctrl.invalid && (ctrl.dirty || ctrl.touched));
+    }
+}
