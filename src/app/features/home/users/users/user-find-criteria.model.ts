@@ -1,7 +1,5 @@
 export class UserFindCriteria {
-    mobile?: string;
-    firstName?: string;
-    familyName?: string;
+    active?: boolean;
     customer?: string;
-    projection?: boolean
+    billable?: boolean;
 }

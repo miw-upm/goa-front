@@ -10,6 +10,7 @@ import {CrudComponent} from "@shared/ui/crud/crud.component";
 import {FilterInputComponent} from "@shared/ui/inputs/filters/filter-input.component";
 import {TitleComponent} from "@shared/ui/title/title.component";
 import {User} from "@features/shared/models/user.model";
+import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
 
 import {UserCreationUpdatingDialogComponent} from '../dialogs/user-creation-updating-dialog.component';
 import {UserFindCriteria} from '../user-find-criteria.model';
@@ -18,7 +19,7 @@ import {USERS_COLUMNS} from './users-columns.config';
 
 @Component({
     standalone: true,
-    imports: [FormsModule, CrudComponent, FilterInputComponent, TitleComponent],
+    imports: [FormsModule, CrudComponent, FilterInputComponent, TitleComponent, MatButtonToggle, MatButtonToggleGroup],
     templateUrl: 'users.component.html'
 })
 export class UsersComponent {
@@ -40,7 +41,10 @@ export class UsersComponent {
     }
 
     resetSearch(): void {
-        this.criteria = {};
+        this.criteria = {
+            active: true,
+            billable: null
+        };
     }
 
     create(): void {
@@ -49,7 +53,7 @@ export class UsersComponent {
             .afterClosed()
             .subscribe((mobile: string | undefined) => {
                 if (mobile) {
-                    this.criteria.mobile = mobile;
+                    this.criteria.customer = mobile;
                     this.search();
                 }
             });
@@ -66,7 +70,7 @@ export class UsersComponent {
                 .afterClosed()
                 .subscribe((mobile: string | undefined) => {
                     if (mobile) {
-                        this.criteria.mobile = mobile;
+                        this.criteria.customer = mobile;
                         this.search();
                     }
                 })
