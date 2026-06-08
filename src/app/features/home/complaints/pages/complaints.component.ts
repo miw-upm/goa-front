@@ -23,6 +23,10 @@ export class ComplaintsComponent {
     ) {
     }
 
+    search(): void {
+        this.complaints = this.complaintService.search();
+    }
+
     create(): void {
         this.dialog.open(ComplaintCreationDialogComponent, {width: '600px'})
             .afterClosed()

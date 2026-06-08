@@ -14,4 +14,9 @@ export class ComplaintService {
             .success()
             .post(ENDPOINTS.complaints.root, complaint);
     }
+
+    search(): Observable<Complaint[]> {
+        return this.httpService.request()
+            .get(ENDPOINTS.complaints.root);
+    }
 }
