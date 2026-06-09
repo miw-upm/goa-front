@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>Consulta — {{ inquiry.state }}</h2>
+<mat-dialog-content>
+    <mat-form-field appearance="outline" style="width:100%">
+        <mat-label>Cliente</mat-label>
+        <input [disabled]="true" [value]="inquiry.customerMobile" matInput>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="width:100%">
+        <mat-label>Asunto</mat-label>
+        <input [disabled]="true" [value]="inquiry.subject" matInput>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="width:100%">
+        <mat-label>Descripción</mat-label>
+        <textarea [disabled]="true" [value]="inquiry.description" matInput rows="4"></textarea>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="width:100%">
+        <mat-label>Categoría</mat-label>
+        <input [disabled]="true" [value]="inquiry.category" matInput>
+    </mat-form-field>
+    @if (isOpen) {
+        <mat-form-field appearance="outline" style="width:100%">
+            <mat-label>Respuesta</mat-label>
+            <textarea [(ngModel)]="replyText" matInput name="reply" rows="4"></textarea>
+        </mat-form-field>
+    }
+    @if (isAnswered && inquiry.reply) {
+        <mat-form-field appearance="outline" style="width:100%">
+            <mat-label>Respuesta enviada</mat-label>
+            <textarea [disabled]="true" [value]="inquiry.reply" matInput rows="4"></textarea>
+        </mat-form-field>
+    }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    @if (isOpen) {
+        <button (click)="reply()" [disabled]="!replyText.trim()" color="primary" mat-raised-button>Responder</button>
+    }
+    @if (isAnswered) {
+        <button (click)="close()" color="accent" mat-raised-button>Cerrar consulta</button>
+    }
+</mat-dialog-actions>
