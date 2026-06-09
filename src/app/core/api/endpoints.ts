@@ -14,6 +14,7 @@ const PAYMENT_ROOT = `${environment.REST_BILLING}/payments`;
 const ADMINISTRATIVE_AUTHORIZATION_ROOT = `${environment.REST_ENGAGEMENT}/administrative-authorizations`;
 const CUSTOMER_FILE_DOWNLOAD_ROOT = `${environment.REST_ENGAGEMENT}/customer-file-downloads`;
 const CHATBOT_ROOT = `${environment.REST_CHATBOT}/chatbot`;
+const INQUIRY_ROOT = `${environment.REST_SANDBOX}/inquiries`;
 
 const enc = encodeURIComponent;
 
@@ -114,6 +115,14 @@ export const ENDPOINTS = {
         reopenConversation: (conversationId: string) => `${CHATBOT_ROOT}/conversations/${enc(conversationId)}/reopen`,
         configurationStatus: () => `${CHATBOT_ROOT}/configuration/status`,
         messages: () => `${CHATBOT_ROOT}/messages`,
+    },
+
+
+    inquiries: {
+        root: INQUIRY_ROOT,
+        byId: (id: string) => `${INQUIRY_ROOT}/${enc(id)}`,
+        reply: (id: string) => `${INQUIRY_ROOT}/${enc(id)}/reply`,
+        close: (id: string) => `${INQUIRY_ROOT}/${enc(id)}/close`,
     },
 
 } as const;
