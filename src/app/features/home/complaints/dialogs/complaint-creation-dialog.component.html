@@ -34,20 +34,7 @@
         type="datetime-local"/>
 </mat-dialog-content>
 
-<mat-dialog-actions>
-    <button mat-dialog-close mat-raised-button>Cerrar</button>
 
-    <button
-            (click)="create()"
-            [disabled]="!canSubmit() || formInvalid(descriptionNg.ngModel, createdAtNg.ngModel)"
-            color="primary"
-            mat-raised-button>
-        Crear
-    </button>
-</mat-dialog-actions>
-
-<!--
-Para actualizar
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Cerrar</button>
 

@@ -88,16 +88,17 @@ export class ComplaintCreationDialogComponent {
             .subscribe(() => this.dialog.closeAll());
     }
 
-    // update(): void {
-    //     if (this.isCreate() || !this.complaint.id || !this.canSubmit()) {
-    //         return;
-    //     }
-    //
-    //     const {id, ...complaint} = this.complaint;
-    //     this.complaintService
-    //         .update(id!, complaint)
-    //         .subscribe(() => this.dialog.closeAll());
-    // }
+    update(): void {
+        // Ensure we are in edit mode, have an ID, and data is valid
+        if (this.isCreate() || !this.complaint.id || !this.canSubmit()) {
+            return;
+        }
+
+        // Send the update to your service
+        this.complaintService
+            .update(this.complaint.id, this.complaint)
+            .subscribe(() => this.dialog.closeAll());
+    }
 
     isCreate(): boolean {
         return !this.complaint.id;

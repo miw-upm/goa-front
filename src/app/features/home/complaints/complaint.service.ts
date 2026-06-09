@@ -24,4 +24,10 @@ export class ComplaintService {
         return this.httpService.request()
             .get(ENDPOINTS.complaints.root);
     }
+
+    update(id: string, complaint: Complaint): Observable<Complaint> {
+        return this.httpService.request()
+            .success()
+            .put(ENDPOINTS.complaints.byId(id), complaint);
+    }
 }
