@@ -28,6 +28,11 @@
                 <mat-icon>download</mat-icon>
                 <span>Descargas</span>
             </button>
+
+            <button [matMenuTriggerFor]="inquiriesMenu" class="nav-btn" mat-button>
+                <mat-icon>help_outline</mat-icon>
+                <span>Consultas</span>
+            </button>
         </nav>
     }
 
@@ -100,6 +105,18 @@
     <button mat-menu-item routerLink="/home/payments">
         <mat-icon>trending_up</mat-icon>
         <span>Ingresos</span>
+    </button>
+</mat-menu>
+
+<!-- Consultas -->
+<mat-menu #inquiriesMenu="matMenu">
+    <button mat-menu-item routerLink="/home/inquiries">
+        <mat-icon>question_answer</mat-icon>
+        <span>Mis consultas</span>
+    </button>
+    <button mat-menu-item routerLink="/home/manager-inquiries">
+        <mat-icon>support_agent</mat-icon>
+        <span>Gestión de consultas</span>
     </button>
 </mat-menu>
 
