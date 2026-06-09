@@ -1,0 +1,10 @@
+<app-crud
+        (read)="read($event)"
+        (searchAll)="search()"
+        [createAction]="false"
+        [data]="inquiries"
+        [hiddenFields]="['id']"
+        [readAction]="true"
+        [title]="title"
+        [updateAction]="false">
+</app-crud>
