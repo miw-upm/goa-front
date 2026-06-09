@@ -1,0 +1,12 @@
+<app-crud
+        (create)="create()"
+        (read)="read($event)"
+        (searchAll)="search()"
+        [createAction]="true"
+        [data]="inquiries"
+        [hiddenFields]="['id', 'reply', 'repliedByMobile', 'replyDate']"
+        [item]="inquiry"
+        [readAction]="true"
+        [title]="title"
+        [updateAction]="false">
+</app-crud>

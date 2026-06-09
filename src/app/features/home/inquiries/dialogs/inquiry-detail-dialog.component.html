@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Detalle de consulta — {{ inquiry.state }}</h2>
+<mat-dialog-content>
+    <mat-form-field appearance="outline" style="width:100%">
+        <mat-label>Asunto</mat-label>
+        <input [(ngModel)]="inquiry.subject" [disabled]="!isOpen" matInput name="subject">
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="width:100%">
+        <mat-label>Descripción</mat-label>
+        <textarea [(ngModel)]="inquiry.description" [disabled]="!isOpen" matInput name="description" rows="4"></textarea>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="width:100%">
+        <mat-label>Categoría</mat-label>
+        <input [disabled]="true" [value]="inquiry.category" matInput>
+    </mat-form-field>
+    @if (inquiry.reply) {
+        <mat-form-field appearance="outline" style="width:100%">
+            <mat-label>Respuesta</mat-label>
+            <textarea [disabled]="true" [value]="inquiry.reply" matInput rows="3"></textarea>
+        </mat-form-field>
+    }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cerrar</button>
+    @if (isOpen) {
+        <button (click)="delete()" color="warn" mat-stroked-button>Eliminar</button>
+        <button (click)="save()" color="primary" mat-raised-button>Guardar</button>
+    }
+</mat-dialog-actions>
