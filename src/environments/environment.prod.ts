@@ -15,5 +15,6 @@ export const environment = {
     REST_SUPPORT: `${API}/goa-support`,
     REST_DOCUMENT: `${API}/goa-document`,
     REST_CHATBOT: `${API}/goa-chatbot`,
+    REST_SANDBOX: `${API}/goa-sandbox`,
     SECURE_ROUTES: [API, `${API}/goa-chatbot`]
 };
