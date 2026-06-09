@@ -2,11 +2,12 @@
         (create)="create()"
         (read)="read($event)"
         (searchAll)="search()"
+        (update)="update($event)"
         [createAction]="true"
         [data]="complaints"
         [hiddenFields]="['id']"
         [item]="complaint"
         [readAction]="true"
         [title]="title"
-        [updateAction]="false">
+        [updateAction]="true">
 </app-crud>

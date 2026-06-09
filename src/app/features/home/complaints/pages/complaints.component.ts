@@ -40,4 +40,17 @@ export class ComplaintsComponent {
     read(complaint: Complaint): void {
         this.complaint = this.complaintService.read(complaint.id);
     }
+
+    update(complaint: Complaint): void {
+        if (!complaint.id) {
+            return;
+        }
+
+        this.dialog.open(ComplaintCreationDialogComponent, {
+            width: '600px',
+            data: complaint
+        }).afterClosed()
+            .subscribe(() => this.search());
+    }
+
 }
