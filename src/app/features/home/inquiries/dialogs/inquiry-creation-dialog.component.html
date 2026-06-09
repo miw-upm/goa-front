@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Nueva consulta</h2>
+<mat-dialog-content>
+    <mat-form-field appearance="outline" style="width:100%">
+        <mat-label>Asunto</mat-label>
+        <input #subjectCtrl="ngModel" [(ngModel)]="inquiry.subject" matInput name="subject" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="width:100%">
+        <mat-label>Descripción</mat-label>
+        <textarea #descCtrl="ngModel" [(ngModel)]="inquiry.description" matInput name="description" required rows="4"></textarea>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="width:100%">
+        <mat-label>Categoría</mat-label>
+        <mat-select [(ngModel)]="inquiry.category" name="category" required>
+            @for (cat of categories; track cat) {
+                <mat-option [value]="cat">{{ cat }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button (click)="create()" [disabled]="!canSubmit()" color="primary" mat-raised-button>Crear</button>
+</mat-dialog-actions>
