@@ -57,7 +57,9 @@ export class ComplaintCreationDialogComponent {
         private readonly dialog: MatDialog,
         @Optional() @Inject(MAT_DIALOG_DATA) data?: Complaint
     ) {
-        this.title = data?.id ? 'Actualización de Reclamo' : 'Creación de Reclamo';
+        this.title = data?.id ? 'Actualización de Queja' : 'Creación de Queja';
+
+        const isEdit = !!data?.id;
 
         // Map data if present (for updates)
         this.complaint = {
@@ -65,7 +67,7 @@ export class ComplaintCreationDialogComponent {
             engagementId: data?.engagementId,
             description: data?.description,
             status: data?.status ?? Status.OPEN,
-            createdAt: data?.createdAt
+            createdAt: isEdit ? data?.createdAt : this.getCurrentFormattedDate()
         };
 
         const criteria: EngagementLetterCriteria = {
@@ -77,6 +79,13 @@ export class ComplaintCreationDialogComponent {
             .pipe(map(engagements => engagements
                 .map(engagement => engagement.id)
                 .filter((id): id is string => !!id)));
+    }
+
+    private getCurrentFormattedDate(): string {
+        const now = new Date();
+        return new Date(now.getTime() - now.getTimezoneOffset() * 60000)
+            .toISOString()
+            .slice(0, 16);
     }
 
     create(): void {
