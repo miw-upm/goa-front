@@ -40,6 +40,9 @@ import {ConsentService} from "./users/consents/consent.service";
 import {CustomerFileDownloadComponent} from "./customer-file-download/pages/customer-file-download.component";
 import {CustomerFileDownloadService} from "./customer-file-download/customer-file-download.service";
 import {ChatbotComponent} from "./chatbot/pages/chatbot.component";
+import {CustomerInquiriesComponent} from "./inquiries/pages/customer-inquiries.component";
+import {ManagerInquiriesComponent} from "./inquiries/pages/manager-inquiries.component";
+import {CustomerInquiryService} from "./inquiries/customer-inquiry.service";
 
 export const routes: Routes = [
     {
@@ -151,6 +154,20 @@ export const routes: Routes = [
                 component: ChatbotComponent,
                 canActivate: [RoleGuard],
                 data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR, Role.CUSTOMER]},
+            },
+            {
+                path: 'inquiries',
+                component: CustomerInquiriesComponent,
+                canActivate: [RoleGuard],
+                data: {roles: [Role.ADMIN, Role.CUSTOMER]},
+                providers: [CustomerInquiryService],
+            },
+            {
+                path: 'manager-inquiries',
+                component: ManagerInquiriesComponent,
+                canActivate: [RoleGuard],
+                data: {roles: [Role.ADMIN, Role.MANAGER]},
+                providers: [CustomerInquiryService],
             },
         ],
     },
