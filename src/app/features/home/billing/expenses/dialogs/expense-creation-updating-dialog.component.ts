@@ -11,7 +11,7 @@ import {
     MatDialogTitle
 } from '@angular/material/dialog';
 import {MatIcon} from '@angular/material/icon';
-import {Observable, of} from 'rxjs';
+import {BehaviorSubject, of} from 'rxjs';
 
 import {EngagementLetter} from '../../../engagement-letter/engagement-letter/models/engagement-letter.model';
 import {ExpenseService} from '../expense.service';
@@ -45,7 +45,7 @@ import {SupplierCreationDialogComponent} from './supplier-creation-dialog.compon
 })
 export class ExpenseCreationUpdatingDialogComponent {
     title: string;
-    categories: Observable<string[]>;
+    categories = new BehaviorSubject<string[]>([]);
     seriesOptions = of(this.createSeriesOptions());
     expense: Expense;
     selectedEngagementLetter?: EngagementLetter;
@@ -58,7 +58,8 @@ export class ExpenseCreationUpdatingDialogComponent {
         @Optional() @Inject(MAT_DIALOG_DATA) data?: Expense
     ) {
         this.title = data?.id ? 'Edicion de Gasto' : 'Creacion de Gasto';
-        this.categories = this.expenseService.categories();
+        this.expenseService.categories()
+            .subscribe(categories => this.categories.next(categories));
         this.expense = data ? {
             ...data,
             supplier: {...data.supplier},
