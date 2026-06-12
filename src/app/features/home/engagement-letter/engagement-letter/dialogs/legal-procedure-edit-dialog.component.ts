@@ -9,7 +9,7 @@ import {
 } from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
 import {MatSlideToggle} from '@angular/material/slide-toggle';
-import {MatFormField, MatLabel} from '@angular/material/form-field';
+import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatIcon} from '@angular/material/icon';
 import {MatInput} from '@angular/material/input';
 
@@ -18,6 +18,7 @@ import {SharedLegalTaskService} from "@features/shared/services/shared-legal-tas
 import {FormListComponent} from "@shared/ui/inputs/forms/form-list.component";
 import {AppDateFieldComponent} from "@shared/ui/inputs/forms/data.component";
 import {FormFieldComponent} from "@shared/ui/inputs/forms/form-field.component";
+import {FormTextareaComponent} from "@shared/ui/inputs/forms/form-textarea.component";
 import {SearchByLegalTaskComponent} from "@features/shared/ui/search-by-legal-task.component";
 import {LegalTask} from "@features/shared/models/legal-task.model";
 
@@ -34,11 +35,13 @@ import {LegalTask} from "@features/shared/models/legal-task.model";
         MatSlideToggle,
         FormListComponent,
         FormFieldComponent,
+        FormTextareaComponent,
         AppDateFieldComponent,
         SearchByLegalTaskComponent,
         MatButton,
         MatFormField,
         MatLabel,
+        MatError,
         MatInput,
         MatIcon,
     ]
@@ -88,6 +91,15 @@ export class LegalProcedureEditDialogComponent {
     }
 
     formInvalid(...controls: NgModel[]): boolean {
-        return controls.some(ctrl => ctrl.invalid);
+        return controls.some(ctrl => ctrl.invalid) || this.budgetDataMissing();
+    }
+
+    budgetDataMissing(): boolean {
+        return this.emptyBudget() && !this.procedure.budgetProposal?.trim();
+    }
+
+    private emptyBudget(): boolean {
+        const budget = this.procedure.budget as number | string | null | undefined;
+        return budget == null || budget === '';
     }
 }

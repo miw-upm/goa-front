@@ -5,6 +5,10 @@ import {ENDPOINTS} from "@core/api/endpoints";
 import {HttpService} from "@shared/ui/api/http.service";
 import {SignerDocument} from "./sign-document.model";
 
+interface ReadStatus {
+    read: boolean;
+}
+
 @Injectable({providedIn: 'root'})
 export class SignDocumentService {
 
@@ -14,6 +18,12 @@ export class SignDocumentService {
     downloadDocument(scope: string, urlId: string, token: string): Observable<void> {
         return this.httpService.request()
             .openPdf(ENDPOINTS.engagementLetters.readDocument(scope, urlId, token));
+    }
+
+    readStatus(scope: string, urlId: string, token: string): Observable<ReadStatus> {
+        return this.httpService.request()
+            .silentErrors()
+            .get<ReadStatus>(ENDPOINTS.engagementLetters.readStatus(scope, urlId, token));
     }
 
     signDocument(scope: string, urlId: string, token: string, signerDocument: SignerDocument): Observable<void> {

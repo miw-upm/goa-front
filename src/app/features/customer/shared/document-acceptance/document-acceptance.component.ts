@@ -62,6 +62,7 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
     @Input() downloadSuccessMessage = 'Documento descargado correctamente.';
     @Input() title = 'Aceptación de Documento';
     @Input() showCompanyInfo = true;
+    @Input() documentDownloaded = false;
 
     @Input() successMessage = 'Su firma ha sido registrada correctamente. Le agradecemos la confianza en Ocaña Abogados.';
 
@@ -69,8 +70,8 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
     @Output() submitted = new EventEmitter<{ context: DocumentAcceptanceContext; result: DocumentAcceptanceResult }>();
     @Output() completed = new EventEmitter<void>();
 
-    documentDownloaded = false;
     completedFlag = false;
+    submitting = false;
     accepted = false;
     isEmpty = true;
     customerName = '';
@@ -136,6 +137,7 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
 
     update(): void {
         if (!this.canSubmit()) return;
+        this.submitting = true;
         this.submitted.emit({
             context: this.context,
             result: {
@@ -146,12 +148,14 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
     }
 
     markCompleted(message = this.successMessage): void {
+        this.submitting = false;
         this.completedFlag = true;
         this.submitBtn?.markSuccess(message);
         this.completed.emit();
     }
 
     markFailed(message = ''): void {
+        this.submitting = false;
         this.submitBtn?.markError(message);
     }
 
@@ -205,6 +209,7 @@ export class DocumentAcceptanceComponent implements OnInit, AfterViewInit, OnDes
 
     canSubmit(): boolean {
         if (this.completedFlag) return false;
+        if (this.submitting) return false;
         if (this.downloadEnabled && !this.documentDownloaded) return false;
         if (this.acceptanceEnabled && !this.accepted) return false;
         if (this.signatureEnabled && this.isEmpty) return false;

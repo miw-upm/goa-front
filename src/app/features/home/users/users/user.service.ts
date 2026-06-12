@@ -3,7 +3,6 @@ import {Observable, throwError} from 'rxjs';
 import {switchMap} from "rxjs/operators";
 
 import {Role} from "@core/auth/models/role.model";
-import {SharedUserService} from "@features/shared/services/shared-user.service";
 import {ENDPOINTS} from "@core/api/endpoints";
 import {HttpService} from "@shared/ui/api/http.service";
 import {SharedAccessLinkService} from "@features/shared/services/shared-access-link.service";
@@ -16,8 +15,7 @@ export class UserService {
     private readonly EDIT_PROFILE_SCOPE = 'edit-profile';
 
     constructor(private readonly httpService: HttpService,
-                private readonly sharedAccessLinkService: SharedAccessLinkService,
-                private readonly sharedUserService: SharedUserService) {
+                private readonly sharedAccessLinkService: SharedAccessLinkService) {
     }
 
     create(user: User): Observable<User> {

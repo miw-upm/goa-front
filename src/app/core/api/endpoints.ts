@@ -42,6 +42,7 @@ export const ENDPOINTS = {
         pendingSigners: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/pending-signers`,
         view: (id: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(id)}/view`,
         readDocument: (scope: string, urlId: string, token: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(scope)}/${enc(urlId)}/${enc(token)}`,
+        readStatus: (scope: string, urlId: string, token: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(scope)}/${enc(urlId)}/${enc(token)}/read-status`,
         signerDocument: (scope: string, urlId: string, token: string) => `${ENGAGEMENT_LETTER_ROOT}/${enc(scope)}/${enc(urlId)}/${enc(token)}`,
     },
 

@@ -10,7 +10,6 @@
                 #budget
                 [(value)]="procedure.budget"
                 [min]="0"
-                [required]="true"
                 [step]="10"
                 errorMessage="0..x"
                 icon="euro"
@@ -19,6 +18,14 @@
             />
             <mat-slide-toggle [(ngModel)]="procedure.vatIncluded">IVA incluido</mat-slide-toggle>
         </div>
+        <app-form-textarea
+            #budgetProposal
+            [(value)]="procedure.budgetProposal"
+            label="Propuesta de presupuesto"
+        />
+        @if (budgetDataMissing()) {
+            <mat-error>Debe informar presupuesto o propuesta de presupuesto</mat-error>
+        }
     </div>
 
     <div class="zone-card zone-card--column">
@@ -42,7 +49,8 @@
 
 <mat-dialog-actions align="end">
     <button (click)="cancel()" mat-button>Cancelar</button>
-    <button (click)="save()" [disabled]="formInvalid(titleNg.ngModel, budget.ngModel)" color="primary" mat-flat-button>
+    <button (click)="save()" [disabled]="formInvalid(titleNg.ngModel, budget.ngModel, budgetProposal.ngModel)"
+            color="primary" mat-flat-button>
         Guardar
     </button>
 </mat-dialog-actions>

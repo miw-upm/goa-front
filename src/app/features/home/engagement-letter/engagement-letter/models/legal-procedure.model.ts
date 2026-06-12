@@ -3,6 +3,7 @@ export interface LegalProcedure {
     startDate?: Date | string;
     closingDate?: Date | string;
     budget?: number;
+    budgetProposal?: string;
     vatIncluded?: boolean;
     legalTasks?: string[];
 }
