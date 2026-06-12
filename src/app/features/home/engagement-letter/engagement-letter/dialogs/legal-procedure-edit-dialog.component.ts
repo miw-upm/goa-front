@@ -18,7 +18,6 @@ import {SharedLegalTaskService} from "@features/shared/services/shared-legal-tas
 import {FormListComponent} from "@shared/ui/inputs/forms/form-list.component";
 import {AppDateFieldComponent} from "@shared/ui/inputs/forms/data.component";
 import {FormFieldComponent} from "@shared/ui/inputs/forms/form-field.component";
-import {FormTextareaComponent} from "@shared/ui/inputs/forms/form-textarea.component";
 import {SearchByLegalTaskComponent} from "@features/shared/ui/search-by-legal-task.component";
 import {LegalTask} from "@features/shared/models/legal-task.model";
 
@@ -35,7 +34,6 @@ import {LegalTask} from "@features/shared/models/legal-task.model";
         MatSlideToggle,
         FormListComponent,
         FormFieldComponent,
-        FormTextareaComponent,
         AppDateFieldComponent,
         SearchByLegalTaskComponent,
         MatButton,
