@@ -49,7 +49,8 @@
 
 <mat-dialog-actions align="end">
     <button (click)="cancel()" mat-button>Cancelar</button>
-    <button (click)="save()" [disabled]="formInvalid(titleNg.ngModel, budget.ngModel, budgetProposal.ngModel)" color="primary" mat-flat-button>
+    <button (click)="save()" [disabled]="formInvalid(titleNg.ngModel, budget.ngModel, budgetProposal.ngModel)"
+            color="primary" mat-flat-button>
         Guardar
     </button>
 </mat-dialog-actions>
