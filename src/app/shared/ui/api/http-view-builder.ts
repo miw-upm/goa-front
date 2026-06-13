@@ -12,11 +12,12 @@ import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.componen
 export class HttpViewBuilder {
     static readonly CONNECTION_REFUSE = 0;
     static readonly UNAUTHORIZED = 401;
+    private static readonly CLIENT_BUSINESS_EXCEPTION = 'ClientBusinessException';
     private static readonly SNACK_SUCCESS_DURATION = 3000;
     private static readonly SNACK_ERROR_DURATION = 7000;
 
     private successNotification: string | undefined;
-    private custonErrorNotification: string | undefined;
+    private customErrorNotification: string | undefined;
     private readonly builder: HttpRequestBuilder;
     private debugMode = false;
     private warningMode = false;
@@ -47,7 +48,7 @@ export class HttpViewBuilder {
     }
 
     errorNotification(notification: string): this {
-        this.custonErrorNotification = notification;
+        this.customErrorNotification = notification;
         return this;
     }
 
@@ -148,7 +149,7 @@ export class HttpViewBuilder {
     }
 
     private showError(notification: string): void {
-        const message = this.custonErrorNotification || notification;
+        const message = this.customErrorNotification || notification;
         if (this.warningMode) {
             this.dialog.open(WarningDialogComponent, {
                 data: {title: 'Warning', message}
@@ -198,12 +199,12 @@ export class HttpViewBuilder {
                 {duration: HttpViewBuilder.SNACK_ERROR_DURATION}
             );
         }
-        if (this.warningMode) {
+        if (this.warningMode || error.error === HttpViewBuilder.CLIENT_BUSINESS_EXCEPTION) {
             this.dialog.open(WarningDialogComponent, {
                 data: {title: 'Warning', message: error.message}
             });
         }
-        if (!this.debugMode && !this.warningMode) {
+        if (!this.debugMode && !this.warningMode && error.error !== HttpViewBuilder.CLIENT_BUSINESS_EXCEPTION) {
             this.snackBar.open(
                 `${error.error} (${status}): ${error.message}`,
                 'Error',
