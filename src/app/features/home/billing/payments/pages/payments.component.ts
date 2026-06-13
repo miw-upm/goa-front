@@ -13,7 +13,6 @@ import {FilterDateComponent} from "@shared/ui/inputs/filters/filter-date.compone
 import {FilterInputComponent} from "@shared/ui/inputs/filters/filter-input.component";
 import {TitleComponent} from "@shared/ui/title/title.component";
 import {CrudComponent} from "@shared/ui/crud/crud.component";
-import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
 import {AuthService} from "@core/auth/auth.service";
 
 
@@ -61,13 +60,7 @@ export class PaymentsComponent {
     }
 
     delete(payment: Payment): void {
-        if (payment.invoiced) {
-            this.dialog.open(WarningDialogComponent, {
-                data: {title: 'Warning', message: 'Este ingreso ya ha sido facturado. No se puede eliminar.'}
-            });
-        } else {
-            this.paymentService.delete(payment.id).subscribe(() => this.search());
-        }
+        this.paymentService.delete(payment.id).subscribe(() => this.search());
     }
 
     read(payment: Payment): void {

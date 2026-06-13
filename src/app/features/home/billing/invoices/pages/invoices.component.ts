@@ -62,10 +62,6 @@ export class InvoicesComponent {
     }
 
     update(invoice: Invoice): void {
-        if (invoice.emissionDate) {
-            this.warnIssuedInvoice();
-            return;
-        }
         this.invoiceService.read(invoice.id).subscribe(fullInvoice => {
             if (fullInvoice.engagement) {
                 this.warnEngagementInvoiceUpdate();
@@ -78,10 +74,6 @@ export class InvoicesComponent {
     }
 
     delete(invoice: Invoice): void {
-        if (invoice.issued) {
-            this.warnIssuedInvoice();
-            return;
-        }
         this.invoiceService.delete(invoice.id).subscribe(() => this.search());
     }
 
@@ -90,10 +82,6 @@ export class InvoicesComponent {
     }
 
     run(invoice: Invoice): void {
-        if (invoice.emissionDate) {
-            this.warnIssuedInvoice();
-            return;
-        }
         const waitingDialogRef = this.dialog.open(WaitingDialogComponent, {
             disableClose: true,
             width: '360px',
@@ -120,15 +108,6 @@ export class InvoicesComponent {
         const month = String(value.getMonth() + 1).padStart(2, '0');
         const day = String(value.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
-    }
-
-    private warnIssuedInvoice(): void {
-        this.dialog.open(WarningDialogComponent, {
-            data: {
-                title: 'Factura emitida',
-                message: 'Esta factura ya ha sido emitida y no puede borrarse, ni modificarse, ni volver a emitirse.'
-            }
-        });
     }
 
     private warnEngagementInvoiceUpdate(): void {
