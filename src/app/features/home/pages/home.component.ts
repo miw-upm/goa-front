@@ -6,12 +6,18 @@ import {MatToolbar} from '@angular/material/toolbar';
 import {MatIcon} from '@angular/material/icon';
 import {MatButton} from '@angular/material/button';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
+import {filter, switchMap} from 'rxjs';
 
 import {AuthService} from "@core/auth/auth.service";
 import {FooterComponent} from '@core/layout/footer/footer.component';
 import {UserService} from "../users/users/user.service";
 import {UserCreationUpdatingDialogComponent} from "../users/users/dialogs/user-creation-updating-dialog.component";
 import {ChatbotComponent} from "../chatbot/pages/chatbot.component";
+import {
+    InvoiceIssuedBookDialogComponent,
+    InvoiceIssuedBookDialogResult
+} from '../tax-agency/dialogs/invoice-issued-book-dialog.component';
+import {TaxAgencyService} from '../tax-agency/tax-agency.service';
 
 @Component({
     standalone: true,
@@ -37,7 +43,7 @@ export class HomeComponent {
     title = 'GOA';
 
     constructor(private readonly dialog: MatDialog, private readonly userService: UserService,
-                private readonly authService: AuthService) {
+                private readonly authService: AuthService, private readonly taxAgencyService: TaxAgencyService) {
     }
 
     login(): void {
@@ -61,6 +67,19 @@ export class HomeComponent {
             maxWidth: '96vw',
             height: '85vh'
         });
+    }
+
+    downloadInvoiceIssuedBook(): void {
+        this.dialog.open<InvoiceIssuedBookDialogComponent, void, InvoiceIssuedBookDialogResult>(
+            InvoiceIssuedBookDialogComponent,
+            {width: '420px'}
+        )
+            .afterClosed()
+            .pipe(
+                filter((result): result is InvoiceIssuedBookDialogResult => !!result),
+                switchMap(result => this.taxAgencyService.invoiceIssuedBook(result.year, result.quarter))
+            )
+            .subscribe();
     }
 
     isAuthenticated(): boolean {

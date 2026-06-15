@@ -1,0 +1,32 @@
+<h4 mat-dialog-title>Libro de facturas emitidas</h4>
+
+<mat-dialog-content>
+    <app-form-field
+        #yearNg
+        [(value)]="year"
+        [max]="2100"
+        [min]="2000"
+        [required]="true"
+        errorMessage="Introduce un a&ntilde;o v&aacute;lido"
+        label="A&ntilde;o"
+        type="number"/>
+    <app-form-select
+        [(selected)]="quarter"
+        [labels]="quarterLabels"
+        [required]="true"
+        [values]="quarters"
+        label="Trimestre"/>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Cancelar</button>
+    <button
+        (click)="download()"
+        [disabled]="!canDownload() || formInvalid(yearNg.ngModel)"
+        color="primary"
+        mat-raised-button>
+        <mat-icon matButtonIcon>download</mat-icon>
+        Descargar CSV
+    </button>
+</mat-dialog-actions>
+
