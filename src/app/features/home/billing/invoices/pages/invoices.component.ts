@@ -22,6 +22,7 @@ import {TitleComponent} from "@shared/ui/title/title.component";
 import {CrudComponent} from "@shared/ui/crud/crud.component";
 import {WaitingDialogComponent} from "@shared/ui/dialogs/waiting-dialog.component";
 import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.component";
+import {BillingPeriodService} from "../../shared/billing-period.service";
 
 @Component({
     standalone: true,
@@ -31,16 +32,23 @@ import {WarningDialogComponent} from "@shared/ui/dialogs/warning-dialog.componen
 export class InvoicesComponent {
     invoices = of([] as Invoice[]);
     invoice: Observable<Invoice>;
-    criteria: InvoiceFindCriteria = {};
+    criteria: InvoiceFindCriteria;
     columns = INVOICES_COLUMNS;
 
-    constructor(private readonly dialog: MatDialog, private readonly invoiceService: InvoiceService) {
+    constructor(
+        private readonly dialog: MatDialog,
+        private readonly invoiceService: InvoiceService,
+        private readonly billingPeriodService: BillingPeriodService
+    ) {
+        this.criteria = {
+            fromDate: this.billingPeriodService.currentQuarterStartDate()
+        };
     }
 
     search(): void {
         this.invoices = this.invoiceService.search({
             ...this.criteria,
-            fromDate: this.formatDateValue(this.criteria.fromDate)
+            fromDate: this.billingPeriodService.formatDateValue(this.criteria.fromDate)
         }).pipe(
             map(invoices => invoices.map(invoice => ({
                 ...invoice,
@@ -95,19 +103,6 @@ export class InvoicesComponent {
             .subscribe(() => {
                 this.setEngagementReferenceAndSearch(invoice.engagement?.id?.substring(0, 4));
             });
-    }
-
-    private formatDateValue(value: Date | string | undefined): string | undefined {
-        if (!value) {
-            return undefined;
-        }
-        if (typeof value === 'string') {
-            return value;
-        }
-        const year = value.getFullYear();
-        const month = String(value.getMonth() + 1).padStart(2, '0');
-        const day = String(value.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
     }
 
     private warnEngagementInvoiceUpdate(): void {
