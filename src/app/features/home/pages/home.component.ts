@@ -19,8 +19,10 @@ import {
     InvoiceIssuedBookDialogComponent,
     InvoiceIssuedBookDialogResult
 } from '../tax-agency/dialogs/invoice-issued-book-dialog.component';
+import {Model303DialogComponent} from '../tax-agency/dialogs/model-303-dialog.component';
 import {TaxAgencyService} from '../tax-agency/tax-agency.service';
 import {Quarter} from '../tax-agency/models/quarter.model';
+import {Model303} from '../tax-agency/models/model-303.model';
 
 @Component({
     standalone: true,
@@ -87,17 +89,38 @@ export class HomeComponent {
         );
     }
 
+    openModel303(): void {
+        this.requestTaxAgencyPeriod('Modelo 303', 'Enviar', 'send')
+            .pipe(switchMap(result => this.taxAgencyService.model303(result.year, result.quarter)))
+            .subscribe(model303 => this.showModel303(model303));
+    }
+
     private downloadTaxAgencyBook(title: string, download: (year: number, quarter: Quarter) => Observable<void>): void {
-        this.dialog.open<InvoiceIssuedBookDialogComponent, InvoiceIssuedBookDialogData, InvoiceIssuedBookDialogResult>(
+        this.requestTaxAgencyPeriod(title)
+            .pipe(switchMap(result => download(result.year, result.quarter)))
+            .subscribe();
+    }
+
+    private requestTaxAgencyPeriod(
+        title: string,
+        submitLabel = 'Descargar CSV',
+        submitIcon = 'download'
+    ): Observable<InvoiceIssuedBookDialogResult> {
+        return this.dialog.open<InvoiceIssuedBookDialogComponent, InvoiceIssuedBookDialogData, InvoiceIssuedBookDialogResult>(
             InvoiceIssuedBookDialogComponent,
-            {width: '420px', data: {title}}
+            {width: '420px', data: {title, submitLabel, submitIcon}}
         )
             .afterClosed()
             .pipe(
-                filter((result): result is InvoiceIssuedBookDialogResult => !!result),
-                switchMap(result => download(result.year, result.quarter))
-            )
-            .subscribe();
+                filter((result): result is InvoiceIssuedBookDialogResult => !!result)
+            );
+    }
+
+    private showModel303(model303: Model303): void {
+        this.dialog.open(Model303DialogComponent, {
+            width: '680px',
+            data: model303
+        });
     }
 
     isAuthenticated(): boolean {

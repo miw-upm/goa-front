@@ -1,0 +1,41 @@
+<h4 mat-dialog-title>Modelo 303 - {{ model303.year }} {{ model303.quarter }}</h4>
+
+<mat-dialog-content>
+    <table class="full-width">
+        <thead>
+        <tr>
+            <th align="left">Concepto</th>
+            <th align="right">Base imponible</th>
+            <th align="right">Cuota IVA</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Facturas expedidas</td>
+            <td align="right">{{ amount(model303.vatSummary.invoiceIssuedBase) | currency:'EUR':'symbol':'1.2-2':'es' }}</td>
+            <td align="right">{{ amount(model303.vatSummary.invoiceIssuedVat) | currency:'EUR':'symbol':'1.2-2':'es' }}</td>
+        </tr>
+        <tr>
+            <td>Facturas recibidas corrientes</td>
+            <td align="right">{{ amount(model303.vatSummary.invoiceReceivedCurrentBase) | currency:'EUR':'symbol':'1.2-2':'es' }}</td>
+            <td align="right">{{ amount(model303.vatSummary.invoiceReceivedCurrentVat) | currency:'EUR':'symbol':'1.2-2':'es' }}</td>
+        </tr>
+        <tr>
+            <td>Facturas recibidas de inversi&oacute;n</td>
+            <td align="right">{{ amount(model303.vatSummary.invoiceReceivedInvestmentBase) | currency:'EUR':'symbol':'1.2-2':'es' }}</td>
+            <td align="right">{{ amount(model303.vatSummary.invoiceReceivedInvestmentVat) | currency:'EUR':'symbol':'1.2-2':'es' }}</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th align="left" colspan="2">Resultado IVA</th>
+            <th align="right">{{ vatResult | currency:'EUR':'symbol':'1.2-2':'es' }}</th>
+        </tr>
+        </tfoot>
+    </table>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-dialog-close mat-flat-button>Cerrar</button>
+</mat-dialog-actions>
+

@@ -23,6 +23,8 @@ export type InvoiceIssuedBookDialogResult = {
 
 export type InvoiceIssuedBookDialogData = {
     title: string;
+    submitLabel?: string;
+    submitIcon?: string;
 };
 
 @Component({
@@ -41,6 +43,8 @@ export type InvoiceIssuedBookDialogData = {
 })
 export class InvoiceIssuedBookDialogComponent {
     readonly title: string;
+    readonly submitLabel: string;
+    readonly submitIcon: string;
     readonly quarters: Observable<string[]> = of(['T1', 'T2', 'T3', 'T4']);
     readonly quarterLabels: Record<string, string> = {
         T1: 'T1 (enero - marzo)',
@@ -56,6 +60,8 @@ export class InvoiceIssuedBookDialogComponent {
         @Inject(MAT_DIALOG_DATA) data?: InvoiceIssuedBookDialogData
     ) {
         this.title = data?.title ?? 'Libro de facturas expedidas';
+        this.submitLabel = data?.submitLabel ?? 'Descargar CSV';
+        this.submitIcon = data?.submitIcon ?? 'download';
     }
 
     download(): void {
