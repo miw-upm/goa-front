@@ -63,7 +63,8 @@ export class ExpenseCreationUpdatingDialogComponent {
         this.expense = data ? {
             ...data,
             supplier: {...data.supplier},
-            depreciationRate: data.depreciationRate ?? 100
+            depreciationRate: data.depreciationRate ?? 100,
+            deductibleAmount: data.deductibleAmount ?? 100
         } : {
             issueDate: undefined,
             baseAmount: undefined,
@@ -71,6 +72,7 @@ export class ExpenseCreationUpdatingDialogComponent {
             supplier: undefined,
             taxCategory: undefined,
             depreciationRate: 100,
+            deductibleAmount: 100,
             series: String(new Date().getFullYear()),
             number: undefined,
             description: '',
@@ -142,6 +144,7 @@ export class ExpenseCreationUpdatingDialogComponent {
             && !!this.expense.supplier?.identity?.trim()
             && !!this.expense.taxCategory
             && this.validDepreciationRate()
+            && this.validDeductibleAmount()
             && !!this.expense.issueDate
             && this.isPositive(this.expense.baseAmount)
             && this.isPositive(this.expense.vatRate)
@@ -161,6 +164,7 @@ export class ExpenseCreationUpdatingDialogComponent {
                 : undefined,
             supplier: {...this.expense.supplier},
             depreciationRate: Number(this.expense.depreciationRate),
+            deductibleAmount: Number(this.expense.deductibleAmount),
             series: this.expense.series || undefined,
             number: this.expense.number ? Number(this.expense.number) : undefined,
             withholdingTax: Number(this.expense.withholdingTax ?? 0)
@@ -183,6 +187,11 @@ export class ExpenseCreationUpdatingDialogComponent {
     private validDepreciationRate(): boolean {
         const value = Number(this.expense.depreciationRate);
         return Number.isFinite(value) && value >= 1 && value <= 100;
+    }
+
+    private validDeductibleAmount(): boolean {
+        const value = Number(this.expense.deductibleAmount);
+        return Number.isFinite(value) && value >= 0 && value <= 100;
     }
 
     private isPositive(value: number | undefined): boolean {
