@@ -16,5 +16,11 @@ export class TaxAgencyService {
             .param('quarter', quarter)
             .openCsv(ENDPOINTS.taxAgency.invoiceIssuedBook(), `libro-registro-facturas-expedidas-${year}-${quarter}.csv`);
     }
-}
 
+    receivedBook(year: number, quarter: Quarter): Observable<void> {
+        return this.httpService.request()
+            .param('year', String(year))
+            .param('quarter', quarter)
+            .openCsv(ENDPOINTS.taxAgency.receivedBook(), `libro-registro-facturas-recibidas-${year}-${quarter}.csv`);
+    }
+}

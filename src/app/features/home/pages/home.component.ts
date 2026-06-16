@@ -6,7 +6,8 @@ import {MatToolbar} from '@angular/material/toolbar';
 import {MatIcon} from '@angular/material/icon';
 import {MatButton} from '@angular/material/button';
 import {MatMenu, MatMenuItem, MatMenuTrigger} from '@angular/material/menu';
-import {filter, switchMap} from 'rxjs';
+import {MatTooltip} from '@angular/material/tooltip';
+import {filter, Observable, switchMap} from 'rxjs';
 
 import {AuthService} from "@core/auth/auth.service";
 import {FooterComponent} from '@core/layout/footer/footer.component';
@@ -14,10 +15,12 @@ import {UserService} from "../users/users/user.service";
 import {UserCreationUpdatingDialogComponent} from "../users/users/dialogs/user-creation-updating-dialog.component";
 import {ChatbotComponent} from "../chatbot/pages/chatbot.component";
 import {
+    InvoiceIssuedBookDialogData,
     InvoiceIssuedBookDialogComponent,
     InvoiceIssuedBookDialogResult
 } from '../tax-agency/dialogs/invoice-issued-book-dialog.component';
 import {TaxAgencyService} from '../tax-agency/tax-agency.service';
+import {Quarter} from '../tax-agency/models/quarter.model';
 
 @Component({
     standalone: true,
@@ -32,7 +35,8 @@ import {TaxAgencyService} from '../tax-agency/tax-agency.service';
         MatButton,
         MatMenu,
         MatMenuItem,
-        MatMenuTrigger
+        MatMenuTrigger,
+        MatTooltip
     ],
     selector: 'app-home',
     templateUrl: './home.component.html',
@@ -70,14 +74,28 @@ export class HomeComponent {
     }
 
     downloadInvoiceIssuedBook(): void {
-        this.dialog.open<InvoiceIssuedBookDialogComponent, void, InvoiceIssuedBookDialogResult>(
+        this.downloadTaxAgencyBook(
+            'Libro de facturas expedidas',
+            (year, quarter) => this.taxAgencyService.invoiceIssuedBook(year, quarter)
+        );
+    }
+
+    downloadReceivedBook(): void {
+        this.downloadTaxAgencyBook(
+            'Libro de facturas recibidas',
+            (year, quarter) => this.taxAgencyService.receivedBook(year, quarter)
+        );
+    }
+
+    private downloadTaxAgencyBook(title: string, download: (year: number, quarter: Quarter) => Observable<void>): void {
+        this.dialog.open<InvoiceIssuedBookDialogComponent, InvoiceIssuedBookDialogData, InvoiceIssuedBookDialogResult>(
             InvoiceIssuedBookDialogComponent,
-            {width: '420px'}
+            {width: '420px', data: {title}}
         )
             .afterClosed()
             .pipe(
                 filter((result): result is InvoiceIssuedBookDialogResult => !!result),
-                switchMap(result => this.taxAgencyService.invoiceIssuedBook(result.year, result.quarter))
+                switchMap(result => download(result.year, result.quarter))
             )
             .subscribe();
     }

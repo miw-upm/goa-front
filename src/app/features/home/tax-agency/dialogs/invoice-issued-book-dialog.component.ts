@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {NgModel} from '@angular/forms';
 import {Observable, of} from 'rxjs';
 import {MatButton} from '@angular/material/button';
@@ -7,7 +7,8 @@ import {
     MatDialogClose,
     MatDialogContent,
     MatDialogRef,
-    MatDialogTitle
+    MatDialogTitle,
+    MAT_DIALOG_DATA
 } from '@angular/material/dialog';
 import {MatIcon} from '@angular/material/icon';
 
@@ -18,6 +19,10 @@ import {Quarter} from '../models/quarter.model';
 export type InvoiceIssuedBookDialogResult = {
     year: number;
     quarter: Quarter;
+};
+
+export type InvoiceIssuedBookDialogData = {
+    title: string;
 };
 
 @Component({
@@ -35,6 +40,7 @@ export type InvoiceIssuedBookDialogResult = {
     templateUrl: 'invoice-issued-book-dialog.component.html'
 })
 export class InvoiceIssuedBookDialogComponent {
+    readonly title: string;
     readonly quarters: Observable<string[]> = of(['T1', 'T2', 'T3', 'T4']);
     readonly quarterLabels: Record<string, string> = {
         T1: 'T1 (enero - marzo)',
@@ -45,7 +51,11 @@ export class InvoiceIssuedBookDialogComponent {
     year = new Date().getFullYear();
     quarter: Quarter | undefined = this.currentQuarter();
 
-    constructor(private readonly dialogRef: MatDialogRef<InvoiceIssuedBookDialogComponent>) {
+    constructor(
+        private readonly dialogRef: MatDialogRef<InvoiceIssuedBookDialogComponent>,
+        @Inject(MAT_DIALOG_DATA) data?: InvoiceIssuedBookDialogData
+    ) {
+        this.title = data?.title ?? 'Libro de facturas expedidas';
     }
 
     download(): void {
@@ -77,4 +87,3 @@ export class InvoiceIssuedBookDialogComponent {
         return 'T4';
     }
 }
-

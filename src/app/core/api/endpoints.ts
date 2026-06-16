@@ -93,6 +93,7 @@ export const ENDPOINTS = {
 
     taxAgency: {
         invoiceIssuedBook: () => `${TAX_AGENCY_ROOT}/invoice-issued-book`,
+        receivedBook: () => `${TAX_AGENCY_ROOT}/received-book`,
     },
 
     administrativeAuthorizations: {

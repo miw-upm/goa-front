@@ -114,6 +114,15 @@
         <mat-icon>table_view</mat-icon>
         <span>Libro de facturas expedidas</span>
     </button>
+    <button
+        (click)="downloadReceivedBook()"
+        mat-menu-item
+        matTooltip="Incluye inversiones por debajo de 3005,06€. El libro de inversiones se debe hacer manualmente"
+        matTooltipPosition="right"
+        [matTooltipShowDelay]="600">
+        <mat-icon>table_rows</mat-icon>
+        <span>Libro de facturas recibidas</span>
+    </button>
 </mat-menu>
 
 <!-- Perfil -->
