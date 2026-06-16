@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
+import {MatButtonToggle, MatButtonToggleGroup} from '@angular/material/button-toggle';
 import {Observable, of} from 'rxjs';
 
 import {InvoiceCreationDialogComponent} from '../dialogs/invoice-creation-dialog.component';
@@ -26,7 +28,15 @@ import {BillingPeriodService} from "../../shared/billing-period.service";
 
 @Component({
     standalone: true,
-    imports: [FilterDateComponent, FilterInputComponent, TitleComponent, CrudComponent],
+    imports: [
+        FormsModule,
+        FilterDateComponent,
+        FilterInputComponent,
+        TitleComponent,
+        CrudComponent,
+        MatButtonToggle,
+        MatButtonToggleGroup
+    ],
     templateUrl: 'invoices.component.html'
 })
 export class InvoicesComponent {
@@ -41,6 +51,7 @@ export class InvoicesComponent {
         private readonly billingPeriodService: BillingPeriodService
     ) {
         this.criteria = {
+            issued: null,
             fromDate: this.billingPeriodService.currentQuarterStartDate()
         };
     }
