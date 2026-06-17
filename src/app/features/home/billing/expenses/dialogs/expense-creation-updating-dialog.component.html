@@ -85,10 +85,10 @@
         <app-form-field
             #vatRateNg
             [(value)]="expense.vatRate"
-            [min]="1"
+            [min]="0"
             [required]="true"
             [step]="1"
-            errorMessage="Obligatorio y mayor que 0"
+            errorMessage="Obligatorio y no negativo"
             label="IVA (%)"
             type="number"/>
 

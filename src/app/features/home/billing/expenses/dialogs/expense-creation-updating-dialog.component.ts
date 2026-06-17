@@ -147,7 +147,7 @@ export class ExpenseCreationUpdatingDialogComponent {
             && this.validDeductibleAmount()
             && !!this.expense.issueDate
             && this.isPositive(this.expense.baseAmount)
-            && this.isPositive(this.expense.vatRate)
+            && this.isPositiveOrZero(this.expense.vatRate)
             && this.isPositiveOrZero(this.expense.withholdingTax)
             && this.validNumber();
     }
