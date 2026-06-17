@@ -131,7 +131,7 @@ export class HttpViewBuilder {
             .pipe(
                 tap(() => this.notifySuccess()),
                 map((blob: Blob) => {
-                    this.downloadBlob(blob ?? new Blob([], {type: 'text/csv;charset=utf-8'}), filename);
+                    this.downloadBlob(this.csvBlob(blob), filename);
                     return void 0;
                 }),
                 catchError(err => this.handleError(err))
@@ -176,6 +176,10 @@ export class HttpViewBuilder {
         link.download = filename;
         link.click();
         window.URL.revokeObjectURL(url);
+    }
+
+    private csvBlob(blob?: Blob): Blob {
+        return new Blob(['\ufeff', blob ?? ''], {type: 'text/csv;charset=utf-8'});
     }
 
     private handleError(response: HttpErrorResponse): Observable<never> {
