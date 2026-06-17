@@ -22,7 +22,6 @@ import {
 import {Model130DialogComponent} from '../tax-agency/dialogs/model-130-dialog.component';
 import {Model303DialogComponent} from '../tax-agency/dialogs/model-303-dialog.component';
 import {TaxAgencyService} from '../tax-agency/tax-agency.service';
-import {Quarter} from '../tax-agency/models/quarter.model';
 import {Model130} from '../tax-agency/models/model-130.model';
 import {Model303} from '../tax-agency/models/model-303.model';
 
@@ -80,43 +79,49 @@ export class HomeComponent {
     downloadInvoiceIssuedBook(): void {
         this.downloadTaxAgencyBook(
             'Libro de facturas expedidas',
-            (year, quarter) => this.taxAgencyService.invoiceIssuedBook(year, quarter)
+            result => this.taxAgencyService.invoiceIssuedBook(result.year, result.quarter)
         );
     }
 
     downloadReceivedBook(): void {
         this.downloadTaxAgencyBook(
             'Libro de facturas recibidas',
-            (year, quarter) => this.taxAgencyService.receivedBook(year, quarter)
+            result => this.taxAgencyService.receivedBook(result.year, result.quarter, result.from!, result.to!),
+            {showRange: true}
         );
     }
 
     openModel303(): void {
-        this.requestTaxAgencyPeriod('Modelo 303', 'Enviar', 'send')
-            .pipe(switchMap(result => this.taxAgencyService.model303(result.year, result.quarter)))
+        this.requestTaxAgencyPeriod('Modelo 303', 'Enviar', 'send', {showRange: true})
+            .pipe(switchMap(result => this.taxAgencyService.model303(result.year, result.quarter, result.from!, result.to!)))
             .subscribe(model303 => this.showModel303(model303));
     }
 
     openModel130(): void {
-        this.requestTaxAgencyPeriod('Modelo 130', 'Enviar', 'send')
-            .pipe(switchMap(result => this.taxAgencyService.model130(result.year, result.quarter)))
+        this.requestTaxAgencyPeriod('Modelo 130', 'Enviar', 'send', {showTo: true})
+            .pipe(switchMap(result => this.taxAgencyService.model130(result.year, result.quarter, result.to!)))
             .subscribe(model130 => this.showModel130(model130));
     }
 
-    private downloadTaxAgencyBook(title: string, download: (year: number, quarter: Quarter) => Observable<void>): void {
-        this.requestTaxAgencyPeriod(title)
-            .pipe(switchMap(result => download(result.year, result.quarter)))
+    private downloadTaxAgencyBook(
+        title: string,
+        download: (result: InvoiceIssuedBookDialogResult) => Observable<void>,
+        options?: Pick<InvoiceIssuedBookDialogData, 'showRange' | 'showTo'>
+    ): void {
+        this.requestTaxAgencyPeriod(title, undefined, undefined, options)
+            .pipe(switchMap(result => download(result)))
             .subscribe();
     }
 
     private requestTaxAgencyPeriod(
         title: string,
         submitLabel = 'Descargar CSV',
-        submitIcon = 'download'
+        submitIcon = 'download',
+        options?: Pick<InvoiceIssuedBookDialogData, 'showRange' | 'showTo'>
     ): Observable<InvoiceIssuedBookDialogResult> {
         return this.dialog.open<InvoiceIssuedBookDialogComponent, InvoiceIssuedBookDialogData, InvoiceIssuedBookDialogResult>(
             InvoiceIssuedBookDialogComponent,
-            {width: '420px', data: {title, submitLabel, submitIcon}}
+            {width: '420px', data: {title, submitLabel, submitIcon, ...options}}
         )
             .afterClosed()
             .pipe(

@@ -19,24 +19,29 @@ export class TaxAgencyService {
             .openCsv(ENDPOINTS.taxAgency.invoiceIssuedBook(), `libro-registro-facturas-expedidas-${year}-${quarter}.csv`);
     }
 
-    receivedBook(year: number, quarter: Quarter): Observable<void> {
+    receivedBook(year: number, quarter: Quarter, from: number, to: number): Observable<void> {
         return this.httpService.request()
             .param('year', String(year))
             .param('quarter', quarter)
-            .openCsv(ENDPOINTS.taxAgency.receivedBook(), `libro-registro-facturas-recibidas-${year}-${quarter}.csv`);
+            .param('from', String(from))
+            .param('to', String(to))
+            .openCsv(ENDPOINTS.taxAgency.receivedBook(), `libro-registro-facturas-recibidas-${year}-${quarter}-${from}-${to}.csv`);
     }
 
-    model303(year: number, quarter: Quarter): Observable<Model303> {
+    model303(year: number, quarter: Quarter, from: number, to: number): Observable<Model303> {
         return this.httpService.request()
             .param('year', String(year))
             .param('quarter', quarter)
+            .param('from', String(from))
+            .param('to', String(to))
             .get<Model303>(ENDPOINTS.taxAgency.model303());
     }
 
-    model130(year: number, quarter: Quarter): Observable<Model130> {
+    model130(year: number, quarter: Quarter, to: number): Observable<Model130> {
         return this.httpService.request()
             .param('year', String(year))
             .param('quarter', quarter)
+            .param('to', String(to))
             .get<Model130>(ENDPOINTS.taxAgency.model130());
     }
 }

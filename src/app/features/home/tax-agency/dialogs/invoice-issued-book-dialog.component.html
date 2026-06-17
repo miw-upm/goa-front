@@ -16,6 +16,29 @@
         [required]="true"
         [values]="quarters"
         label="Trimestre"/>
+    @if (showRange) {
+        <app-form-field
+            [(value)]="from"
+            [min]="0"
+            [required]="true"
+            errorMessage="Introduce un inicio v&aacute;lido"
+            label="Desde"
+            type="number"/>
+    }
+    @if (showTo) {
+        <app-form-field
+            [(value)]="to"
+            [min]="0"
+            [required]="true"
+            errorMessage="Introduce un fin v&aacute;lido"
+            label="Hasta"
+            type="number"/>
+    }
+    @if (showRange) {
+        @if (rangeOrderInvalid()) {
+            <p class="mat-mdc-form-field-error">Desde debe ser inferior a Hasta</p>
+        }
+    }
 </mat-dialog-content>
 
 <mat-dialog-actions>
