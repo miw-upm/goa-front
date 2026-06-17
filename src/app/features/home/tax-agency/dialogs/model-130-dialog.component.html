@@ -1,0 +1,41 @@
+<h4 mat-dialog-title>Modelo 130 - {{ model130.year }} {{ model130.quarter }}</h4>
+
+<mat-dialog-content>
+    <table class="full-width">
+        <thead>
+        <tr>
+            <th align="left">Concepto</th>
+            <th align="right">Importe</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Ingresos</td>
+            <td align="right">{{ amount(model130.netIncomeBreakdown.income) | currency:'EUR':'symbol':'1.2-2':'es' }}</td>
+        </tr>
+        <tr>
+            <td>Gastos corrientes</td>
+            <td align="right">{{ amount(model130.netIncomeBreakdown.currentExpenses) | currency:'EUR':'symbol':'1.2-2':'es' }}</td>
+        </tr>
+        <tr>
+            <td>Amortizaci&oacute;n de inversiones</td>
+            <td align="right">{{ amount(model130.netIncomeBreakdown.investmentAmortization) | currency:'EUR':'symbol':'1.2-2':'es' }}</td>
+        </tr>
+        <tr>
+            <td>Retenciones</td>
+            <td align="right">{{ amount(model130.netIncomeBreakdown.withholdings) | currency:'EUR':'symbol':'1.2-2':'es' }}</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th align="left">Rendimiento neto</th>
+            <th align="right">{{ netIncome | currency:'EUR':'symbol':'1.2-2':'es' }}</th>
+        </tr>
+        </tfoot>
+    </table>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-dialog-close mat-flat-button>Cerrar</button>
+</mat-dialog-actions>
+

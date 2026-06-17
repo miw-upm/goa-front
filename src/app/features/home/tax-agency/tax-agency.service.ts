@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 
 import {ENDPOINTS} from '@core/api/endpoints';
 import {HttpService} from '@shared/ui/api/http.service';
+import {Model130} from './models/model-130.model';
 import {Model303} from './models/model-303.model';
 import {Quarter} from './models/quarter.model';
 
@@ -30,5 +31,12 @@ export class TaxAgencyService {
             .param('year', String(year))
             .param('quarter', quarter)
             .get<Model303>(ENDPOINTS.taxAgency.model303());
+    }
+
+    model130(year: number, quarter: Quarter): Observable<Model130> {
+        return this.httpService.request()
+            .param('year', String(year))
+            .param('quarter', quarter)
+            .get<Model130>(ENDPOINTS.taxAgency.model130());
     }
 }

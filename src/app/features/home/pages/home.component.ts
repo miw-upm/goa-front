@@ -19,9 +19,11 @@ import {
     InvoiceIssuedBookDialogComponent,
     InvoiceIssuedBookDialogResult
 } from '../tax-agency/dialogs/invoice-issued-book-dialog.component';
+import {Model130DialogComponent} from '../tax-agency/dialogs/model-130-dialog.component';
 import {Model303DialogComponent} from '../tax-agency/dialogs/model-303-dialog.component';
 import {TaxAgencyService} from '../tax-agency/tax-agency.service';
 import {Quarter} from '../tax-agency/models/quarter.model';
+import {Model130} from '../tax-agency/models/model-130.model';
 import {Model303} from '../tax-agency/models/model-303.model';
 
 @Component({
@@ -95,6 +97,12 @@ export class HomeComponent {
             .subscribe(model303 => this.showModel303(model303));
     }
 
+    openModel130(): void {
+        this.requestTaxAgencyPeriod('Modelo 130', 'Enviar', 'send')
+            .pipe(switchMap(result => this.taxAgencyService.model130(result.year, result.quarter)))
+            .subscribe(model130 => this.showModel130(model130));
+    }
+
     private downloadTaxAgencyBook(title: string, download: (year: number, quarter: Quarter) => Observable<void>): void {
         this.requestTaxAgencyPeriod(title)
             .pipe(switchMap(result => download(result.year, result.quarter)))
@@ -120,6 +128,13 @@ export class HomeComponent {
         this.dialog.open(Model303DialogComponent, {
             width: '680px',
             data: model303
+        });
+    }
+
+    private showModel130(model130: Model130): void {
+        this.dialog.open(Model130DialogComponent, {
+            width: '560px',
+            data: model130
         });
     }
 
