@@ -1,6 +1,6 @@
 {
   "name": "goa-front",
-  "version": "1.17.0-RC2",
+  "version": "1.17.0",
   "scripts": {
     "build-prod": "ng build --configuration production",
     "test-ci": "ng test --browsers=ChromeHeadless --watch=false --code-coverage",
