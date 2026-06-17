@@ -104,6 +104,7 @@ export class InvoiceCreationDialogComponent {
             userId: this.selectedUser!.id!,
             concept: this.invoice.concept,
             baseAmount: Number(this.invoice.baseAmount),
+            withholdingRate: this.optionalNumber(this.invoice.withholdingRate),
             baseExpense: this.optionalNumber(this.baseExpense),
             vatExpense: this.optionalNumber(this.vatExpense),
             operationDate: this.operationDate ? this.formatDate(this.operationDate) : undefined,
@@ -114,6 +115,7 @@ export class InvoiceCreationDialogComponent {
         return !!this.invoice.concept?.trim()
             && Number.isFinite(Number(this.invoice.baseAmount))
             && Number(this.invoice.baseAmount) > 0
+            && this.validOptionalRate(this.invoice.withholdingRate)
             && this.validOptionalAmount(this.baseExpense)
             && this.validOptionalAmount(this.vatExpense);
     }
@@ -124,6 +126,10 @@ export class InvoiceCreationDialogComponent {
 
     private validOptionalAmount(value: string | number | undefined): boolean {
         return this.emptyValue(value) || (Number.isFinite(Number(value)) && Number(value) >= 0);
+    }
+
+    private validOptionalRate(value: string | number | undefined): boolean {
+        return this.emptyValue(value) || (Number.isFinite(Number(value)) && Number(value) >= 0 && Number(value) <= 100);
     }
 
     private optionalNumber(value: string | number | undefined): number | undefined {

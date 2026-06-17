@@ -43,6 +43,15 @@
             label="Base imponible"
             type="number"/>
         <app-form-field
+            #withholdingRateNg
+            [(value)]="invoice.withholdingRate"
+            [max]="100"
+            [min]="0"
+            [step]="0.01"
+            errorMessage="Entre 0 y 100"
+            label="Retención (%)"
+            type="number"/>
+        <app-form-field
             #baseExpenseNg
             [(value)]="invoice.baseExpense"
             [min]="0"
@@ -77,7 +86,7 @@
 <mat-dialog-actions>
     <button mat-dialog-close mat-raised-button>Cancelar</button>
     <button (click)="update()"
-            [disabled]="!canUpdate() || formInvalid(fullNameNg.ngModel, identityNg.ngModel, fullAddressNg.ngModel, conceptNg.ngModel, baseAmountNg.ngModel, baseExpenseNg.ngModel, vatExpenseNg.ngModel)"
+            [disabled]="!canUpdate() || formInvalid(fullNameNg.ngModel, identityNg.ngModel, fullAddressNg.ngModel, conceptNg.ngModel, baseAmountNg.ngModel, withholdingRateNg.ngModel, baseExpenseNg.ngModel, vatExpenseNg.ngModel)"
             color="primary"
             mat-raised-button>
         Guardar

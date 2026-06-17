@@ -20,6 +20,7 @@ export interface Invoice {
     number?: number;
     baseAmount: number;
     vatRate?: number;
+    withholdingRate?: number | string;
     baseExpense?: number | string;
     vatExpense?: number | string;
     percentage?: number | string;
