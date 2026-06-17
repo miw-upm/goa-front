@@ -11,6 +11,7 @@ const EXPENSE_ROOT = `${environment.REST_BILLING}/expenses`;
 const INCOME_ROOT = `${environment.REST_BILLING}/incomes`;
 const INVOICE_ROOT = `${environment.REST_BILLING}/invoices`;
 const PAYMENT_ROOT = `${environment.REST_BILLING}/payments`;
+const TAX_AGENCY_ROOT = `${environment.REST_BILLING}/tax-agency`;
 const ADMINISTRATIVE_AUTHORIZATION_ROOT = `${environment.REST_ENGAGEMENT}/administrative-authorizations`;
 const CUSTOMER_FILE_DOWNLOAD_ROOT = `${environment.REST_ENGAGEMENT}/customer-file-downloads`;
 const CHATBOT_ROOT = `${environment.REST_CHATBOT}/chatbot`;
@@ -88,6 +89,13 @@ export const ENDPOINTS = {
     payments: {
         root: PAYMENT_ROOT,
         byId: (id: string) => `${PAYMENT_ROOT}/${enc(id)}`,
+    },
+
+    taxAgency: {
+        invoiceIssuedBook: () => `${TAX_AGENCY_ROOT}/invoice-issued-book`,
+        receivedBook: () => `${TAX_AGENCY_ROOT}/received-book`,
+        model303: () => `${TAX_AGENCY_ROOT}/models/303`,
+        model130: () => `${TAX_AGENCY_ROOT}/models/130`,
     },
 
     administrativeAuthorizations: {

@@ -116,14 +116,22 @@ export class HttpViewBuilder {
                 tap(() => this.notifySuccess()),
                 map((json: unknown) => {
                     const content = JSON.stringify(json, null, 2);
-                    const url = window.URL.createObjectURL(
-                        new Blob([content], {type: 'application/json;charset=utf-8'})
+                    this.downloadBlob(
+                        new Blob([content], {type: 'application/json;charset=utf-8'}),
+                        'generico.json'
                     );
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.download = 'generico.json';
-                    link.click();
-                    window.URL.revokeObjectURL(url);
+                    return void 0;
+                }),
+                catchError(err => this.handleError(err))
+            );
+    }
+
+    openCsv(endpoint: string, filename = 'generico.csv'): Observable<void> {
+        return this.builder.getBlob(endpoint, 'text/csv, application/json')
+            .pipe(
+                tap(() => this.notifySuccess()),
+                map((blob: Blob) => {
+                    this.downloadBlob(blob ?? new Blob([], {type: 'text/csv;charset=utf-8'}), filename);
                     return void 0;
                 }),
                 catchError(err => this.handleError(err))
@@ -159,6 +167,15 @@ export class HttpViewBuilder {
                 duration: HttpViewBuilder.SNACK_ERROR_DURATION
             });
         }
+    }
+
+    private downloadBlob(blob: Blob, filename: string): void {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        window.URL.revokeObjectURL(url);
     }
 
     private handleError(response: HttpErrorResponse): Observable<never> {

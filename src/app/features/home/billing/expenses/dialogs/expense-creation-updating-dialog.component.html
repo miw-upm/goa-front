@@ -85,10 +85,10 @@
         <app-form-field
             #vatRateNg
             [(value)]="expense.vatRate"
-            [min]="1"
+            [min]="0"
             [required]="true"
             [step]="1"
-            errorMessage="Obligatorio y mayor que 0"
+            errorMessage="Obligatorio y no negativo"
             label="IVA (%)"
             type="number"/>
 
@@ -114,6 +114,17 @@
             [step]="1"
             errorMessage="Obligatorio entre 1 y 100"
             label="Corriente (100%) Inversión (1..99%)"
+            type="number"/>
+
+        <app-form-field
+            #deductibleAmountNg
+            [(value)]="expense.deductibleAmount"
+            [max]="100"
+            [min]="0"
+            [required]="true"
+            [step]="0.01"
+            errorMessage="Obligatorio entre 0 y 100"
+            label="Deducible (%)"
             type="number"/>
 
     </div>
@@ -142,7 +153,7 @@
     <button mat-dialog-close mat-raised-button>Cancelar</button>
     @if (isCreate()) {
         <button (click)="create()"
-                [disabled]="!canSubmit() || formInvalid(baseAmountNg.ngModel, vatRateNg.ngModel, depreciationRateNg.ngModel, withholdingTaxNg.ngModel, numberNg.ngModel)"
+                [disabled]="!canSubmit() || formInvalid(baseAmountNg.ngModel, vatRateNg.ngModel, depreciationRateNg.ngModel, deductibleAmountNg.ngModel, withholdingTaxNg.ngModel, numberNg.ngModel)"
                 color="primary"
                 mat-raised-button>
             <mat-icon matButtonIcon>add</mat-icon>
@@ -150,7 +161,7 @@
         </button>
     } @else {
         <button (click)="update()"
-                [disabled]="!canSubmit() || formInvalid(baseAmountNg.ngModel, vatRateNg.ngModel, depreciationRateNg.ngModel, withholdingTaxNg.ngModel, numberNg.ngModel)"
+                [disabled]="!canSubmit() || formInvalid(baseAmountNg.ngModel, vatRateNg.ngModel, depreciationRateNg.ngModel, deductibleAmountNg.ngModel, withholdingTaxNg.ngModel, numberNg.ngModel)"
                 color="primary"
                 mat-raised-button>
             Guardar

@@ -13,6 +13,7 @@ import {FilterInputComponent} from "@shared/ui/inputs/filters/filter-input.compo
 import {TitleComponent} from "@shared/ui/title/title.component";
 import {CrudComponent} from "@shared/ui/crud/crud.component";
 import {AuthService} from "@core/auth/auth.service";
+import {BillingPeriodService} from "../../shared/billing-period.service";
 
 @Component({
     standalone: true,
@@ -29,21 +30,25 @@ export class ExpensesComponent {
     deleteVisibility = false;
     expenses = of([] as Expense[]);
     expense: Observable<Expense>;
-    criteria: ExpenseFindCriteria = {};
+    criteria: ExpenseFindCriteria;
     columns = EXPENSES_COLUMNS;
 
     constructor(
         private readonly dialog: MatDialog,
         private readonly expenseService: ExpenseService,
+        private readonly billingPeriodService: BillingPeriodService,
         auth: AuthService
     ) {
         this.deleteVisibility = auth.isAdmin();
+        this.criteria = {
+            fromDate: this.billingPeriodService.currentQuarterStartDate()
+        };
     }
 
     search(): void {
         const criteria = {
             ...this.criteria,
-            fromDate: this.formatDateValue(this.criteria.fromDate)
+            fromDate: this.billingPeriodService.formatDateValue(this.criteria.fromDate)
         };
         this.expenses = this.expenseService.search(criteria).pipe(
             map(expenses => expenses.map(expense => ({
@@ -71,19 +76,6 @@ export class ExpensesComponent {
         this.dialog.open(ExpenseCreationUpdatingDialogComponent, {width: '720px', data: expense})
             .afterClosed()
             .subscribe((id?: string) => this.setEngagementIdAndSearch(id));
-    }
-
-    private formatDateValue(value: Date | string | undefined): string | undefined {
-        if (!value) {
-            return undefined;
-        }
-        if (typeof value === 'string') {
-            return value;
-        }
-        const year = value.getFullYear();
-        const month = String(value.getMonth() + 1).padStart(2, '0');
-        const day = String(value.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
     }
 
     private setEngagementIdAndSearch(id: string | undefined): void {

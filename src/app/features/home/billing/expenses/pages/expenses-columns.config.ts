@@ -27,6 +27,5 @@ export const EXPENSES_COLUMNS: CrudColumnConfig[] = [
         label: 'HOJA DE ENCARGO',
         fieldsRef: ['engagement.id'],
         fields: ['engagement.owner.firstName']
-    },
-    {key: 'withholdingTax', label: 'RETENCION', format: 'currency'}
+    }
 ];

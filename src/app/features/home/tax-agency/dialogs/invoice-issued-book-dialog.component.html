@@ -1,0 +1,54 @@
+<h4 mat-dialog-title>{{ title }}</h4>
+
+<mat-dialog-content>
+    <app-form-field
+        #yearNg
+        [(value)]="year"
+        [max]="2100"
+        [min]="2000"
+        [required]="true"
+        errorMessage="Introduce un a&ntilde;o v&aacute;lido"
+        label="A&ntilde;o"
+        type="number"/>
+    <app-form-select
+        [(selected)]="quarter"
+        [labels]="quarterLabels"
+        [required]="true"
+        [values]="quarters"
+        label="Trimestre"/>
+    @if (showRange) {
+        <app-form-field
+            [(value)]="from"
+            [min]="0"
+            [required]="true"
+            errorMessage="Introduce un inicio v&aacute;lido"
+            label="Desde"
+            type="number"/>
+    }
+    @if (showTo) {
+        <app-form-field
+            [(value)]="to"
+            [min]="0"
+            [required]="true"
+            errorMessage="Introduce un fin v&aacute;lido"
+            label="Hasta"
+            type="number"/>
+    }
+    @if (showRange) {
+        @if (rangeOrderInvalid()) {
+            <p class="mat-mdc-form-field-error">Desde debe ser inferior a Hasta</p>
+        }
+    }
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-dialog-close mat-raised-button>Cancelar</button>
+    <button
+        (click)="download()"
+        [disabled]="!canDownload() || formInvalid(yearNg.ngModel)"
+        color="primary"
+        mat-raised-button>
+        <mat-icon matButtonIcon>{{ submitIcon }}</mat-icon>
+        {{ submitLabel }}
+    </button>
+</mat-dialog-actions>

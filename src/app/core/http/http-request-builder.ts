@@ -45,8 +45,8 @@ export class HttpRequestBuilder {
             .pipe(map(() => void 0));
     }
 
-    getBlob(endpoint: string): Observable<Blob> {
-        return this.http.get(endpoint, this.blobOptions());
+    getBlob(endpoint: string, accept = 'application/pdf, application/json'): Observable<Blob> {
+        return this.http.get(endpoint, this.blobOptions(accept));
     }
 
     private jsonOptions() {
@@ -60,8 +60,8 @@ export class HttpRequestBuilder {
         return options;
     }
 
-    private blobOptions() {
-        const headers = new HttpHeaders().set('Accept', 'application/pdf, application/json');
+    private blobOptions(accept: string) {
+        const headers = new HttpHeaders().set('Accept', accept);
         const options = {
             headers,
             params: this.params,

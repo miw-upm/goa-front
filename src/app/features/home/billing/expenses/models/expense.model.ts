@@ -14,6 +14,7 @@ export interface Expense {
     taxCategory: string;
     capital?: boolean;
     depreciationRate: number | string;
+    deductibleAmount: number | string;
     description?: string;
     withholdingTax?: number;
     documentPath?: string;
