@@ -144,5 +144,7 @@ export const ENDPOINTS = {
             `${DOCUMENT_AI_ROOT}/documents`,
         summary: (id: string) =>
             `${DOCUMENT_AI_ROOT}/documents/${enc(id)}/summary`,
+        extractInvoice: (id: string) =>
+            `${DOCUMENT_AI_ROOT}/documents/${enc(id)}/invoice`,
     },
 } as const;

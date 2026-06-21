@@ -48,20 +48,6 @@
                                 <span class="file-name">{{ uploadedDocument.name }}</span>
                                 <span class="file-meta">{{ formatSize(uploadedDocument.sizeInfo) }} • {{ uploadedDocument.uploadDate | date:'short' }}</span>
                             </div>
-                            <button
-                                    mat-raised-button
-                                    color="accent"
-                                    class="summary-btn"
-                                    (click)="generateSummary()"
-                                    [disabled]="isSummarizing">
-                                <mat-icon *ngIf="!isSummarizing">auto_awesome</mat-icon>
-                                <mat-spinner *ngIf="isSummarizing" diameter="18" style="margin-right: 8px;"></mat-spinner>
-                                {{ isSummarizing ? 'Generando...' : 'Resumir contenido' }}
-                            </button>
-                            <a mat-stroked-button [href]="uploadedDocument.url" target="_blank" class="view-btn">
-                                <mat-icon>visibility</mat-icon>
-                                Ver documento
-                            </a>
                         </div>
 
                         <div class="category-section">
@@ -86,6 +72,66 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
+                        </div>
+
+                        <div class="viewer-layout">
+                            <section class="viewer-panel">
+                                <div class="viewer-header">
+                                    <span class="viewer-title">Visor de documento</span>
+                                    <span class="viewer-subtitle">Visualiza el PDF y mantén el flujo de trabajo en una sola pantalla.</span>
+                                </div>
+                                <div class="viewer-frame">
+                                    <object *ngIf="documentUrlSafe" [data]="documentUrlSafe" type="application/pdf" width="100%" height="100%">
+                                        <p>El navegador no puede mostrar el PDF. <a [href]="uploadedDocument.url" target="_blank">Abrir en nueva pestaña</a>.</p>
+                                    </object>
+                                </div>
+                            </section>
+
+                            <aside class="sidebar-panel">
+                                <div class="sidebar-card">
+                                    <h3>Acciones</h3>
+                                    <p class="sidebar-text">Encuentra aquí las acciones disponibles para el documento seleccionado.</p>
+                                    <button mat-raised-button color="accent" class="summary-btn" (click)="generateSummary()" [disabled]="isSummarizing">
+                                        <mat-icon *ngIf="!isSummarizing">auto_awesome</mat-icon>
+                                        <mat-spinner *ngIf="isSummarizing" diameter="18" style="margin-right: 8px;"></mat-spinner>
+                                        {{ isSummarizing ? 'Generando...' : 'Resumir contenido' }}
+                                    </button>
+                                    <a mat-stroked-button [href]="uploadedDocument.url" target="_blank" class="view-btn">
+                                        <mat-icon>visibility</mat-icon>
+                                        Abrir documento
+                                    </a>
+                                    <button mat-raised-button color="primary" (click)="extractInvoice()" [disabled]="isExtractingInvoice || uploadedDocument.category !== 'INVOICE'">
+                                        <mat-icon *ngIf="!isExtractingInvoice">receipt_long</mat-icon>
+                                        <mat-spinner *ngIf="isExtractingInvoice" diameter="18" style="margin-right: 8px;"></mat-spinner>
+                                        {{ isExtractingInvoice ? 'Extrayendo factura...' : 'Extraer datos de factura' }}
+                                    </button>
+                                </div>
+
+                                <div class="sidebar-card invoice-summary" *ngIf="invoiceExtraction">
+                                    <h3>Datos extraídos</h3>
+                                    <div class="invoice-detail"><span>Proveedor</span><strong>{{ invoiceExtraction.vendorName || 'N/A' }}</strong></div>
+                                    <div class="invoice-detail"><span>Fecha</span><strong>{{ invoiceExtraction.invoiceDate || 'N/A' }}</strong></div>
+                                    <div class="invoice-detail"><span>Factura</span><strong>{{ invoiceExtraction.invoiceId || 'N/A' }}</strong></div>
+                                    <div class="invoice-detail"><span>Vence</span><strong>{{ invoiceExtraction.dueDate || 'N/A' }}</strong></div>
+                                    <div class="invoice-detail"><span>Receptor</span><strong>{{ invoiceExtraction.receiverName || 'N/A' }}</strong></div>
+                                    <div class="invoice-detail"><span>NIF receptor</span><strong>{{ invoiceExtraction.receiverTaxId || 'N/A' }}</strong></div>
+                                    <div class="invoice-detail"><span>Subtotal</span><strong>{{ invoiceExtraction.subtotal || 'N/A' }}</strong></div>
+                                    <div class="invoice-detail"><span>IVA</span><strong>{{ invoiceExtraction.taxAmount || 'N/A' }}</strong></div>
+                                    <div class="invoice-detail"><span>Total</span><strong>{{ invoiceExtraction.total || 'N/A' }}</strong></div>
+                                    <div class="invoice-detail"><span>Moneda</span><strong>{{ invoiceExtraction.currency || 'N/A' }}</strong></div>
+
+                                    <div *ngIf="invoiceExtraction.lineItems?.length > 0" class="line-items-summary">
+                                        <h4>Líneas de factura</h4>
+                                        <div *ngFor="let item of invoiceExtraction.lineItems" class="line-item-summary">
+                                            <span>{{ item.name || 'Descripción no disponible' }}</span>
+                                            <div>
+                                                <small>{{ item.quantity || '0' }} × {{ item.unitPrice || '-' }}</small>
+                                                <strong>{{ item.price || '-' }}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </aside>
                         </div>
                     </mat-card-content>
                 </mat-card>

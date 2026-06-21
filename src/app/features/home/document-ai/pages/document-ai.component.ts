@@ -1,5 +1,6 @@
 import {Component, ViewChild, ElementRef} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card';
@@ -9,8 +10,9 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatDividerModule} from '@angular/material/divider';
 import {FormsModule} from '@angular/forms';
-import {DocumentAiService} from '../document-ai.service';
+import {DocumentAiService, InvoiceExtractionResponse} from '../document-ai.service';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { InfoDialogComponent } from "@shared/ui/dialogs/info-dialog.component";
 export interface Document {
@@ -36,6 +38,7 @@ export interface Document {
     MatSelectModule,
     MatFormFieldModule,
     MatChipsModule,
+    MatDividerModule,
     MatDialogModule,
     FormsModule
   ],
@@ -51,7 +54,10 @@ export class DocumentAiComponent {
   selectedFileName = '';
   selectedFile: File | null = null;
   uploadedDocument: Document | null = null;
-  isSummarizing: boolean = false;
+  documentUrlSafe: SafeResourceUrl | null = null;
+  isSummarizing = false;
+  isExtractingInvoice = false;
+  invoiceExtraction: InvoiceExtractionResponse | null = null;
 
   categories = [
     { value: 'INVOICE', label: 'Factura', icon: 'receipt' },
@@ -63,6 +69,7 @@ export class DocumentAiComponent {
   ];
 
   constructor(private readonly documentAiService: DocumentAiService,
+              private readonly sanitizer: DomSanitizer,
               private readonly matDialog: MatDialog) {}
 
   triggerFileInput(): void {
@@ -90,6 +97,7 @@ export class DocumentAiComponent {
     this.uploadSuccess = false;
     this.autoclassify = false;
     this.uploadedDocument = null;
+    this.invoiceExtraction = null;
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
     }
@@ -98,6 +106,7 @@ export class DocumentAiComponent {
   updateCategory(category: string): void {
     if (this.uploadedDocument) {
       this.uploadedDocument.category = category;
+      this.invoiceExtraction = null;
       // Here we could call a service to save the change if needed
     }
   }
@@ -134,13 +143,27 @@ export class DocumentAiComponent {
     });
   }
 
+  extractInvoice() {
+    if (!this.uploadedDocument) return;
+
+    this.isExtractingInvoice = true;
+    this.documentAiService.extractInvoice(this.uploadedDocument.id).subscribe({
+      next: (invoiceData) => {
+        this.invoiceExtraction = invoiceData;
+        this.isExtractingInvoice = false;
+      },
+      error: () => {
+        this.isExtractingInvoice = false;
+      }
+    });
+  }
+
   openSummaryDialog(summary: string) {
-    // Aquí le decimos al servicio: "Ábreme UNA INSTANCIA de InfoDialogComponent"
     this.matDialog.open(InfoDialogComponent, {
       width: '600px',
       data: {
         title: 'Resumen del Documento',
-        message: summary // Tu componente usa data.message en el HTML, así que se verá perfecto
+        message: summary
       }
     });
   }
@@ -148,11 +171,14 @@ export class DocumentAiComponent {
   private uploadFile(file: File): void {
     this.isUploading = true;
     this.uploadSuccess = false;
+    this.documentUrlSafe = null;
+    this.invoiceExtraction = null;
     this.documentAiService.uploadDocument(file, this.autoclassify).subscribe({
       next: (response: Document) => {
         this.isUploading = false;
         this.uploadSuccess = true;
         this.uploadedDocument = response;
+        this.documentUrlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(response.url);
         this.autoclassify = false;
       },
       error: () => {
