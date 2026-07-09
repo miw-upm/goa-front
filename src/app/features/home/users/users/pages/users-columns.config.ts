@@ -5,4 +5,5 @@ export const USERS_COLUMNS: CrudColumnConfig[] = [
     {key: 'cliente', label: 'CLIENTES', fieldsTitle: ['firstName', 'familyName']},
     {key: 'mobile', label: 'MÓVIL', fields: ['mobile']},
     {key: 'email', label: 'EMAIL'},
+    {key: 'notes', label: 'NOTAS', fieldsCaption: ['notes']},
 ];

@@ -11,6 +11,7 @@ export interface User {
     city?: string;
     province?: string;
     postalCode?: string;
+    notes?: string;
     password?: string;
     role?: Role;
     registrationDate?: Date;

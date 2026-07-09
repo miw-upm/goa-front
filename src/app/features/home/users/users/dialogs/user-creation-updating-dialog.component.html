@@ -28,6 +28,7 @@
         [(value)]="user.identity"
     />
     <app-form-field [(value)]="user.email" label="Email"/>
+    <app-form-textarea [(value)]="user.notes" label="Notas"/>
     <mat-slide-toggle [(ngModel)]="enablePasswordChange">Nueva Contraseña</mat-slide-toggle>
     <app-form-field [(value)]="user.password" [disabled]="!enablePasswordChange" label="Contraseña" type="password"/>
     @if (!isCreate()) {
