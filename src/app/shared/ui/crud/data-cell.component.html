@@ -84,10 +84,13 @@
                         }
                     }
                 }
-                @if (!hasTitle && !hasFields) {
+                @if (!hasTitle && !hasFields && !hasCaption) {
                     <span>—</span>
                 }
             }
+        }
+        @if (hasCaption) {
+            <div class="cell-caption">{{ captionValue }}</div>
         }
     }
 } @else {

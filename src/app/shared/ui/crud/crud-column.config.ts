@@ -32,6 +32,9 @@ export interface CrudColumnConfig {
     /** Campos secundarios (texto normal, gris si hay fieldsTitle). Se concatenan separados por separator. */
     fields?: string[];
 
+    /** Campos auxiliares mostrados como caption pequeño. Se concatenan separados por separator. */
+    fieldsCaption?: string[];
+
     /** Formato de visualización (default: 'text') */
     format?: CrudColumnFormat;
 

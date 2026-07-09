@@ -36,6 +36,11 @@ export class DataCellComponent {
         return this.effectiveFields.length > 0;
     }
 
+    /** Tiene fieldsCaption → línea caption pequeña. */
+    get hasCaption(): boolean {
+        return this.captionValue !== '';
+    }
+
     /** Texto principal: fieldsRef se antepone entre parentesis a fieldsTitle. */
     get titleValue(): string {
         if (!this.primaryFields.length || !this.row) return '';
@@ -57,6 +62,20 @@ export class DataCellComponent {
     /** Texto de fields: campos concatenados con separator */
     get fieldsValue(): string {
         const fields = this.effectiveFields;
+        if (!fields.length || !this.row) return '';
+        const sep = this.config?.separator ?? ' ';
+        const value = fields
+            .map(f => this.resolve(this.row, f))
+            .filter(v => v !== null && v !== undefined && v !== '')
+            .join(sep);
+        return value.length > DataCellComponent.MAX_FIELDS_TEXT_LENGTH
+            ? `${value.slice(0, DataCellComponent.MAX_FIELDS_TEXT_LENGTH)}(...)`
+            : value;
+    }
+
+    /** Texto de fieldsCaption: campos concatenados con separator. */
+    get captionValue(): string {
+        const fields = this.config?.fieldsCaption ?? [];
         if (!fields.length || !this.row) return '';
         const sep = this.config?.separator ?? ' ';
         const value = fields
@@ -166,7 +185,9 @@ export class DataCellComponent {
 
     /** fields efectivos: si no hay ni fieldsTitle ni fields, se infiere [key] */
     private get effectiveFields(): string[] {
-        return this.config?.fields?.length ? this.config.fields : (!this.primaryFields.length ? [this.config?.key ?? ''] : []);
+        return this.config?.fields?.length
+            ? this.config.fields
+            : (!this.primaryFields.length && !this.config?.fieldsCaption?.length ? [this.config?.key ?? ''] : []);
     }
 
     private get primaryFields(): string[] {

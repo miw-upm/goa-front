@@ -18,6 +18,7 @@ import {FormSelectComponent} from "@shared/ui/inputs/forms/form-select.component
 import {FormFieldComponent} from "@shared/ui/inputs/forms/form-field.component";
 import {AppDateFieldComponent} from "@shared/ui/inputs/forms/data.component";
 import {FormNifComponent} from "@shared/ui/inputs/forms/form-nif.component";
+import {FormTextareaComponent} from "@shared/ui/inputs/forms/form-textarea.component";
 import {User} from "@features/shared/models/user.model";
 import {SharedUserService} from "@features/shared/services/shared-user.service";
 
@@ -38,6 +39,7 @@ import {UserService} from '../user.service';
         FormFieldComponent,
         AppDateFieldComponent,
         FormNifComponent,
+        FormTextareaComponent,
     ],
     templateUrl: 'user-creation-updating-dialog.component.html'
 })
