@@ -28,6 +28,15 @@ export class TaxAgencyService {
             .openCsv(ENDPOINTS.taxAgency.receivedBook(), `libro-registro-facturas-recibidas-${year}-${quarter}-${from}-${to}.csv`);
     }
 
+    receivedBookZeroVat(year: number, quarter: Quarter, from: number, to: number): Observable<void> {
+        return this.httpService.request()
+            .param('year', String(year))
+            .param('quarter', quarter)
+            .param('from', String(from))
+            .param('to', String(to))
+            .openCsv(ENDPOINTS.taxAgency.receivedBookZeroVat(), `libro-registro-facturas-recibidas-iva-0-${year}-${quarter}-${from}-${to}.csv`);
+    }
+
     model303(year: number, quarter: Quarter, from: number, to: number): Observable<Model303> {
         return this.httpService.request()
             .param('year', String(year))

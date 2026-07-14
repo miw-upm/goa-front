@@ -91,6 +91,14 @@ export class HomeComponent {
         );
     }
 
+    downloadReceivedBookZeroVat(): void {
+        this.downloadTaxAgencyBook(
+            'Libro de facturas recibidas IVA 0',
+            result => this.taxAgencyService.receivedBookZeroVat(result.year, result.quarter, result.from!, result.to!),
+            {showRange: true}
+        );
+    }
+
     openModel303(): void {
         this.requestTaxAgencyPeriod('Modelo 303', 'Enviar', 'send', {showRange: true})
             .pipe(switchMap(result => this.taxAgencyService.model303(result.year, result.quarter, result.from!, result.to!)))
