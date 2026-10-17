@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {MatButtonToggle, MatButtonToggleGroup} from "@angular/material/button-toggle";
 import {MatDialog} from '@angular/material/dialog';
 import {Observable, of} from 'rxjs';
 
@@ -16,12 +17,13 @@ import {AuthService} from "@core/auth/auth.service";
 
 @Component({
     standalone: true,
-    imports: [FormsModule, FilterInputComponent, TitleComponent, CrudComponent],
+    imports: [FormsModule, FilterInputComponent, TitleComponent, CrudComponent, MatButtonToggle, MatButtonToggleGroup],
     templateUrl: 'legal-tasks.component.html'
 })
 export class LegalTasksComponent {
     deleteVisibility: boolean = false;
     searchTitle: string;
+    unassigned: boolean = false;
     tasks = of([]);
     task: Observable<LegalTask>;
     columns = LEGAL_TASKS_COLUMNS
@@ -32,11 +34,12 @@ export class LegalTasksComponent {
     }
 
     search(): void {
-        this.tasks = this.legalTaskService.search(this.searchTitle);
+        this.tasks = this.legalTaskService.search(this.searchTitle, this.unassigned);
     }
 
     resetSearch(): void {
         this.searchTitle = undefined;
+        this.unassigned = false;
     }
 
     create(): void {

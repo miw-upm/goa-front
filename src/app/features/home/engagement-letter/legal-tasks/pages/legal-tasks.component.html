@@ -1,6 +1,11 @@
 <app-title (create)="create()" [createAction]="true" subtitle="Gestión" title="Tareas Legales"></app-title>
 
 <div class="filters-card">
+    <mat-button-toggle-group (change)="search()" [(ngModel)]="unassigned">
+        <mat-button-toggle [value]="false">Todas</mat-button-toggle>
+        <mat-button-toggle [value]="true">Sin plantilla de procedimiento</mat-button-toggle>
+    </mat-button-toggle-group>
+
     <app-filter-input (enter)="search()" [(value)]="searchTitle" title="Titulo"></app-filter-input>
 </div>
 

@@ -13,12 +13,12 @@
 </div>
 
 <app-crud
-        (create)="create()"
-        (delete)="delete($event)"
+        (create)="create()" (delete)="delete($event)"
         (read)="read($event)"
         (searchAll)="search()"
         (update)="update($event)"
         [columns]="columns"
+        [createAction]
         [data]="payments"
         [deleteAction]="deleteVisibility"
         [item]="payment"

@@ -16,9 +16,10 @@ export class LegalTaskService {
             .put(ENDPOINTS.legalTasks.byId(id), task);
     }
 
-    search(title: string): Observable<LegalTask[]> {
+    search(title: string, unassigned: boolean = false): Observable<LegalTask[]> {
         return this.httpService.request()
             .param('title', title)
+            .param('unassigned', String(unassigned))
             .get(ENDPOINTS.legalTasks.root);
     }
 

@@ -3,12 +3,12 @@ import {NgModel} from '@angular/forms';
 import {Observable, of} from 'rxjs';
 import {MatButton} from '@angular/material/button';
 import {
+    MAT_DIALOG_DATA,
     MatDialogActions,
     MatDialogClose,
     MatDialogContent,
     MatDialogRef,
-    MatDialogTitle,
-    MAT_DIALOG_DATA
+    MatDialogTitle
 } from '@angular/material/dialog';
 import {MatIcon} from '@angular/material/icon';
 

@@ -21,6 +21,7 @@ import {AuthService} from "@core/auth/auth.service";
     templateUrl: 'legal-procedure-templates.component.html'
 })
 export class LegalProcedureTemplatesComponent {
+    updateVisibility: boolean = false;
     deleteVisibility: boolean = false;
     criteria: LegalProcedureFindCriteria;
     title = "Plantillas de Procedimientos Legales";
@@ -30,6 +31,7 @@ export class LegalProcedureTemplatesComponent {
 
     constructor(private readonly dialog: MatDialog, private readonly legalProcedureTemplateService: LegalProcedureTemplateService,
                 auth: AuthService) {
+        this.updateVisibility = auth.untilManager();
         this.deleteVisibility = auth.isAdmin();
         this.resetSearch();
     }

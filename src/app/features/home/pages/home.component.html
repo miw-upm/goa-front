@@ -23,11 +23,12 @@
                 <mat-icon>request_quote</mat-icon>
                 <span>Facturación</span>
             </button>
-
-            <button [matMenuTriggerFor]="taxAgencyMenu" class="nav-btn" mat-button>
-                <mat-icon>account_balance</mat-icon>
-                <span>Agencia Tributaria</span>
-            </button>
+            @if (isAuthorized()) {
+                <button [matMenuTriggerFor]="taxAgencyMenu" class="nav-btn" mat-button>
+                    <mat-icon>account_balance</mat-icon>
+                    <span>Agencia Tributaria</span>
+                </button>
+            }
 
             <button class="nav-btn" mat-button routerLink="/home/customer-file-downloads">
                 <mat-icon>download</mat-icon>
@@ -94,32 +95,37 @@
 
 <!-- Facturación -->
 <mat-menu #billingMenu="matMenu">
-    <button mat-menu-item routerLink="/home/invoices">
-        <mat-icon>document_scanner</mat-icon>
-        <span>Facturas</span>
-    </button>
     <button mat-menu-item routerLink="/home/expenses">
         <mat-icon>trending_down</mat-icon>
         <span>Gastos</span>
     </button>
-    <button mat-menu-item routerLink="/home/payments">
-        <mat-icon>trending_up</mat-icon>
-        <span>Ingresos</span>
-    </button>
+    @if (isAuthorized()) {
+        <button mat-menu-item routerLink="/home/payments">
+            <mat-icon>trending_up</mat-icon>
+            <span>Ingresos</span>
+        </button>
+        <button mat-menu-item routerLink="/home/invoices">
+            <mat-icon>document_scanner</mat-icon>
+            <span>Facturas</span>
+        </button>
+    }
+
+
 </mat-menu>
 
 <!-- Agencia Tributaria -->
+
 <mat-menu #taxAgencyMenu="matMenu">
     <button (click)="downloadInvoiceIssuedBook()" mat-menu-item>
         <mat-icon>table_view</mat-icon>
         <span>Libro de facturas expedidas</span>
     </button>
     <button
-        (click)="downloadReceivedBook()"
-        mat-menu-item
-        matTooltip="Incluye inversiones por debajo de 3005,06€. El libro de inversiones se debe hacer manualmente"
-        matTooltipPosition="right"
-        [matTooltipShowDelay]="600">
+            (click)="downloadReceivedBook()"
+            [matTooltipShowDelay]="600"
+            mat-menu-item
+            matTooltip="Incluye inversiones por debajo de 3005,06€. El libro de inversiones se debe hacer manualmente"
+            matTooltipPosition="right">
         <mat-icon>table_rows</mat-icon>
         <span>Libro de facturas recibidas</span>
     </button>
@@ -136,6 +142,7 @@
         <span>Modelo 130</span>
     </button>
 </mat-menu>
+
 
 <!-- Perfil -->
 <mat-menu #profileMenu="matMenu" xPosition="before">
