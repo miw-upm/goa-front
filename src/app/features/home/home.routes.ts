@@ -136,7 +136,7 @@ export const routes: Routes = [
                 path: 'expenses',
                 component: ExpensesComponent,
                 canActivate: [RoleGuard],
-                data: {roles: [Role.ADMIN, Role.MANAGER, Role.OPERATOR]},
+                data: {roles: [Role.ADMIN, Role.MANAGER, Role.LAWYER, Role.OPERATOR]},
                 providers: [ExpenseService],
             },
             {

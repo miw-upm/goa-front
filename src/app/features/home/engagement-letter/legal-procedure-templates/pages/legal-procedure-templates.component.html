@@ -5,8 +5,8 @@
     <app-filter-input (enter)="search()" [(value)]="criteria.task" title="Tarea"></app-filter-input>
 </div>
 
-<app-crud (create)="create()" (read)="read($event)" (searchAll)="search()"
-          (update)="update($event)" [updateAction]="updateVisibility"
-          (delete)="delete($event)" [deleteAction]="deleteVisibility" [secureDelete]="true"
-          [columns]="columns" [data]="templates" [item]="template" [readAction]="true" >
+<app-crud (create)="create()" (delete)="delete($event)" (read)="read($event)"
+          (searchAll)="search()" (update)="update($event)"
+          [columns]="columns" [data]="templates" [deleteAction]="deleteVisibility"
+          [item]="template" [readAction]="true" [secureDelete]="true" [updateAction]="updateVisibility">
 </app-crud>

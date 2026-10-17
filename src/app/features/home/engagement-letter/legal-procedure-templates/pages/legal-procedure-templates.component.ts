@@ -21,7 +21,7 @@ import {AuthService} from "@core/auth/auth.service";
     templateUrl: 'legal-procedure-templates.component.html'
 })
 export class LegalProcedureTemplatesComponent {
-    updateVisibility:boolean = false;
+    updateVisibility: boolean = false;
     deleteVisibility: boolean = false;
     criteria: LegalProcedureFindCriteria;
     title = "Plantillas de Procedimientos Legales";

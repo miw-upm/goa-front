@@ -15,8 +15,8 @@ import {UserService} from "../users/users/user.service";
 import {UserCreationUpdatingDialogComponent} from "../users/users/dialogs/user-creation-updating-dialog.component";
 import {ChatbotComponent} from "../chatbot/pages/chatbot.component";
 import {
-    InvoiceIssuedBookDialogData,
     InvoiceIssuedBookDialogComponent,
+    InvoiceIssuedBookDialogData,
     InvoiceIssuedBookDialogResult
 } from '../tax-agency/dialogs/invoice-issued-book-dialog.component';
 import {Model130DialogComponent} from '../tax-agency/dialogs/model-130-dialog.component';
@@ -111,6 +111,24 @@ export class HomeComponent {
             .subscribe(model130 => this.showModel130(model130));
     }
 
+    isAuthenticated(): boolean {
+        return this.authService.isAuthenticated();
+    }
+
+    isAuthorized(): boolean {
+        return this.authService.untilOperator();
+    }
+
+    name() {
+        return this.authService.name;
+    }
+
+    initials(): string {
+        const n = this.authService.name || '';
+        const raw = n.substring(0, 3);
+        return raw.charAt(0).toUpperCase() + raw.substring(1).toLowerCase();
+    }
+
     private downloadTaxAgencyBook(
         title: string,
         download: (result: InvoiceIssuedBookDialogResult) => Observable<void>,
@@ -149,20 +167,6 @@ export class HomeComponent {
             width: '560px',
             data: model130
         });
-    }
-
-    isAuthenticated(): boolean {
-        return this.authService.isAuthenticated();
-    }
-
-    name() {
-        return this.authService.name;
-    }
-
-    initials(): string {
-        const n = this.authService.name || '';
-        const raw = n.substring(0, 3);
-        return raw.charAt(0).toUpperCase() + raw.substring(1).toLowerCase();
     }
 
 }
