@@ -19,15 +19,11 @@
                       title="Titulo del Procedimiento"></app-filter-input>
 </div>
 
-<app-crud (assistant)="openAssistant($event)"
-          (create)="create()"
-          (delete)="delete($event)" (link)="link($event)" (print)="print($event)" (read)="read($event)"
-          (searchAll)="search()" (update)="update($event)"
-          [assistantAction]="true" [columns]="columns"
-          [data]="engagementLetters"
-          [deleteAction]="deleteVisibility"
-          [item]="engagementLetter"
-          [linkAction]="true"
-          [printAction]="true"
-          [secureDelete]="true">
+<app-crud (searchAll)="search()" (read)="read($event)" (link)="link($event)" [linkAction]="true"
+          (print)="print($event)" [printAction]="printVisibility"
+          (create)="create()" [createAction]="createVisibility"
+          (update)="update($event)" [updateAction]="updateVisibility"
+          (delete)="delete($event)" [secureDelete]="true" [deleteAction]="deleteVisibility"
+          [columns]="columns" [data]="engagementLetters" [item]="engagementLetter"
+>
 </app-crud>

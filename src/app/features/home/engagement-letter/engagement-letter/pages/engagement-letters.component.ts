@@ -28,12 +28,17 @@ export class EngagementLettersComponent implements OnInit {
     engagementLetters: Observable<EngagementLetter[]> = of([]);
     engagementLetter: Observable<EngagementLetter>;
     columns = ENGAGEMENT_LETTERS_COLUMNS;
-
+    printVisibility = false;
+    createVisibility = false;
+    updateVisibility = false;
     deleteVisibility = false;
     criteria: EngagementLetterFindCriteria = {opened: true};
 
     constructor(private readonly dialog: MatDialog, private readonly engagementLettersService: EngagementLetterService,
                 private readonly router: Router, private readonly route: ActivatedRoute, auth: AuthService) {
+        this.printVisibility = auth.untilOperator();
+        this.createVisibility = auth.untilManager();
+        this.updateVisibility = auth.untilManager();
         this.deleteVisibility = auth.isAdmin();
     }
 
