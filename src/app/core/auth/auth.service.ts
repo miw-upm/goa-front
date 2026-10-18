@@ -56,12 +56,15 @@ export class AuthService {
 
     allowedRoles(): Role[] {
         if (this.isAdmin()) {
-            return [Role.ADMIN, Role.MANAGER, Role.OPERATOR, Role.CUSTOMER];
+            return [Role.ADMIN, Role.MANAGER, Role.LAWYER, Role.OPERATOR, Role.CUSTOMER];
         }
         if (this.hasRoles([Role.MANAGER])) {
-            return [Role.MANAGER, Role.OPERATOR, Role.CUSTOMER];
+            return [Role.MANAGER, Role.LAWYER, Role.OPERATOR, Role.CUSTOMER];
         }
         if (this.hasRoles([Role.OPERATOR])) {
+            return [Role.CUSTOMER];
+        }
+        if (this.hasRoles([Role.LAWYER])) {
             return [Role.CUSTOMER];
         }
         return [];
